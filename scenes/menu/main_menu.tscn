@@ -154,6 +154,7 @@ horizontal_alignment = 1
 [node name="SpacerTop" type="Control" parent="SafeArea/Layout"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
 mouse_filter = 2
 
 [node name="BattleButton" parent="SafeArea/Layout" instance=ExtResource("2_button")]
@@ -203,6 +204,7 @@ text = "View"
 [node name="SpacerBottom" type="Control" parent="SafeArea/Layout"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 1.0
 mouse_filter = 2
 
 [node name="NavBar" type="PanelContainer" parent="SafeArea/Layout"]
