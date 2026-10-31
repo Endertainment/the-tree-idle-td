@@ -107,7 +107,7 @@ func test_upgrade_track_curves() -> bool:
 		&"tree_crit_chance": [60, 1.45, 0.02, 0.6],
 		&"tree_crit_damage": [60, 1.45, 0.15, 0.0],
 		&"tree_range": [40, 1.30, 0.03, 0.0],
-		&"tree_regen": [80, 1.40, 0.003, 0.0],
+		&"tree_regen": [150, 1.5, 0.0005, 0.005],
 	}
 	var model := TreeUpgrades.new()
 	model.setup(tracks)

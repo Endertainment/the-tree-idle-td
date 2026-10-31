@@ -9,8 +9,8 @@ const WAVE_TABLE_PATH := "res://data/waves/wave_table_m2.tres"
 const MAP_PATH := "res://data/maps/forest_clearing.tres"
 const ENEMY_DIR := "res://data/enemies/"
 const MIN_LANE_CLEARANCE := 110.0
-const BOSS_WAVES: Array[int] = [10, 20, 30]
-const SWARM_WAVES: Array[int] = [5, 15, 25]
+const BOSS_WAVES: Array[int] = [10, 20, 30, 40, 50, 60]
+const SWARM_WAVES: Array[int] = [5, 15, 25, 35, 45, 55]
 
 const VALID_LANES: Array[StringName] = [&"north", &"south", &"both"]
 
@@ -370,8 +370,8 @@ func test_wave_table_integrity() -> bool:
 	if table == null:
 		print("  could not load ", WAVE_TABLE_PATH)
 		return false
-	if table.waves.size() != 30:
-		print("  expected 30 waves, got ", table.waves.size())
+	if table.waves.size() != 60:
+		print("  expected 60 waves, got ", table.waves.size())
 		return false
 
 	var boss_count := 0
@@ -388,8 +388,8 @@ func test_wave_table_integrity() -> bool:
 		if wave.groups.is_empty():
 			print("  wave %d has no spawn groups" % number)
 			return false
-		var expected_hp := pow(1.11, float(i))
-		if absf(wave.hp_multiplier - expected_hp) > 0.001:
+		var expected_hp := _expected_hp(number)
+		if absf(wave.hp_multiplier - expected_hp) > 0.01:
 			print("  wave %d hp multiplier %f != %f" % [number, wave.hp_multiplier, expected_hp])
 			return false
 		var expected_speed := minf(1.0 + 0.01 * float(i), 1.40)
@@ -461,8 +461,21 @@ func test_wave_table_integrity() -> bool:
 			table.clear_bonus_base, table.clear_bonus_per_wave
 		])
 		return false
-	print("  30 waves, 1.11x hp / 1.12x cash, counts 5+0.8w, bosses x1.20, start 120 cash")
+	print("  60 waves, 1.06x hp with a 4x step at wave 10 + late 1.20x, 1.12x cash, bosses x1.20")
 	return true
+
+
+## M8 wave curve: flat 1.06^w, a 4x step at the wave-10 boss, and a late 1.20^w
+## acceleration past wave 40 so the maxed profile also ends before wave 60.
+func _expected_hp(wave_number: int) -> float:
+	var value := pow(1.06, float(wave_number - 1))
+	if wave_number >= 10:
+		value *= 4.0
+	else:
+		value *= 1.0 + 0.12 * float(wave_number - 1)
+	if wave_number > 40:
+		value *= pow(1.20, float(wave_number - 40))
+	return value
 
 
 func test_map_layout() -> bool:

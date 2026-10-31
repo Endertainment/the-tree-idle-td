@@ -15,15 +15,29 @@ const ENEMY_TANK := &"tank"
 const ENEMY_SHAMAN := &"shaman"
 const ENEMY_BOSS := &"boss_troll"
 
-const MAX_WAVES := 30
+const MAX_WAVES := 60
 const BOSS_BONUS_HP := 1.20
 const BOSS_COINS := 50
-## M3.1 balance pass (docs/BALANCE.md + ADR-020): starting cash above the
-## 60-cash archer, a gentler HP curve, a slower spawn cadence and a larger clear
-## bonus so a zero-meta run reaches waves 8-14.
-const HP_GROWTH := 1.11
+## M8 balance pass (docs/BALANCE.md): the zero-meta curve must fall at wave
+## 8-12, mid-meta at 25-35 and maxed at 45+, while in-run DPS grows ~2.7 %/wave
+## from the upgrade cost curves. A 1.11^w HP curve outgrew that too slowly and
+## every profile reached the old 30-wave table end. M8 flattens the steady curve
+## to 1.06^w but applies a 4x early ramp by wave 10; the flat ramp keeps waves
+## 1-4 gentle while making the wave-10 boss the first real wall.
+const HP_GROWTH := 1.06
+## The wave-10 boss is the first wall: waves 1-9 stay gentle (1.0 -> 1.96) and
+## wave 10 jumps to 4.0, so both a weak and a strong zero-meta opening fall in
+## the 8-12 band instead of the curve spreading them over ten waves.
+const EARLY_RAMP_MAX := 4.0
+const EARLY_RAMP_WAVES := 10
+## Beyond wave 40 the maxed profile still had no leaks; a second acceleration
+## keeps the 45-60 band lethal without touching the new/mid range (they fall
+## before wave 35).
+const LATE_HP_START := 40
+const LATE_HP_GROWTH := 1.20
 const COUNT_BASE := 5
 const COUNT_PER_WAVE := 0.80
+const COUNT_CAP := 40
 const SPAWN_INTERVAL_BASE := 1.00
 const SPAWN_INTERVAL_STEP := 0.010
 const SPAWN_INTERVAL_FLOOR := 0.50
@@ -64,13 +78,13 @@ func _initialize() -> void:
 func _build_wave(wave_number: int) -> WaveDefinition:
 	var wave := WaveDefinition.new()
 	wave.index = wave_number
-	wave.hp_multiplier = pow(HP_GROWTH, float(wave_number - 1))
+	wave.hp_multiplier = pow(HP_GROWTH, float(wave_number - 1)) * _early_ramp(wave_number) * _late_ramp(wave_number)
 	wave.speed_multiplier = minf(1.0 + 0.01 * float(wave_number - 1), 1.40)
 	wave.cash_multiplier = pow(1.12, float(wave_number - 1))
 	wave.is_boss = wave_number % 10 == 0
 	wave.reward_bonus = BOSS_COINS if wave.is_boss else 0
 
-	var total := mini(COUNT_BASE + int(floor(COUNT_PER_WAVE * float(wave_number))), 40)
+	var total := mini(COUNT_BASE + int(floor(COUNT_PER_WAVE * float(wave_number))), COUNT_CAP)
 	var swarm := wave_number % 5 == 0 and not wave.is_boss
 	var interval := maxf(
 		SPAWN_INTERVAL_BASE - SPAWN_INTERVAL_STEP * float(wave_number), SPAWN_INTERVAL_FLOOR
@@ -117,6 +131,21 @@ func _build_wave(wave_number: int) -> WaveDefinition:
 
 	wave.groups = groups
 	return wave
+
+
+## Difficulty ramp: gentle 1.0 -> 1.96 over waves 1-9, then a step to 4.0 from
+## the wave-10 boss onward.
+func _early_ramp(wave_number: int) -> float:
+	if wave_number >= EARLY_RAMP_WAVES:
+		return EARLY_RAMP_MAX
+	return 1.0 + 0.12 * float(wave_number - 1)
+
+
+## Late acceleration: 1x through wave 40, then 1.07x per wave.
+func _late_ramp(wave_number: int) -> float:
+	if wave_number <= LATE_HP_START:
+		return 1.0
+	return pow(LATE_HP_GROWTH, float(wave_number - LATE_HP_START))
 
 
 ## Splits one enemy type across both lanes so each group spawns on a single lane.
