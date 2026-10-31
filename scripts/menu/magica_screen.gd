@@ -33,6 +33,7 @@ var _tick: float = 0.0
 var _toast_tween: Tween
 var _preview_state: Dictionary = {}
 var _preview_model: MagicaModel
+var _speed_ad_pending: bool = false
 
 
 func _ready() -> void:
@@ -45,6 +46,8 @@ func _ready() -> void:
 	_cancel_modal.confirmed.connect(_on_cancel_confirmed)
 	MagicaService.magica_changed.connect(_refresh)
 	LocaleService.language_changed.connect(_on_language_changed)
+	AdsService.rewarded_earned.connect(_on_rewarded_earned)
+	AdsService.rewarded_failed.connect(_on_rewarded_failed)
 	_toast.visible = false
 	_build_nodes()
 	_refresh()
@@ -56,6 +59,10 @@ func _exit_tree() -> void:
 		MagicaService.magica_changed.disconnect(_refresh)
 	if LocaleService.language_changed.is_connected(_on_language_changed):
 		LocaleService.language_changed.disconnect(_on_language_changed)
+	if AdsService.rewarded_earned.is_connected(_on_rewarded_earned):
+		AdsService.rewarded_earned.disconnect(_on_rewarded_earned)
+	if AdsService.rewarded_failed.is_connected(_on_rewarded_failed):
+		AdsService.rewarded_failed.disconnect(_on_rewarded_failed)
 
 
 func _on_language_changed(_code: String) -> void:
@@ -300,8 +307,42 @@ func _on_claim_pressed() -> void:
 
 
 func _on_speed_up_pressed() -> void:
-	_show_toast(LocaleService.t("magica.ads_soon", "Rewarded speed-ups arrive with M6"))
-	MagicaService.speed_up()
+	if _is_preview() or not MagicaService.has_active_research() or _speed_ad_pending:
+		return
+	_speed_ad_pending = true
+	_speed_up_button.disabled = true
+	_speed_up_button.text = LocaleService.t("menu.ad_loading", "Loading ad…")
+	if not AdsService.show_rewarded(AdsService.PLACEMENT_RESEARCH):
+		_finish_speed_ad()
+
+
+func _on_rewarded_earned(placement: StringName) -> void:
+	if placement != AdsService.PLACEMENT_RESEARCH or not _speed_ad_pending:
+		return
+	_speed_ad_pending = false
+	if MagicaService.speed_up():
+		_show_toast(LocaleService.t("magica.speed_up_granted", "Research shortened by 30 minutes"))
+		AnalyticsService.track(&"ad_rewarded", {"placement": "research_speedup"})
+	else:
+		_show_toast(LocaleService.t("magica.speed_up_none", "No active research to speed up"))
+	_finish_speed_ad()
+
+
+func _on_rewarded_failed(placement: StringName, reason: StringName) -> void:
+	if placement != AdsService.PLACEMENT_RESEARCH or not _speed_ad_pending:
+		return
+	_speed_ad_pending = false
+	if reason == AdsService.REASON_CAP_REACHED:
+		_show_toast(LocaleService.t("ads.cap_reached", "You have reached the ad limit for now."))
+	else:
+		_show_toast(LocaleService.t("ads.not_available", "Ad not available, try again later"))
+	_finish_speed_ad()
+
+
+func _finish_speed_ad() -> void:
+	_speed_ad_pending = false
+	_speed_up_button.disabled = false
+	_speed_up_button.text = LocaleService.t("magica.speed_up", "Speed up (AD)")
 
 
 func _on_cancel_pressed() -> void:

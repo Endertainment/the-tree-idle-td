@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="MonetizationConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/platform/monetization_config.gd" id="1_m6"]
+
+[resource]
+script = ExtResource("1_m6")
+app_id = "ca-app-pub-3940256099942544~3347511713"
+rewarded_unit_id = "ca-app-pub-3940256099942544/5224354917"
+interstitial_unit_id = "ca-app-pub-3940256099942544/1033173712"
+test_ids = true
+consent_required = true
+debug_ad_seconds = 2.0
+placements = {
+"free_cash": {
+"cap": 2,
+"period": "run",
+"type": "rewarded"
+},
+"research_speedup": {
+"cap": 3,
+"period": "day",
+"type": "rewarded"
+},
+"run_double_coins": {
+"cap": 1,
+"period": "run",
+"type": "rewarded"
+},
+"run_end_interstitial": {
+"cap": 0,
+"period": "none",
+"type": "interstitial"
+},
+"shop_banner": {
+"cap": 0,
+"period": "none",
+"type": "banner"
+},
+"speed_unlock_24h": {
+"cap": 1,
+"period": "day",
+"type": "rewarded"
+},
+"tree_blessing": {
+"cap": 1,
+"period": "run",
+"type": "rewarded"
+}
+}
+interstitial_every_runs = 3
+interstitial_min_interval_seconds = 120
+interstitial_min_wave = 5
+analytics_enabled = false
+analytics_endpoint = ""
+analytics_batch_size = 20

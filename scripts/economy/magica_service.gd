@@ -179,9 +179,21 @@ func reconcile(save: bool = true) -> bool:
 	return true
 
 
-## Rewarded-ad speed-up. Real ads arrive with M6; this stub refuses cleanly.
-func speed_up(_seconds: int = SPEED_UP_SECONDS) -> bool:
-	return false
+## Rewarded-ad speed-up: subtracts 30 minutes from the active research.
+func speed_up(seconds: int = SPEED_UP_SECONDS) -> bool:
+	_ensure_model()
+	if not _model.has_active_research():
+		return false
+	var completed_now := _model.get_pending_claim() != &""
+	var changed := _model.speed_up(TimeService.now_unix(), seconds)
+	if not changed:
+		return false
+	_sync_state()
+	SaveService.request_save()
+	magica_changed.emit()
+	if not completed_now and _model.get_pending_claim() != &"":
+		research_completed.emit(_model.get_pending_claim())
+	return true
 
 
 ## True when `stat` receives a nonzero modifier from any completed node.

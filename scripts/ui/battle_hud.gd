@@ -23,6 +23,7 @@ signal restart_requested
 signal abandon_requested
 signal upgrade_open_requested
 signal upgrade_closed
+signal ad_reward_requested(placement: StringName)
 
 const LOW_HP_RATIO := 0.3
 const HP_FILL_NORMAL := preload("res://assets/art/battle/hud/tree_hp_fill.png")
@@ -132,6 +133,9 @@ func _ready() -> void:
 	_pause_menu.resume_requested.connect(_on_resume_pressed)
 	_pause_menu.restart_requested.connect(_on_restart_pressed)
 	_pause_menu.abandon_requested.connect(_on_abandon_pressed)
+	_pause_menu.ad_reward_requested.connect(func(placement: StringName) -> void:
+		ad_reward_requested.emit(placement)
+	)
 	_lock_modal.confirmed.connect(_on_lock_confirmed)
 	set_speed_state(1.0, {1.5: false, 2.0: false})
 	set_upgrade_available(false)
@@ -624,6 +628,15 @@ func hide_pause() -> void:
 
 func is_pause_open() -> bool:
 	return _pause_menu.is_open()
+
+
+## Enables/disables the pause-menu rewarded offers (controller owns ad state).
+func set_ad_buttons_enabled(enabled: bool) -> void:
+	_pause_menu.set_ad_buttons_enabled(enabled)
+
+
+func set_ad_loading(placement: StringName, loading: bool) -> void:
+	_pause_menu.set_ad_loading(placement, loading)
 
 
 func _on_pause_pressed() -> void:

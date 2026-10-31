@@ -164,6 +164,17 @@ func reconcile(now_unix: int) -> bool:
 	return true
 
 
+## Rewarded speed-up: moves the finish line earlier by `seconds` (never before
+## now). Completes the research when the new end is reached immediately.
+func speed_up(now_unix: int, seconds: int) -> bool:
+	if _research.is_empty():
+		return false
+	var ends_at := int(_research.get("ends_at", 0))
+	_research["ends_at"] = maxi(ends_at - maxi(seconds, 0), now_unix)
+	reconcile(now_unix)
+	return true
+
+
 ## Claims the pending research into `completed`. Returns the node id or &"".
 func claim() -> StringName:
 	if _pending == &"":

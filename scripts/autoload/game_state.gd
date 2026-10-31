@@ -186,6 +186,42 @@ func grant_extra_unlock(unlock_id: StringName) -> void:
 	unlocks[key] = true
 
 
+const SPEED_BOOST_SECONDS := 24 * 3600
+
+
+## Rewarded "Speed Trial": unlocks 1.5x for 24 h, or the next still-locked step.
+## Stored in the save's shop section so it survives a restart. Returns the granted
+## unlock id (empty when both speeds are already permanently unlocked).
+func grant_speed_boost(seconds: int = SPEED_BOOST_SECONDS) -> StringName:
+	var unlock := &""
+	if not UnlockService.is_unlocked(&"speed_1_5"):
+		unlock = &"speed_1_5"
+	elif not UnlockService.is_unlocked(&"speed_2"):
+		unlock = &"speed_2"
+	if unlock.is_empty():
+		return &""
+	var until := TimeService.now_unix() + maxi(seconds, 1)
+	shop["speed_boost_until"] = maxi(int(shop.get("speed_boost_until", 0)), until)
+	shop["speed_boost_unlock"] = String(unlock)
+	SaveService.request_save()
+	return unlock
+
+
+## True while the rewarded speed boost covers `unlock_id`.
+func has_speed_boost(unlock_id: StringName = &"speed_1_5") -> bool:
+	if speed_boost_remaining() <= 0:
+		return false
+	var boosted := StringName(str(shop.get("speed_boost_unlock", "")))
+	if boosted == unlock_id:
+		return true
+	return unlock_id == &"speed_1_5" and boosted == &"speed_2"
+
+
+## Seconds left on the rewarded speed boost (0 when inactive).
+func speed_boost_remaining() -> int:
+	return maxi(int(shop.get("speed_boost_until", 0)) - TimeService.now_unix(), 0)
+
+
 ## Grants a RewardBundle exactly once per `run_id`. Returns false when the run was
 ## already paid (or the bundle is empty), so a re-shown summary cannot double-pay.
 func claim_run_reward(run_id: String) -> bool:

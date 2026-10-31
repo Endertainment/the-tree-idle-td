@@ -13,6 +13,7 @@ var _build_sheet: BuildSheet
 var _tower_sheet: TowerSheet
 var _unit_slots: UnitSlots
 var _elapsed_timer: float = 0.0
+var _ad_pending: StringName = &""
 
 
 ## Wires every signal once. Called by BattleController after the arena exists.
@@ -49,6 +50,9 @@ func setup(battle: BattleController, hud: BattleHUD) -> void:
 	_hud.resume_requested.connect(_on_resume_requested)
 	_hud.restart_requested.connect(_on_restart_requested)
 	_hud.abandon_requested.connect(_on_abandon_requested)
+	_hud.ad_reward_requested.connect(_on_ad_reward_requested)
+	AdsService.rewarded_earned.connect(_on_ad_earned)
+	AdsService.rewarded_failed.connect(_on_ad_failed)
 	_hud.set_upgrade_purchase_handler(_purchase_upgrade)
 	_hud.set_upgrade_open_handler(_open_tower_row)
 
@@ -357,3 +361,57 @@ func _on_prep_skipped(bonus: int) -> void:
 
 func _on_countdown_changed(seconds_left: int) -> void:
 	_hud.set_countdown(seconds_left)
+
+
+# --- rewarded placements in the pause menu ----------------------------------------
+
+
+func _on_ad_reward_requested(placement: StringName) -> void:
+	if not _ad_pending.is_empty():
+		return
+	_ad_pending = placement
+	_hud.set_ad_loading(placement, true)
+	if not AdsService.show_rewarded(placement):
+		_finish_ad_request()
+
+
+func _on_ad_earned(placement: StringName) -> void:
+	if placement != _ad_pending:
+		return
+	match placement:
+		AdsService.PLACEMENT_FREE_CASH:
+			var wave := _battle.get_wave_manager().get_current_wave()
+			var amount := 100 + 10 * maxi(wave, 0)
+			_battle.add_cash(amount, &"ad_free_cash")
+			ToastService.show_toast(
+				LocaleService.t("battle.ad_cash_granted", "+%d cash") % amount
+			)
+		AdsService.PLACEMENT_TREE_BLESSING:
+			_battle.heal_tree_percent(25.0)
+			ToastService.show_toast(
+				LocaleService.t("battle.ad_blessing_granted", "Tree restored by 25%")
+			)
+		_:
+			pass
+	AudioService.haptic(30)
+	AudioBus.play_ui(&"ui_purchase")
+	_finish_ad_request()
+
+
+func _on_ad_failed(placement: StringName, reason: StringName) -> void:
+	if placement != _ad_pending:
+		return
+	var message := LocaleService.t("ads.not_available", "Ad not available, try again later")
+	if reason == AdsService.REASON_CAP_REACHED:
+		message = LocaleService.t("ads.cap_reached", "You have reached the ad limit for now.")
+	ToastService.show_toast(message)
+	AudioBus.play_ui(&"ui_error")
+	_finish_ad_request()
+
+
+func _finish_ad_request() -> void:
+	if not _ad_pending.is_empty():
+		_hud.set_ad_loading(_ad_pending, false)
+	_ad_pending = &""
+	if _hud != null:
+		_hud.set_ad_buttons_enabled(true)

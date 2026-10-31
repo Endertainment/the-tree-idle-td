@@ -715,6 +715,20 @@ text = ""
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="AdCashButton" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+theme_type_variation = &"GhostButton"
+text = "battle.ad_free_cash"
+
+[node name="AdBlessingButton" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+theme_type_variation = &"GhostButton"
+text = "battle.ad_tree_blessing"
+
 [node name="ResumeButton" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 112)

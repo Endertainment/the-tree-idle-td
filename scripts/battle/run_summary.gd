@@ -2,8 +2,8 @@
 ##
 ## Rewards are built as one RewardBundle and granted through GameState exactly once
 ## per run id (RewardLedger). Cash is intentionally lost at run end; the panel says
-## so. "Double coins" is wired to the M6 RewardedAdStub (debug builds fake a
-## success); a failed ad never blocks Continue.
+## so. "Double coins" asks AdsService for the `run_double_coins` placement and only
+## grants when the rewarded callback fires; a failed ad never blocks Continue.
 class_name RunSummary
 extends CanvasLayer
 
@@ -30,6 +30,7 @@ var _best_before: int = 0
 var _applied: bool = false
 var _doubled: bool = false
 var _already_claimed: bool = false
+var _ad_pending: bool = false
 
 
 func _ready() -> void:
@@ -39,6 +40,15 @@ func _ready() -> void:
 	_continue_button.text = LocaleService.t("summary.continue", "Continue")
 	_continue_button.pressed.connect(_on_continue_pressed)
 	_double_button.pressed.connect(_on_double_pressed)
+	AdsService.rewarded_earned.connect(_on_rewarded_earned)
+	AdsService.rewarded_failed.connect(_on_rewarded_failed)
+
+
+func _exit_tree() -> void:
+	if AdsService.rewarded_earned.is_connected(_on_rewarded_earned):
+		AdsService.rewarded_earned.disconnect(_on_rewarded_earned)
+	if AdsService.rewarded_failed.is_connected(_on_rewarded_failed):
+		AdsService.rewarded_failed.disconnect(_on_rewarded_failed)
 
 
 ## Fills the summary and grants rewards once. Repeated calls only re-render.
@@ -62,6 +72,13 @@ func setup(
 		_applied = true
 		_apply_rewards()
 		GameState.record_run_end(_waves, kills, elapsed_seconds)
+		AnalyticsService.track(&"run_end", {
+			"waves": _waves,
+			"duration": int(elapsed_seconds),
+			"coins": _bundle.coins if _bundle != null else 0,
+			"kills": kills,
+			"leaks": leaks,
+		})
 		SaveService.flush()
 
 	_wave_label.text = "%s %d" % [LocaleService.t("summary.wave", "Wave"), _waves]
@@ -122,25 +139,52 @@ func _animate_reward(label: Label, prefix: String, amount: int) -> void:
 
 
 func _on_double_pressed() -> void:
-	if _doubled or _bundle == null or _bundle.coins <= 0:
+	if _doubled or _ad_pending or _bundle == null or _bundle.coins <= 0:
 		return
-	_doubled = true
+	_ad_pending = true
 	_double_button.disabled = true
-	var result := RewardedAdStub.request_reward()
-	if not bool(result.get("success", false)):
-		_ad_note.text = LocaleService.t("summary.ads_soon", "Rewarded ads arrive in M6. Continue is unaffected.")
+	_double_button.text = LocaleService.t("summary.ad_loading", "Loading ad…")
+	_ad_note.text = LocaleService.t("summary.ad_loading_note", "Watch the ad to double this run's coins.")
+	if not AdsService.show_rewarded(AdsService.PLACEMENT_DOUBLE_COINS):
+		_end_ad_request(LocaleService.t("summary.ad_failed", "Ad not available, try again later"))
+
+
+func _on_rewarded_earned(placement: StringName) -> void:
+	if placement != AdsService.PLACEMENT_DOUBLE_COINS or not _ad_pending:
 		return
+	_ad_pending = false
+	_doubled = true
+	_double_button.text = LocaleService.t("summary.doubled", "Coins doubled")
+	_double_button.disabled = true
 	if not GameState.claim_run_reward(_run_id + ":double"):
 		_ad_note.text = LocaleService.t("summary.already_claimed", "Rewards were already granted for this run.")
 		return
 	GameState.grant_bundle(RewardBundle.coins_only(_bundle.coins), &"run_double")
 	SaveService.flush()
-	var debug_fake := bool(result.get("debug_fake", false))
+	AnalyticsService.track(&"ad_rewarded", {"placement": "run_double_coins", "coins": _bundle.coins})
 	_ad_note.text = LocaleService.t("summary.doubled", "Coins doubled")
-	if debug_fake:
-		_ad_note.text += " " + LocaleService.t("summary.debug_fake", "(debug fake)")
 	_animate_reward(_coins, LocaleService.t("summary.coins", "Coins"), _bundle.coins * 2)
 
 
+func _on_rewarded_failed(placement: StringName, reason: StringName) -> void:
+	if placement != AdsService.PLACEMENT_DOUBLE_COINS or not _ad_pending:
+		return
+	_ad_pending = false
+	var message := LocaleService.t("summary.ad_failed", "Ad not available, try again later")
+	if reason == AdsService.REASON_CAP_REACHED:
+		message = LocaleService.t("ads.cap_reached", "You have reached the ad limit for now.")
+	_end_ad_request(message)
+
+
+func _end_ad_request(message: String) -> void:
+	_double_button.text = LocaleService.t("summary.double_coins", "Double coins (AD)")
+	_double_button.disabled = _doubled or _bundle == null or _bundle.coins <= 0
+	_ad_note.text = message
+	AudioBus.play_ui(&"ui_error")
+
+
 func _on_continue_pressed() -> void:
+	# Run-end interstitial (every 3rd run, 120 s apart, never before wave 5).
+	AdsService.set_interstitial_context(GameState.stats.get("runs_played", 0), _waves)
+	AdsService.show_interstitial(AdsService.PLACEMENT_INTERSTITIAL)
 	SceneRouter.goto(&"main_menu")

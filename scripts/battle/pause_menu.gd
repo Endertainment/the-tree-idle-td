@@ -9,6 +9,7 @@ extends Control
 signal resume_requested
 signal restart_requested
 signal abandon_requested
+signal ad_reward_requested(placement: StringName)
 
 enum Pending { NONE, RESTART, ABANDON }
 
@@ -18,6 +19,8 @@ enum Pending { NONE, RESTART, ABANDON }
 @onready var _restart: Button = %RestartButton
 @onready var _abandon: Button = %AbandonButton
 @onready var _settings: Button = %SettingsButton
+@onready var _ad_cash: Button = %AdCashButton
+@onready var _ad_blessing: Button = %AdBlessingButton
 @onready var _confirm: Modal = %PauseConfirm
 
 var _pending: Pending = Pending.NONE
@@ -31,6 +34,8 @@ func _ready() -> void:
 	_restart.pressed.connect(_on_restart_pressed)
 	_abandon.pressed.connect(_on_abandon_pressed)
 	_settings.pressed.connect(_on_settings_pressed)
+	_ad_cash.pressed.connect(_on_ad_pressed.bind(AdsService.PLACEMENT_FREE_CASH))
+	_ad_blessing.pressed.connect(_on_ad_pressed.bind(AdsService.PLACEMENT_TREE_BLESSING))
 	_confirm.confirmed.connect(_on_confirmed)
 
 
@@ -49,6 +54,28 @@ func _localize() -> void:
 	_restart.text = LocaleService.t("battle.restart", "Restart")
 	_abandon.text = LocaleService.t("battle.abandon", "Abandon run")
 	_settings.text = LocaleService.t("battle.settings", "Settings")
+	_ad_cash.text = LocaleService.t("battle.ad_free_cash", "Free cash (AD)")
+	_ad_blessing.text = LocaleService.t("battle.ad_tree_blessing", "Restore 25% tree HP (AD)")
+
+
+## Disables both rewarded-ad offers while one request is in flight.
+func set_ad_buttons_enabled(enabled: bool) -> void:
+	_ad_cash.disabled = not enabled
+	_ad_blessing.disabled = not enabled
+
+
+## Shows a loading label on the button whose placement is being fetched.
+func set_ad_loading(placement: StringName, loading: bool) -> void:
+	if placement == AdsService.PLACEMENT_FREE_CASH:
+		_ad_cash.text = LocaleService.t("menu.ad_loading", "Loading ad…") if loading else LocaleService.t("battle.ad_free_cash", "Free cash (AD)")
+	elif placement == AdsService.PLACEMENT_TREE_BLESSING:
+		_ad_blessing.text = LocaleService.t("menu.ad_loading", "Loading ad…") if loading else LocaleService.t("battle.ad_tree_blessing", "Restore 25% tree HP (AD)")
+
+
+func _on_ad_pressed(placement: StringName) -> void:
+	set_ad_buttons_enabled(false)
+	set_ad_loading(placement, true)
+	ad_reward_requested.emit(placement)
 
 
 func open(stats_text: String = "") -> void:

@@ -33,6 +33,8 @@ const AVATAR_FALLBACK := "avatar_01"
 @onready var _magica_badge: Label = %MagicaBadge
 @onready var _welcome_modal: Modal = %WelcomeModal
 
+var _speed_ad_pending: bool = false
+
 
 func _ready() -> void:
 	_localize()
@@ -52,6 +54,9 @@ func _ready() -> void:
 	_nav.setup(&"home")
 	_magica_button.pressed.connect(_on_magica_pressed)
 	_welcome_modal.confirmed.connect(_on_welcome_claimed)
+	AdsService.rewarded_earned.connect(_on_rewarded_earned)
+	AdsService.rewarded_failed.connect(_on_rewarded_failed)
+	_refresh_speed_trial()
 
 	EventBus.currency_changed.connect(_on_currency_changed)
 	EventBus.level_up.connect(_on_level_up)
@@ -67,6 +72,10 @@ func _exit_tree() -> void:
 		EventBus.level_up.disconnect(_on_level_up)
 	if LocaleService.language_changed.is_connected(_on_language_changed):
 		LocaleService.language_changed.disconnect(_on_language_changed)
+	if AdsService.rewarded_earned.is_connected(_on_rewarded_earned):
+		AdsService.rewarded_earned.disconnect(_on_rewarded_earned)
+	if AdsService.rewarded_failed.is_connected(_on_rewarded_failed):
+		AdsService.rewarded_failed.disconnect(_on_rewarded_failed)
 
 
 func _on_language_changed(_code: String) -> void:
@@ -74,6 +83,7 @@ func _on_language_changed(_code: String) -> void:
 	_refresh_stats()
 	_refresh_daily()
 	_refresh_magica()
+	_refresh_speed_trial()
 
 
 func _localize() -> void:
@@ -182,11 +192,66 @@ func _on_buy_pressed(tab: StringName) -> void:
 	SceneRouter.goto(&"shop", {"tab": String(tab)})
 
 
-## The rewarded speed offer is intentionally a stub until M6: AdsService reports
-## the debug fake and the player sees the M6 toast instead of a fake reward.
+## The rewarded speed offer is a real placement in M6: rewarded_earned grants 24 h
+## of 1.5x (or the next locked step) through GameState; failures only toast.
 func _on_speed_trial_pressed() -> void:
-	AdsService.show_rewarded(&"speed_unlock_24h")
-	ToastService.show_toast(LocaleService.t("menu.ads_soon", "Ads arrive with M6"))
+	if _speed_ad_pending:
+		return
+	if GameState.speed_boost_remaining() > 0:
+		ToastService.show_toast(
+			LocaleService.t("menu.speed_trial_active_toast", "Speed Trial active for %s") % LocaleService.format_duration(
+				GameState.speed_boost_remaining()
+			)
+		)
+		return
+	_speed_ad_pending = true
+	_refresh_speed_trial()
+	if not AdsService.show_rewarded(AdsService.PLACEMENT_SPEED):
+		_speed_ad_pending = false
+		_refresh_speed_trial()
+
+
+func _on_rewarded_earned(placement: StringName) -> void:
+	if placement != AdsService.PLACEMENT_SPEED or not _speed_ad_pending:
+		return
+	_speed_ad_pending = false
+	var unlock := GameState.grant_speed_boost()
+	if unlock.is_empty():
+		ToastService.show_toast(LocaleService.t("menu.speed_trial_maxed", "Both speeds are already unlocked."))
+	else:
+		ToastService.show_toast(
+			LocaleService.t("menu.speed_trial_granted", "Speed Trial unlocked for 24 h!")
+		)
+		AnalyticsService.track(&"ad_rewarded", {"placement": "speed_unlock_24h", "unlock": String(unlock)})
+	SaveService.flush()
+	_refresh_speed_trial()
+
+
+func _on_rewarded_failed(placement: StringName, reason: StringName) -> void:
+	if placement != AdsService.PLACEMENT_SPEED or not _speed_ad_pending:
+		return
+	_speed_ad_pending = false
+	var message := LocaleService.t("ads.not_available", "Ad not available, try again later")
+	if reason == AdsService.REASON_CAP_REACHED:
+		message = LocaleService.t("ads.cap_reached", "You have reached the ad limit for now.")
+	elif reason == AdsService.REASON_CONSENT:
+		message = LocaleService.t("ads.consent_required", "Ads need your consent first.")
+	ToastService.show_toast(message)
+	_refresh_speed_trial()
+
+
+func _refresh_speed_trial() -> void:
+	if _speed_ad_pending:
+		_speed_trial.text = LocaleService.t("menu.ad_loading", "Loading ad…")
+		_speed_trial.disabled = true
+		return
+	var remaining := GameState.speed_boost_remaining()
+	if remaining > 0:
+		_speed_trial.text = LocaleService.t("menu.speed_trial_active", "Speed Trial  %s left") % LocaleService.format_duration(remaining)
+		_speed_trial.disabled = true
+		return
+	_speed_trial.text = LocaleService.t("menu.speed_trial_offer", "Speed Trial  +1.5x")
+	_speed_trial.disabled = false
 
 
 func _show_welcome_back() -> void:

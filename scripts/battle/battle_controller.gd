@@ -87,6 +87,7 @@ var _aura_timer: float = 0.0
 var _finished: bool = false
 var _paused: bool = false
 var _sheet_open: bool = false
+var _app_paused: bool = false
 var _shake_left: float = 0.0
 var _shake_strength: float = 0.0
 var _last_tree_hp: float = -1.0
@@ -126,6 +127,7 @@ func _ready() -> void:
 		add_child(_debug_overlay)
 		_debug_overlay.setup(self)
 	_grant_free_archer()
+	AdsService.start_run(RunState.run_id)
 	EventBus.run_started.emit()
 	_wave_manager.start()
 
@@ -788,8 +790,10 @@ func can_use_speed(speed: float) -> bool:
 	if speed <= 1.0:
 		return true
 	if speed >= 2.0:
-		return UnlockService.is_unlocked(&"speed_2")
-	return UnlockService.is_unlocked(&"speed_1_5")
+		return UnlockService.is_unlocked(&"speed_2") or GameState.has_speed_boost(&"speed_2")
+	if UnlockService.is_unlocked(&"speed_1_5"):
+		return true
+	return GameState.has_speed_boost(&"speed_1_5")
 
 
 ## Changes the battle simulation speed. Returns false when the speed is locked.
@@ -822,8 +826,22 @@ func set_paused(value: bool) -> void:
 	_paused = value
 	if value:
 		_clock.set_paused(true)
-	elif not _sheet_open:
+	elif not _sheet_open and not _app_paused:
 		_clock.set_paused(false)
+
+
+## App lifecycle: a backgrounded battle freezes the simulation; resume only when no
+## menu/sheet is open. AudioService and SaveService handle their own pause hooks.
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_APPLICATION_PAUSED:
+			_app_paused = true
+			if not _finished:
+				_clock.set_paused(true)
+		NOTIFICATION_APPLICATION_RESUMED:
+			_app_paused = false
+			if not _finished and not _paused and not _sheet_open:
+				_clock.set_paused(false)
 
 
 func is_paused() -> bool:
@@ -853,7 +871,7 @@ func set_sheet_open(open: bool) -> void:
 		return
 	if open:
 		_clock.set_paused(true)
-	elif not _paused:
+	elif not _paused and not _app_paused:
 		_clock.set_paused(false)
 
 
@@ -1058,6 +1076,7 @@ func _on_boss_spawned(enemy: Enemy) -> void:
 	_active_boss = enemy
 	boss_spawned.emit(enemy)
 	_shake_screen(14.0)
+	AudioService.haptic(70)
 
 
 func _on_card_dropped(card_id: StringName) -> void:
@@ -1151,7 +1170,18 @@ func _on_tree_hp_changed(current_hp: float, maximum: float) -> void:
 	tree_hp_changed.emit(current_hp, maximum)
 	if _last_tree_hp >= 0.0 and current_hp < _last_tree_hp:
 		_shake_screen(10.0)
+		AudioService.haptic(45)
 	_last_tree_hp = current_hp
+
+
+## Rewarded "Tree Blessing" placement: restores a percentage of max HP.
+func heal_tree_percent(percent: float) -> bool:
+	if _finished or _tree == null or _tree.is_defeated():
+		return false
+	var amount := _tree.max_hp * clampf(percent, 0.0, 100.0) / 100.0
+	_tree.hp = minf(_tree.max_hp, _tree.hp + amount)
+	_tree.hp_changed.emit(_tree.hp, _tree.max_hp)
+	return true
 
 
 ## Settings → screen shake. Offset decays over 0.3 s; disabled means no offset.
