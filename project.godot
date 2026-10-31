@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="The Tree  IDLE TD"
-config/version="0.1.0"
+config/version="0.7.0"
 run/main_scene="res://scenes/boot/boot.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
@@ -42,6 +42,7 @@ OfflineService="*res://scripts/economy/offline_service.gd"
 LeaderboardService="*res://scripts/platform/leaderboard_service.gd"
 AdsService="*res://scripts/platform/ads_service.gd"
 IapService="*res://scripts/platform/iap_service.gd"
+AnalyticsService="*res://scripts/platform/analytics_service.gd"
 
 [display]
 
@@ -51,6 +52,10 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/admob/plugin.cfg", "res://addons/GodotGooglePlayBilling/plugin.cfg")
+
 [gui]
 
 theme/custom="res://ui/theme/main_theme.tres"
@@ -58,7 +63,6 @@ theme/custom="res://ui/theme/main_theme.tres"
 [internationalization]
 
 locale/translations=PackedStringArray("res://localization/strings.en.translation", "res://localization/strings.uk.translation")
-locale/fallback="en"
 
 [physics]
 
@@ -68,3 +72,5 @@ locale/fallback="en"
 
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
