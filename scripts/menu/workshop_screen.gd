@@ -38,7 +38,6 @@ func _ready() -> void:
 	_back_button.pressed.connect(_on_back_pressed)
 	EventBus.currency_changed.connect(_on_currency_changed)
 	LocaleService.language_changed.connect(_on_language_changed)
-	_nav.shop_pressed.connect(_on_shop_pressed)
 	_toast.visible = false
 	_refresh()
 	select_category(_category)
@@ -87,7 +86,7 @@ func _on_back_pressed() -> void:
 
 
 func _on_shop_pressed() -> void:
-	_show_toast(LocaleService.t("menu.shop_soon", "Shop arrives with M6"))
+	SceneRouter.goto(&"shop")
 
 
 func _refresh() -> void:
@@ -193,20 +192,7 @@ func _on_currency_changed(kind: StringName, _amount: int) -> void:
 
 
 func _show_toast(message: String) -> void:
-	_toast_label.text = message
-	_toast.visible = true
-	_toast.modulate.a = 0.0
-	if _toast_tween != null and _toast_tween.is_valid():
-		_toast_tween.kill()
-	_toast_tween = create_tween()
-	_toast_tween.tween_property(_toast, "modulate:a", 1.0, 0.12)
-	_toast_tween.tween_interval(1.4)
-	_toast_tween.tween_property(_toast, "modulate:a", 0.0, 0.25)
-	_toast_tween.tween_callback(_hide_toast)
-
-
-func _hide_toast() -> void:
-	_toast.visible = false
+	ToastService.show_toast(message)
 
 
 ## Tooling-only: a populated, affordable state for docs/preview captures.

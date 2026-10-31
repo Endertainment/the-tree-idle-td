@@ -43,7 +43,6 @@ func _ready() -> void:
 	_cancel_button.pressed.connect(_on_cancel_pressed)
 	_node_modal.confirmed.connect(_on_node_confirmed)
 	_cancel_modal.confirmed.connect(_on_cancel_confirmed)
-	_nav.shop_pressed.connect(_on_shop_pressed)
 	MagicaService.magica_changed.connect(_refresh)
 	LocaleService.language_changed.connect(_on_language_changed)
 	_toast.visible = false
@@ -332,7 +331,7 @@ func _on_back_pressed() -> void:
 
 
 func _on_shop_pressed() -> void:
-	_show_toast(LocaleService.t("menu.shop_soon", "Shop arrives with M6"))
+	SceneRouter.goto(&"shop")
 
 
 func _duration_text(seconds: int) -> String:
@@ -353,20 +352,7 @@ func _cost_text(node: MagicaNode) -> String:
 
 
 func _show_toast(message: String) -> void:
-	_toast_label.text = message
-	_toast.visible = true
-	_toast.modulate.a = 0.0
-	if _toast_tween != null and _toast_tween.is_valid():
-		_toast_tween.kill()
-	_toast_tween = create_tween()
-	_toast_tween.tween_property(_toast, "modulate:a", 1.0, 0.12)
-	_toast_tween.tween_interval(1.5)
-	_toast_tween.tween_property(_toast, "modulate:a", 0.0, 0.25)
-	_toast_tween.tween_callback(_hide_toast)
-
-
-func _hide_toast() -> void:
-	_toast.visible = false
+	ToastService.show_toast(message)
 
 
 ## Tooling-only populated state for docs/preview captures.

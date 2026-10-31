@@ -32,6 +32,7 @@ var stats: Dictionary = {
 	"runs_played": 0,
 	"total_kills": 0,
 	"total_playtime": 0,
+	"coins_earned": -1,
 	"weekly_max_wave": 0,
 	"week_id": "",
 }
@@ -96,7 +97,8 @@ func reset_profile() -> void:
 	wallet = {"coins": 0, "gems": 0, "stones": 0}
 	stats = {
 		"best_wave": 0, "runs_played": 0, "total_kills": 0,
-		"total_playtime": 0, "weekly_max_wave": 0, "week_id": "",
+		"total_playtime": 0, "coins_earned": -1,
+		"weekly_max_wave": 0, "week_id": "",
 	}
 	magica = {"research": {}, "completed": [], "pending_claim": ""}
 	cards = {"owned": [], "equipped": [null, null, null, null]}

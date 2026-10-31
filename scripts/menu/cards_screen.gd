@@ -14,6 +14,7 @@ const FILTER_LABELS: Dictionary = {
 	&"owned": ["cards.filter.owned", "Owned"],
 }
 const SORTS: Array[StringName] = [&"rarity", &"level", &"new"]
+const CARD_FRAME_PATH := "res://assets/art/meta/cards/card_frame_%s.png"
 
 @onready var _back_button: Button = %BackButton
 @onready var _title_label: Label = %TitleLabel
@@ -56,7 +57,6 @@ func _ready() -> void:
 	_close_detail_button.pressed.connect(_close_detail)
 	_upgrade_button.pressed.connect(_on_upgrade_pressed)
 	_equip_button.pressed.connect(_on_equip_pressed)
-	_nav.shop_pressed.connect(_on_shop_pressed)
 	CardService.cards_changed.connect(_refresh)
 	LocaleService.language_changed.connect(_on_language_changed)
 	_toast.visible = false
@@ -206,6 +206,7 @@ func _refresh_slots() -> void:
 		]
 		button.theme_type_variation = &"GoldButton"
 		button.modulate = card.rarity_color()
+		_apply_rarity_frame(button, card)
 
 
 func _slot_requirement(slot: int) -> String:
@@ -302,8 +303,30 @@ func _card_tile(card: CardData, collection: CardCollection) -> Button:
 		button.text = "%s\n%s" % [_card_name(card), LocaleService.t("cards.not_owned", "Not owned")]
 		button.theme_type_variation = &"SecondaryButton"
 		button.modulate = Color(0.58, 0.62, 0.56, 1.0)
+		_apply_rarity_frame(button, card)
 	button.pressed.connect(_select_card.bind(card.id))
 	return button
+
+
+## Rarity frame from the manifest (common/rare/epic/legendary). The frame is the
+## button skin so it also survives hover/pressed states without extra overlays.
+func _apply_rarity_frame(button: Button, card: CardData) -> void:
+	var path := CARD_FRAME_PATH % String(card.rarity)
+	if not ResourceLoader.exists(path):
+		return
+	var frame := StyleBoxTexture.new()
+	frame.texture = load(path) as Texture2D
+	frame.texture_margin_left = 28.0
+	frame.texture_margin_top = 28.0
+	frame.texture_margin_right = 28.0
+	frame.texture_margin_bottom = 28.0
+	frame.content_margin_left = 12.0
+	frame.content_margin_right = 12.0
+	frame.content_margin_top = 12.0
+	frame.content_margin_bottom = 12.0
+	button.add_theme_stylebox_override("normal", frame)
+	button.add_theme_stylebox_override("hover", frame)
+	button.add_theme_stylebox_override("pressed", frame)
 
 
 func _refresh_stats() -> void:
@@ -484,24 +507,11 @@ func handle_back_request() -> bool:
 
 
 func _on_shop_pressed() -> void:
-	_show_toast(LocaleService.t("menu.shop_soon", "Shop arrives with M6"))
+	SceneRouter.goto(&"shop")
 
 
 func _show_toast(message: String) -> void:
-	_toast_label.text = message
-	_toast.visible = true
-	_toast.modulate.a = 0.0
-	if _toast_tween != null and _toast_tween.is_valid():
-		_toast_tween.kill()
-	_toast_tween = create_tween()
-	_toast_tween.tween_property(_toast, "modulate:a", 1.0, 0.12)
-	_toast_tween.tween_interval(1.5)
-	_toast_tween.tween_property(_toast, "modulate:a", 0.0, 0.25)
-	_toast_tween.tween_callback(_hide_toast)
-
-
-func _hide_toast() -> void:
-	_toast.visible = false
+	ToastService.show_toast(message)
 
 
 ## Tooling-only populated state for docs/preview captures.

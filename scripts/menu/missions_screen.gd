@@ -37,7 +37,6 @@ func _ready() -> void:
 	_localize()
 	_back_button.pressed.connect(_on_back_pressed)
 	_claim_all_button.pressed.connect(_on_claim_all_pressed)
-	_nav.shop_pressed.connect(_on_shop_pressed)
 	MissionService.missions_changed.connect(_refresh)
 	LocaleService.language_changed.connect(_on_language_changed)
 	_toast.visible = false
@@ -266,11 +265,13 @@ func _on_claim_pressed(mission_id: String) -> void:
 		var result := MissionService.claim(mission_id)
 		if bool(result.get("ok", false)):
 			AudioBus.play_ui(&"ui_claim")
+			_fly_coins(int(result.get("coins", 0)))
 			_show_toast(LocaleService.t("missions.claimed_toast", "Mission claimed"))
 		else:
 			AudioBus.play_ui(&"ui_error")
 			_show_toast(LocaleService.t("missions.not_complete", "Mission is not complete"))
 	else:
+		AudioBus.play_ui(&"ui_claim")
 		_show_toast(LocaleService.t("missions.claimed_toast", "Mission claimed"))
 	_refresh()
 
@@ -280,10 +281,38 @@ func _on_claim_all_pressed() -> void:
 		var claimed := MissionService.claim_all()
 		if claimed > 0:
 			AudioBus.play_ui(&"ui_claim")
+			_fly_coins(claimed * 40)
 		_show_toast(LocaleService.t("missions.claim_all_toast", "Claimed %d missions") % claimed)
 	else:
 		_show_toast(LocaleService.t("missions.claim_all_toast", "Claimed %d missions") % 0)
 	_refresh()
+
+
+## Coin fly: pooled-looking tweened coin icons travel from the row area to the
+## top-right currency corner. Purely cosmetic; grants already happened above.
+func _fly_coins(amount: int) -> void:
+	var viewport := get_viewport_rect().size
+	var destination := Vector2(viewport.x - 150.0, 120.0)
+	var origin := Vector2(viewport.x * 0.72, viewport.y * 0.58)
+	var count := clampi(3 + amount / 80, 3, 9)
+	for index in count:
+		var coin := TextureRect.new()
+		coin.texture = load(COIN_ICON) as Texture2D
+		coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		coin.custom_minimum_size = Vector2(46, 46)
+		coin.size = Vector2(46, 46)
+		coin.position = origin + Vector2(float(index % 3) * 26.0 - 26.0, float(index / 3) * 22.0)
+		coin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		coin.z_index = 40
+		add_child(coin)
+		var tween := create_tween()
+		tween.set_parallel(true)
+		tween.tween_property(coin, "position", destination, 0.65).set_delay(index * 0.055).set_ease(
+			Tween.EASE_IN
+		).set_trans(Tween.TRANS_QUAD)
+		tween.tween_property(coin, "modulate:a", 0.0, 0.2).set_delay(0.5 + index * 0.055)
+		tween.chain().tween_callback(coin.queue_free)
 
 
 func _on_back_pressed() -> void:
@@ -292,24 +321,11 @@ func _on_back_pressed() -> void:
 
 
 func _on_shop_pressed() -> void:
-	_show_toast(LocaleService.t("menu.shop_soon", "Shop arrives with M6"))
+	SceneRouter.goto(&"shop")
 
 
 func _show_toast(message: String) -> void:
-	_toast_label.text = message
-	_toast.visible = true
-	_toast.modulate.a = 0.0
-	if _toast_tween != null and _toast_tween.is_valid():
-		_toast_tween.kill()
-	_toast_tween = create_tween()
-	_toast_tween.tween_property(_toast, "modulate:a", 1.0, 0.12)
-	_toast_tween.tween_interval(1.5)
-	_toast_tween.tween_property(_toast, "modulate:a", 0.0, 0.25)
-	_toast_tween.tween_callback(_hide_toast)
-
-
-func _hide_toast() -> void:
-	_toast.visible = false
+	ToastService.show_toast(message)
 
 
 ## Tooling-only populated state for docs/preview captures.

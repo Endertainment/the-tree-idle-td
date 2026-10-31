@@ -299,6 +299,19 @@ func _build_account() -> void:
 	id_row.add_child(copy)
 	_account_rows.add_child(id_row)
 
+	var profile_row := _row()
+	profile_row.add_child(_row_label(LocaleService.t("menu.open_profile", "Player profile")))
+	var profile_button := _option_button(
+		LocaleService.t("menu.open", "Open"), false, _on_profile_pressed
+	)
+	profile_button.custom_minimum_size = Vector2(240, 88)
+	profile_row.add_child(profile_button)
+	_account_rows.add_child(profile_row)
+
+
+func _on_profile_pressed() -> void:
+	SceneRouter.goto(&"profile")
+
 
 func _on_copy_pressed() -> void:
 	DisplayServer.clipboard_set(str(GameState.player.get("id", "")))
@@ -378,13 +391,4 @@ func _build_fps_label() -> void:
 
 
 func _show_toast(message: String) -> void:
-	_toast_label.text = message
-	_toast.visible = true
-	_toast.modulate.a = 0.0
-	if _toast_tween != null and _toast_tween.is_valid():
-		_toast_tween.kill()
-	_toast_tween = create_tween()
-	_toast_tween.tween_property(_toast, "modulate:a", 1.0, 0.12)
-	_toast_tween.tween_interval(1.4)
-	_toast_tween.tween_property(_toast, "modulate:a", 0.0, 0.25)
-	_toast_tween.tween_callback(func() -> void: _toast.visible = false)
+	ToastService.show_toast(message)

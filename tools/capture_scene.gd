@@ -18,12 +18,19 @@ func _run() -> void:
 	var pseudo: bool = args.size() > 4 and args[4] == "pseudo"
 	var text_scale: float = float(args[5]) if args.size() > 5 else 0.0
 	var settings := get_root().get_node_or_null("SettingsService")
+	# Finish the boot sequence before applying capture-only settings: App defers
+	# init_services(), and its settings/locale load would otherwise overwrite the
+	# requested language and refresh the staged preview after stage_preview().
+	var app := get_root().get_node_or_null("App")
+	if app != null:
+		app.call("init_services")
 	if pseudo and settings != null:
 		settings.set("pseudo_locale", true)
 	if text_scale > 0.0 and settings != null:
 		settings.set("text_scale", text_scale)
 		settings.call("apply_text_scale", get_root())
 	if not locale.is_empty():
+		settings.set("language", locale)
 		TranslationServer.set_locale(locale)
 		var locale_service := get_root().get_node_or_null("LocaleService")
 		if locale_service != null:
@@ -38,6 +45,7 @@ func _run() -> void:
 	root.size = Vector2i(1080, 1920)
 	var instance := packed.instantiate()
 	root.add_child(instance)
+	await create_timer(0.2).timeout
 	if instance.has_method("stage_sheet_preview") and not sheet.is_empty():
 		instance.call("stage_sheet_preview", sheet)
 	elif instance.has_method("stage_preview"):

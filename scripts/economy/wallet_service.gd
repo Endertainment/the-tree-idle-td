@@ -33,6 +33,8 @@ func get_balance(kind: StringName) -> int:
 func add_currency(kind: StringName, amount: int, reason: StringName = &"grant") -> SpendResult:
 	var result := get_wallet().add(kind, amount, reason, TimeService.now_unix())
 	if result.is_ok():
+		if kind == &"coins":
+			_track_coins_earned(amount)
 		EventBus.currency_changed.emit(kind, result.balance)
 		SaveService.request_save()
 	return result
@@ -61,6 +63,8 @@ func add_bundle(bundle: RewardBundle, source: StringName = &"reward") -> bool:
 	var changed := get_wallet().add_bundle(bundle, source, TimeService.now_unix())
 	for kind: StringName in changed:
 		EventBus.currency_changed.emit(kind, get_balance(kind))
+	if changed.has(&"coins"):
+		_track_coins_earned(bundle.coins)
 	if bundle.xp > 0:
 		LevelService.add_xp(bundle.xp)
 	if not changed.is_empty() or bundle.xp > 0:
@@ -72,6 +76,15 @@ func add_bundle(bundle: RewardBundle, source: StringName = &"reward") -> bool:
 ## Last 50 accepted transactions (support/debug), newest last.
 func get_log() -> Array[Dictionary]:
 	return get_wallet().get_log()
+
+
+## Lifetime counter used by the profile screen (old saves default to the current
+## balance through ProfileStats).
+func _track_coins_earned(amount: int) -> void:
+	if amount <= 0:
+		return
+	var current := int(GameState.stats.get("coins_earned", -1))
+	GameState.stats["coins_earned"] = amount if current < 0 else current + amount
 
 
 ## Debug/tooling reset: rebinds to the current GameState wallet dictionary.
