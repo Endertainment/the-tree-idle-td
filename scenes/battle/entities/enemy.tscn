@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/enemy.gd" id="1_enemy"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_shadow.png" id="2_shadow"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/hp_bar_bg.png" id="3_hp_bg"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/hp_bar_fill.png" id="4_hp_fill"]
+
+[node name="Enemy" type="Node2D"]
+script = ExtResource("1_enemy")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 0.32)
+position = Vector2(0, 36)
+texture = ExtResource("2_shadow")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+
+[node name="HpBar" type="Node2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0)
+position = Vector2(0, -76)
+
+[node name="Background" type="Sprite2D" parent="HpBar"]
+texture = ExtResource("3_hp_bg")
+
+[node name="Fill" type="Sprite2D" parent="HpBar"]
+position = Vector2(-34, -5)
+centered = false
+texture = ExtResource("4_hp_fill")
