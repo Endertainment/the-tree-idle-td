@@ -128,3 +128,36 @@ adb -s 127.0.0.1:5555 shell input keyevent KEYCODE_BACK
 
 Both were checked against Godot 4.7.2 (headless import + full Gradle APK + launch on
 LDPlayer). See `docs/DECISIONS.md`.
+
+## Release signing and AAB (M8)
+
+The debug preset (`Android`) still produces `build/the-tree.apk` with the debug
+keystore. The release preset (`Android Release`) is committed with **no secret**:
+
+```ini
+keystore/release=""
+keystore/release_user="thetree"
+keystore/release_password=""
+```
+
+`tools/export_release.ps1` reads the password from the
+`THE_TREE_KEYSTORE_PASSWORD` environment variable, or from the placeholder line
+in `tools/keystore/README.md`, injects `tools/keystore/release.keystore` and the
+password into a temporary copy of `export_presets.cfg`, and restores the
+committed file in a `finally` block. It builds:
+
+| Artifact | Preset | Format | Purpose |
+|---|---|---|---|
+| `build/the-tree.aab` | Android Release | AAB (`export_format=1`) | Play Console upload |
+| `build/the-tree-release.apk` | Android Release | APK (`export_format=0`) | LDPlayer / device QA with the same release signature |
+
+```powershell
+$env:THE_TREE_KEYSTORE_PASSWORD = '...'   # optional; README placeholder otherwise
+pwsh -NoProfile -File tools/export_release.ps1
+pwsh -NoProfile -File tools/install_ldplayer.ps1 -ApkPath build/the-tree-release.apk `
+  -Screenshot docs/preview/m8_release.png
+```
+
+The keystore is gitignored (`*.keystore`). Back it up offline: losing it blocks
+updates to `com.endertainment.thetree`. The release preset targets arm64-v8a and
+x86_64, min SDK 24, target SDK 35, version code 8 / name 1.0.0.

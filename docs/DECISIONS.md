@@ -824,3 +824,66 @@ drops batches on failure (spec §8.6) rather than queuing them.
 **Consequences:** a service cannot bypass auth/retries, and the hard rule is a
 test rather than a convention. A new endpoint only needs a `request()` call; a
 second HTTP owner would fail the test.
+
+## ADR-042 — M8 wave curve: a step at wave 10 and a late acceleration (M8)
+
+**Status:** accepted (M8)
+
+**Context:** the M3.1 calibration used a bot that under-spent (one purchase per
+3.2 simulated seconds, no tree purchases). A competent bot on the same data
+cleared all 30 authored waves with zero meta, and in-run Regen (0.3 % max HP/s,
+30 levels) healed 500+ leaks in the mid profile. The three §4.8 targets could
+not be separated at all, and extending the table alone did not fix it.
+
+**Decision:** keep the wave table authored data, but change its curve:
+60 waves, HP `1.06^(w-1)`, a linear early ramp on waves 1–9 culminating in a
+×4.0 step at the wave-10 boss, and `×1.20` per wave after wave 40. Cap the
+Regen in-run track at +0.05 %/s, 10 levels (0.5 %/s) and raise its cost. The
+simulator (`tools/simulate_run.gd`) runs the same competent bot for every
+profile; `balance_probe.gd` stays as the independent zero-meta gate.
+
+**Consequences:** measured medians over 10 seeds are new 9, mid 29 (bimodal:
+29 or 43), max 55. A zero-meta run now ends at the wave-10 boss rather than
+reaching the table end. The wave-10 wall is intentional; the first-run tutorial
+and the 6 s prep break give a new player room to learn before it. This is a
+data-only change: no gameplay script was touched.
+
+## ADR-043 — Draw calls: atlas pass deferred to post-launch (M8)
+
+**Status:** accepted, deferred (M8)
+
+**Context:** M8 measures **543** peak draw calls at 120 enemies + 8 towers + 4
+units, above the M2 guideline of 120. Enemies already use `AnimatedSprite2D` +
+`SpriteFrames`, so the cheap per-enemy win is already in place. The rest comes
+from one texture per shadow, HP bar, tower, projectile and UI panel/icon.
+
+**Decision:** do not start an art-wide atlas pass in the release milestone.
+Record the measured number in `docs/PERF.md`, ship the release build (desktop
+1036 FPS; LDPlayer ~117 FPS at wave 1), and schedule an atlas pass (one atlas
+per family, `AtlasTexture` for the UI, `SpriteFrames` reuse for enemies) as the
+first post-launch performance task.
+
+**Consequences:** the <120 draw-call guideline remains unmet and is listed as a
+known gap in `docs/RELEASE.md`. The 120-enemy CPU requirement and the 55 FPS
+floor both pass. No placeholder art was degraded to fake a batching win.
+
+## ADR-044 — Release signing stays local; the committed preset holds no secret (M8)
+
+**Status:** accepted (M8)
+
+**Context:** the Android release preset needs an absolute keystore path and its
+password, but keystores and passwords must never enter git (§16).
+
+**Decision:** `tools/keystore/release.keystore` is generated locally and is
+gitignored. `tools/keystore/README.md` documents the alias and a placeholder
+password. `tools/export_release.ps1` reads the password from the
+`THE_TREE_KEYSTORE_PASSWORD` environment variable (or the README placeholder),
+patches a temporary copy of `export_presets.cfg` with the absolute keystore path
+and password, exports the signed AAB and a matching APK, then restores the
+committed preset in a `finally` block. The committed preset keeps
+`keystore/release=""` and `keystore/release_password=""`.
+
+**Consequences:** a fresh clone can export a signed build with the documented
+placeholder for local QA; a store upload must regenerate the keystore with the
+real password. Rotating the keystore or losing it is documented as an offline
+backup responsibility.

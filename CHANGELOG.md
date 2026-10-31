@@ -3,6 +3,53 @@
 All notable changes are recorded per milestone. The project follows semantic
 versioning for tags; unreleased work stays under `[Unreleased]`.
 
+## [1.0.0] — 2026-10-31 — M8 balance, polish, release readiness
+
+### Added
+
+- **Balance simulator** `tools/simulate_run.gd`: headless, seeded, real battle
+  scene, the same competent bot across three meta profiles (`new` level 1, `mid`
+  level 12 + 8 workshop levels + 2 rare cards, `max` level 20 + all workshop 30
+  + four maxed cards + Fourth Branch), per-seed output and median/p10/p90
+  summary. `tools/tutorial_probe.gd` proves the three first-run hints fire and
+  persist.
+- **First-run tutorial hints** (3, non-blocking, dismissible): "Tap a pedestal
+  to build" at wave 1, "Spend cash to grow stronger" on the first upgrade panel,
+  "Coins are permanent — upgrade the Workshop" on the first run summary. Shown
+  flags persist in the save's additive `tutorial` section; en + uk copy.
+- **Release build**: `Android Release` export preset (AAB), signed release
+  keystore workflow (`tools/export_release.ps1`, keystore + password never in
+  git), `build/the-tree.aab` (73.2 MB) and `build/the-tree-release.apk`
+  (166.3 MB QA artifact), installed and launched on LDPlayer 14.
+- **Release docs/assets**: `docs/RELEASE.md`, `docs/QA_CHECKLIST.md` (M8),
+  `docs/PERF.md`, `docs/store/` (icon 512, feature graphic 1024×500, three
+  1080×1920 screenshots), `docs/ANDROID.md` release-signing section.
+
+### Changed
+
+- **Balance (data only)**: 60-wave table; HP growth `1.06^(w-1)` with a ×4 step
+  at the wave-10 boss and ×1.20 per wave after 40; in-run Regen capped at
+  0.5 %/s, 10 levels with a higher cost. Measured medians over 10 seeds: new 9,
+  mid 29, max 55 (`docs/BALANCE.md`, ADR-042).
+- **Version**: project and app `1.0.0`; export version code 8.
+- **Tests**: **74/74** (M8 adds four: tutorial one-shot/persistence, tutorial
+  locale catalogue, hint control, release wave curve); `balance_probe` stays at
+  median 9.
+- **Quality**: corrupt-save recovery no longer logs an engine JSON parse error,
+  headless tools release audio resources before exit (no leaked AudioStreamWAV
+  or "resources still in use"), and `battle_smoke` adapts its tower levels to
+  the harder wave 10.
+
+### Known issues
+
+- 543 draw calls at the 120-enemy desktop stress (guideline <120); atlas pass
+  deferred to post-launch (ADR-043).
+- Universal QA APK is 166 MB; AAB is 73.2 MB and Play's per-device split size
+  was not measured with `bundletool` (not installed here).
+- Ads/billing cannot complete a real transaction in this environment; SQLite is
+  the verified backend runtime; no crash-reporting SDK; store art is
+  placeholder. See `docs/RELEASE.md` for the full list.
+
 ## [0.8.0-m7] — 2026-10-31 — M7 backend, cloud saves, live leaderboard
 
 ### Added

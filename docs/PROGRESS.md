@@ -2,13 +2,14 @@
 
 Single source of truth for "where are we". Updated at the end of every session.
 
-**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M7 done (tagged) → M8 next
+**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M8 done, tagged
+`v1.0.0-m8` → launch hardening next
 **Branch:** `main` · **Godot:** `C:\Tools\godot-4.7.2\Godot_v4.7.2-stable_win64.exe` (4.7.2)
-**Verification (M7):** check_project exit 0 · tests **70/70** · smoke **25/25
-scenes** · lint_locale **649 keys, 0 missing, 0 unused** · server pytest
-**31 passed** · `tools/api_e2e.ps1` **PASS** (uvicorn + guest→save→leaderboard→
-tournament submit) · Docker/Neon/device **not available** (SQLite-only runtime
-proof, documented)
+**Verification (M8):** check_project exit 0 · tests **74/74** · smoke **25/25
+scenes, zero ERROR/WARNING** · battle_smoke **PASS** · balance_probe median **9**
+· simulate_run medians **new 9 / mid 29 / max 55** over 10 seeds · lint_locale
+**653 keys, 0 missing, 0 unused** · release AAB **73.2 MB** + release APK
+**166.3 MB**, installed and launched on LDPlayer 14 (`docs/preview/m8_release.png`)
 **Toolchain:** Android SDK `C:\Android\Sdk`, JDK 17 `C:\Tools\jdk-17`, LDPlayer
 `E:\LDPlayer\LDPlayer14`, adb `127.0.0.1:5555` (see `docs/ANDROID.md`)
 
@@ -24,7 +25,7 @@ proof, documented)
 | M5 | Shell, UX, localization, audio | done | `v0.6.0-m5` |
 | M6 | Android, ads, billing, telemetry | done, tagged (ad fill blocked by env network) | `v0.7.0-m6` |
 | M7 | Backend (FastAPI + Neon), live features | done (Neon/Docker runtime unverified) | `v0.8.0-m7` |
-| M8 | Balance, polish, release readiness | not started | `v1.0.0-m8` |
+| M8 | Balance, polish, release readiness | done (tagged; launch gaps listed below) | `v1.0.0-m8` |
 
 ## M5a delivered (first half of M5, no tag)
 
@@ -202,6 +203,69 @@ proof, documented)
   Android device run of the live API. The PostgreSQL URL path, TLS normalisation
   and shared metadata are unit-tested; the runtime proofs all use SQLite.
 
+## M8 delivered (tagged `v1.0.0-m8`) — release 1.0.0
+
+- **Balance simulation** `tools/simulate_run.gd`: headless, seeded, real battle
+  scene, one competent bot, three meta profiles (`new` level 1; `mid` level 12
+  with 8 levels on 13 combat/utility workshop tracks + 2 rare cards; `max` level
+  20 with all 24 workshop tracks at 30 + 4 maxed cards + Fourth Branch), per-run
+  lines and median/min/max/p10/p90 with a non-zero exit when the band misses.
+  `tools/tutorial_probe.gd` proves the hint flow.
+- **Balance (data only, ADR-042):** 60-wave table; HP `1.06^(w-1)` with a ×4
+  step at the wave-10 boss and ×1.20/wave after 40; in-run Regen capped at
+  0.5 %/s / 10 levels with a higher cost. Measured over seeds 1–10: **new 9**
+  (all seeds), **mid 29** (bimodal 29/43, median 29), **max 55** (all seeds).
+  Independent `balance_probe.gd` zero-meta median **9**. Before the pass every
+  profile cleared the 30-wave table end and Regen healed 500+ leaks.
+- **Tutorial hints (3, non-blocking, dismissible, persisted):** "Tap a pedestal
+  to build" on wave 1, "Spend cash to grow stronger" on the first upgrade panel,
+  "Coins are permanent — upgrade the Workshop" on the first run summary.
+  `TutorialService` + `TutorialHint` (code-built panel, z-index above sheets),
+  `GameState.tutorial.shown` in the save, en + uk copy, 4 new tests.
+- **Release build:** `Android Release` export preset (AAB, version code 8 /
+  1.0.0), local release keystore (gitignored) and a placeholder password that
+  lives only in `tools/keystore/README.md`, `tools/export_release.ps1` patches a
+  temporary preset copy and restores it; `build/the-tree.aab` **73.2 MB** and
+  `build/the-tree-release.apk` **166.3 MB**. `adb install -r` + launch on
+  LDPlayer 14, onboarding → menu → battle at wave **1/60**, force-stop/relaunch
+  keeps the profile, ~117 FPS at wave 1.
+- **Performance:** `tools/perf_probe.gd` at 120 enemies + 8 towers + 4 units:
+  **1036.5 FPS / 543 draw calls** (desktop RTX 3050). Draw-call guideline
+  (<120) not met → ADR-043 atlas pass deferred; recorded in `docs/PERF.md`.
+- **Quality cleanup:** corrupt-save recovery now parses with `JSON.parse()`
+  (no engine "Parse JSON failed" ERROR); `SaveService.quiet` suppresses the two
+  expected recovery warnings in tests; `AudioService.release_all()` and tool
+  cleanup remove the leaked `AudioStreamWAV`/playback and "resources still in
+  use" lines. `battle_smoke.gd` levels its towers for the harder wave 10.
+  Tests/smoke/battle_smoke now finish with **zero ERROR/WARNING lines**.
+- **Release docs/assets:** `docs/RELEASE.md` (versions, gates, signing, sizes,
+  store, privacy/data-safety, crash-reporting decision, known issues),
+  `docs/QA_CHECKLIST.md` (M8, honest verified/unverified), `docs/PERF.md`,
+  `docs/ANDROID.md` release section, `docs/store/` icon + feature graphic + 3
+  screenshots (placeholders), `CHANGELOG.md` 1.0.0, ADR-042/043/044.
+- **Previews:** `docs/preview/m8_release.png` (release main menu on LDPlayer),
+  `m8_battle_hint.png` (release battle wave 1/60).
+
+### Remaining launch gaps (honest)
+
+1. Draw calls **543** vs the <120 M2 guideline (ADR-043; no visual regression
+   was traded for it). Desktop 1036 FPS, LDPlayer ~117 FPS at wave 1.
+2. Universal QA APK is **166.3 MB**; the AAB is 73.2 MB. Play's per-device split
+   was not measured (`bundletool` not installed). AAB is the upload artifact.
+3. Ads do not fill in this environment (Google ad hosts unreachable); billing
+   cannot complete without a Play Console listing. Failure paths are tested.
+4. Neon/PostgreSQL/Docker runtime and a real Android device were unavailable;
+   SQLite is the verified backend runtime (M7).
+5. No crash-reporting SDK (hook documented, post-launch task); analytics endpoint
+   empty/disabled.
+6. Store art/fonts are placeholders; Play Console privacy policy + data-safety
+   forms are not submitted.
+7. Device **offline airplane-mode run** and a **30-minute soak** were not
+   verified (wifi disable wedged the emulator shell; session shorter than 30 min).
+   The offline/local-first logic is covered by tests, not by an M8 device run.
+8. Battle HUD safe area (notch) and the 130 % / pseudo-locale stress pass were
+   not re-run on the M8 release build.
+
 ## Earlier milestones (summary)
 
 - **M4**: save v2 (checksum/atomic/.bak/migration), WalletService, Level/Unlock,
@@ -221,7 +285,8 @@ proof, documented)
 - Text scale is a duplicated runtime theme; battle HUD `theme_override_font_sizes`
   stay authored (HUD numbers must not grow).
 - `battle_controller.gd`/`battle_hud.gd` still exceed the 400-line guideline.
-- 532 draw calls > M2 target 120 (placeholder art; atlas pass moved to M8).
+- **543 draw calls** at the 120-enemy M8 stress > M2 target 120 (placeholder
+  art; atlas pass moved to post-launch, ADR-043).
 - **Ads/Billing are wired but cannot complete a real transaction in this
   environment:** Google ad hosts (`googleads.g.doubleclick.net`,
   `pagead2.googlesyndication.com`) are unreachable from both the host and the
@@ -235,7 +300,8 @@ proof, documented)
   Android build template (`android/`) is also gitignored.
 - Safe-area insets apply to every Control screen's `SafeArea` MarginContainer.
   The battle HUD is a CanvasLayer without that container, so a notch-aware HUD
-  pass is deferred to M8 (no cutout on the LDPlayer test image).
+  pass is **still deferred** (no cutout on the LDPlayer test image; M8 did not
+  change it).
 - **Leaderboard is live-or-local (M7):** `LeaderboardService` fetches the real
   API when authenticated and online (own rank included), caches the last
   response and falls back to the deterministic `LocalBackendStub` when offline or
@@ -247,14 +313,24 @@ proof, documented)
 - Capture helper now finishes `App.init_services()` before applying the capture
   language/pseudo-locale and only stages the preview afterwards (ADR-033).
 
-## Next tasks — M8 (Balance, polish, release readiness)
+## Next tasks — launch hardening (post-1.0.0)
 
-1. **Balance pass**: run `tools/simulate_run.gd --runs=200 --profile=new|mid|max`,
-   tune wave data to the §14.1 targets (new 8–12, mid 25–35, maxed 45+), and
-   record distributions in `docs/BALANCE.md`.
-2. **Real monetization verification**: replace the stub purchase verifier with
-   Google Play Developer API validation and AdMob SSV with Google's ECDSA public
-   keys; add Play Console internal testing + real device run of cloud saves.
-3. **Release build**: release keystore + AAB (not debug), draw-call/atlas pass
-   from 532 toward the M2 target, notch-safe battle HUD, and a full
-   `docs/QA_CHECKLIST.md` pass on LDPlayer and a physical device.
+1. **Atlas/draw-call pass** (ADR-043): one atlas per family (enemies, towers,
+   UI/icons), `AtlasTexture` for the HUD, `SpriteFrames` reuse; target <200
+   draw calls at 120 enemies without visual change.
+2. **Monetization verification:** Play Console internal testing track + licence
+   testers, real rewarded fill, ECDSA AdMob SSV and Google Play Developer API
+   purchase verification (replace the M7 stubs).
+3. **Ship blockers outside code:** privacy policy URL, data-safety form, final
+   store art/fonts, crash-reporting SDK decision, real-device QA and a 30-minute
+   soak, airplane-mode run. Measure the AAB per-device download with bundletool.
+
+## Launch command
+
+```powershell
+pwsh -NoProfile -File tools/check_project.ps1
+godot --headless --path . --script res://tests/run_tests.gd
+pwsh -NoProfile -File tools/export_release.ps1
+pwsh -NoProfile -File tools/install_ldplayer.ps1 -ApkPath build/the-tree-release.apk -Screenshot docs/preview/m8_release.png
+```
+
