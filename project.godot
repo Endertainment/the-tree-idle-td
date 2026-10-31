@@ -13,6 +13,7 @@ config_version=5
 config/name="The Tree  IDLE TD"
 config/version="0.7.0"
 run/main_scene="res://scenes/boot/boot.tscn"
+config/quit_on_go_back=false
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 

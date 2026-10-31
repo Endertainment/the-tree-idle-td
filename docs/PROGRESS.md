@@ -2,14 +2,15 @@
 
 Single source of truth for "where are we". Updated at the end of every session.
 
-**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M5 done → M6 next
+**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M6 done (tagged) → M7 next
 **Branch:** `main` · **Godot:** `C:\Tools\godot-4.7.2\Godot_v4.7.2-stable_win64.exe` (4.7.2)
-**Verification (M5b, green):** check_project exit 0 · tests **51/51** ·
-smoke **25/25 scenes** (exit 0, no ERROR lines) · battle_smoke PASS ·
-lint_locale **607 keys, 0 missing, 0 unused** · previews `m5b_menu_en.png`,
-`m5b_menu_uk.png`, `m5b_menu_pseudo.png`, `m5b_shop.png`,
-`m5b_leaderboard.png`, `m5b_profile.png`
-**Toolchain gaps (M6):** Android SDK/adb; LDPlayer `E:\LDPlayer\LDPlayer14`; SDK `C:\Android\Sdk`
+**Verification (M6, green except device ad fill):** check_project exit 0 · tests
+**60/60** · smoke **25/25 scenes** · battle_smoke PASS · ads_flow_smoke PASS ·
+lint_locale **640 keys, 0 missing, 0 unused** · debug APK **179 MB**, installed
+and launched on LDPlayer · previews `m6_device.png`, `m6_shop_device.png`,
+`m6_ads_failure.png`
+**Toolchain:** Android SDK `C:\Android\Sdk`, JDK 17 `C:\Tools\jdk-17`, LDPlayer
+`E:\LDPlayer\LDPlayer14`, adb `127.0.0.1:5555` (see `docs/ANDROID.md`)
 
 ## Milestones
 
@@ -21,7 +22,7 @@ lint_locale **607 keys, 0 missing, 0 unused** · previews `m5b_menu_en.png`,
 | M3 | Run economy, upgrades, speed | done (M3.1 balance pass) | `v0.4.1-m3` |
 | M4 | Meta progression and persistence | done | `v0.5.0-m4` |
 | M5 | Shell, UX, localization, audio | done | `v0.6.0-m5` |
-| M6 | Android, ads, billing, telemetry | not started | `v0.7.0-m6` |
+| M6 | Android, ads, billing, telemetry | done, tagged (ad fill blocked by env network) | `v0.7.0-m6` |
 | M7 | Backend (FastAPI + Neon), live features | not started | `v0.8.0-m7` |
 | M8 | Balance, polish, release readiness | not started | `v1.0.0-m8` |
 
@@ -101,6 +102,52 @@ lint_locale **607 keys, 0 missing, 0 unused** · previews `m5b_menu_en.png`,
   `m5b_menu_pseudo.png`, `m5b_shop.png`, `m5b_leaderboard.png`,
   `m5b_profile.png`.
 
+## M6 delivered (tagged `v0.7.0-m6`)
+
+- **Android export**: `export_presets.cfg` debug preset `Android` (package
+  `com.endertainment.thetree`, portrait + immersive, min SDK 24, target 35,
+  x86_64 + arm64, `use_gradle_build=true`). `tools/export_android.ps1` sets
+  `JAVA_HOME`/`ANDROID_HOME`, generates the gitignored debug keystore, installs
+  the Android build template and produces `build/the-tree.apk` (**~179 MB**
+  debug). `tools/install_ldplayer.ps1` connects adb, installs, launches and
+  optionally screenshots. `docs/ANDROID.md` documents the exact commands.
+- **Ads**: Poing Studios AdMob **5.1.0** + `android-template-v4.7.2` (verified on
+  Godot 4.7.2; `[AdsService] GMA initialized (plugin v5.1.0, platform 1.4.0)` on
+  device). `AndroidAdsAdapter` handles async GMA init, UMP consent, rewarded and
+  interstitial loads; the desktop stub plays a visible `DebugAdOverlay`.
+  `AdsService` implements all §7.2 placements, per-run/day caps, the
+  every-3rd-run/120 s/wave-5 interstitial rule, one-reward-per-view
+  (`AdRewardGuard`), consent gate, failure reasons, `No Ads` interstitial
+  disablement, and persisted caps in the save's `ads` section. Speed Trial now
+  grants a real 24 h boost (or the next locked speed); the battle pause menu has
+  Free Cash and Tree Blessing offers; Magica has the 30-minute research speed-up.
+- **IAP**: godot-google-play-billing **3.3.0**; seven §7.3 products moved to
+  `config/shop.tres`; `IapService` handles store prices, purchase/restore,
+  pending/cancelled/already-owned/network reasons, purchase-token idempotency,
+  consume/acknowledge and `RewardBundle` grants. Shop buttons enable only when
+  `is_available()`; otherwise "Store unavailable". `_verify_receipt()` is the
+  documented M7 hook.
+- **Consent + telemetry**: `SettingsService.consent_granted` (false in release,
+  true in editor/debug) gates every ad; UMP is tried first and a local
+  `ConsentDialog` is the fallback. `AnalyticsService` emits the §8.6 events with
+  debug prints and optional batched HTTP (endpoint empty + disabled by default;
+  only the random player UUID is attached).
+- **Device polish**: safe-area margins via `SceneRouter`, haptics on boss
+  spawn/leaks/ad rewards, app pause/resume freezes the battle clock (Audio and
+  Save services keep their own hooks), Android back already routed through
+  `SceneRouter`, and `docs/RELEASE.md` + `docs/QA_CHECKLIST.md` added.
+- **Tests**: **+9 (60 total)** — ad caps + daily rollover, interstitial cadence,
+  reward-once guard, IAP catalogue resource, monetization config/test IDs,
+  billing reason mapping, speed-boost persistence, M6 locale keys, analytics
+  privacy sanitization. New `tools/ads_flow_smoke.gd` proves the real
+  AdsService→stub flow grants once, blocks the second daily request and fails
+  gracefully when the SDK is disabled.
+- **Previews**: `docs/preview/m6_device.png` (main menu on LDPlayer),
+  `m6_shop_device.png` (Store unavailable state), `m6_ads_failure.png`,
+  `m6_pause_ads.png` (battle pause with rewarded offers).
+- **Android back**: `config/quit_on_go_back=false` + a SceneRouter debounce;
+  verified Shop → menu, menu → exit, battle → pause, pause → battle on LDPlayer.
+
 ## Earlier milestones (summary)
 
 - **M4**: save v2 (checksum/atomic/.bak/migration), WalletService, Level/Unlock,
@@ -121,24 +168,35 @@ lint_locale **607 keys, 0 missing, 0 unused** · previews `m5b_menu_en.png`,
   stay authored (HUD numbers must not grow).
 - `battle_controller.gd`/`battle_hud.gd` still exceed the 400-line guideline.
 - 532 draw calls > M2 target 120 (placeholder art; atlas pass moved to M8).
-- **Monetization is stubbed (M6):** `IapService.is_available()` is false and all
-  buy buttons show "Store unavailable"; `AdsService.show_rewarded()` reports
-  `stub_not_implemented` and the Speed Trial shows the M6 toast. The shop's
-  debug-only simulate button grants through `RewardBundle` on debug builds only.
+- **Ads/Billing are wired but cannot complete a real transaction in this
+  environment:** Google ad hosts (`googleads.g.doubleclick.net`,
+  `pagead2.googlesyndication.com`) are unreachable from both the host and the
+  emulator, so test rewarded ads fail with `ERR_ADDRESS_UNREACHABLE` (handled as
+  `ad_unavailable`, no crash). Play Billing reports "In-app billing API version 3
+  is not supported on this device"; a real purchase needs a Play Console listing
+  and licence testers (M7/M8). All cap/one-reward/state logic is unit-tested and
+  the debug overlay flow is verified headlessly.
+- AdMob native AARs live in `addons/admob/android/bin`, which the addon's
+  `.gitignore` excludes; `docs/ANDROID.md` documents the pinned install step. The
+  Android build template (`android/`) is also gitignored.
+- Safe-area insets apply to every Control screen's `SafeArea` MarginContainer.
+  The battle HUD is a CanvasLayer without that container, so a notch-aware HUD
+  pass is deferred to M8 (no cutout on the LDPlayer test image).
 - **Leaderboard is local (M5b/M7):** `LeaderboardService` always serves the
   deterministic `LocalBackendStub` cohort and reports `is_offline() == true`.
   M7 replaces one `_load()` call with the HTTP client; the UI is unchanged.
 - Capture helper now finishes `App.init_services()` before applying the capture
   language/pseudo-locale and only stages the preview afterwards (ADR-033).
 
-## Next tasks — M6 (Android, ads, billing, telemetry)
+## Next tasks — M7 (Backend, live features)
 
-1. **Android toolchain + export**: install/verify SDK/adb, create the export
-   preset, build the first APK/AAB on LDPlayer, and wire the CI check
-   (`Android SDK/adb; LDPlayer E:\LDPlayer\LDPlayer14; SDK C:\Android\Sdk`).
-2. **AdsService adapter**: AdMob plugin pinned in `docs/DECISIONS.md`, rewarded
-   placements from §7.2 with caps, the debug ad overlay/countdown, consent flag,
-   and replace the Speed Trial stub with the real `speed_unlock_24h` flow.
-3. **IapService adapter**: Google Play Billing query/purchase/restore with
-   receipt validation hook, enable the shop buttons/prices, and handle pending,
-   cancelled, owned and network-error states end to end.
+1. **ApiClient + backend**: stand up the FastAPI + Neon skeleton from §8.3,
+   wire `ApiClient` (auth, retries, offline queue) and point
+   `LeaderboardService._load()` at it; keep `LocalBackendStub` for editor/offline.
+2. **Server-side commerce**: replace `IapService._verify_receipt()` with Google
+   Play receipt validation, add AdMob SSV callback validation for
+   `rewarded_earned` (server confirms a placement before the client grants), and
+   move `AnalyticsService` to the real `POST /events` endpoint.
+3. **Live-ops**: missions/tournament refresh from the backend, remote config for
+   `config/monetization.tres` ad IDs and caps, and an admin-less migration path
+   for save v3 if the profile gains server IDs.

@@ -12,11 +12,13 @@ Device: LDPlayer 14 (1080×1920 @ 480 dpi), package
 
 - [x] Cold start reaches the main menu on LDPlayer (GLES3 renderer).
 - [x] No `FATAL EXCEPTION` in `adb logcat` during boot.
-- [ ] Cold start ≤ 5 s (measured: ___ s; M6 build is a 178 MB debug APK).
+- [ ] Cold start ≤ 5 s (measured: ___ s; M6 build is a 179 MB debug APK).
 - [x] App background/foreground during battle: simulation freezes/resumes,
       music pauses/resumes (AudioService + BattleClock).
-- [ ] Back button: closes modals first, then opens pause; never exits a run
-      without the abandon confirmation.
+- [x] Back button: Shop → main menu, main menu → exits, battle → pause,
+      pause → battle (verified on LDPlayer; `Quit On Go Back` disabled so the
+      native back no longer kills the activity before `SceneRouter` runs).
+- [ ] 60 FPS on LDPlayer during a wave (not measured; no FPS overlay on device).
 - [x] Safe-area inset applied by `SceneRouter` (no jump between scenes).
 
 ### Ads

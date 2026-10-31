@@ -3,6 +3,57 @@
 All notable changes are recorded per milestone. The project follows semantic
 versioning for tags; unreleased work stays under `[Unreleased]`.
 
+## [0.7.0-m6] — 2026-10-31 — M6 Android, ads, billing, telemetry
+
+### Added
+
+- **Android export**: `export_presets.cfg` (debug preset `Android`, package
+  `com.endertainment.thetree`, portrait/immersive, min SDK 24, target 35,
+  x86_64 + arm64), `tools/export_android.ps1` (JDK 17 + SDK env, generated debug
+  keystore, build-template install, Gradle export to `build/the-tree.apk`) and
+  `tools/install_ldplayer.ps1` (adb connect/install/launch/screenshot).
+  `docs/ANDROID.md` lists the verified toolchain and exact commands.
+- **Ads**: Poing Studios AdMob **5.1.0** (`addons/admob`, verified on Godot
+  4.7.2), `AndroidAdsAdapter` with GMA initialization, UMP consent, rewarded and
+  interstitial loads, plus a desktop `DebugAdOverlay` fake ad. `AdsService` owns
+  placements from §7.2 (`run_double_coins`, `free_cash`, `tree_blessing`,
+  `speed_unlock_24h`, `research_speedup`, `run_end_interstitial`), per-run/day
+  caps, the every-3rd-run/120 s/wave-5 interstitial rule, one reward per view,
+  the consent gate, failure reasons and the "No Ads disables interstitials" rule.
+  Speed Trial now grants a real 24 h 1.5x boost (or the next locked speed), and
+  the battle pause menu offers Free Cash and Tree Blessing.
+- **IAP**: godot-google-play-billing **3.3.0** (`addons/GodotGooglePlayBilling`),
+  `IapService` with the seven §7.3 products in `config/shop.tres`, store prices,
+  purchase/restore/pending/cancelled/already-owned states, purchase-token
+  idempotency, `RewardBundle` grants, consume/acknowledge and a documented M7
+  receipt-verification hook. Shop buttons enable only when `is_available()`.
+- **Telemetry**: `AnalyticsService` with the §8.6 events (`app_open`, `run_start`,
+  `wave_cleared`, `run_end`, `purchase`, `ad_shown`, `ad_rewarded`, `screen_view`,
+  `error`), debug prints and optional batched HTTP disabled by default.
+- **Device polish**: safe-area insets applied by `SceneRouter`, haptics on boss
+  spawn/leaks/ad rewards respecting the settings toggle, app pause/resume
+  freezing the battle clock while audio and save services handle their own hooks,
+  and `docs/RELEASE.md` + `docs/QA_CHECKLIST.md` skeletons.
+- **Tests**: **+9 (60 total)** — ad placement caps and daily rollover,
+  interstitial cadence, reward-once guard, IAP catalogue resource, monetization
+  config (test IDs/caps), billing reason mapping, speed-boost persistence,
+  M6 locale keys, analytics privacy sanitization.
+
+### Changed
+
+- `SettingsService` gained persisted `consent_granted` (false in release, true in
+  editor/debug) and a debug `fake_monetization` switch.
+- Android uses the Compatibility (GLES3) renderer (`rendering_method.mobile`).
+- `locale_lint.gd` treats `shop.purchase_*` as runtime-assembled keys.
+
+### Fixed
+
+- AdMob rewarded loads now wait for the asynchronous GMA initialization callback
+  (loading earlier crashed the native SDK).
+- Android back no longer quits while leaving Shop/entering battle: `Quit On Go
+  Back` is disabled and `SceneRouter` debounces the notification/key pair; it
+  only quits from the main menu and opens the battle pause menu otherwise.
+
 ## [0.6.0-m5] — 2026-10-31 — M5 shell, UX, localization, audio
 
 ### Added

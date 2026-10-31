@@ -171,15 +171,33 @@ func is_transitioning() -> bool:
 
 
 ## Android hardware back and desktop Esc route through the same handler.
+## Android delivers back as both NOTIFICATION_WM_GO_BACK_REQUEST and a ui_cancel
+## key event; handling both made "back from Shop" go to the menu and then quit.
+const BACK_DEBOUNCE_MS := 300
+
+var _last_back_msec: int = -10000
+
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
-		handle_back_request()
+		_request_back()
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
-		handle_back_request()
+		_request_back()
+
+
+## Handles one physical back press even when the platform reports it twice.
+## Android's native back is also handled here because Quit On Go Back is disabled
+## in project.godot; quitting is only allowed from the main menu/boot below.
+func _request_back() -> void:
+	var now := Time.get_ticks_msec()
+	if now - _last_back_msec < BACK_DEBOUNCE_MS:
+		return
+	_last_back_msec = now
+	handle_back_request()
 
 
 func _transition(

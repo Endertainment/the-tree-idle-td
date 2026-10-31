@@ -671,3 +671,97 @@ scene's `stage_preview()` only after the scene has been in the tree for 0.2 s.
 
 **Consequences:** captures reflect the requested locale and staged state. The
 helper remains tooling-only and never writes settings back to `user://`.
+
+## ADR-034 — AdMob plugin pinned to Poing Studios 5.1.0 (M6)
+
+**Status:** accepted (M6)
+
+**Context:** M6 needs real rewarded/interstitial ads on Android while the editor
+keeps a visible fake-ad flow. Candidates were the official plugin route
+(`poing-studios/godot-admob-plugin`) and hand-rolled JNI, which the brief forbids.
+
+**Decision:** install **Poing Studios AdMob 5.1.0** (`addons/admob`, MIT) with
+`android-template-v4.7.2.zip` native AARs and enable it in
+`[editor_plugins]`. The plugin targets Godot 4.5+ and ships a 4.7.2 template; it
+was verified with a headless import, a full Gradle APK export and a launch on
+LDPlayer (GMA initialized, rewarded preload reached). `AdsService` talks to
+`AndroidAdsAdapter`; `OS.has_feature("android")` appears only inside that adapter
+and its factory. The AARs live in `addons/admob/android/bin`, which the addon's
+own `.gitignore` excludes; `docs/ANDROID.md` documents the one-time install.
+
+**Consequences:** plugin swaps touch the adapter only. AdMob's Android manifest
+merge requires `gradle/use_gradle_build=true`, so M6 exports are Gradle builds.
+Without Play Services/network the SDK stays unavailable and rewarded requests
+fail with a toast instead of blocking boot. Production ad unit IDs are not in the
+repository — only Google's test IDs in `config/monetization.tres`.
+
+## ADR-035 — Play Billing 3.3.0 with a documented receipt hook (M6)
+
+**Status:** accepted (M6)
+
+**Context:** IAP must expose the §7.3 catalogue, handle pending/cancelled/
+already-owned states and degrade to "Store unavailable" on desktop and on a
+device without a Play listing.
+
+**Decision:** install **godot-google-play-billing 3.3.0** (`addons/
+GodotGooglePlayBilling`, MIT), enabled as an editor plugin. `IapService` owns the
+product catalogue (`config/shop.tres`), purchase-token idempotency, ownership and
+`RewardBundle` grants; `AndroidBillingAdapter` only translates BillingClient
+signals. `_verify_receipt()` is an explicit no-op hook: **M7 must replace it with
+server-side Google Play receipt validation** before production. Billing is never
+initialized during boot; a missing Play Store leaves the shop in its disabled
+state.
+
+**Consequences:** local debug builds cannot complete a purchase (Play requires an
+uploaded listing), which is documented in `PROGRESS.md`; the debug simulate
+button still exercises the same grant path. A plugin swap is one adapter file.
+
+## ADR-036 — GL compatibility override on Android (M6)
+
+**Status:** accepted (M6)
+
+**Context:** the LDPlayer image's Vulkan driver fails to present
+(`VkResult error 5`), producing a black screen even though the game booted. The
+project otherwise uses the Mobile (Vulkan) renderer.
+
+**Decision:** set `rendering/renderer/rendering_method.mobile="gl_compatibility"`.
+2D content is fully supported by the Compatibility renderer and it is the safest
+choice for emulators/older devices. The desktop renderer is unchanged.
+
+**Consequences:** real devices use GLES3 instead of Vulkan; the override can be
+removed when the M8 device matrix confirms Vulkan stability. Frame-rate targets
+still hold for the M6 scene load.
+
+## ADR-037 — Consent and analytics are local-first (M6)
+
+**Status:** accepted (M6)
+
+**Context:** UMP must gate the first ad, but the editor needs deterministic flows
+and analytics must not leak personal data or stall boot.
+
+**Decision:** `SettingsService.consent_granted` defaults to
+`OS.is_debug_build()` (true in editor/debug, false in release). `AdsService`
+tries UMP first and falls back to a local `ConsentDialog` when the SDK is
+unavailable; no ad request is made before consent. `AnalyticsService` prints in
+debug builds and only batches to HTTP when `config/monetization.tres` provides an
+endpoint; events are dropped on failure (no unbounded queue) and only the random
+player UUID is attached.
+
+**Consequences:** release builds start with ads blocked until the consent step is
+answered. M7 can point analytics at the backend by editing one config field.
+
+## ADR-038 — Placement caps are a pure, tested policy object (M6)
+
+**Status:** accepted (M6)
+
+**Context:** per-run/day caps, the every-3rd-run interstitial and one-reward-only
+behaviour are the easiest monetization rules to get wrong, and they must be
+tested headlessly without an ad SDK.
+
+**Decision:** `AdCaps` owns period accounting and interstitial cadence,
+`AdRewardGuard` owns one-reward-per-view, and both are plain `RefCounted`
+classes. `AdsService` persists `AdCaps.to_dict()` in the save's `ads` section and
+delegates every decision to these objects.
+
+**Consequences:** `tests/run_tests.gd` covers caps, rollover, cadence, duplicate
+earned callbacks and the ad-limit reason without touching native code.

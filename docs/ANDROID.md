@@ -76,6 +76,17 @@ godot --headless --path . --export-debug "Android" build/the-tree.apk
 Billing) require a Gradle build. The first build downloads Gradle + Maven
 dependencies; expect several minutes.
 
+### Monetization IDs
+
+- Ad *unit* IDs: `config/monetization.tres` (committed values are Google test
+  IDs). A local `user://monetization_override.tres` wins at runtime; CI/release
+  replaces the resource with production IDs.
+- AdMob *app ID*: Project Settings → `admob/general/android/app_id` (default is
+  Google's test app ID `ca-app-pub-3940256099942544~3347511713`). A production
+  build must set it to the AdMob app ID before export.
+- Product IDs are the §7.3 `thetree.*` ids in `config/shop.tres`; they must match
+  the Play Console entries exactly.
+
 ## Install / launch / screenshot
 
 ```powershell
