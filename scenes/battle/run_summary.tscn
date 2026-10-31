@@ -1,0 +1,109 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/run_summary.gd" id="1_summary"]
+
+[node name="RunSummary" type="CanvasLayer"]
+layer = 30
+script = ExtResource("1_summary")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Scrim" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.85)
+
+[node name="Center" type="CenterContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Root/Center"]
+custom_minimum_size = Vector2(860, 0)
+layout_mode = 2
+theme_type_variation = &"PanelDark"
+
+[node name="Margin" type="MarginContainer" parent="Root/Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 40
+
+[node name="Layout" type="VBoxContainer" parent="Root/Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "Run over"
+horizontal_alignment = 1
+
+[node name="WaveLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Display"
+text = "Wave 0"
+horizontal_alignment = 1
+
+[node name="NewBest" type="Label" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"Body"
+theme_override_colors/font_color = Color(1, 0.86, 0.35, 1)
+text = "NEW BEST"
+horizontal_alignment = 1
+
+[node name="Divider" type="HSeparator" parent="Root/Center/Panel/Margin/Layout"]
+layout_mode = 2
+
+[node name="StatsLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Waves: 0"
+horizontal_alignment = 1
+
+[node name="CoinsLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "Coins +0"
+
+[node name="GemsLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "Gems +0"
+
+[node name="XpLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "XP +0"
+
+[node name="ContinueButton" type="Button" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 120)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"PrimaryButton"
+text = "Continue"

@@ -1,63 +1,63 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=18 format=3]
 
-[ext_resource type="Script" path="res://scripts/battle/battle_placeholder.gd" id="1_battle"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/buttons/button_back_normal.png" id="2_back"]
+[ext_resource type="Script" path="res://scripts/battle/battle_controller.gd" id="1_controller"]
+[ext_resource type="Resource" path="res://data/maps/forest_clearing.tres" id="2_map"]
+[ext_resource type="Resource" path="res://data/waves/wave_table_m1.tres" id="3_waves"]
+[ext_resource type="Resource" path="res://data/tree/tree_base.tres" id="4_tree_data"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="5_enemy_type"]
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="6_tower_type"]
+[ext_resource type="Resource" path="res://data/enemies/enemy_grunt.tres" id="7_grunt"]
+[ext_resource type="Resource" path="res://data/towers/tower_archer.tres" id="8_archer"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/enemy.tscn" id="9_enemy_scene"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/tower.tscn" id="10_tower_scene"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/pedestal.tscn" id="11_pedestal_scene"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/projectile.tscn" id="12_projectile_scene"]
+[ext_resource type="PackedScene" path="res://scenes/battle/run_summary.tscn" id="13_summary"]
+[ext_resource type="PackedScene" path="res://scenes/battle/battle_hud.tscn" id="14_hud"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/tree.tscn" id="15_tree"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/tree/unit_slot_empty.png" id="16_slot"]
+[ext_resource type="Script" path="res://scripts/battle/battle_clock.gd" id="17_clock"]
 
-[node name="Battle" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_battle")
+[node name="Battle" type="Node2D"]
+script = ExtResource("1_controller")
+map_data = ExtResource("2_map")
+wave_table = ExtResource("3_waves")
+tree_data = ExtResource("4_tree_data")
+enemy_resources = Array[ExtResource("5_enemy_type")]([ExtResource("7_grunt")])
+tower_resources = Array[ExtResource("6_tower_type")]([ExtResource("8_archer")])
+enemy_scene = ExtResource("9_enemy_scene")
+tower_scene = ExtResource("10_tower_scene")
+pedestal_scene = ExtResource("11_pedestal_scene")
+projectile_scene = ExtResource("12_projectile_scene")
+run_summary_scene = ExtResource("13_summary")
+unit_slot_texture = ExtResource("16_slot")
 
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.075, 0.11, 0.075, 1)
+[node name="Arena" type="Node2D" parent="."]
 
-[node name="BackButton" type="Button" parent="."]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(112, 112)
-layout_mode = 1
-anchors_preset = 0
-offset_left = 48.0
-offset_top = 48.0
-offset_right = 160.0
-offset_bottom = 160.0
-theme_type_variation = &"IconButton"
-icon = ExtResource("2_back")
-expand_icon = true
+[node name="Background" type="Sprite2D" parent="Arena"]
+z_index = -10
 
-[node name="Center" type="CenterContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+[node name="Lanes" type="Node2D" parent="Arena"]
 
-[node name="Layout" type="VBoxContainer" parent="Center"]
-layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 1
+[node name="Pedestals" type="Node2D" parent="Arena"]
 
-[node name="Title" type="Label" parent="Center/Layout"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"Title"
-text = "Battle (M1)"
-horizontal_alignment = 1
+[node name="UnitSlots" type="Node2D" parent="Arena"]
 
-[node name="Subtitle" type="Label" parent="Center/Layout"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"Caption"
-text = "Combat arrives in the next milestone"
-horizontal_alignment = 1
+[node name="Towers" type="Node2D" parent="Arena"]
+y_sort_enabled = true
+
+[node name="Tree" parent="." instance=ExtResource("15_tree")]
+position = Vector2(540, 980)
+z_index = -1
+
+[node name="Enemies" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Projectiles" type="Node2D" parent="."]
+
+[node name="FX" type="Node2D" parent="."]
+
+[node name="BattleClock" type="Node" parent="."]
+script = ExtResource("17_clock")
+
+[node name="BattleHUD" parent="." instance=ExtResource("14_hud")]

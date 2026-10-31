@@ -1,0 +1,228 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/battle_hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" path="res://ui/components/currency_pill.tscn" id="2_cash_pill"]
+[ext_resource type="PackedScene" path="res://ui/components/modal.tscn" id="3_modal"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_cash.png" id="4_cash_icon"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_shield.png" id="5_shield"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/hud/tree_hp_frame_9p.png" id="6_hp_frame"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/hud/tree_hp_fill.png" id="7_hp_fill"]
+
+[node name="BattleHUD" type="CanvasLayer"]
+process_mode = 3
+layer = 10
+script = ExtResource("1_hud")
+
+[node name="TopBar" type="PanelContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 168.0
+grow_horizontal = 2
+theme_type_variation = &"TopBar"
+
+[node name="Row" type="HBoxContainer" parent="TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="WaveLabel" type="Label" parent="TopBar/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "Wave 0 / 10"
+
+[node name="TimerLabel" type="Label" parent="TopBar/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "00:00"
+
+[node name="Spacer" type="Control" parent="TopBar/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CashPill" parent="TopBar/Row" instance=ExtResource("2_cash_pill")]
+unique_name_in_owner = true
+layout_mode = 2
+icon_texture = ExtResource("4_cash_icon")
+initial_amount = 50
+
+[node name="CountdownBox" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 210.0
+offset_right = 320.0
+offset_bottom = 400.0
+grow_horizontal = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="CountdownLabel" type="Label" parent="CountdownBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "Next wave in 6"
+horizontal_alignment = 1
+
+[node name="NextWaveButton" type="Button" parent="CountdownBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 96)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"PrimaryButton"
+text = "Next wave"
+
+[node name="Banner" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 420.0
+offset_right = 400.0
+offset_bottom = 520.0
+grow_horizontal = 2
+theme_type_variation = &"Chip"
+
+[node name="BannerLabel" type="Label" parent="Banner"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "Wave 1 cleared"
+horizontal_alignment = 1
+
+[node name="TreeHpPanel" type="PanelContainer" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -232.0
+offset_right = 584.0
+offset_bottom = -24.0
+grow_vertical = 0
+theme_type_variation = &"PanelDark"
+
+[node name="VBox" type="VBoxContainer" parent="TreeHpPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="TreeHpPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Shield" type="TextureRect" parent="TreeHpPanel/VBox/Header"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = ExtResource("5_shield")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HpLabel" type="Label" parent="TreeHpPanel/VBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "HP: 100%"
+
+[node name="HpBar" type="TextureProgressBar" parent="TreeHpPanel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+texture_under = ExtResource("6_hp_frame")
+texture_progress = ExtResource("7_hp_fill")
+nine_patch_stretch = true
+stretch_margin_left = 24
+stretch_margin_top = 24
+stretch_margin_right = 24
+stretch_margin_bottom = 24
+
+[node name="UpgradeButton" type="Button" parent="."]
+unique_name_in_owner = true
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -344.0
+offset_top = -200.0
+offset_right = -24.0
+offset_bottom = -48.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_type_variation = &"GoldButton"
+text = "Upgrade"
+
+[node name="BuildSheet" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="BuildScrim" type="ColorRect" parent="BuildSheet"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+mouse_filter = 0
+
+[node name="SheetPanel" type="PanelContainer" parent="BuildSheet"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -440.0
+grow_vertical = 0
+theme_type_variation = &"PanelDark"
+
+[node name="Margin" type="MarginContainer" parent="BuildSheet/SheetPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="BuildSheet/SheetPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Header" type="HBoxContainer" parent="BuildSheet/SheetPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BuildTitle" type="Label" parent="BuildSheet/SheetPanel/Margin/VBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Title"
+text = "Build tower"
+
+[node name="BuildClose" type="Button" parent="BuildSheet/SheetPanel/Margin/VBox/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 96)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+text = "Close"
+
+[node name="BuildRows" type="VBoxContainer" parent="BuildSheet/SheetPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="UpgradeModal" parent="." instance=ExtResource("3_modal")]
+unique_name_in_owner = true
