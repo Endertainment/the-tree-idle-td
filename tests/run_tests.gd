@@ -1,4 +1,4 @@
-## Headless test runner for Milestones 0-2.
+## Headless test runner for Milestones 0-3.
 ##
 ## Usage:
 ##   godot --headless --path . --script res://tests/run_tests.gd
@@ -7,12 +7,14 @@ extends SceneTree
 
 const TestCore := preload("res://tests/test_core.gd")
 const TestBattle := preload("res://tests/test_battle.gd")
+const TestEconomy := preload("res://tests/test_economy.gd")
 
 
 func _initialize() -> void:
-	print("== The Tree: M0+M2 tests ==")
+	print("== The Tree: M0+M3 tests ==")
 	var core: RefCounted = TestCore.new()
 	var battle: RefCounted = TestBattle.new()
+	var economy: RefCounted = TestEconomy.new()
 	var cases: Array[Dictionary] = [
 		{"name": "art manifest paths exist", "callable": Callable(core, "test_manifest_paths")},
 		{"name": "SaveService round-trip", "callable": Callable(core, "test_save_roundtrip")},
@@ -29,6 +31,13 @@ func _initialize() -> void:
 		{"name": "wave table integrity and boss cadence", "callable": Callable(battle, "test_wave_table_integrity")},
 		{"name": "map lanes and pedestal clearance", "callable": Callable(battle, "test_map_layout")},
 		{"name": "run summary cash math", "callable": Callable(battle, "test_summary_cash_math")},
+		{"name": "wallet transactions and reasons", "callable": Callable(economy, "test_wallet_transactions")},
+		{"name": "hold-to-buy over-buy guard", "callable": Callable(economy, "test_hold_to_buy_over_buy_guard")},
+		{"name": "tree upgrade cost curves", "callable": Callable(economy, "test_upgrade_track_curves")},
+		{"name": "tree DPS delta after damage upgrade", "callable": Callable(economy, "test_tree_dps_after_damage_upgrade")},
+		{"name": "reward bundle idempotency", "callable": Callable(economy, "test_reward_bundle_idempotency")},
+		{"name": "speed multiplier math", "callable": Callable(economy, "test_speed_multiplier_math")},
+		{"name": "next-wave tap guard", "callable": Callable(economy, "test_tap_guard")},
 	]
 
 	var failures := 0

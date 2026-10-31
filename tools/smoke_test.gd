@@ -1,5 +1,5 @@
 extends SceneTree
-## M0-M2 smoke test: theme integrity + scene instantiation.
+## M0-M3 smoke test: theme integrity + scene instantiation.
 ##
 ## Run: godot --headless --path . --script res://tools/smoke_test.gd
 ## Exit code 0 = all checks passed.
@@ -29,7 +29,7 @@ var failures := 0
 
 
 func _initialize() -> void:
-	print("== The Tree: M0-M2 smoke test ==")
+	print("== The Tree: M0-M3 smoke test ==")
 	_check_theme()
 	_check_scenes()
 	print("== %s ==" % ("OK" if failures == 0 else "%d FAILED" % failures))
