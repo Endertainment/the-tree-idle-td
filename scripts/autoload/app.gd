@@ -5,7 +5,7 @@
 ## so Boot may call init_services() defensively without starting twice.
 extends Node
 
-const VERSION := "0.8.0"
+const VERSION := "1.0.0"
 
 var _initialized: bool = false
 var _degraded: bool = false
