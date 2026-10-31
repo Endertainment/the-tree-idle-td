@@ -1,0 +1,423 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://scripts/menu/main_menu.gd" id="1_menu"]
+[ext_resource type="PackedScene" path="res://ui/components/primary_button.tscn" id="2_button"]
+[ext_resource type="PackedScene" path="res://ui/components/currency_pill.tscn" id="3_pill"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="4_bg"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_coin.png" id="5_coin"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_gem.png" id="6_gem"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_settings.png" id="7_settings"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_sword.png" id="8_sword"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/nav/nav_home_pressed.png" id="9_home"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/nav/nav_workshop_normal.png" id="10_workshop"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/nav/nav_cards_normal.png" id="11_cards"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/nav/nav_missions_normal.png" id="12_missions"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/nav/nav_shop_normal.png" id="13_shop"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/logo_title.png" id="14_logo"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.18)
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 36
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="TopBar" type="PanelContainer" parent="SafeArea/Layout"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+theme_type_variation = &"TopBar"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 0
+
+[node name="CoinsPill" parent="SafeArea/Layout/TopBar/Row" instance=ExtResource("3_pill")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 96)
+layout_mode = 2
+size_flags_vertical = 4
+icon_texture = ExtResource("5_coin")
+
+[node name="GemsPill" parent="SafeArea/Layout/TopBar/Row" instance=ExtResource("3_pill")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 96)
+layout_mode = 2
+size_flags_vertical = 4
+icon_texture = ExtResource("6_gem")
+
+[node name="Spacer" type="Control" parent="SafeArea/Layout/TopBar/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="SettingsButton" type="Button" parent="SafeArea/Layout/TopBar/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(112, 112)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"IconButton"
+icon = ExtResource("7_settings")
+expand_icon = true
+
+[node name="TitleArea" type="Control" parent="SafeArea/Layout"]
+custom_minimum_size = Vector2(0, 340)
+layout_mode = 2
+
+[node name="Logo" type="TextureRect" parent="SafeArea/Layout/TitleArea"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -380.0
+offset_top = -170.0
+offset_right = 380.0
+offset_bottom = 170.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+modulate = Color(1, 1, 1, 0.16)
+texture = ExtResource("14_logo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Center" type="CenterContainer" parent="SafeArea/Layout/TitleArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Titles" type="VBoxContainer" parent="SafeArea/Layout/TitleArea/Center"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/TitleArea/Center/Titles"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "The Tree"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="SafeArea/Layout/TitleArea/Center/Titles"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Idle Tower Defense"
+horizontal_alignment = 1
+
+[node name="SpacerTop" type="Control" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="BattleButton" parent="SafeArea/Layout" instance=ExtResource("2_button")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"BattleButton"
+text = "Battle"
+icon_texture = ExtResource("8_sword")
+
+[node name="DailyCard" type="PanelContainer" parent="SafeArea/Layout"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+theme_type_variation = &"DailyCard"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/DailyCard"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/DailyCard/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="DailyTitle" type="Label" parent="SafeArea/Layout/DailyCard/Row/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "Daily Missions"
+
+[node name="DailyProgress" type="Label" parent="SafeArea/Layout/DailyCard/Row/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "0 / 3 Complete"
+
+[node name="ViewButton" type="Button" parent="SafeArea/Layout/DailyCard/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 96)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"SecondaryButton"
+text = "View"
+
+[node name="SpacerBottom" type="Control" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="NavBar" type="PanelContainer" parent="SafeArea/Layout"]
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+theme_type_variation = &"NavBar"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/NavBar"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NavHome" type="Button" parent="SafeArea/Layout/NavBar/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"NavButtonActive"
+
+[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/NavBar/Row/NavHome"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="SafeArea/Layout/NavBar/Row/NavHome/Content"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("9_home")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NavHomeLabel" type="Label" parent="SafeArea/Layout/NavBar/Row/NavHome/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Home"
+horizontal_alignment = 1
+
+[node name="NavWorkshop" type="Button" parent="SafeArea/Layout/NavBar/Row"]
+unique_name_in_owner = true
+modulate = Color(0.58, 0.62, 0.56, 1)
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"NavButton"
+
+[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/NavBar/Row/NavWorkshop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="SafeArea/Layout/NavBar/Row/NavWorkshop/Content"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("10_workshop")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NavWorkshopLabel" type="Label" parent="SafeArea/Layout/NavBar/Row/NavWorkshop/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Workshop"
+horizontal_alignment = 1
+
+[node name="NavCards" type="Button" parent="SafeArea/Layout/NavBar/Row"]
+unique_name_in_owner = true
+modulate = Color(0.58, 0.62, 0.56, 1)
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"NavButton"
+
+[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/NavBar/Row/NavCards"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="SafeArea/Layout/NavBar/Row/NavCards/Content"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("11_cards")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NavCardsLabel" type="Label" parent="SafeArea/Layout/NavBar/Row/NavCards/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Cards"
+horizontal_alignment = 1
+
+[node name="NavMissions" type="Button" parent="SafeArea/Layout/NavBar/Row"]
+unique_name_in_owner = true
+modulate = Color(0.58, 0.62, 0.56, 1)
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"NavButton"
+
+[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/NavBar/Row/NavMissions"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="SafeArea/Layout/NavBar/Row/NavMissions/Content"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("12_missions")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NavMissionsLabel" type="Label" parent="SafeArea/Layout/NavBar/Row/NavMissions/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Missions"
+horizontal_alignment = 1
+
+[node name="NavShop" type="Button" parent="SafeArea/Layout/NavBar/Row"]
+unique_name_in_owner = true
+modulate = Color(0.58, 0.62, 0.56, 1)
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"NavButton"
+
+[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/NavBar/Row/NavShop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="SafeArea/Layout/NavBar/Row/NavShop/Content"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("13_shop")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NavShopLabel" type="Label" parent="SafeArea/Layout/NavBar/Row/NavShop/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Shop"
+horizontal_alignment = 1
+
+[node name="VersionLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = -320.0
+offset_right = 448.0
+offset_bottom = -280.0
+grow_vertical = 0
+theme_type_variation = &"Caption"
+text = "Version 0.1.0"
+
+[node name="Toast" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -360.0
+offset_right = 320.0
+offset_bottom = -280.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"Chip"
+
+[node name="ToastLabel" type="Label" parent="Toast"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Coming soon"
+horizontal_alignment = 1
+vertical_alignment = 1

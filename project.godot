@@ -11,8 +11,25 @@ config_version=5
 [application]
 
 config/name="The Tree  IDLE TD"
+config/version="0.1.0"
+run/main_scene="res://scenes/boot/boot.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+EventBus="*res://scripts/autoload/event_bus.gd"
+App="*res://scripts/autoload/app.gd"
+SceneRouter="*res://scripts/autoload/scene_router.gd"
+SettingsService="*res://scripts/autoload/settings_service.gd"
+LocaleService="*res://scripts/autoload/locale_service.gd"
+AudioService="*res://scripts/autoload/audio_service.gd"
+SaveService="*res://scripts/autoload/save_service.gd"
+GameState="*res://scripts/autoload/game_state.gd"
+RunState="*res://scripts/autoload/run_state.gd"
+ModifierService="*res://scripts/autoload/modifier_service.gd"
+TimeService="*res://scripts/autoload/time_service.gd"
+RngService="*res://scripts/autoload/rng_service.gd"
 
 [display]
 
@@ -21,6 +38,10 @@ window/size/viewport_height=1920
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
+
+[gui]
+
+theme/custom="res://ui/theme/main_theme.tres"
 
 [physics]
 

@@ -1,0 +1,2210 @@
+[
+  {
+    "path": "battle/arena/arena_bg.png",
+    "w": 1080,
+    "h": 1920,
+    "color": "#2C4A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/arena/ground_shadow.png",
+    "w": 256,
+    "h": 128,
+    "color": "#000000",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_troll_walk_00.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_troll_walk_01.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_troll_walk_02.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_troll_walk_03.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_troll_walk_04.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_troll_walk_05.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_troll_walk_06.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_troll_walk_07.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_grunt_walk_00.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_grunt_walk_01.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_grunt_walk_02.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_grunt_walk_03.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_grunt_walk_04.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_grunt_walk_05.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_runner_walk_00.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_runner_walk_01.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_runner_walk_02.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_runner_walk_03.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_runner_walk_04.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_runner_walk_05.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_shadow.png",
+    "w": 160,
+    "h": 80,
+    "color": "#000000",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_shaman_walk_00.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_shaman_walk_01.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_shaman_walk_02.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_shaman_walk_03.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_shaman_walk_04.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_shaman_walk_05.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_tank_walk_00.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_tank_walk_01.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_tank_walk_02.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_tank_walk_03.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_tank_walk_04.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_tank_walk_05.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/hp_bar_bg.png",
+    "w": 72,
+    "h": 14,
+    "color": "#0F3D1E",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/hp_bar_fill.png",
+    "w": 68,
+    "h": 10,
+    "color": "#7BD93A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/fx/fx_death.png",
+    "w": 128,
+    "h": 128,
+    "color": "#FFD54F",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/fx/fx_explosion_sheet.png",
+    "w": 512,
+    "h": 512,
+    "color": "#FFD54F",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/fx/fx_hit.png",
+    "w": 64,
+    "h": 64,
+    "color": "#FFD54F",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/fx/fx_leak.png",
+    "w": 160,
+    "h": 160,
+    "color": "#E0433C",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/fx/fx_levelup.png",
+    "w": 160,
+    "h": 160,
+    "color": "#FFD54F",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/hud/boss_hp_fill.png",
+    "w": 900,
+    "h": 36,
+    "color": "#E0433C",
+    "mode": "9p",
+    "margins": [
+      0,
+      12,
+      0,
+      12
+    ]
+  },
+  {
+    "path": "battle/hud/boss_hp_frame_9p.png",
+    "w": 96,
+    "h": 48,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      20,
+      12,
+      20,
+      12
+    ]
+  },
+  {
+    "path": "battle/hud/cash_pill_9p.png",
+    "w": 96,
+    "h": 64,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      20,
+      16,
+      20,
+      16
+    ]
+  },
+  {
+    "path": "battle/hud/notification_dot.png",
+    "w": 40,
+    "h": 40,
+    "color": "#E0433C",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/hud/pause_panel_9p.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "battle/hud/speed_button_active.png",
+    "w": 180,
+    "h": 96,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      28,
+      20,
+      28,
+      20
+    ]
+  },
+  {
+    "path": "battle/hud/speed_button_locked.png",
+    "w": 180,
+    "h": 96,
+    "color": "#4A5A48",
+    "mode": "9p",
+    "margins": [
+      28,
+      20,
+      28,
+      20
+    ]
+  },
+  {
+    "path": "battle/hud/speed_button_normal.png",
+    "w": 180,
+    "h": 96,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      28,
+      20,
+      28,
+      20
+    ]
+  },
+  {
+    "path": "battle/hud/tower_card_normal.png",
+    "w": 96,
+    "h": 96,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      20,
+      20,
+      20,
+      20
+    ]
+  },
+  {
+    "path": "battle/hud/tower_card_selected.png",
+    "w": 96,
+    "h": 96,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      20,
+      20,
+      20,
+      20
+    ]
+  },
+  {
+    "path": "battle/hud/tower_sheet_9p.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "battle/hud/tree_hp_fill.png",
+    "w": 480,
+    "h": 40,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      0,
+      14,
+      0,
+      14
+    ]
+  },
+  {
+    "path": "battle/hud/tree_hp_fill_low.png",
+    "w": 480,
+    "h": 40,
+    "color": "#E0433C",
+    "mode": "9p",
+    "margins": [
+      0,
+      14,
+      0,
+      14
+    ]
+  },
+  {
+    "path": "battle/hud/tree_hp_frame_9p.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "battle/hud/unit_card_normal.png",
+    "w": 96,
+    "h": 96,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      20,
+      20,
+      20,
+      20
+    ]
+  },
+  {
+    "path": "battle/hud/unit_card_selected.png",
+    "w": 96,
+    "h": 96,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      20,
+      20,
+      20,
+      20
+    ]
+  },
+  {
+    "path": "battle/hud/upgrade_button_attention.png",
+    "w": 460,
+    "h": 140,
+    "color": "#F2C230",
+    "mode": "9p",
+    "margins": [
+      40,
+      30,
+      40,
+      30
+    ]
+  },
+  {
+    "path": "battle/hud/upgrade_button_normal.png",
+    "w": 460,
+    "h": 140,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      40,
+      30,
+      40,
+      30
+    ]
+  },
+  {
+    "path": "battle/hud/upgrade_button_pressed.png",
+    "w": 460,
+    "h": 140,
+    "color": "#5FBF2A",
+    "mode": "9p",
+    "margins": [
+      40,
+      30,
+      40,
+      30
+    ]
+  },
+  {
+    "path": "battle/hud/wave_banner_9p.png",
+    "w": 96,
+    "h": 64,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      20,
+      16,
+      20,
+      16
+    ]
+  },
+  {
+    "path": "battle/pedestal/pedestal_empty.png",
+    "w": 180,
+    "h": 180,
+    "color": "#6B7A66",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/pedestal/pedestal_locked.png",
+    "w": 180,
+    "h": 180,
+    "color": "#4A5A48",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/pedestal/pedestal_rune.png",
+    "w": 140,
+    "h": 140,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/pedestal/pedestal_selected.png",
+    "w": 200,
+    "h": 200,
+    "color": "#7BD93A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/projectiles/proj_arrow.png",
+    "w": 48,
+    "h": 24,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/projectiles/proj_bolt.png",
+    "w": 40,
+    "h": 40,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/projectiles/proj_cannonball.png",
+    "w": 48,
+    "h": 48,
+    "color": "#333333",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/projectiles/proj_frost.png",
+    "w": 40,
+    "h": 40,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/projectiles/proj_mage.png",
+    "w": 48,
+    "h": 48,
+    "color": "#B06BFF",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_archer_l1.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_archer_l2.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_archer_l3.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_cannon_l1.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_cannon_l2.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_cannon_l3.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_frost_l1.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_frost_l2.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_frost_l3.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_totem_l1.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_totem_l2.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/towers/tower_totem_l3.png",
+    "w": 160,
+    "h": 160,
+    "color": "#4A6FA5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/tree/tree_base.png",
+    "w": 600,
+    "h": 680,
+    "color": "#2E7D32",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/tree/tree_glow.png",
+    "w": 400,
+    "h": 400,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/tree/tree_hurt_mask.png",
+    "w": 600,
+    "h": 680,
+    "color": "#FFFFFF",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/tree/unit_slot_empty.png",
+    "w": 120,
+    "h": 120,
+    "color": "#6B7A66",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/tree/unit_slot_locked.png",
+    "w": 120,
+    "h": 120,
+    "color": "#4A5A48",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/tree/unit_slot_selected.png",
+    "w": 140,
+    "h": 140,
+    "color": "#7BD93A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/units/unit_archer_idle.png",
+    "w": 110,
+    "h": 110,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/units/unit_druid_idle.png",
+    "w": 110,
+    "h": 110,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/units/unit_mage_idle.png",
+    "w": 110,
+    "h": 110,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/cards/card_art_placeholder.png",
+    "w": 256,
+    "h": 256,
+    "color": "#2C4A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/cards/card_back.png",
+    "w": 300,
+    "h": 420,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "meta/cards/card_frame_common.png",
+    "w": 300,
+    "h": 420,
+    "color": "#8FA88A",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "meta/cards/card_frame_epic.png",
+    "w": 300,
+    "h": 420,
+    "color": "#B06BFF",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "meta/cards/card_frame_legendary.png",
+    "w": 300,
+    "h": 420,
+    "color": "#F2C230",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "meta/cards/card_frame_rare.png",
+    "w": 300,
+    "h": 420,
+    "color": "#3FA9F5",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "meta/cards/card_slot_empty.png",
+    "w": 300,
+    "h": 420,
+    "color": "#4A5A48",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "meta/common/modal_9p.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "meta/leaderboard/medal_1.png",
+    "w": 80,
+    "h": 80,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/leaderboard/medal_2.png",
+    "w": 80,
+    "h": 80,
+    "color": "#C0C0C0",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/leaderboard/medal_3.png",
+    "w": 80,
+    "h": 80,
+    "color": "#CD7F32",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/leaderboard/rank_badge.png",
+    "w": 64,
+    "h": 64,
+    "color": "#3E9A1E",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/leaderboard/row_9p.png",
+    "w": 96,
+    "h": 48,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      16,
+      12,
+      16,
+      12
+    ]
+  },
+  {
+    "path": "meta/magica/branch_bg_9p.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
+    "path": "meta/magica/node_frame_active.png",
+    "w": 200,
+    "h": 200,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/magica/node_frame_done.png",
+    "w": 200,
+    "h": 200,
+    "color": "#0F3D1E",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/magica/node_frame_idle.png",
+    "w": 200,
+    "h": 200,
+    "color": "#0F3D1E",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/magica/node_frame_locked.png",
+    "w": 200,
+    "h": 200,
+    "color": "#0F3D1E",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/magica/timer_pill_9p.png",
+    "w": 96,
+    "h": 48,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      16,
+      12,
+      16,
+      12
+    ]
+  },
+  {
+    "path": "meta/missions/mission_icon.png",
+    "w": 88,
+    "h": 88,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/missions/mission_row_9p.png",
+    "w": 96,
+    "h": 64,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      20,
+      16,
+      20,
+      16
+    ]
+  },
+  {
+    "path": "meta/onboarding/avatar_frame.png",
+    "w": 220,
+    "h": 220,
+    "color": "#F2C230",
+    "mode": "9p",
+    "margins": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
+    "path": "meta/onboarding/input_9p.png",
+    "w": 96,
+    "h": 48,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      16,
+      12,
+      16,
+      12
+    ]
+  },
+  {
+    "path": "meta/settings/settings_row_9p.png",
+    "w": 96,
+    "h": 48,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      16,
+      12,
+      16,
+      12
+    ]
+  },
+  {
+    "path": "meta/shop/icon_no_ads.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/shop/icon_starter_pack.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/shop/offer_card_9p.png",
+    "w": 96,
+    "h": 96,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
+    "path": "meta/shop/ribbon_best_value.png",
+    "w": 220,
+    "h": 64,
+    "color": "#E0433C",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/workshop/tab_attack.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/workshop/tab_defense.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/workshop/tab_environment.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/workshop/tab_utility.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/workshop/track_icon_crit.png",
+    "w": 80,
+    "h": 80,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/workshop/track_icon_damage.png",
+    "w": 80,
+    "h": 80,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/workshop/track_icon_economy.png",
+    "w": 80,
+    "h": 80,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/workshop/track_icon_hp.png",
+    "w": 80,
+    "h": 80,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/workshop/track_icon_offline.png",
+    "w": 80,
+    "h": 80,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/workshop/track_icon_speed.png",
+    "w": 80,
+    "h": 80,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "meta/workshop/upgrade_row_9p.png",
+    "w": 96,
+    "h": 64,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      20,
+      16,
+      20,
+      16
+    ]
+  },
+  {
+    "path": "ui/buttons/button_back_normal.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "ui/buttons/button_back_pressed.png",
+    "w": 96,
+    "h": 96,
+    "color": "#3E9A1E",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "ui/buttons/button_blue_disabled.png",
+    "w": 320,
+    "h": 120,
+    "color": "#4A5A48",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_blue_normal.png",
+    "w": 320,
+    "h": 120,
+    "color": "#3FA9F5",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_blue_pressed.png",
+    "w": 320,
+    "h": 120,
+    "color": "#2E86C8",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_close_normal.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "ui/buttons/button_close_pressed.png",
+    "w": 96,
+    "h": 96,
+    "color": "#3E9A1E",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "ui/buttons/button_ghost_normal.png",
+    "w": 320,
+    "h": 120,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_ghost_pressed.png",
+    "w": 320,
+    "h": 120,
+    "color": "#3E9A1E",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_gold_disabled.png",
+    "w": 320,
+    "h": 120,
+    "color": "#4A5A48",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_gold_normal.png",
+    "w": 320,
+    "h": 120,
+    "color": "#F2C230",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_gold_pressed.png",
+    "w": 320,
+    "h": 120,
+    "color": "#C99A20",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_green_disabled.png",
+    "w": 320,
+    "h": 120,
+    "color": "#4A5A48",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_green_normal.png",
+    "w": 320,
+    "h": 120,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_green_pressed.png",
+    "w": 320,
+    "h": 120,
+    "color": "#5FBF2A",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_icon_round_normal.png",
+    "w": 128,
+    "h": 128,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      40,
+      40,
+      40,
+      40
+    ]
+  },
+  {
+    "path": "ui/buttons/button_icon_round_pressed.png",
+    "w": 128,
+    "h": 128,
+    "color": "#3E9A1E",
+    "mode": "9p",
+    "margins": [
+      40,
+      40,
+      40,
+      40
+    ]
+  },
+  {
+    "path": "ui/buttons/button_plus_normal.png",
+    "w": 96,
+    "h": 96,
+    "color": "#3E9A1E",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "ui/buttons/button_plus_pressed.png",
+    "w": 96,
+    "h": 96,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "ui/buttons/button_red_normal.png",
+    "w": 320,
+    "h": 120,
+    "color": "#E0433C",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/button_red_pressed.png",
+    "w": 320,
+    "h": 120,
+    "color": "#B2342E",
+    "mode": "9p",
+    "margins": [
+      40,
+      36,
+      40,
+      36
+    ]
+  },
+  {
+    "path": "ui/buttons/tab_normal.png",
+    "w": 240,
+    "h": 96,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      32,
+      24,
+      32,
+      24
+    ]
+  },
+  {
+    "path": "ui/buttons/tab_selected.png",
+    "w": 240,
+    "h": 96,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      32,
+      24,
+      32,
+      24
+    ]
+  },
+  {
+    "path": "ui/common/badge_dot.png",
+    "w": 40,
+    "h": 40,
+    "color": "#E0433C",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/common/checkbox_off.png",
+    "w": 64,
+    "h": 64,
+    "color": "#4A5A48",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/common/checkbox_on.png",
+    "w": 64,
+    "h": 64,
+    "color": "#7BD93A",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/common/chip_9p.png",
+    "w": 64,
+    "h": 48,
+    "color": "#3E9A1E",
+    "mode": "9p",
+    "margins": [
+      16,
+      12,
+      16,
+      12
+    ]
+  },
+  {
+    "path": "ui/common/divider.png",
+    "w": 400,
+    "h": 6,
+    "color": "#2C4A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/common/header_9p.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
+    "path": "ui/common/panel_9p_dark.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
+    "path": "ui/common/panel_9p_green.png",
+    "w": 96,
+    "h": 96,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
+    "path": "ui/common/panel_9p_parchment.png",
+    "w": 96,
+    "h": 96,
+    "color": "#E8D5A8",
+    "mode": "9p",
+    "margins": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
+    "path": "ui/common/panel_9p_wood.png",
+    "w": 96,
+    "h": 96,
+    "color": "#6B4A2A",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "ui/common/progress_bg.png",
+    "w": 400,
+    "h": 48,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      0,
+      16,
+      0,
+      16
+    ]
+  },
+  {
+    "path": "ui/common/progress_fill_blue.png",
+    "w": 400,
+    "h": 48,
+    "color": "#3FA9F5",
+    "mode": "9p",
+    "margins": [
+      0,
+      16,
+      0,
+      16
+    ]
+  },
+  {
+    "path": "ui/common/progress_fill_green.png",
+    "w": 400,
+    "h": 48,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      0,
+      16,
+      0,
+      16
+    ]
+  },
+  {
+    "path": "ui/common/progress_fill_red.png",
+    "w": 400,
+    "h": 48,
+    "color": "#E0433C",
+    "mode": "9p",
+    "margins": [
+      0,
+      16,
+      0,
+      16
+    ]
+  },
+  {
+    "path": "ui/common/progress_fill_yellow.png",
+    "w": 400,
+    "h": 48,
+    "color": "#F2C230",
+    "mode": "9p",
+    "margins": [
+      0,
+      16,
+      0,
+      16
+    ]
+  },
+  {
+    "path": "ui/common/row_9p_green.png",
+    "w": 96,
+    "h": 64,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      20,
+      18,
+      20,
+      18
+    ]
+  },
+  {
+    "path": "ui/common/scrollbar_grab.png",
+    "w": 16,
+    "h": 64,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      0,
+      8,
+      0,
+      8
+    ]
+  },
+  {
+    "path": "ui/common/scrollbar_track.png",
+    "w": 16,
+    "h": 64,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      0,
+      8,
+      0,
+      8
+    ]
+  },
+  {
+    "path": "ui/common/slider_fill.png",
+    "w": 400,
+    "h": 32,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      0,
+      12,
+      0,
+      12
+    ]
+  },
+  {
+    "path": "ui/common/slider_knob.png",
+    "w": 64,
+    "h": 64,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/common/slider_track.png",
+    "w": 400,
+    "h": 32,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      0,
+      12,
+      0,
+      12
+    ]
+  },
+  {
+    "path": "ui/common/toast_9p.png",
+    "w": 96,
+    "h": 64,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      20,
+      16,
+      20,
+      16
+    ]
+  },
+  {
+    "path": "ui/common/toggle_off.png",
+    "w": 128,
+    "h": 64,
+    "color": "#4A5A48",
+    "mode": "9p",
+    "margins": [
+      28,
+      0,
+      28,
+      0
+    ]
+  },
+  {
+    "path": "ui/common/toggle_on.png",
+    "w": 128,
+    "h": 64,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      28,
+      0,
+      28,
+      0
+    ]
+  },
+  {
+    "path": "ui/common/tooltip_9p.png",
+    "w": 96,
+    "h": 64,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      20,
+      16,
+      20,
+      16
+    ]
+  },
+  {
+    "path": "ui/icons/icon_ad.png",
+    "w": 72,
+    "h": 72,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_arrow_right.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_calendar.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_cards.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_cash.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_check.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_clock.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_close.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_coin.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_gem.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_gift.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_hammer.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_heart.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_info.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_language.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_lock.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_magic.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_music_off.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_music_on.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_pause.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_play.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_reward.png",
+    "w": 72,
+    "h": 72,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_settings.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_shield.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_shop.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_sound_off.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_sound_on.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_speed.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_star.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_stone.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_sword.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_trophy.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/icons/icon_vibration.png",
+    "w": 96,
+    "h": 96,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/menu/avatar_01.png",
+    "w": 200,
+    "h": 200,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/menu/avatar_02.png",
+    "w": 200,
+    "h": 200,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/menu/avatar_03.png",
+    "w": 200,
+    "h": 200,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/menu/avatar_04.png",
+    "w": 200,
+    "h": 200,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/menu/avatar_05.png",
+    "w": 200,
+    "h": 200,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/menu/avatar_06.png",
+    "w": 200,
+    "h": 200,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/menu/battle_button_normal.png",
+    "w": 820,
+    "h": 300,
+    "color": "#7BD93A",
+    "mode": "9p",
+    "margins": [
+      60,
+      60,
+      60,
+      60
+    ]
+  },
+  {
+    "path": "ui/menu/battle_button_pressed.png",
+    "w": 820,
+    "h": 300,
+    "color": "#5FBF2A",
+    "mode": "9p",
+    "margins": [
+      60,
+      60,
+      60,
+      60
+    ]
+  },
+  {
+    "path": "ui/menu/bg/menu_bg.png",
+    "w": 1080,
+    "h": 1920,
+    "color": "#2C4A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/menu/currency_pill_9p.png",
+    "w": 96,
+    "h": 64,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      20,
+      16,
+      20,
+      16
+    ]
+  },
+  {
+    "path": "ui/menu/daily_card_9p.png",
+    "w": 96,
+    "h": 96,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
+    "path": "ui/menu/logo_subtitle_9p.png",
+    "w": 640,
+    "h": 140,
+    "color": "#6B4A2A",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "path": "ui/menu/logo_title.png",
+    "w": 760,
+    "h": 460,
+    "color": "#F2C230",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/menu/profile_frame.png",
+    "w": 240,
+    "h": 240,
+    "color": "#F2C230",
+    "mode": "9p",
+    "margins": [
+      60,
+      60,
+      60,
+      60
+    ]
+  },
+  {
+    "path": "ui/menu/speed_trial_9p.png",
+    "w": 660,
+    "h": 150,
+    "color": "#3FA9F5",
+    "mode": "9p",
+    "margins": [
+      40,
+      40,
+      40,
+      40
+    ]
+  },
+  {
+    "path": "ui/menu/stat_row_9p.png",
+    "w": 96,
+    "h": 64,
+    "color": "#1E6B2E",
+    "mode": "9p",
+    "margins": [
+      20,
+      16,
+      20,
+      16
+    ]
+  },
+  {
+    "path": "ui/menu/top_bar_9p.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
+    "path": "ui/nav/nav_bg_9p.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
+    "path": "ui/nav/nav_cards_normal.png",
+    "w": 160,
+    "h": 160,
+    "color": "#3E9A1E",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/nav/nav_cards_pressed.png",
+    "w": 160,
+    "h": 160,
+    "color": "#7BD93A",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/nav/nav_home_normal.png",
+    "w": 160,
+    "h": 160,
+    "color": "#3E9A1E",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/nav/nav_home_pressed.png",
+    "w": 160,
+    "h": 160,
+    "color": "#7BD93A",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/nav/nav_missions_normal.png",
+    "w": 160,
+    "h": 160,
+    "color": "#3E9A1E",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/nav/nav_missions_pressed.png",
+    "w": 160,
+    "h": 160,
+    "color": "#7BD93A",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/nav/nav_shop_normal.png",
+    "w": 160,
+    "h": 160,
+    "color": "#3E9A1E",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/nav/nav_shop_pressed.png",
+    "w": 160,
+    "h": 160,
+    "color": "#7BD93A",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/nav/nav_workshop_normal.png",
+    "w": 160,
+    "h": 160,
+    "color": "#3E9A1E",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/nav/nav_workshop_pressed.png",
+    "w": 160,
+    "h": 160,
+    "color": "#7BD93A",
+    "mode": "plain"
+  }
+]

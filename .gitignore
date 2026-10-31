@@ -1,6 +1,7 @@
-# Godot 4 editor cache and imported resources
+# Godot 4 editor cache, import metadata and generated translations
 .godot/
 /android/
+*.import
 *.translation
 
 # Exports and builds

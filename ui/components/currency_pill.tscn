@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ui/components/currency_pill.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_coin.png" id="2_coin"]
+
+[node name="CurrencyPill" type="PanelContainer"]
+custom_minimum_size = Vector2(300, 96)
+theme_type_variation = &"CurrencyPill"
+script = ExtResource("1_script")
+icon_texture = ExtResource("2_coin")
+
+[node name="Row" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+texture = ExtResource("2_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Amount" type="Label" parent="Row"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "0"
+vertical_alignment = 1
