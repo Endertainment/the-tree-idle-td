@@ -1,0 +1,281 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/menu/leaderboard_screen.gd" id="1_screen"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_trophy.png" id="3_trophy"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/profile_frame.png" id="4_frame"]
+[ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="5_nav"]
+
+[node name="Leaderboard" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_screen")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.36)
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 22
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Header" type="PanelContainer" parent="SafeArea/Layout"]
+custom_minimum_size = Vector2(0, 126)
+layout_mode = 2
+theme_type_variation = &"TopBar"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 90)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+theme_type_variation = &"SecondaryButton"
+text = "common.back"
+
+[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("3_trophy")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Title"
+text = "leaderboard.title"
+
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="RefreshButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 90)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+theme_type_variation = &"GoldButton"
+text = "leaderboard.refresh"
+
+[node name="Tabs" type="HBoxContainer" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="OfflineBanner" type="PanelContainer" parent="SafeArea/Layout"]
+custom_minimum_size = Vector2(0, 78)
+layout_mode = 2
+theme_type_variation = &"Chip"
+
+[node name="OfflineLabel" type="Label" parent="SafeArea/Layout/OfflineBanner"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Caption"
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TournamentPanel" type="PanelContainer" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+theme_type_variation = &"PanelGreen"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/TournamentPanel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/TournamentPanel/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="CohortLabel" type="Label" parent="SafeArea/Layout/TournamentPanel/Row/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = ""
+
+[node name="TournamentDetail" type="Label" parent="SafeArea/Layout/TournamentPanel/Row/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = ""
+autowrap_mode = 3
+
+[node name="EligibilityLabel" type="Label" parent="SafeArea/Layout/TournamentPanel/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Caption"
+text = ""
+horizontal_alignment = 2
+
+[node name="LoadingLabel" type="Label" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "leaderboard.loading"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="RewardPanel" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"PanelGreen"
+
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/RewardPanel"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="RewardTitle" type="Label" parent="SafeArea/Layout/Scroll/Content/RewardPanel/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
+text = "leaderboard.reward_tiers"
+
+[node name="TierRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/RewardPanel/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Rows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="EmptyLabel" type="Label" parent="SafeArea/Layout/Scroll/Content"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+theme_type_variation = &"Body"
+theme_override_colors/font_color = Color(0.78, 0.84, 0.76, 1)
+text = "leaderboard.empty"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="OwnPanel" type="PanelContainer" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 118)
+layout_mode = 2
+theme_type_variation = &"PlayerRow"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/OwnPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="OwnRank" type="Label" parent="SafeArea/Layout/OwnPanel/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(76, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Body"
+theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
+text = "#"
+horizontal_alignment = 1
+
+[node name="OwnAvatar" type="TextureRect" parent="SafeArea/Layout/OwnPanel/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(62, 62)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_frame")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/OwnPanel/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="OwnCaption" type="Label" parent="SafeArea/Layout/OwnPanel/Row/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "leaderboard.own_rank"
+
+[node name="OwnNickname" type="Label" parent="SafeArea/Layout/OwnPanel/Row/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "leaderboard.you"
+text_overrun_behavior = 3
+
+[node name="OwnWave" type="Label" parent="SafeArea/Layout/OwnPanel/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Body"
+theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
+text = "0"
+horizontal_alignment = 2
+
+[node name="NavBar" parent="SafeArea/Layout" instance=ExtResource("5_nav")]
+unique_name_in_owner = true
+layout_mode = 2

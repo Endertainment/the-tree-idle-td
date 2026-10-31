@@ -16,6 +16,9 @@ const SCENES: Dictionary = {
 	&"magica": "res://scenes/menu/magica.tscn",
 	&"cards": "res://scenes/menu/cards.tscn",
 	&"missions": "res://scenes/menu/missions.tscn",
+	&"shop": "res://scenes/menu/shop.tscn",
+	&"leaderboard": "res://scenes/menu/leaderboard.tscn",
+	&"profile": "res://scenes/menu/profile.tscn",
 	&"settings": "res://scenes/menu/settings.tscn",
 	&"battle": "res://scenes/battle/battle.tscn",
 }

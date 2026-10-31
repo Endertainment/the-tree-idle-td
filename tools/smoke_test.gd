@@ -15,6 +15,9 @@ const SCENES := [
 	["res://scenes/menu/magica.tscn", 40],
 	["res://scenes/menu/cards.tscn", 30],
 	["res://scenes/menu/missions.tscn", 30],
+	["res://scenes/menu/shop.tscn", 20],
+	["res://scenes/menu/leaderboard.tscn", 20],
+	["res://scenes/menu/profile.tscn", 20],
 	["res://scenes/battle/battle.tscn", 40],
 	["res://scenes/battle/battle_hud.tscn", 25],
 	["res://scenes/battle/run_summary.tscn", 10],
@@ -35,9 +38,15 @@ var failures := 0
 
 
 func _initialize() -> void:
-	print("== The Tree: M0-M4b smoke test ==")
+	print("== The Tree: M0-M5b smoke test ==")
 	_check_theme()
 	_check_scenes()
+	# The battle scene starts the battle music loop; stop it explicitly so the
+	# AudioStreamWAV playback is released before the engine shuts the audio server
+	# down (otherwise Godot reports "1 resources still in use at exit").
+	var audio := root.get_node_or_null("AudioService")
+	if audio != null:
+		audio.call("stop_music", 0.0)
 	print("== %s ==" % ("OK" if failures == 0 else "%d FAILED" % failures))
 	quit(0 if failures == 0 else 1)
 
@@ -89,7 +98,7 @@ func _check_scenes() -> void:
 			continue
 		root.add_child(inst)
 		var count := _count_nodes(inst)
-		inst.queue_free()
+		inst.free()
 		if count < min_nodes:
 			_fail("scene looks empty (%d nodes, expected >= %d): %s" % [count, min_nodes, path])
 		else:
