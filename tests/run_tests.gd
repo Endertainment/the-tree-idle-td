@@ -1,4 +1,4 @@
-## Headless test runner for Milestone 0.
+## Headless test runner for Milestones 0 and 1.
 ##
 ## Usage:
 ##   godot --headless --path . --script res://tests/run_tests.gd
@@ -6,15 +6,22 @@
 extends SceneTree
 
 const TestCore := preload("res://tests/test_core.gd")
+const TestBattle := preload("res://tests/test_battle.gd")
 
 
 func _initialize() -> void:
-	print("== The Tree: M0 tests ==")
-	var suite: RefCounted = TestCore.new()
+	print("== The Tree: M0+M1 tests ==")
+	var core: RefCounted = TestCore.new()
+	var battle: RefCounted = TestBattle.new()
 	var cases: Array[Dictionary] = [
-		{"name": "art manifest paths exist", "callable": Callable(suite, "test_manifest_paths")},
-		{"name": "SaveService round-trip", "callable": Callable(suite, "test_save_roundtrip")},
-		{"name": "cost curve monotonic", "callable": Callable(suite, "test_cost_curve")},
+		{"name": "art manifest paths exist", "callable": Callable(core, "test_manifest_paths")},
+		{"name": "SaveService round-trip", "callable": Callable(core, "test_save_roundtrip")},
+		{"name": "cost curve monotonic", "callable": Callable(core, "test_cost_curve")},
+		{"name": "damage resolver armor floor", "callable": Callable(battle, "test_damage_armor_floor")},
+		{"name": "damage resolver crit path", "callable": Callable(battle, "test_damage_crit")},
+		{"name": "wave table integrity", "callable": Callable(battle, "test_wave_table_integrity")},
+		{"name": "map lanes and pedestal clearance", "callable": Callable(battle, "test_map_layout")},
+		{"name": "run summary cash math", "callable": Callable(battle, "test_summary_cash_math")},
 	]
 
 	var failures := 0

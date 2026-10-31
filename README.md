@@ -2,13 +2,27 @@
 
 A portrait mobile tower-defense / idle game for Godot 4. Corrupted creatures march along two winding roads toward a colossal Life Tree. The tree fights back, guardian units sit on its branches, and eight ancient pedestals around it can hold towers. Waves get harder, the tree eventually falls, and permanent upgrades make the next run stronger.
 
-**Status:** pre-alpha. The repository currently contains the Godot project scaffold, the approved UI references and the full build specification. Implementation starts at Milestone 0.
+**Status:** pre-alpha. M0 (foundation) and M1 (playable battle vertical slice) are
+complete and tagged; M2 (combat depth) is next. All numbers and content are data
+resources, and battle runs headless smoke tests.
 
 ## Quick start
 
 1. Install Godot 4.x (version matching `project.godot` → `config/features`).
 2. Open `project.godot` in the editor. The project targets `1080x1920` portrait, mobile renderer.
-3. Press `F5`. Right now you get the placeholder main menu.
+3. Press `F5`. Boot goes to the main menu; **Battle** starts a real run: tap a
+   pedestal to build an Archer Tower, survive ten waves or lose the run, and the
+   summary pays out coins/gems/XP. **Next wave** during the 6 s prep grants cash.
+
+## What works today (M1)
+
+- Main menu → battle → run summary → main menu, all through `SceneRouter`.
+- Two smooth S-curve lanes, 8 buildable pedestals, 4 visual unit slots, Tree HP
+  and auto-attack, 10 data-driven waves, enemy leaks and kills, in-run cash,
+  build sheet, wave banner, tree HP bar, prep countdown with skip bonus.
+- Headless proof: `tests/run_tests.gd`, `tools/smoke_test.gd`,
+  `tools/battle_smoke.gd`, `tools/validate_layout.gd`.
+- Screenshots: `docs/preview/m1_battle.png` and `docs/preview/m1_battle_combat.png`.
 
 ## The build specification
 
@@ -60,7 +74,7 @@ server/     FastAPI + Neon backend (Milestone 7)
 
 - `main` is the stable branch; work happens on `feat/mN-*` branches.
 - Conventional Commits, e.g. `feat(battle): add wave manager`.
-- Tags per milestone: `v0.1.0-m1` … `v1.0.0-m8`.
+- Tags per milestone: `v0.1.0-m0` … `v1.0.0-m8`.
 - `.godot/`, `android/`, builds and signing keys are ignored. Commit `.import` files.
 
 ## License

@@ -3,6 +3,38 @@
 All notable changes are recorded per milestone. The project follows semantic
 versioning for tags; unreleased work stays under `[Unreleased]`.
 
+## [0.2.0-m1] — 2026-10-31
+
+### Added
+
+- Data-driven battle content: `MapData` with two smooth lanes, 8 pedestal
+  positions and 4 unit-slot anchors (`forest_clearing.tres`); `EnemyData`
+  (`enemy_grunt.tres`), `TowerData` (`tower_archer.tres`), `TreeData`
+  (`tree_base.tres`) and a 10-wave `WaveTable` (`wave_table_m1.tres`, 1.16x HP
+  scaling, swarm wave 5, doubled wave 10).
+- `DamageResolver.resolve()` as the only damage formula (crit before flat
+  armor, 10 % armor floor), `CurveBuilder` Catmull-Rom lane smoothing and a
+  pooled homing `Projectile`.
+- Battle entities: curve-walking `Enemy` with HP bar and leak, `TreeEntity`
+  auto-attack, 8 `Pedestal` states, `Tower` with nearest-target acquisition and
+  a typed `upgrade()` no-op for M3.
+- Battle systems: `BattleClock` sim speed/pause, `Spawner`, `WaveManager`
+  (prepare -> wave -> result, 6 s prep, skip bonus), `BattleController`
+  (arena build, in-run cash, defeat, summary).
+- Battle scene, battle HUD (wave/timer/cash, tree HP, prep countdown + Next
+  wave, wave banner, build sheet, Upgrade placeholder modal, empty-ground
+  dismiss) and `RunSummary` with grant-once coins/gems/XP and best-wave save.
+- GameState gains a save-safe `best_wave` default.
+- Verification: `tools/battle_smoke.gd`, `tools/validate_layout.gd`, and
+  `tests/test_battle.gd` (damage, wave table, lane clearance, reward math);
+  scene smoke test covers 15 scenes. Battle previews in `docs/preview/`.
+
+### Changed
+
+- `scenes/battle/battle.tscn` replaces the M0 placeholder; `battle_placeholder.gd`
+  is removed.
+- `EventBus` gains `damage_dealt` and `run_cash_changed`.
+
 ## [0.1.0-m0] — 2026-10-31
 
 ### Added
