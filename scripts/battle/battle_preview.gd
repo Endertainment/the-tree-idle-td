@@ -43,3 +43,14 @@ static func stage_sheet(battle: Node, sheet: String) -> void:
 			var all_slots: Array = battle.call(&"get_unit_slots")
 			if all_slots.size() > 1:
 				battle.call(&"debug_open_unit_sheet", all_slots[1])
+		"upgrade":
+			# Buy a few levels so the generated rows show levels, previews and costs.
+			for _level in 3:
+				battle.call(&"try_buy_tree_upgrade", &"tree_damage")
+			battle.call(&"try_buy_tree_upgrade", &"tree_attack_speed")
+			battle.call(&"try_buy_tree_upgrade", &"tree_crit_chance")
+			if not (battle.call(&"get_units") as Array).is_empty():
+				battle.call(&"try_buy_unit_upgrade", &"unit_slot_0")
+			battle.call(&"debug_open_upgrade_panel", &"tree")
+		"pause":
+			battle.call(&"debug_open_pause")

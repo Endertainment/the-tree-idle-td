@@ -2,7 +2,8 @@
 ##
 ## This is the M2 extraction of the HUD half of the old 540-line controller. It
 ## never changes run state directly: it calls BattleController APIs and renders
-## the data those calls return. Boss bar binding lives here as well.
+## the data those calls return. M3 adds the upgrade-panel purchase handler, speed
+## lock state, pause routing and the affordability dot.
 class_name BattleHudController
 extends Node
 
@@ -40,6 +41,16 @@ func setup(battle: BattleController, hud: BattleHUD) -> void:
 	_hud.tower_sell_requested.connect(_on_tower_sell_requested)
 	_hud.unit_place_requested.connect(_on_unit_place_requested)
 	_hud.unit_upgrade_requested.connect(_on_unit_upgrade_requested)
+	_hud.upgrade_open_requested.connect(_on_upgrade_open_requested)
+	_hud.upgrade_closed.connect(_on_upgrade_closed)
+	_hud.speed_requested.connect(_on_speed_requested)
+	_hud.debug_unlock_requested.connect(_on_debug_unlock_requested)
+	_hud.pause_requested.connect(_on_pause_requested)
+	_hud.resume_requested.connect(_on_resume_requested)
+	_hud.restart_requested.connect(_on_restart_requested)
+	_hud.abandon_requested.connect(_on_abandon_requested)
+	_hud.set_upgrade_purchase_handler(_purchase_upgrade)
+	_hud.set_upgrade_open_handler(_open_tower_row)
 
 	_battle.pedestal_pressed.connect(_on_pedestal_pressed)
 	_battle.tower_pressed.connect(_on_tower_pressed)
@@ -58,11 +69,15 @@ func setup(battle: BattleController, hud: BattleHUD) -> void:
 
 	_hud.set_wave(1, _battle.get_wave_table().wave_count())
 	_hud.set_cash(_battle.get_cash())
+	_hud.set_gems(GameState.get_balance(&"gems"))
 	var tree := _battle.get_tree_entity()
 	_hud.set_tree_hp(tree.hp, tree.max_hp)
 	_hud.set_elapsed(0.0)
 	_hud.hide_boss()
 	_hud.hide_countdown()
+	refresh_speed_control()
+	_hud.set_next_wave_uses(_battle.get_next_wave_uses())
+	refresh_upgrade_availability()
 
 
 func _process(delta: float) -> void:
@@ -80,6 +95,7 @@ func close_all() -> void:
 	_build_sheet.close()
 	_tower_sheet.close()
 	_unit_slots.close()
+	_hud.hide_upgrade_panel()
 	_battle.set_sheet_open(false)
 
 
@@ -109,11 +125,64 @@ func debug_open_unit_sheet(slot: UnitSlot) -> void:
 	_unit_slots.open(slot)
 
 
+## Opens the generated upgrade sheet (Tree tab) for the HUD/tools.
+func open_upgrade_panel(tab: StringName = &"tree") -> void:
+	if _battle == null or _battle.is_finished():
+		return
+	close_all()
+	_hud.show_upgrade_panel(_battle.upgrade_rows(), tab)
+	_battle.set_sheet_open(true)
+
+
+func open_tower_sheet_for(tower: Tower) -> void:
+	if tower == null or not is_instance_valid(tower):
+		return
+	close_all()
+	_tower_sheet.open(tower)
+
+
+## Re-renders row values in place and updates the affordability dot.
+func refresh_upgrade_panel() -> void:
+	if _hud.is_upgrade_panel_open():
+		_hud.update_upgrade_panel(_battle.upgrade_rows())
+	refresh_upgrade_availability()
+
+
+func refresh_upgrade_availability() -> void:
+	if _hud != null and _battle != null:
+		_hud.set_upgrade_available(_battle.has_affordable_upgrade())
+
+
+## Re-applies the segmented speed state after an unlock or a speed change.
+func refresh_speed_control() -> void:
+	if _hud == null or _battle == null:
+		return
+	_hud.set_speed_state(_battle.get_sim_speed(), {
+		1.5: _battle.can_use_speed(1.5),
+		2.0: _battle.can_use_speed(2.0),
+	})
+
+
+## Tooling-only: shows the pause overlay for a screenshot capture.
+func debug_open_pause() -> void:
+	_on_pause_requested()
+
+
 # --- HUD request handlers ---------------------------------------------------------
+
+
+## Synchronous purchase used by UpgradePanel's hold-to-buy; returns SpendResult.
+func _purchase_upgrade(kind: StringName, row_id: StringName) -> SpendResult:
+	return _battle.buy_upgrade_row(kind, row_id)
+
+
+func _open_tower_row(row_id: StringName) -> void:
+	_battle.open_tower_row(row_id)
 
 
 func _on_build_requested(tower_id: StringName) -> void:
 	_build_sheet.build(tower_id)
+	refresh_upgrade_availability()
 
 
 func _on_tower_upgrade_requested() -> void:
@@ -126,6 +195,7 @@ func _on_tower_sell_requested() -> void:
 
 func _on_unit_place_requested(unit_id: StringName) -> void:
 	_unit_slots.place(unit_id)
+	refresh_upgrade_availability()
 
 
 func _on_unit_upgrade_requested() -> void:
@@ -133,7 +203,62 @@ func _on_unit_upgrade_requested() -> void:
 
 
 func _on_next_wave_requested() -> void:
-	_battle.request_next_wave()
+	if _battle.request_next_wave():
+		_hud.set_next_wave_uses(_battle.get_next_wave_uses())
+
+
+func _on_upgrade_open_requested() -> void:
+	open_upgrade_panel()
+
+
+func _on_upgrade_closed() -> void:
+	_battle.set_sheet_open(false)
+	refresh_upgrade_availability()
+
+
+func _on_speed_requested(speed: float) -> void:
+	if _battle.set_sim_speed(speed):
+		refresh_speed_control()
+
+
+func _on_debug_unlock_requested(unlock_id: StringName) -> void:
+	if _battle.debug_unlock_speed(unlock_id):
+		refresh_speed_control()
+		_hud.show_banner(LocaleService.t("battle.debug_unlocked", "Speed unlocked (debug)"))
+
+
+func _on_pause_requested() -> void:
+	if _battle.is_finished() or _hud.is_pause_open():
+		return
+	close_all()
+	_battle.set_paused(true)
+	_hud.show_pause(_pause_stats())
+	_hud.set_next_wave_uses(_battle.get_next_wave_uses())
+
+
+func _on_resume_requested() -> void:
+	_hud.hide_pause()
+	_battle.set_paused(false)
+
+
+func _on_restart_requested() -> void:
+	_battle.restart_run()
+
+
+func _on_abandon_requested() -> void:
+	_hud.hide_pause()
+	_battle.abandon_run()
+
+
+func _pause_stats() -> String:
+	var tree := _battle.get_tree_entity()
+	return "%s %d  ·  %s %d  ·  %s %s  ·  %s %d  ·  %s %d%%" % [
+		LocaleService.t("battle.wave", "Wave"), RunState.wave,
+		LocaleService.t("summary.kills", "Kills"), _battle.get_kills(),
+		LocaleService.t("summary.time", "Time"), TimeService.format_clock(int(_battle.get_elapsed())),
+		LocaleService.t("battle.cash", "Cash"), _battle.get_cash(),
+		LocaleService.t("battle.hp", "HP"), int(round(tree.hp_ratio() * 100.0)),
+	]
 
 
 # --- arena interaction ------------------------------------------------------------
@@ -163,6 +288,7 @@ func _on_cash_changed(amount: int) -> void:
 		_tower_sheet.refresh()
 	if _unit_slots != null and _unit_slots.is_open():
 		_unit_slots.refresh()
+	refresh_upgrade_panel()
 
 
 func _on_tree_hp_changed(current_hp: float, maximum: float) -> void:
@@ -205,6 +331,7 @@ func _on_wave_cleared(wave: int) -> void:
 
 func _on_prep_started(next_wave: int, duration: float) -> void:
 	_hud.show_countdown(duration, _battle.get_wave_table().skip_bonus(next_wave))
+	_hud.set_next_wave_uses(_battle.get_next_wave_uses())
 
 
 func _on_prep_skipped(bonus: int) -> void:

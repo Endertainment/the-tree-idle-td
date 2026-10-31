@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/battle_hud.gd" id="1_hud"]
 [ext_resource type="PackedScene" path="res://ui/components/currency_pill.tscn" id="2_cash_pill"]
@@ -9,6 +9,11 @@
 [ext_resource type="Texture2D" path="res://assets/art/battle/hud/tree_hp_fill.png" id="7_hp_fill"]
 [ext_resource type="Texture2D" path="res://assets/art/battle/hud/boss_hp_frame_9p.png" id="8_boss_frame"]
 [ext_resource type="Texture2D" path="res://assets/art/battle/hud/boss_hp_fill.png" id="9_boss_fill"]
+[ext_resource type="Script" path="res://scripts/battle/upgrade_panel.gd" id="10_upgrade_panel"]
+[ext_resource type="Script" path="res://scripts/battle/pause_menu.gd" id="11_pause_menu"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_star.png" id="13_star"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_lock.png" id="14_lock"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_gem.png" id="15_gem_icon"]
 
 [node name="BattleHUD" type="CanvasLayer"]
 process_mode = 3
@@ -21,43 +26,98 @@ anchor_right = 1.0
 offset_left = 24.0
 offset_top = 24.0
 offset_right = -24.0
-offset_bottom = 168.0
+offset_bottom = 312.0
 grow_horizontal = 2
 theme_type_variation = &"TopBar"
 
-[node name="Row" type="HBoxContainer" parent="TopBar"]
+[node name="VBox" type="VBoxContainer" parent="TopBar"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 10
 
-[node name="WaveLabel" type="Label" parent="TopBar/Row"]
+[node name="Row" type="HBoxContainer" parent="TopBar/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="WaveLabel" type="Label" parent="TopBar/VBox/Row"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
 text = "Wave 0 / 30"
 
-[node name="TimerLabel" type="Label" parent="TopBar/Row"]
+[node name="TimerLabel" type="Label" parent="TopBar/VBox/Row"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
 text = "00:00"
 
-[node name="Spacer" type="Control" parent="TopBar/Row"]
+[node name="Spacer" type="Control" parent="TopBar/VBox/Row"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SpeedButton" type="Button" parent="TopBar/Row"]
+[node name="PauseButton" type="Button" parent="TopBar/VBox/Row"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 theme_type_variation = &"SecondaryButton"
-disabled = true
-text = "1x"
+text = "II"
 
-[node name="CashPill" parent="TopBar/Row" instance=ExtResource("2_cash_pill")]
+[node name="CashPill" parent="TopBar/VBox/Row" instance=ExtResource("2_cash_pill")]
 unique_name_in_owner = true
 layout_mode = 2
 icon_texture = ExtResource("4_cash_icon")
 initial_amount = 50
+
+[node name="Row2" type="HBoxContainer" parent="TopBar/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SpeedBar" type="HBoxContainer" parent="TopBar/VBox/Row2"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Speed1x" type="Button" parent="TopBar/VBox/Row2/SpeedBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+theme_override_font_sizes/font_size = 24
+theme_override_constants/icon_max_width = 24
+theme_override_constants/h_separation = 4
+text = "1x"
+
+[node name="Speed15x" type="Button" parent="TopBar/VBox/Row2/SpeedBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+theme_override_font_sizes/font_size = 24
+theme_override_constants/icon_max_width = 24
+theme_override_constants/h_separation = 4
+text = "1.5x"
+icon = ExtResource("14_lock")
+icon_alignment = 2
+
+[node name="Speed2x" type="Button" parent="TopBar/VBox/Row2/SpeedBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+theme_override_font_sizes/font_size = 24
+theme_override_constants/icon_max_width = 24
+theme_override_constants/h_separation = 4
+text = "2x"
+icon = ExtResource("14_lock")
+icon_alignment = 2
+
+[node name="Spacer" type="Control" parent="TopBar/VBox/Row2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GemsPill" parent="TopBar/VBox/Row2" instance=ExtResource("2_cash_pill")]
+unique_name_in_owner = true
+layout_mode = 2
+icon_texture = ExtResource("15_gem_icon")
+initial_amount = 0
 
 [node name="BossBar" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -65,9 +125,9 @@ visible = false
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 24.0
-offset_top = 180.0
+offset_top = 332.0
 offset_right = -24.0
-offset_bottom = 330.0
+offset_bottom = 482.0
 grow_horizontal = 2
 theme_type_variation = &"PanelDark"
 
@@ -121,9 +181,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -320.0
-offset_top = 380.0
+offset_top = 520.0
 offset_right = 320.0
-offset_bottom = 570.0
+offset_bottom = 710.0
 grow_horizontal = 2
 theme_override_constants/separation = 10
 alignment = 1
@@ -150,9 +210,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -400.0
-offset_top = 600.0
+offset_top = 760.0
 offset_right = 400.0
-offset_bottom = 700.0
+offset_bottom = 860.0
 grow_horizontal = 2
 theme_type_variation = &"Chip"
 
@@ -224,6 +284,21 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_type_variation = &"GoldButton"
 text = "Upgrade"
+
+[node name="UpgradeDot" type="TextureRect" parent="UpgradeButton"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -44.0
+offset_top = -20.0
+offset_right = 4.0
+offset_bottom = 28.0
+mouse_filter = 2
+texture = ExtResource("13_star")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="BuildSheet" type="Control" parent="."]
 unique_name_in_owner = true
@@ -467,5 +542,209 @@ size_flags_horizontal = 3
 theme_type_variation = &"PrimaryButton"
 text = "Upgrade"
 
-[node name="UpgradeModal" parent="." instance=ExtResource("3_modal")]
+[node name="UpgradePanel" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("10_upgrade_panel")
+
+[node name="Scrim" type="ColorRect" parent="UpgradePanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.65)
+mouse_filter = 0
+
+[node name="Sheet" type="PanelContainer" parent="UpgradePanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -1240.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"PanelDark"
+
+[node name="Margin" type="MarginContainer" parent="UpgradePanel/Sheet"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="UpgradePanel/Sheet/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="HBoxContainer" parent="UpgradePanel/Sheet/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="UpgradePanel/Sheet/Margin/VBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Title"
+text = "Upgrades"
+
+[node name="CloseButton" type="Button" parent="UpgradePanel/Sheet/Margin/VBox/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 96)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+text = "Close"
+
+[node name="Tabs" type="HBoxContainer" parent="UpgradePanel/Sheet/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TabTree" type="Button" parent="UpgradePanel/Sheet/Margin/VBox/Tabs"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"SecondaryButton"
+text = "Tree"
+
+[node name="TabUnits" type="Button" parent="UpgradePanel/Sheet/Margin/VBox/Tabs"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"SecondaryButton"
+text = "Units"
+
+[node name="TabTowers" type="Button" parent="UpgradePanel/Sheet/Margin/VBox/Tabs"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"SecondaryButton"
+text = "Towers"
+
+[node name="RowsScroll" type="ScrollContainer" parent="UpgradePanel/Sheet/Margin/VBox"]
+custom_minimum_size = Vector2(0, 880)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Rows" type="VBoxContainer" parent="UpgradePanel/Sheet/Margin/VBox/RowsScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="EmptyLabel" type="Label" parent="UpgradePanel/Sheet/Margin/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Nothing to upgrade yet"
+horizontal_alignment = 1
+
+[node name="PauseOverlay" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("11_pause_menu")
+
+[node name="PauseScrim" type="ColorRect" parent="PauseOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.05, 0.03, 0.78)
+mouse_filter = 0
+
+[node name="PauseCenter" type="CenterContainer" parent="PauseOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PausePanel" type="PanelContainer" parent="PauseOverlay/PauseCenter"]
+custom_minimum_size = Vector2(820, 0)
+layout_mode = 2
+theme_type_variation = &"PanelDark"
+
+[node name="Margin" type="MarginContainer" parent="PauseOverlay/PauseCenter/PausePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 36
+
+[node name="VBox" type="VBoxContainer" parent="PauseOverlay/PauseCenter/PausePanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="PauseTitle" type="Label" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="PauseStats" type="Label" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ResumeButton" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 112)
+layout_mode = 2
+theme_type_variation = &"PrimaryButton"
+text = "Resume"
+
+[node name="RestartButton" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+text = "Restart"
+
+[node name="AbandonButton" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+text = "Abandon run"
+
+[node name="SettingsButton" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+theme_type_variation = &"GhostButton"
+text = "Settings"
+
+[node name="PauseConfirm" parent="PauseOverlay" instance=ExtResource("3_modal")]
+unique_name_in_owner = true
+
+[node name="LockModal" parent="." instance=ExtResource("3_modal")]
 unique_name_in_owner = true

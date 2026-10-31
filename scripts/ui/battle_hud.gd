@@ -1,9 +1,10 @@
-## BattleHUD — the M2 battle overlay.
+## BattleHUD — the battle overlay (M3: upgrade panel, speed, pause, next wave).
 ##
 ## Presentation only: it renders data passed in and emits requests; the
-## BattleHudController decides. M2 adds the boss bar (replaces the wave label
-## while a boss is alive), the tower sheet, the unit placement/upgrade sheet and
-## the 1x speed placeholder (M3 wires real speeds).
+## BattleHudController decides. M2 added the boss bar, tower/unit sheets; M3 adds
+## the generated UpgradePanel host, the 1x/1.5x/2x segmented speed control with
+## lock popup, the pause overlay and the next-wave hold guard. The upgrade rows
+## themselves live in UpgradePanel/UpgradeRow.
 class_name BattleHUD
 extends CanvasLayer
 
@@ -14,10 +15,19 @@ signal tower_upgrade_requested
 signal tower_sell_requested
 signal unit_place_requested(unit_id: StringName)
 signal unit_upgrade_requested
+signal speed_requested(speed: float)
+signal debug_unlock_requested(unlock_id: StringName)
+signal pause_requested
+signal resume_requested
+signal restart_requested
+signal abandon_requested
+signal upgrade_open_requested
+signal upgrade_closed
 
 const LOW_HP_RATIO := 0.3
 const HP_FILL_NORMAL := preload("res://assets/art/battle/hud/tree_hp_fill.png")
 const HP_FILL_LOW := preload("res://assets/art/battle/hud/tree_hp_fill_low.png")
+const LOCK_ICON := preload("res://assets/art/ui/icons/icon_lock.png")
 const DELTA_COLOR := Color(0.55, 0.95, 0.45, 1.0)
 const WARN_COLOR := Color(1.0, 0.58, 0.45, 1.0)
 const STAT_LABEL_WIDTH := 250.0
@@ -25,7 +35,11 @@ const STAT_LABEL_WIDTH := 250.0
 @onready var _wave_label: Label = %WaveLabel
 @onready var _timer_label: Label = %TimerLabel
 @onready var _cash_pill: CurrencyPill = %CashPill
-@onready var _speed_button: Button = %SpeedButton
+@onready var _gems_pill: CurrencyPill = %GemsPill
+@onready var _speed_1x: Button = %Speed1x
+@onready var _speed_15x: Button = %Speed15x
+@onready var _speed_2x: Button = %Speed2x
+@onready var _pause_button: Button = %PauseButton
 @onready var _boss_bar: PanelContainer = %BossBar
 @onready var _boss_name: Label = %BossName
 @onready var _boss_hp_label: Label = %BossHpLabel
@@ -39,7 +53,6 @@ const STAT_LABEL_WIDTH := 250.0
 @onready var _hp_bar: TextureProgressBar = %HpBar
 @onready var _hp_label: Label = %HpLabel
 @onready var _upgrade_button: Button = %UpgradeButton
-@onready var _upgrade_modal: Modal = %UpgradeModal
 @onready var _build_sheet: Control = %BuildSheet
 @onready var _build_scrim: ColorRect = %BuildScrim
 @onready var _build_rows: VBoxContainer = %BuildRows
@@ -60,8 +73,17 @@ const STAT_LABEL_WIDTH := 250.0
 @onready var _unit_reason: Label = %UnitReason
 @onready var _unit_upgrade: Button = %UnitUpgradeButton
 @onready var _unit_close: Button = %UnitClose
+@onready var _upgrade_panel: UpgradePanel = %UpgradePanel
+@onready var _pause_menu: PauseMenu = %PauseOverlay
+@onready var _lock_modal: Modal = %LockModal
 
 var _banner_tween: Tween
+var _pulse_tween: Tween
+var _next_wave_press_msec: int = 0
+var _next_wave_uses: int = 0
+var _pending_unlock_id: StringName = &""
+var _upgrade_dot: TextureRect
+var _unlocked_speeds: Dictionary = {}
 
 
 func _ready() -> void:
@@ -72,6 +94,7 @@ func _ready() -> void:
 	_unit_sheet.visible = false
 	_boss_bar.visible = false
 	_wave_label.visible = true
+	_upgrade_dot = get_node_or_null("%UpgradeDot") as TextureRect
 
 	_upgrade_button.text = _t("battle.upgrade", "Upgrade")
 	_build_title.text = _t("battle.build_title", "Build tower")
@@ -79,11 +102,16 @@ func _ready() -> void:
 	_tower_close.text = _t("battle.close", "Close")
 	_unit_close.text = _t("battle.close", "Close")
 	_next_wave_button.text = _t("battle.next_wave", "Next wave")
-	_speed_button.text = "1x"
-	_speed_button.disabled = true
-	_speed_button.tooltip_text = _t("battle.speed_soon", "Speed control arrives in M3")
+	_speed_1x.text = "1x"
+	_speed_15x.text = "1.5x"
+	_speed_2x.text = "2x"
+	_tooltip_speed(_speed_1x, _t("battle.speed_1x", "Normal speed"))
+	_tooltip_speed(_speed_15x, _t("battle.speed_15x", "1.5x speed"))
+	_tooltip_speed(_speed_2x, _t("battle.speed_2x", "2x speed"))
+	_pause_button.tooltip_text = _t("battle.pause", "Pause")
 
-	_next_wave_button.pressed.connect(_on_next_wave_pressed)
+	_next_wave_button.button_down.connect(_on_next_wave_down)
+	_next_wave_button.button_up.connect(_on_next_wave_up)
 	_upgrade_button.pressed.connect(_on_upgrade_pressed)
 	_build_close.pressed.connect(_on_dismiss_pressed)
 	_tower_close.pressed.connect(_on_dismiss_pressed)
@@ -94,6 +122,19 @@ func _ready() -> void:
 	_tower_upgrade.pressed.connect(_on_tower_upgrade_pressed)
 	_tower_sell.pressed.connect(_on_tower_sell_pressed)
 	_unit_upgrade.pressed.connect(_on_unit_upgrade_pressed)
+
+	_speed_1x.pressed.connect(_on_speed_pressed.bind(1.0))
+	_speed_15x.pressed.connect(_on_speed_pressed.bind(1.5))
+	_speed_2x.pressed.connect(_on_speed_pressed.bind(2.0))
+	_pause_button.pressed.connect(_on_pause_pressed)
+	_upgrade_button.resized.connect(_on_upgrade_button_resized)
+	_upgrade_panel.closed.connect(_on_upgrade_panel_closed)
+	_pause_menu.resume_requested.connect(_on_resume_pressed)
+	_pause_menu.restart_requested.connect(_on_restart_pressed)
+	_pause_menu.abandon_requested.connect(_on_abandon_pressed)
+	_lock_modal.confirmed.connect(_on_lock_confirmed)
+	set_speed_state(1.0, {1.5: false, 2.0: false})
+	set_upgrade_available(false)
 
 
 # --- top bar / tree ---------------------------------------------------------------
@@ -113,6 +154,11 @@ func set_elapsed(seconds: float) -> void:
 
 func set_cash(amount: int) -> void:
 	_cash_pill.set_amount(amount)
+
+
+## Gems are meta currency: shown for context, never spendable in battle.
+func set_gems(amount: int) -> void:
+	_gems_pill.set_amount(amount)
 
 
 func set_tree_hp(current_hp: float, maximum: float) -> void:
@@ -504,6 +550,157 @@ func _create_unit_row(data: UnitData, affordable: bool) -> PanelContainer:
 	return row
 
 
+# --- speed control, pause and the upgrade panel -----------------------------------
+
+
+## Highlights the active speed and marks locked segments with a lock icon.
+func set_speed_state(sim_speed: float, unlocked: Dictionary) -> void:
+	_unlocked_speeds = unlocked.duplicate()
+	_style_speed_button(_speed_1x, true, is_equal_approx(sim_speed, 1.0))
+	_style_speed_button(_speed_15x, bool(unlocked.get(1.5, false)), is_equal_approx(sim_speed, 1.5))
+	_style_speed_button(_speed_2x, bool(unlocked.get(2.0, false)), is_equal_approx(sim_speed, 2.0))
+
+
+func _style_speed_button(button: Button, unlocked: bool, active: bool) -> void:
+	button.theme_type_variation = &"GoldButton" if active else &"SecondaryButton"
+	button.icon = null if unlocked else LOCK_ICON
+	button.modulate = Color.WHITE if unlocked else Color(0.74, 0.74, 0.7, 1.0)
+
+
+func _on_speed_pressed(speed: float) -> void:
+	if speed <= 1.0 or bool(_unlocked_speeds.get(speed, false)):
+		speed_requested.emit(speed)
+		return
+	_pending_unlock_id = &"speed_2" if speed >= 2.0 else &"speed_1_5"
+	var level := 10 if speed >= 2.0 else 3
+	var title := "%s %s" % [_t("battle.speed", "Speed"), _format_speed(speed)]
+	var body := _t(
+		"battle.speed_locked_body",
+		"Unlocks at player level %d. The real unlock flow arrives in M4/M6."
+	) % level
+	var debug := App.is_debug_build()
+	_lock_modal.open(
+		title,
+		body,
+		_t("battle.debug_unlock", "Debug unlock") if debug else _t("common.ok", "OK"),
+		_t("common.cancel", "Cancel") if debug else ""
+	)
+
+
+func _on_lock_confirmed() -> void:
+	if _pending_unlock_id.is_empty():
+		return
+	var unlock_id := _pending_unlock_id
+	_pending_unlock_id = &""
+	debug_unlock_requested.emit(unlock_id)
+
+
+func _format_speed(speed: float) -> String:
+	if is_equal_approx(speed, roundf(speed)):
+		return "%dx" % int(roundf(speed))
+	return "%.1fx" % speed
+
+
+func _tooltip_speed(button: Button, text: String) -> void:
+	button.tooltip_text = text
+
+
+func _on_upgrade_button_resized() -> void:
+	_upgrade_button.pivot_offset = _upgrade_button.size * 0.5
+
+
+func show_pause(stats_text: String) -> void:
+	_pause_menu.open(stats_text)
+
+
+func hide_pause() -> void:
+	_pause_menu.close()
+
+
+func is_pause_open() -> bool:
+	return _pause_menu.is_open()
+
+
+func _on_pause_pressed() -> void:
+	pause_requested.emit()
+
+
+func _on_resume_pressed() -> void:
+	resume_requested.emit()
+
+
+func _on_restart_pressed() -> void:
+	restart_requested.emit()
+
+
+func _on_abandon_pressed() -> void:
+	abandon_requested.emit()
+
+
+## Opens the generated bottom sheet with a data snapshot for all three tabs.
+func show_upgrade_panel(data: Dictionary, active_tab: StringName = &"tree") -> void:
+	_upgrade_panel.open_panel(data, active_tab)
+
+
+## Updates row values in place (keeps a hold-to-buy press alive).
+func update_upgrade_panel(data: Dictionary) -> void:
+	_upgrade_panel.set_data(data)
+
+
+func hide_upgrade_panel() -> void:
+	_upgrade_panel.close_panel()
+
+
+func is_upgrade_panel_open() -> bool:
+	return _upgrade_panel.is_panel_open()
+
+
+func set_upgrade_purchase_handler(handler: Callable) -> void:
+	_upgrade_panel.set_purchase_handler(handler)
+
+
+func set_upgrade_open_handler(handler: Callable) -> void:
+	_upgrade_panel.set_open_handler(handler)
+
+
+## Notification dot + pulse while at least one upgrade is affordable.
+func set_upgrade_available(available: bool) -> void:
+	if _upgrade_dot != null:
+		_upgrade_dot.visible = available
+	if available:
+		if _pulse_tween != null and _pulse_tween.is_valid():
+			return
+		_upgrade_button.pivot_offset = _upgrade_button.size * 0.5
+		_pulse_tween = create_tween().set_loops()
+		_pulse_tween.tween_property(_upgrade_button, "scale", Vector2(1.04, 1.04), 0.5)
+		_pulse_tween.tween_property(_upgrade_button, "scale", Vector2.ONE, 0.5)
+	elif _pulse_tween != null:
+		_pulse_tween.kill()
+		_pulse_tween = null
+		_upgrade_button.scale = Vector2.ONE
+
+
+## Number of successful "Next wave" skips (TapGuard needs the first three held).
+func set_next_wave_uses(uses: int) -> void:
+	_next_wave_uses = uses
+
+
+func _on_next_wave_down() -> void:
+	_next_wave_press_msec = Time.get_ticks_msec()
+
+
+func _on_next_wave_up() -> void:
+	var held := float(Time.get_ticks_msec() - _next_wave_press_msec) / 1000.0
+	if TapGuard.allows(_next_wave_uses, held):
+		next_wave_requested.emit()
+	else:
+		show_banner(_t("battle.hold_to_skip", "Hold 0.25 s to skip the wait"))
+
+
+func _on_next_wave_pressed() -> void:
+	next_wave_requested.emit()
+
+
 # --- helpers ----------------------------------------------------------------------
 
 
@@ -574,17 +771,12 @@ func _on_unit_upgrade_pressed() -> void:
 	unit_upgrade_requested.emit()
 
 
-func _on_next_wave_pressed() -> void:
-	next_wave_requested.emit()
-
-
 func _on_upgrade_pressed() -> void:
-	_upgrade_modal.open(
-		_t("battle.upgrades", "Upgrades"),
-		_t("battle.upgrades_soon", "Tree upgrades arrive in M3"),
-		_t("common.ok", "OK"),
-		""
-	)
+	upgrade_open_requested.emit()
+
+
+func _on_upgrade_panel_closed() -> void:
+	upgrade_closed.emit()
 
 
 func _on_dismiss_pressed() -> void:

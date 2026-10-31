@@ -1,10 +1,12 @@
 ## BattleController — owns one battle run: arena, economy, waves and run flow.
 ##
 ## M2 split: HUD binding lives in BattleHudController, sheets in BuildSheet /
-## TowerSheet / UnitSlots, the enemy pool in EnemyManager, projectile + hit
-## resolution in CombatSystem and screenshot staging in BattlePreview. This script
-## keeps state and flow only: cash transactions, build/upgrade/sell, aura ticking,
-## boss tracking and run end.
+## TowerSheet / UnitSlots / UpgradePanel, the enemy pool in EnemyManager,
+## projectile + hit resolution in CombatSystem and screenshot staging in
+## BattlePreview. M3 adds the RunWallet transaction API (single cash mutation
+## point), Tree upgrade tracks and the pause/speed/abandon flow. This script keeps
+## state and flow only: cash transactions, build/upgrade/sell, aura ticking, boss
+## tracking and run end.
 ##
 ## All damage goes through DamageResolver; all numbers come from resources. Scene
 ## collaborators are addressed through public APIs, never `get_node("../../")`.
@@ -29,6 +31,9 @@ const FX_DEATH_TEXTURE := preload("res://assets/art/battle/fx/fx_death.png")
 @export var enemy_resources: Array[EnemyData] = []
 @export var tower_resources: Array[TowerData] = []
 @export var unit_resources: Array[UnitData] = []
+## Optional explicit track list; empty means "load every .tres from the upgrades
+## directory", which keeps adding a track data-only.
+@export var upgrade_tracks: Array[UpgradeTrack] = []
 @export var enemy_scene: PackedScene
 @export var tower_scene: PackedScene
 @export var unit_scene: PackedScene
@@ -64,6 +69,10 @@ var _aura_system: AuraSystem
 var _enemy_manager: EnemyManager
 var _combat: CombatSystem
 var _target_index: SpatialHash
+var _wallet: RunWallet
+var _upgrades: TreeUpgrades
+var _debug_overlay: DebugOverlay
+var _summary: RunSummary
 var _towers: Array[Tower] = []
 var _units: Array[Unit] = []
 var _unit_slots: Array[UnitSlot] = []
@@ -74,6 +83,8 @@ var _cleared_waves: int = 0
 var _elapsed: float = 0.0
 var _aura_timer: float = 0.0
 var _finished: bool = false
+var _paused: bool = false
+var _sheet_open: bool = false
 
 
 func _ready() -> void:
@@ -82,7 +93,10 @@ func _ready() -> void:
 	var run_seed := _fresh_seed()
 	RunState.reset(run_seed)
 	_run_rng = RngService.new_run_rng(run_seed)
-	RunState.cash = wave_table.starting_cash
+	_wallet = RunWallet.new(wave_table.starting_cash)
+	_upgrades = TreeUpgrades.new()
+	_upgrades.setup(_resolve_upgrade_tracks())
+	_sync_cash()
 
 	_target_index = SpatialHash.new(160.0)
 	_aura_system = AuraSystem.new()
@@ -98,6 +112,11 @@ func _ready() -> void:
 	_build_tree()
 	_build_systems()
 	_hud_controller.call(&"setup", self, _hud)
+	if App.is_debug_build():
+		_debug_overlay = DebugOverlay.new()
+		_debug_overlay.name = "DebugOverlay"
+		add_child(_debug_overlay)
+		_debug_overlay.setup(self)
 	EventBus.run_started.emit()
 	_wave_manager.start()
 
@@ -161,7 +180,30 @@ func get_unit_slot_scene() -> PackedScene:
 
 
 func get_cash() -> int:
-	return RunState.cash
+	return _wallet.get_cash()
+
+
+func get_wallet() -> RunWallet:
+	return _wallet
+
+
+func get_tree_upgrades() -> TreeUpgrades:
+	return _upgrades
+
+
+func get_run_id() -> String:
+	return RunState.run_id
+
+
+## The run summary node once the run has ended (null before that).
+func get_run_summary() -> RunSummary:
+	return _summary
+
+
+func get_boss_waves_cleared() -> int:
+	if wave_table == null or wave_table.boss_every <= 0:
+		return 0
+	return _cleared_waves / wave_table.boss_every
 
 
 func get_kills() -> int:
@@ -178,6 +220,27 @@ func get_elapsed() -> float:
 
 func get_spawned_count() -> int:
 	return _enemy_manager.get_spawned_total() if _enemy_manager != null else 0
+
+
+func get_projectile_count() -> int:
+	return _combat.get_active_count() if _combat != null else 0
+
+
+## Snapshot used by the F3 debug overlay; cheap and allocation-light per frame.
+func get_debug_snapshot() -> Dictionary:
+	return {
+		"fps": Engine.get_frames_per_second(),
+		"enemies": get_active_enemy_count(),
+		"projectiles": get_projectile_count(),
+		"cash": get_cash(),
+		"speed": get_sim_speed(),
+		"wave": RunState.wave,
+		"cleared": _cleared_waves,
+		"kills": _kills,
+		"paused": _paused,
+		"finished": _finished,
+		"upgrades": _upgrades.get_levels() if _upgrades != null else {},
+	}
 
 
 func get_cleared_waves() -> int:
@@ -252,21 +315,27 @@ func is_boss_bar_visible() -> bool:
 	return bool(_hud_controller.call(&"is_boss_bar_visible"))
 
 
-## Adds in-run cash and notifies the HUD. `amount` may be negative.
-func add_cash(amount: int) -> void:
-	RunState.cash = maxi(RunState.cash + amount, 0)
-	EventBus.run_cash_changed.emit(RunState.cash)
-	cash_changed.emit(RunState.cash)
+## Adds in-run cash from a legitimate source and notifies the HUD.
+## `amount` must be positive; spending uses try_spend_cash().
+func add_cash(amount: int, reason: StringName = &"grant") -> void:
+	_wallet.add(amount, reason)
+	_sync_cash()
 
 
-## Spends cash atomically; returns false (and changes nothing) when unaffordable.
-func spend_cash(amount: int) -> bool:
-	if amount < 0 or RunState.cash < amount:
-		return false
-	RunState.cash -= amount
+## Spends cash atomically and returns the typed result. The only spend path.
+func try_spend_cash(amount: int, reason: StringName) -> SpendResult:
+	var result := _wallet.try_spend(amount, reason)
+	if result.is_ok():
+		_sync_cash()
+	return result
+
+
+## Mirrors the wallet balance into RunState and notifies listeners. Cash is changed
+## only through RunWallet, so this is the single sync point.
+func _sync_cash() -> void:
+	RunState.cash = _wallet.get_cash()
 	EventBus.run_cash_changed.emit(RunState.cash)
 	cash_changed.emit(RunState.cash)
-	return true
 
 
 ## Builds a tower on a free pedestal. Public so tools/tests can drive a build.
@@ -274,7 +343,7 @@ func build_tower(pedestal: Pedestal, tower_id: StringName) -> bool:
 	if _finished or pedestal == null or not pedestal.is_buildable():
 		return false
 	var data := _tower_lookup.get(tower_id, null) as TowerData
-	if data == null or not spend_cash(data.build_cost):
+	if data == null or not try_spend_cash(data.build_cost, &"build_tower").is_ok():
 		return false
 	var tower := tower_scene.instantiate() as Tower
 	_towers_root.add_child(tower)
@@ -293,12 +362,13 @@ func upgrade_tower(tower: Tower) -> bool:
 	if _finished or tower == null or not is_instance_valid(tower) or not tower.can_upgrade():
 		return false
 	var cost := tower.upgrade_cost()
-	if not spend_cash(cost):
+	if not try_spend_cash(cost, &"upgrade_tower").is_ok():
 		return false
 	if not tower.upgrade():
-		add_cash(cost)
+		add_cash(cost, &"refund_tower")
 		return false
 	_refresh_auras()
+	_refresh_upgrade_panel()
 	return true
 
 
@@ -312,8 +382,9 @@ func sell_tower(tower: Tower) -> int:
 	tower.queue_free()
 	if pedestal != null:
 		pedestal.clear()
-	add_cash(refund)
+	add_cash(refund, &"sell_tower")
 	_refresh_auras()
+	_refresh_upgrade_panel()
 	return refund
 
 
@@ -325,7 +396,7 @@ func build_options() -> Array[Dictionary]:
 			continue
 		options.append({
 			"data": data,
-			"affordable": RunState.cash >= data.build_cost,
+			"affordable": _wallet.can_afford(data.build_cost),
 		})
 	return options
 
@@ -335,7 +406,7 @@ func place_unit(slot: UnitSlot, unit_id: StringName) -> bool:
 	if _finished or slot == null or not slot.is_unlocked() or not slot.is_empty():
 		return false
 	var data := _unit_lookup.get(unit_id, null) as UnitData
-	if data == null or not spend_cash(data.placement_cost):
+	if data == null or not try_spend_cash(data.placement_cost, &"place_unit").is_ok():
 		return false
 	var unit := unit_scene.instantiate() as Unit
 	_units_root.add_child(unit)
@@ -352,11 +423,12 @@ func upgrade_unit(unit: Unit) -> bool:
 	if _finished or unit == null or not is_instance_valid(unit) or not unit.can_upgrade():
 		return false
 	var cost := unit.upgrade_cost()
-	if not spend_cash(cost):
+	if not try_spend_cash(cost, &"upgrade_unit").is_ok():
 		return false
 	if not unit.upgrade():
-		add_cash(cost)
+		add_cash(cost, &"refund_unit")
 		return false
+	_refresh_upgrade_panel()
 	return true
 
 
@@ -368,7 +440,7 @@ func unit_options() -> Array[Dictionary]:
 			continue
 		options.append({
 			"data": data,
-			"affordable": RunState.cash >= data.placement_cost,
+			"affordable": _wallet.can_afford(data.placement_cost),
 		})
 	return options
 
@@ -390,14 +462,308 @@ func get_unit_slots() -> Array[UnitSlot]:
 	return _unit_slots
 
 
-func set_sheet_open(open: bool) -> void:
+# --- tree upgrades ---------------------------------------------------------------
+
+
+## Purchases one Tree upgrade level: eligibility check, wallet transaction, then
+## the level record. Returns the typed result so hold-to-buy can stop cleanly.
+func try_buy_tree_upgrade(track_id: StringName) -> SpendResult:
+	if _finished:
+		return SpendResult.failure(SpendResult.Code.INVALID_AMOUNT, "battle.run_over", 0, get_cash())
+	var check := _upgrades.can_buy(track_id, _wallet)
+	if not check.is_ok():
+		return check
+	var result := try_spend_cash(check.amount, &"tree_upgrade")
+	if not result.is_ok():
+		return result
+	_upgrades.record_purchase(track_id)
+	_tree.apply_stat_bonuses(_upgrades.get_bonuses())
+	_tree.play_level_up()
+	_refresh_upgrade_panel()
+	return result
+
+
+## Purchases one unit upgrade by panel row id (used by the Units tab).
+func try_buy_unit_upgrade(row_id: StringName) -> SpendResult:
+	var unit := _unit_for_row(row_id)
+	if unit == null:
+		return SpendResult.failure(SpendResult.Code.INVALID_AMOUNT, "battle.unknown_upgrade", 0, get_cash())
+	if not unit.can_upgrade():
+		return SpendResult.failure(SpendResult.Code.MAX_LEVEL, "battle.max_level", 0, get_cash())
+	var cost := unit.upgrade_cost()
+	var result := try_spend_cash(cost, &"upgrade_unit")
+	if not result.is_ok():
+		return result
+	if not unit.upgrade():
+		add_cash(cost, &"refund_unit")
+		return SpendResult.failure(SpendResult.Code.INVALID_AMOUNT, "battle.unknown_upgrade", cost, get_cash())
+	_refresh_upgrade_panel()
+	return result
+
+
+## Routes one UpgradePanel purchase attempt. `kind` is tree/unit; towers open a sheet.
+func buy_upgrade_row(kind: StringName, row_id: StringName) -> SpendResult:
+	match kind:
+		&"tree":
+			return try_buy_tree_upgrade(row_id)
+		&"unit":
+			return try_buy_unit_upgrade(row_id)
+		_:
+			return SpendResult.failure(SpendResult.Code.INVALID_AMOUNT, "battle.unknown_upgrade", 0, get_cash())
+
+
+## Opens the tower sheet for an UpgradePanel tower row.
+func open_tower_row(row_id: StringName) -> void:
+	var index := int(String(row_id).trim_prefix("tower_"))
+	if index < 0 or index >= _towers.size():
+		return
+	_hud_controller.call(&"open_tower_sheet_for", _towers[index])
+
+
+## True when any Tree/unit/tower upgrade is currently affordable (notification dot).
+func has_affordable_upgrade() -> bool:
+	if _finished:
+		return false
+	for track in _upgrades.get_tracks():
+		if _upgrades.can_buy(track.id, _wallet).is_ok():
+			return true
+	for unit in _units:
+		if unit.can_upgrade() and _wallet.can_afford(unit.upgrade_cost()):
+			return true
+	for tower in _towers:
+		if tower.can_upgrade() and _wallet.can_afford(tower.upgrade_cost()):
+			return true
+	return false
+
+
+## Row payloads for the three UpgradePanel tabs, generated from data.
+func upgrade_rows() -> Dictionary:
+	return {
+		"tree": tree_upgrade_rows(),
+		"units": unit_upgrade_rows(),
+		"towers": tower_upgrade_rows(),
+	}
+
+
+func tree_upgrade_rows() -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	for track in _upgrades.get_tracks():
+		var level := _upgrades.get_level(track.id)
+		var maxed := _upgrades.is_maxed(track.id)
+		var check := _upgrades.can_buy(track.id, _wallet)
+		rows.append({
+			"id": track.id,
+			"kind": &"tree",
+			"action": &"buy",
+			"icon": track.icon,
+			"name": LocaleService.t(track.name_key, track.name),
+			"level_text": "%s %d / %d" % [LocaleService.t("battle.level_short", "Lv"), level, track.max_level],
+			"current_text": track.format_value(track.value_at(level)),
+			"next_text": track.format_value(track.next_value(level)),
+			"delta_text": "+%s" % track.format_value(track.delta_at(level)),
+			"cost": check.amount,
+			"cost_text": str(check.amount),
+			"maxed": maxed,
+			"affordable": check.is_ok(),
+			"reason": _row_reason(check),
+			"hold": true,
+		})
+	return rows
+
+
+func unit_upgrade_rows() -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	for unit in _units:
+		if unit == null or not is_instance_valid(unit) or unit.data == null:
+			continue
+		var maxed := not unit.can_upgrade()
+		var cost := unit.upgrade_cost()
+		var affordable := not maxed and _wallet.can_afford(cost)
+		rows.append({
+			"id": _unit_row_id(unit),
+			"kind": &"unit",
+			"action": &"buy",
+			"icon": unit.data.icon,
+			"name": LocaleService.t(unit.data.display_name_key, unit.data.display_name),
+			"level_text": "%s %d / %d" % [
+				LocaleService.t("battle.level_short", "Lv"),
+				unit.level,
+				unit.data.levels.max_level if unit.data.levels != null else 10,
+			],
+			"current_text": _format_damage(unit.damage_at(unit.level)),
+			"next_text": _format_damage(unit.damage_at(unit.level + 1)),
+			"delta_text": "+%s %s" % [
+				_format_damage(unit.damage_at(unit.level + 1) - unit.damage_at(unit.level)),
+				LocaleService.t("battle.damage", "damage"),
+			],
+			"cost": cost,
+			"cost_text": str(cost),
+			"maxed": maxed,
+			"affordable": affordable,
+			"reason": _row_reason_for(maxed, affordable),
+			"hold": true,
+		})
+	return rows
+
+
+func tower_upgrade_rows() -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	for index in _towers.size():
+		var tower := _towers[index]
+		if tower == null or not is_instance_valid(tower) or tower.data == null:
+			continue
+		rows.append({
+			"id": StringName("tower_%d" % index),
+			"kind": &"tower",
+			"action": &"open",
+			"icon": tower.data.icon,
+			"name": LocaleService.t(tower.data.display_name_key, tower.data.display_name),
+			"level_text": "%s %d / %d" % [
+				LocaleService.t("battle.level_short", "Lv"),
+				tower.level,
+				tower.data.levels.max_level if tower.data.levels != null else 10,
+			],
+			"current_text": _format_damage(tower.damage_at(tower.level)),
+			"next_text": _format_damage(tower.damage_at(tower.level + 1)),
+			"delta_text": "",
+			"cost": tower.upgrade_cost(),
+			"cost_text": "",
+			"maxed": not tower.can_upgrade(),
+			"affordable": true,
+			"reason": "",
+			"hold": false,
+		})
+	return rows
+
+
+func _row_reason(result: SpendResult) -> String:
+	if result.is_ok():
+		return ""
+	return LocaleService.t(result.reason_key, result.reason_key)
+
+
+func _row_reason_for(maxed: bool, affordable: bool) -> String:
+	if maxed:
+		return LocaleService.t("battle.max_level", "Max level")
+	if not affordable:
+		return LocaleService.t("battle.not_enough_cash", "Not enough cash")
+	return ""
+
+
+func _format_damage(value: float) -> String:
+	return str(int(roundf(value)))
+
+
+func _unit_row_id(unit: Unit) -> StringName:
+	return StringName("unit_slot_%d" % unit.slot_index)
+
+
+func _unit_for_row(row_id: StringName) -> Unit:
+	for unit in _units:
+		if unit != null and is_instance_valid(unit) and _unit_row_id(unit) == row_id:
+			return unit
+	return null
+
+
+func _resolve_upgrade_tracks() -> Array[UpgradeTrack]:
+	if not upgrade_tracks.is_empty():
+		return upgrade_tracks
+	return TreeUpgrades.load_tracks()
+
+
+# --- speed, pause and run control ------------------------------------------------
+
+
+## True when the player may select `speed` (level gates; debug unlock overrides).
+func can_use_speed(speed: float) -> bool:
+	if speed <= 1.0:
+		return true
+	var level := int(GameState.player.get("level", 1))
+	if speed >= 2.0:
+		return GameState.is_unlocked(&"speed_2") or level >= 10
+	return GameState.is_unlocked(&"speed_1_5") or level >= 3
+
+
+## Changes the battle simulation speed. Returns false when the speed is locked.
+func set_sim_speed(speed: float) -> bool:
+	if _finished or not can_use_speed(speed):
+		return false
+	_clock.set_speed(speed)
+	return true
+
+
+func get_sim_speed() -> float:
+	return _clock.get_speed()
+
+
+## Debug-only feature unlock (settings popup button, debug builds only).
+func debug_unlock_speed(unlock_id: StringName) -> bool:
+	if not App.is_debug_build():
+		return false
+	GameState.unlock(unlock_id)
+	SaveService.save(GameState.to_dict())
+	_hud_controller.call(&"refresh_speed_control")
+	return true
+
+
+## Freezes/resumes the battle simulation without pausing the SceneTree, so HUD
+## tweens, the pause overlay and input stay responsive (spec 13.4).
+func set_paused(value: bool) -> void:
 	if _finished:
 		return
-	_clock.set_paused(open)
+	_paused = value
+	if value:
+		_clock.set_paused(true)
+	elif not _sheet_open:
+		_clock.set_paused(false)
 
 
-func request_next_wave() -> void:
-	_wave_manager.skip_prep()
+func is_paused() -> bool:
+	return _paused
+
+
+func get_next_wave_uses() -> int:
+	return GameState.get_next_wave_uses()
+
+
+## Restarts the run from a fresh scene (pause overlay Restart, after confirm).
+func restart_run() -> void:
+	SceneRouter.reload()
+
+
+## Ends the run early. Rewards use the same cleared-wave math as a defeat, so
+## abandoning at wave N pays exactly what dying at wave N pays (acceptance M3).
+func abandon_run() -> void:
+	if _finished:
+		return
+	_finish_run(true)
+
+
+func set_sheet_open(open: bool) -> void:
+	_sheet_open = open
+	if _finished:
+		return
+	if open:
+		_clock.set_paused(true)
+	elif not _paused:
+		_clock.set_paused(false)
+
+
+## Skips the prep break. Returns false when there is no prep to skip.
+func request_next_wave() -> bool:
+	if _finished or _paused:
+		return false
+	var bonus := _wave_manager.skip_prep()
+	if bonus < 0:
+		return false
+	GameState.record_next_wave_use()
+	return true
+
+
+## Re-renders the upgrade panel and its notification dot (safe when closed).
+func _refresh_upgrade_panel() -> void:
+	if _hud_controller != null and _hud_controller.has_method("refresh_upgrade_panel"):
+		_hud_controller.call(&"refresh_upgrade_panel")
 
 
 func show_range_indicator(center: Vector2, radius: float) -> void:
@@ -445,6 +811,16 @@ func debug_open_build_sheet(pedestal: Pedestal) -> void:
 
 func debug_open_unit_sheet(slot: UnitSlot) -> void:
 	_hud_controller.call(&"debug_open_unit_sheet", slot)
+
+
+## Tooling-only: opens the upgrade panel (screenshot captures use it).
+func debug_open_upgrade_panel(tab: StringName = &"tree") -> void:
+	_hud_controller.call(&"open_upgrade_panel", tab)
+
+
+## Tooling-only: shows the pause overlay for a screenshot capture.
+func debug_open_pause() -> void:
+	_hud_controller.call(&"debug_open_pause")
 
 
 # --- arena construction ----------------------------------------------------------
@@ -635,16 +1011,20 @@ func _on_tree_hp_changed(current_hp: float, maximum: float) -> void:
 	tree_hp_changed.emit(current_hp, maximum)
 
 
-func _finish_run() -> void:
+## Ends the run. `abandoned` skips the collapse animation but uses the same
+## cleared-wave rewards as a defeat.
+func _finish_run(abandoned: bool = false) -> void:
 	if _finished:
 		return
 	_finished = true
+	_paused = false
+	_sheet_open = false
 	_hud_controller.call(&"close_all")
 	_clock.set_paused(true)
 	_wave_manager.stop()
 	EventBus.run_ended.emit(_cleared_waves)
 	var delay := 0.0
-	if _tree.is_defeated():
+	if not abandoned and _tree.is_defeated():
 		_tree.play_collapse(COLLAPSE_SECONDS)
 		delay = COLLAPSE_SECONDS
 	if delay > 0.0:
@@ -660,7 +1040,16 @@ func _show_summary() -> void:
 		return
 	var summary := run_summary_scene.instantiate() as RunSummary
 	add_child(summary)
-	summary.setup(_cleared_waves, _kills, _leaks, _elapsed)
+	_summary = summary
+	summary.setup(
+		_cleared_waves,
+		_kills,
+		_leaks,
+		_elapsed,
+		RunState.run_id,
+		get_boss_waves_cleared(),
+		get_cash()
+	)
 
 
 # --- helpers ----------------------------------------------------------------------

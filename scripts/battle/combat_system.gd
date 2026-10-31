@@ -111,6 +111,15 @@ func _get_projectile() -> Projectile:
 	return _create_projectile()
 
 
+## Number of projectiles currently in flight (debug overlay / perf probe).
+func get_active_count() -> int:
+	var count := 0
+	for projectile in _pool:
+		if is_instance_valid(projectile) and projectile.active:
+			count += 1
+	return count
+
+
 func _create_projectile() -> Projectile:
 	var projectile := _projectile_scene.instantiate() as Projectile
 	_projectiles_root.add_child(projectile)
