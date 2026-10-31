@@ -181,7 +181,7 @@ func _on_welcome_claimed() -> void:
 	var coins := OfflineService.claim()
 	if coins > 0:
 		AudioBus.play_ui(&"ui_claim")
-	_show_toast(LocaleService.t("menu.offline_claimed", "+%d coins from the forest") % coins)
+	_show_toast(LocaleService.t("menu.offline_claimed", "+%d coins from the forest") % LocaleService.format_number(coins))
 
 
 ## Shows one combined toast for features unlocked by the last level-up(s).

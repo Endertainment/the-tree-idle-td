@@ -208,7 +208,7 @@ func is_boss_bar_visible() -> bool:
 
 func show_countdown(duration: float, skip_bonus: int) -> void:
 	_countdown_box.visible = true
-	_next_wave_button.text = "%s  +%d" % [_t("battle.next_wave", "Next wave"), skip_bonus]
+	_next_wave_button.text = "%s  +%s" % [_t("battle.next_wave", "Next wave"), LocaleService.format_number(skip_bonus)]
 	set_countdown(int(ceil(duration)))
 
 
@@ -327,7 +327,7 @@ func _create_build_row(data: TowerData, affordable: bool) -> PanelContainer:
 	var build_button := Button.new()
 	build_button.theme_type_variation = &"PrimaryButton"
 	build_button.custom_minimum_size = Vector2(240, 104)
-	build_button.text = "%s %d" % [_t("battle.build", "Build"), data.build_cost]
+	build_button.text = "%s %s" % [_t("battle.build", "Build"), LocaleService.format_number(data.build_cost)]
 	build_button.disabled = not affordable
 	build_button.pressed.connect(_on_build_row_pressed.bind(data.id))
 	layout.add_child(build_button)
@@ -396,9 +396,9 @@ func show_tower_sheet(info: Dictionary) -> void:
 	var maxed := bool(info.get("maxed", false))
 	var affordable := bool(info.get("affordable", false))
 	var cost := int(info.get("upgrade_cost", 0))
-	_tower_upgrade.text = "%s  %d" % [_t("battle.upgrade", "Upgrade"), cost]
+	_tower_upgrade.text = "%s  %s" % [_t("battle.upgrade", "Upgrade"), LocaleService.format_number(cost)]
 	_tower_upgrade.disabled = maxed or not affordable
-	_tower_sell.text = "%s  +%d" % [_t("battle.sell", "Sell"), int(info.get("sell_value", 0))]
+	_tower_sell.text = "%s  +%s" % [_t("battle.sell", "Sell"), LocaleService.format_number(int(info.get("sell_value", 0)))]
 	_tower_reason.text = ""
 	_tower_reason.modulate = WARN_COLOR
 	if maxed:
@@ -476,7 +476,7 @@ func show_unit_sheet(info: Dictionary) -> void:
 		var maxed := bool(info.get("maxed", false))
 		var affordable := bool(info.get("affordable", false))
 		_unit_upgrade.visible = true
-		_unit_upgrade.text = "%s  %d" % [_t("battle.upgrade", "Upgrade"), int(info.get("upgrade_cost", 0))]
+		_unit_upgrade.text = "%s  %s" % [_t("battle.upgrade", "Upgrade"), LocaleService.format_number(int(info.get("upgrade_cost", 0)))]
 		_unit_upgrade.disabled = maxed or not affordable
 		_unit_reason.modulate = WARN_COLOR
 		if maxed:
@@ -545,7 +545,7 @@ func _create_unit_row(data: UnitData, affordable: bool) -> PanelContainer:
 	var place_button := Button.new()
 	place_button.theme_type_variation = &"PrimaryButton"
 	place_button.custom_minimum_size = Vector2(220, 104)
-	place_button.text = "%s %d" % [_t("battle.place", "Place"), data.placement_cost]
+	place_button.text = "%s %s" % [_t("battle.place", "Place"), LocaleService.format_number(data.placement_cost)]
 	place_button.disabled = not affordable
 	place_button.pressed.connect(_on_unit_place_pressed.bind(data.id))
 	layout.add_child(place_button)

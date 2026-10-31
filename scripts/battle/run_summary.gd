@@ -110,11 +110,11 @@ func _scaled(amount: int, stat: StringName) -> int:
 
 
 func _animate_reward(label: Label, prefix: String, amount: int) -> void:
-	label.text = "%s +%d" % [prefix, amount]
+	label.text = "%s +%s" % [prefix, LocaleService.format_number(amount)]
 	var tween := create_tween()
 	tween.tween_method(
 		func(value: float) -> void:
-			label.text = "%s +%d" % [prefix, int(roundf(value))],
+			label.text = "%s +%s" % [prefix, LocaleService.format_number(int(roundf(value)))],
 		0.0,
 		float(amount),
 		COUNT_UP_SECONDS

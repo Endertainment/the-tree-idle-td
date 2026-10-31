@@ -348,7 +348,7 @@ func _cost_text(node: MagicaNode) -> String:
 	if node.coin_cost > 0:
 		parts.append("%s %s" % [LocaleService.format_number(node.coin_cost), LocaleService.t("common.coins_short", "coins")])
 	if node.gem_cost > 0:
-		parts.append("%d %s" % [node.gem_cost, LocaleService.t("common.gems_short", "gems")])
+		parts.append("%s %s" % [LocaleService.format_number(node.gem_cost), LocaleService.t("common.gems_short", "gems")])
 	return " + ".join(parts) if not parts.is_empty() else LocaleService.t("common.free", "Free")
 
 

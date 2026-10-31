@@ -256,7 +256,7 @@ menu.nav.home,Home,Головна
 menu.nav.missions,Missions,Завдання
 menu.nav.shop,Shop,Магазин
 menu.nav.workshop,Workshop,Майстерня
-menu.offline_claimed,+%d coins from the forest,+%d монет із лісу
+menu.offline_claimed,+%s coins from the forest,+%s монет із лісу
 menu.open,Open,Відкрити
 menu.settings,Settings,Налаштування
 menu.shop_soon,Shop arrives with M6,Магазин з’явиться в M6
