@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_map"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/arena/arena_bg.png" id="2_bg"]
+
+[resource]
+script = ExtResource("1_map")
+id = &"forest_clearing"
+arena_size = Vector2(1080.0, 1920.0)
+background = ExtResource("2_bg")
+lane_north_points = PackedVector2Array(250.0, 240.0, 300.0, 400.0, 380.0, 540.0, 420.0, 690.0, 430.0, 790.0, 470.0, 900.0, 540.0, 1040.0)
+lane_south_points = PackedVector2Array(830.0, 1740.0, 780.0, 1580.0, 700.0, 1440.0, 660.0, 1290.0, 650.0, 1190.0, 610.0, 1080.0, 540.0, 940.0)
+pedestal_positions = PackedVector2Array(870.0, 980.0, 773.34, 1213.34, 540.0, 1310.0, 306.66, 1213.34, 210.0, 980.0, 306.66, 746.66, 540.0, 650.0, 773.34, 746.66)
+unit_slot_positions = PackedVector2Array(656.67, 1016.67, 423.33, 1016.67, 423.33, 783.33, 656.67, 783.33)

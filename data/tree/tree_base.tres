@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TreeData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_data.gd" id="1_tree"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/projectiles/proj_bolt.png" id="2_bolt"]
+
+[resource]
+script = ExtResource("1_tree")
+id = &"tree_base"
+max_hp = 1200.0
+damage = 12.0
+attack_interval = 1.1
+range = 640.0
+projectile_speed = 900.0
+crit_chance = 0.05
+crit_multiplier = 2.0
+projectile_texture = ExtResource("2_bolt")

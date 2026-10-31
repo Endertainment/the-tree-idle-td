@@ -1,0 +1,213 @@
+[gd_resource type="Resource" script_class="WaveTable" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/wave_table.gd" id="1_0uc8u"]
+[ext_resource type="Script" path="res://scripts/data/wave_definition.gd" id="2_s1ojx"]
+[ext_resource type="Script" path="res://scripts/data/spawn_group.gd" id="3_t02of"]
+
+[sub_resource type="Resource" id="Resource_xcg3o"]
+script = ExtResource("3_t02of")
+count = 4
+
+[sub_resource type="Resource" id="Resource_e4lmi"]
+script = ExtResource("3_t02of")
+lane = &"south"
+count = 3
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_t6txx"]
+script = ExtResource("2_s1ojx")
+groups = Array[ExtResource("3_t02of")]([SubResource("Resource_xcg3o"), SubResource("Resource_e4lmi")])
+
+[sub_resource type="Resource" id="Resource_dm1kr"]
+script = ExtResource("3_t02of")
+count = 4
+interval = 0.75
+
+[sub_resource type="Resource" id="Resource_bdt3l"]
+script = ExtResource("3_t02of")
+lane = &"south"
+count = 4
+interval = 0.75
+start_delay = 0.3
+
+[sub_resource type="Resource" id="Resource_wqkwx"]
+script = ExtResource("2_s1ojx")
+index = 2
+groups = Array[ExtResource("3_t02of")]([SubResource("Resource_dm1kr"), SubResource("Resource_bdt3l")])
+hp_multiplier = 1.16
+speed_multiplier = 1.01
+cash_multiplier = 1.09
+
+[sub_resource type="Resource" id="Resource_3uyw7"]
+script = ExtResource("3_t02of")
+interval = 0.72
+
+[sub_resource type="Resource" id="Resource_xqho5"]
+script = ExtResource("3_t02of")
+lane = &"south"
+count = 4
+interval = 0.72
+start_delay = 0.3
+
+[sub_resource type="Resource" id="Resource_o3ilg"]
+script = ExtResource("2_s1ojx")
+index = 3
+groups = Array[ExtResource("3_t02of")]([SubResource("Resource_3uyw7"), SubResource("Resource_xqho5")])
+hp_multiplier = 1.3456
+speed_multiplier = 1.02
+cash_multiplier = 1.1881
+
+[sub_resource type="Resource" id="Resource_5n41w"]
+script = ExtResource("3_t02of")
+interval = 0.7
+
+[sub_resource type="Resource" id="Resource_84rgn"]
+script = ExtResource("3_t02of")
+lane = &"south"
+interval = 0.7
+start_delay = 0.3
+
+[sub_resource type="Resource" id="Resource_6tqk2"]
+script = ExtResource("2_s1ojx")
+index = 4
+groups = Array[ExtResource("3_t02of")]([SubResource("Resource_5n41w"), SubResource("Resource_84rgn")])
+hp_multiplier = 1.5609
+speed_multiplier = 1.03
+cash_multiplier = 1.295
+
+[sub_resource type="Resource" id="Resource_er6tb"]
+script = ExtResource("3_t02of")
+count = 3
+interval = 0.45
+
+[sub_resource type="Resource" id="Resource_2fau3"]
+script = ExtResource("3_t02of")
+lane = &"south"
+count = 3
+interval = 0.45
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_lsw7e"]
+script = ExtResource("3_t02of")
+count = 3
+interval = 0.45
+start_delay = 0.1
+
+[sub_resource type="Resource" id="Resource_lcqni"]
+script = ExtResource("3_t02of")
+lane = &"south"
+count = 3
+interval = 0.45
+start_delay = 0.1
+
+[sub_resource type="Resource" id="Resource_hvguy"]
+script = ExtResource("2_s1ojx")
+index = 5
+groups = Array[ExtResource("3_t02of")]([SubResource("Resource_er6tb"), SubResource("Resource_2fau3"), SubResource("Resource_lsw7e"), SubResource("Resource_lcqni")])
+hp_multiplier = 1.8106
+speed_multiplier = 1.04
+cash_multiplier = 1.4116
+
+[sub_resource type="Resource" id="Resource_m21r1"]
+script = ExtResource("3_t02of")
+count = 7
+interval = 0.68
+
+[sub_resource type="Resource" id="Resource_cipo4"]
+script = ExtResource("3_t02of")
+lane = &"south"
+count = 6
+interval = 0.68
+start_delay = 0.3
+
+[sub_resource type="Resource" id="Resource_iu6xm"]
+script = ExtResource("2_s1ojx")
+index = 6
+groups = Array[ExtResource("3_t02of")]([SubResource("Resource_m21r1"), SubResource("Resource_cipo4")])
+hp_multiplier = 2.1003
+speed_multiplier = 1.05
+cash_multiplier = 1.5386
+
+[sub_resource type="Resource" id="Resource_xi6bx"]
+script = ExtResource("3_t02of")
+count = 7
+interval = 0.65
+
+[sub_resource type="Resource" id="Resource_fgvni"]
+script = ExtResource("3_t02of")
+lane = &"south"
+count = 7
+interval = 0.65
+start_delay = 0.3
+
+[sub_resource type="Resource" id="Resource_kq3p2"]
+script = ExtResource("2_s1ojx")
+index = 7
+groups = Array[ExtResource("3_t02of")]([SubResource("Resource_xi6bx"), SubResource("Resource_fgvni")])
+hp_multiplier = 2.4364
+speed_multiplier = 1.06
+cash_multiplier = 1.6771
+
+[sub_resource type="Resource" id="Resource_dpyr6"]
+script = ExtResource("3_t02of")
+count = 8
+interval = 0.62
+
+[sub_resource type="Resource" id="Resource_gdqil"]
+script = ExtResource("3_t02of")
+lane = &"south"
+count = 7
+interval = 0.62
+start_delay = 0.3
+
+[sub_resource type="Resource" id="Resource_0iwfs"]
+script = ExtResource("2_s1ojx")
+index = 8
+groups = Array[ExtResource("3_t02of")]([SubResource("Resource_dpyr6"), SubResource("Resource_gdqil")])
+hp_multiplier = 2.8262
+speed_multiplier = 1.07
+cash_multiplier = 1.828
+
+[sub_resource type="Resource" id="Resource_aqmkt"]
+script = ExtResource("3_t02of")
+count = 8
+interval = 0.6
+
+[sub_resource type="Resource" id="Resource_mbql7"]
+script = ExtResource("3_t02of")
+lane = &"south"
+count = 8
+interval = 0.6
+start_delay = 0.3
+
+[sub_resource type="Resource" id="Resource_oobfv"]
+script = ExtResource("2_s1ojx")
+index = 9
+groups = Array[ExtResource("3_t02of")]([SubResource("Resource_aqmkt"), SubResource("Resource_mbql7")])
+hp_multiplier = 3.2784
+speed_multiplier = 1.08
+cash_multiplier = 1.9926
+
+[sub_resource type="Resource" id="Resource_u00fq"]
+script = ExtResource("3_t02of")
+count = 18
+interval = 0.5
+
+[sub_resource type="Resource" id="Resource_oe2qi"]
+script = ExtResource("3_t02of")
+lane = &"south"
+count = 18
+interval = 0.5
+start_delay = 2.0
+
+[sub_resource type="Resource" id="Resource_s287u"]
+script = ExtResource("2_s1ojx")
+index = 10
+groups = Array[ExtResource("3_t02of")]([SubResource("Resource_u00fq"), SubResource("Resource_oe2qi")])
+hp_multiplier = 3.803
+speed_multiplier = 1.09
+cash_multiplier = 2.1719
+
+[resource]
+script = ExtResource("1_0uc8u")
+waves = Array[ExtResource("2_s1ojx")]([SubResource("Resource_t6txx"), SubResource("Resource_wqkwx"), SubResource("Resource_o3ilg"), SubResource("Resource_6tqk2"), SubResource("Resource_hvguy"), SubResource("Resource_iu6xm"), SubResource("Resource_kq3p2"), SubResource("Resource_0iwfs"), SubResource("Resource_oobfv"), SubResource("Resource_s287u")])

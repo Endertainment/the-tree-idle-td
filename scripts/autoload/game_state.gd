@@ -10,6 +10,7 @@ var player: Dictionary = {
 	"avatar_id": "avatar_01",
 	"level": 1,
 	"xp": 0,
+	"best_wave": 0,
 }
 
 var wallet: Dictionary = {

@@ -21,3 +21,10 @@ signal run_started()
 
 ## Emitted when a run ends. `waves` is the highest cleared wave.
 signal run_ended(waves: int)
+
+## Emitted for every resolved hit (spec 4.7). `target_id` 0 is the Tree;
+## enemies use their run-local uid.
+signal damage_dealt(source_id: StringName, target_id: int, amount: float, is_crit: bool, is_kill: bool)
+
+## Emitted when the in-run cash balance changes. Not a meta wallet currency.
+signal run_cash_changed(amount: int)

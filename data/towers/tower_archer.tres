@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TowerData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_archer_l1.png" id="2_l1"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_archer_l2.png" id="3_l2"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_archer_l3.png" id="4_l3"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/projectiles/proj_arrow.png" id="5_arrow"]
+
+[resource]
+script = ExtResource("1_tower")
+id = &"tower_archer"
+display_name_key = "tower.archer"
+description_key = "tower.archer.desc"
+icon = ExtResource("2_l1")
+tier_textures = Array[Texture2D]([ExtResource("2_l1"), ExtResource("3_l2"), ExtResource("4_l3")])
+build_cost = 60
+damage = 14.0
+attack_interval = 0.9
+range = 300.0
+projectile_speed = 900.0
+projectile_texture = ExtResource("5_arrow")
+crit_chance = 0.0
+crit_multiplier = 2.0
+sell_refund_pct = 0.7
