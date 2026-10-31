@@ -1,0 +1,115 @@
+# The Tree API — manual collection (VS Code REST Client / JetBrains HTTP client)
+# Start the server first:  cd server; .venv\Scripts\python -m uvicorn app.main:app --port 8000
+@base = http://127.0.0.1:8000
+
+### Health
+GET {{base}}/healthz
+
+### Guest login
+# @name guest
+POST {{base}}/v1/auth/guest
+Content-Type: application/json
+
+{
+  "device_id": "manual-device-0001",
+  "nickname": "Manual Tester",
+  "avatar_id": "avatar_02"
+}
+
+### Profile
+GET {{base}}/v1/profile
+Authorization: Bearer {{guest.response.body.access_token}}
+
+### Save (create)
+PUT {{base}}/v1/save
+Authorization: Bearer {{guest.response.body.access_token}}
+Idempotency-Key: manual-save-0001
+Content-Type: application/json
+
+{
+  "revision": 0,
+  "payload": {
+    "player": {"nickname": "Manual Tester", "avatar_id": "avatar_02", "level": 13, "xp": 10},
+    "wallet": {"coins": 100, "gems": 5, "stones": 0},
+    "stats": {"best_wave": 12}
+  },
+  "checksum": "sha256:manual"
+}
+
+### Save (read)
+GET {{base}}/v1/save
+Authorization: Bearer {{guest.response.body.access_token}}
+
+### Remote config
+GET {{base}}/v1/config
+Authorization: Bearer {{guest.response.body.access_token}}
+
+### Leaderboard — weekly
+GET {{base}}/v1/leaderboard?scope=weekly&limit=100
+Authorization: Bearer {{guest.response.body.access_token}}
+
+### Leaderboard — all-time
+GET {{base}}/v1/leaderboard?scope=all_time&limit=50
+Authorization: Bearer {{guest.response.body.access_token}}
+
+### Current tournament
+GET {{base}}/v1/tournaments/current
+Authorization: Bearer {{guest.response.body.access_token}}
+
+### Tournament standings
+GET {{base}}/v1/tournaments/current/standings
+Authorization: Bearer {{guest.response.body.access_token}}
+
+### Submit a plausible run
+POST {{base}}/v1/tournaments/current/submit
+Authorization: Bearer {{guest.response.body.access_token}}
+Content-Type: application/json
+
+{
+  "run_seed": "manual-seed-1",
+  "waves": 18,
+  "duration_s": 950,
+  "damage": 2_400_000,
+  "cash": 31_000,
+  "playtime_s": 950
+}
+
+### Submit an impossible run (expect 422 run_rejected)
+POST {{base}}/v1/tournaments/current/submit
+Authorization: Bearer {{guest.response.body.access_token}}
+Content-Type: application/json
+
+{
+  "run_seed": "manual-cheat",
+  "waves": 100,
+  "duration_s": 60,
+  "damage": 999999999,
+  "cash": 9999999
+}
+
+### Analytics batch
+POST {{base}}/v1/events
+Authorization: Bearer {{guest.response.body.access_token}}
+Content-Type: application/json
+
+{
+  "events": [
+    {"name": "app_open", "props": {"version": "0.8.0"}},
+    {"name": "screen_view", "props": {"screen": "leaderboard"}}
+  ]
+}
+
+### Purchase verify (stub)
+POST {{base}}/v1/purchases/verify
+Authorization: Bearer {{guest.response.body.access_token}}
+Content-Type: application/json
+
+{
+  "product_id": "thetree.gems_100",
+  "purchase_token": "manual-stub-token-1",
+  "platform": "google"
+}
+
+### AdMob SSV (signature computed with ADMOB_SSV_SECRET, see SPEC.md)
+# signature = HMAC-SHA256(secret, "txn|user|custom|reward|timestamp")
+POST {{base}}/v1/ads/ssv?transaction_id=txn-1&user_id=user-1&custom_data=free_cash&reward_amount=150&timestamp=1761800000&signature=replace-me

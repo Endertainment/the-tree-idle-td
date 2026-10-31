@@ -1,0 +1,35 @@
+# Local development stack. Docker did not exist in the build environment, so
+# this file is provided for machines that have it; README.md also documents the
+# venv + uvicorn fallback that was actually verified.
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:////data/thetree.db
+      JWT_SECRET: change-me-in-production
+      ADMOB_SSV_SECRET: dev-ssv-secret
+      PURCHASES_MODE: stub
+    volumes:
+      - thetree-data:/data
+    restart: unless-stopped
+
+  # Optional PostgreSQL for local parity with Neon. Uncomment `depends_on` above
+  # and set DATABASE_URL=postgresql+asyncpg://thetree:thetree@db:5432/thetree
+  # to exercise the PostgreSQL path.
+  db:
+    image: postgres:16-alpine
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_USER: thetree
+      POSTGRES_PASSWORD: thetree
+      POSTGRES_DB: thetree
+    ports:
+      - "5432:5432"
+    volumes:
+      - thetree-pg:/var/lib/postgresql/data
+
+volumes:
+  thetree-data:
+  thetree-pg:

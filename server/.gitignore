@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+*.db
+*.db-journal
+.env
+.env.*
+!.env.example
+e2e.db
+e2e_server.err
+e2e_server.log
