@@ -383,3 +383,65 @@ coins for M4; the game is no longer a wave-5 wall. This deliberately deviates fr
 spec §4.5/§4.8 numbers, so the spec tables are not rewritten beyond the explicitly
 requested §4.10 starting-cash fix; `BALANCE.md` mirrors the launch data. If a
 later design pass wants the spec numbers back, only the `.tres` files change.
+
+## ADR-022 — Save schema v2 keeps the v1 filename and adds a checksum (M4a)
+
+**Status:** accepted (M4a)
+
+**Context:** M3 shipped a small `schema_version: 1` payload (player, wallet,
+unlocks, wallet log) with an atomic write and `.bak`, but no checksum and no
+sections for the M4 systems. Spec 8.2 requires a checksum, a full document and a
+`migrate()` with a test per version step. Renaming the file would orphan every
+M3 save, and the player ID is a UUID that must survive.
+
+**Decision:** keep the paths `user://save_v1.json` / `.bak` / `.tmp` (the `v1`
+is a historical filename, not the schema number) and bump the in-file schema to
+**2**. The document contains every spec 8.2 section plus two local extras:
+`is_onboarded` (first-launch state from 8.3) and `applied_rewards` (the run-id
+reward ledger; without it a crash after a summary could pay twice). The
+transaction log stays in memory only — it is support/debug data, not progress.
+`migrate_v1_to_v2()` is a pure static function (input not mutated); v1's
+`player.best_wave` moves to `stats.best_wave`, the v1 unlock dictionary becomes a
+sorted id array, and missing sections are filled with spec defaults. The checksum
+is SHA-256 over a canonical JSON (whole floats normalised to ints so a JSON
+round-trip hashes identically) with the `checksum` field excluded. Settings are
+mirrored into the document but `settings.cfg` remains authoritative on load,
+because it is written by the live sliders before any save flush.
+
+**Consequences:** M3 saves load and upgrade transparently, with one
+`save_migrated v1 -> v2` log and an immediate v2 write. A corrupt main file (bad
+JSON or checksum mismatch) loads `.bak` and sets `recovered_from_backup`; when
+both fail the game starts a fresh profile instead of crashing. Any future schema
+change adds a `migrate_vN_to_vN+1` function and a test, and the filename stays as
+is unless a full reset is intended.
+
+## ADR-023 — One ModifierService source per meta system (M4a)
+
+**Status:** accepted (M4a); applies to cards/magica in M4b
+
+**Context:** M3's `TreeEntity` applied in-run Tree bonuses internally and
+`ModifierService` existed but was unused. M4 adds workshop (24 tracks), then
+cards and Magica; the milestone's watch-out is "one aggregation point — if a stat
+is modified in two places, the milestone failed".
+
+**Decision:** every permanent system (workshop now, cards/magica later) registers
+one source id in `ModifierService` (`&"workshop"`), and in-run Tree tracks are
+published as a run-scoped source (`&"run_tree_upgrades"`) by
+`BattleController._apply_run_modifiers()`. Entities never read a second bonus
+dictionary: Tree, Tower and Unit ask `ModifierService.get_stat(stat, base)` for
+damage, attack speed, crit chance/damage, range, regen, max HP, starting cash,
+shield and reductions; cash/coin/XP/discount are read at the run/reward edges.
+Tracks declared `mul` register `{mul: total}`, `add` tracks register
+`{add: total}`, so additive stacking and multiplicative stacking both stay
+explicit in data. Caps (crit 60 %, damage reduction 60 %, card drop 15 %,
+track caps) are enforced at the resource and read site with `get_stat_clamped`.
+`BattleController._exit_tree()` removes its run source so a run cannot leak
+bonuses into the menu or the next run.
+
+**Consequences:** adding a meta stat is a `.tres` plus one read site, and a test
+can register a fake source without a battle. The trade-off is that a stat with a
+meaningful base (e.g. attack speed as a multiplier) must pass a sensible base
+(1.0) rather than 0, and run-scoped sources must be cleaned up by their owner.
+Cards and Magica must use `add_source`/`remove_source` and never mutate stats
+directly; if a future system needs per-frame values, it registers the source
+again instead of caching a second aggregation.

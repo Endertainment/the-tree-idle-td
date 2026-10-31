@@ -3,6 +3,63 @@
 All notable changes are recorded per milestone. The project follows semantic
 versioning for tags; unreleased work stays under `[Unreleased]`.
 
+## [Unreleased] — M4a (meta progression and persistence, part 1)
+
+### Added
+
+- `SaveService` schema **v2**: full spec 8.2 document (player, wallet, stats,
+  workshop, magica, cards, missions, unlocks, settings, shop, ads) plus local
+  `is_onboarded`/`applied_rewards` extras, a canonical SHA-256 checksum, atomic
+  temp write + rename, `.bak` fallback on parse/checksum failure, a pure
+  `migrate_v1_to_v2()` (tested) and a one-time `save_migrated` log. Autosave is
+  event-driven: run start/end, wave cleared (<=1/s debounce), meta purchase,
+  scene change, app pause and `WM_CLOSE_REQUEST` (immediate flush).
+- `WalletService` (`scripts/economy/wallet_service.gd`, after `GameState`) and
+  the pure `MetaWallet`: the only coin/gem/stones mutation path, `add(bundle)`,
+  `try_spend(kind, amount, reason) -> SpendResult`, a bounded 50-entry transaction
+  log, `currency_changed`/`meta_purchased` events and debounced save-on-mutation.
+  Run summary, "Double coins" and the debug grant now go through it; no direct
+  `GameState.wallet[...]` writes remain.
+- `LevelService` + `UnlockService`: XP curve `round(120 * 1.18^(level-1))`,
+  multi-level grants, `level_up` event, the spec 6.2 unlock table in
+  `data/progression/levels.tres` (levels 1–20) and `is_unlocked(id)`. The menu
+  shows a combined unlock toast on the next visit. Speed 1.5x/2x gates now read
+  `UnlockService`; debug grants still require a debug build.
+- Workshop: `WorkshopTrack` resource + **24 `.tres`** in `data/workshop/`
+  (4 categories × 6, spec 6.3 effects/caps/base costs, cost `base * 1.18^level`
+  rounded to 5, max 50), `WorkshopModel` (pure) and `WorkshopService`
+  (level_of/cost_of/try_buy, ModifierService aggregation by declared add/mul).
+  New `scenes/menu/workshop.tscn`: header coin balance, 4 category tabs,
+  scrollable generated rows (icon, name, `Lv x/50`, current → next, cost, Buy),
+  insufficient-funds shake + "Need N more coins" toast, purchase flash and an
+  optional SFX hook. The `Upgrades` nav tab routes to it (`SceneRouter.workshop`).
+- One modifier pipeline: workshop, in-run Tree tracks and future cards/magica all
+  register sources in `ModifierService`; Tree/Tower/Unit read `get_stat()` for
+  damage, attack speed, crit, regen, range, max HP, starting cash, shield,
+  damage reduction, cash/coin/XP gain and in-run discount. Run-scoped sources are
+  removed when the battle scene exits.
+- Tests: **+7** (29 total) — v1→v2 migration, checksum-corrupt → `.bak` fallback,
+  wallet never negative + 50-entry log, workshop 24-track cost curve/caps, unlock
+  gates at levels 3/4/10/12, modifier stacking/caps, and a `tree_damage` 10
+  profile showing +40 % starting DPS. New `tools/persistence_proof.gd` buys a
+  workshop level, reloads with a fresh SaveService and asserts it survived.
+- Preview: `docs/preview/m4_workshop.png`.
+
+### Changed
+
+- `GameState` is now the profile container only: wallet mutations through
+  `WalletService`, XP through `LevelService`, workshop levels through
+  `WorkshopService`. `to_dict()` returns the full v2 document; `best_wave` moves
+  to `stats` (kept in sync on the runtime player for existing HUD code).
+- Battle run cash/coin/XP flows apply the workshop tracks (starting cash, cash
+  gain, wave-clear bonus, in-run discount, coin/XP gain) — all no-ops at level 0,
+  so M3/M3.1 battle balance numbers are unchanged.
+
+### Verification (M4a)
+
+- `check_project` exit 0 · unit tests 29/29 · scene smoke 18/18 ·
+  battle smoke PASS (53 checks) · persistence proof PASS (16 checks).
+
 ## [0.4.1-m3] — 2026-10-31
 
 ### Changed (M3.1 balance pass)
