@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_tank_walk_00.png" id="2_walk0"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_tank_walk_01.png" id="3_walk1"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_tank_walk_02.png" id="4_walk2"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_tank_walk_03.png" id="5_walk3"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_tank_walk_04.png" id="6_walk4"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_tank_walk_05.png" id="7_walk5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tank"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_walk0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_walk1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_walk2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_walk3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_walk4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_walk5")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 7.0
+}]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"tank"
+display_name_key = "enemy.tank"
+display_name = "Tank"
+max_hp = 220.0
+speed = 40.0
+armor = 5.0
+leak_damage_pct = 8.0
+cash_reward = 8
+frames = SubResource("SpriteFrames_tank")
+scale = 1.05
+spawn_weight = 1.0
+is_boss = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/battle_hud.gd" id="1_hud"]
 [ext_resource type="PackedScene" path="res://ui/components/currency_pill.tscn" id="2_cash_pill"]
@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_shield.png" id="5_shield"]
 [ext_resource type="Texture2D" path="res://assets/art/battle/hud/tree_hp_frame_9p.png" id="6_hp_frame"]
 [ext_resource type="Texture2D" path="res://assets/art/battle/hud/tree_hp_fill.png" id="7_hp_fill"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/hud/boss_hp_frame_9p.png" id="8_boss_frame"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/hud/boss_hp_fill.png" id="9_boss_fill"]
 
 [node name="BattleHUD" type="CanvasLayer"]
 process_mode = 3
@@ -25,13 +27,13 @@ theme_type_variation = &"TopBar"
 
 [node name="Row" type="HBoxContainer" parent="TopBar"]
 layout_mode = 2
-theme_override_constants/separation = 24
+theme_override_constants/separation = 20
 
 [node name="WaveLabel" type="Label" parent="TopBar/Row"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Wave 0 / 10"
+text = "Wave 0 / 30"
 
 [node name="TimerLabel" type="Label" parent="TopBar/Row"]
 unique_name_in_owner = true
@@ -43,11 +45,75 @@ text = "00:00"
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="SpeedButton" type="Button" parent="TopBar/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+disabled = true
+text = "1x"
+
 [node name="CashPill" parent="TopBar/Row" instance=ExtResource("2_cash_pill")]
 unique_name_in_owner = true
 layout_mode = 2
 icon_texture = ExtResource("4_cash_icon")
 initial_amount = 50
+
+[node name="BossBar" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 180.0
+offset_right = -24.0
+offset_bottom = 330.0
+grow_horizontal = 2
+theme_type_variation = &"PanelDark"
+
+[node name="VBox" type="VBoxContainer" parent="BossBar"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="BossBar/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="BossName" type="Label" parent="BossBar/VBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "Troll Warden"
+
+[node name="Spacer" type="Control" parent="BossBar/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BossHpLabel" type="Label" parent="BossBar/VBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "100%"
+
+[node name="BossArmor" type="Label" parent="BossBar/VBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Armor 0"
+
+[node name="BossHpBar" type="TextureProgressBar" parent="BossBar/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+texture_under = ExtResource("8_boss_frame")
+texture_progress = ExtResource("9_boss_fill")
+nine_patch_stretch = true
+stretch_margin_left = 24
+stretch_margin_top = 24
+stretch_margin_right = 24
+stretch_margin_bottom = 24
 
 [node name="CountdownBox" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
@@ -55,9 +121,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -320.0
-offset_top = 210.0
+offset_top = 380.0
 offset_right = 320.0
-offset_bottom = 400.0
+offset_bottom = 570.0
 grow_horizontal = 2
 theme_override_constants/separation = 10
 alignment = 1
@@ -84,9 +150,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -400.0
-offset_top = 420.0
+offset_top = 600.0
 offset_right = 400.0
-offset_bottom = 520.0
+offset_bottom = 700.0
 grow_horizontal = 2
 theme_type_variation = &"Chip"
 
@@ -186,7 +252,8 @@ layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -440.0
+offset_top = -900.0
+grow_horizontal = 2
 grow_vertical = 0
 theme_type_variation = &"PanelDark"
 
@@ -223,6 +290,182 @@ text = "Close"
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
+
+[node name="TowerSheet" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="TowerScrim" type="ColorRect" parent="TowerSheet"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+mouse_filter = 0
+
+[node name="Panel" type="PanelContainer" parent="TowerSheet"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -700.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"PanelDark"
+
+[node name="Margin" type="MarginContainer" parent="TowerSheet/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="TowerSheet/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="HBoxContainer" parent="TowerSheet/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TowerTitle" type="Label" parent="TowerSheet/Panel/Margin/VBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Title"
+text = "Archer Tower"
+
+[node name="TowerClose" type="Button" parent="TowerSheet/Panel/Margin/VBox/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 96)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+text = "Close"
+
+[node name="TowerStats" type="VBoxContainer" parent="TowerSheet/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TowerReason" type="Label" parent="TowerSheet/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = ""
+
+[node name="Actions" type="HBoxContainer" parent="TowerSheet/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TowerUpgradeButton" type="Button" parent="TowerSheet/Panel/Margin/VBox/Actions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PrimaryButton"
+text = "Upgrade"
+
+[node name="TowerSellButton" type="Button" parent="TowerSheet/Panel/Margin/VBox/Actions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"SecondaryButton"
+text = "Sell"
+
+[node name="UnitSheet" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="UnitScrim" type="ColorRect" parent="UnitSheet"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+mouse_filter = 0
+
+[node name="Panel" type="PanelContainer" parent="UnitSheet"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -820.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"PanelDark"
+
+[node name="Margin" type="MarginContainer" parent="UnitSheet/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="UnitSheet/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="UnitSheet/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="UnitTitle" type="Label" parent="UnitSheet/Panel/Margin/VBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Title"
+text = "Place unit"
+
+[node name="UnitClose" type="Button" parent="UnitSheet/Panel/Margin/VBox/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 96)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+text = "Close"
+
+[node name="UnitRows" type="VBoxContainer" parent="UnitSheet/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="UnitReason" type="Label" parent="UnitSheet/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = ""
+
+[node name="Actions" type="HBoxContainer" parent="UnitSheet/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="UnitUpgradeButton" type="Button" parent="UnitSheet/Panel/Margin/VBox/Actions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PrimaryButton"
+text = "Upgrade"
 
 [node name="UpgradeModal" parent="." instance=ExtResource("3_modal")]
 unique_name_in_owner = true

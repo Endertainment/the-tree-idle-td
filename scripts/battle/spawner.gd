@@ -2,7 +2,8 @@
 ##
 ## Groups run sequentially; each group waits for its own start_delay and then
 ## emits one spawn per interval. The Spawner owns no scene nodes: BattleController
-## instantiates enemies and tells WaveManager when they are alive/gone.
+## instantiates enemies and tells WaveManager when they are alive/gone. Boss groups
+## carry their own HP multiplier (x1.6 of the wave-scaled HP).
 class_name Spawner
 extends Node
 
@@ -11,7 +12,8 @@ signal spawn_requested(
 	lane: StringName,
 	hp_multiplier: float,
 	speed_multiplier: float,
-	cash_multiplier: float
+	cash_multiplier: float,
+	group_hp_multiplier: float
 )
 
 var _wave: WaveDefinition
@@ -88,5 +90,6 @@ func _spawn(group: SpawnGroup) -> void:
 		lane,
 		_wave.hp_multiplier,
 		_wave.speed_multiplier,
-		_wave.cash_multiplier
+		_wave.cash_multiplier,
+		group.hp_multiplier
 	)

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="UnitData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/unit_data.gd" id="1_unit"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/units/unit_archer_idle.png" id="2_idle"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/projectiles/proj_arrow.png" id="3_proj"]
+[ext_resource type="Resource" path="res://data/levels/unit_levels.tres" id="4_levels"]
+
+[resource]
+script = ExtResource("1_unit")
+id = &"unit_archer"
+display_name_key = "unit.archer"
+display_name = "Archer"
+description_key = "unit.archer.desc"
+description = "Fast single-target guardian."
+icon = ExtResource("2_idle")
+sprite_texture = ExtResource("2_idle")
+placement_cost = 50
+damage = 8.0
+attack_interval = 0.8
+range = 360.0
+projectile_speed = 950.0
+projectile_texture = ExtResource("3_proj")
+crit_chance = 0.0
+crit_multiplier = 2.0
+target_mode = &"first"
+levels = ExtResource("4_levels")

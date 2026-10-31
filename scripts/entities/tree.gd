@@ -1,22 +1,15 @@
 ## Tree — the run's core structure: HP, auto-attack and leak damage.
 ##
-## The Tree targets the enemy furthest along a lane once per attack interval and
-## asks BattleController (via shot_requested) to fire a pooled homing projectile.
-## Leak damage also goes through DamageResolver, so no HP formula lives here.
+## The Tree targets the enemy furthest along a lane through the shared spatial
+## hash (no scene-tree scans) and asks BattleController to fire a pooled homing
+## projectile. Totem auras can buff its damage and attack speed. Leak damage also
+## goes through DamageResolver, so no HP formula lives here.
 class_name TreeEntity
 extends Node2D
 
 signal defeated
 signal hp_changed(current_hp: float, max_hp: float)
-signal shot_requested(
-	origin: Vector2,
-	target: Enemy,
-	speed: float,
-	damage: float,
-	crit_chance: float,
-	crit_multiplier: float,
-	texture: Texture2D
-)
+signal shot_requested(origin: Vector2, target: Enemy, shot: Dictionary)
 
 var data: TreeData
 var max_hp: float = 0.0
@@ -24,17 +17,26 @@ var hp: float = 0.0
 
 var _clock: BattleClock
 var _rng: RandomNumberGenerator
+var _target_index: SpatialHash
 var _cooldown: float = 0.0
 var _defeated: bool = false
+var _external_damage: float = 0.0
+var _external_speed: float = 0.0
 
 @onready var _sprite: Sprite2D = $Sprite
 
 
 ## Applies the tree profile. Called by BattleController before the wave starts.
-func setup(tree_data: TreeData, clock: BattleClock, rng: RandomNumberGenerator) -> void:
+func setup(
+	tree_data: TreeData,
+	clock: BattleClock,
+	rng: RandomNumberGenerator,
+	target_index: SpatialHash
+) -> void:
 	data = tree_data
 	_clock = clock
 	_rng = rng
+	_target_index = target_index
 	max_hp = data.max_hp
 	hp = max_hp
 	hp_changed.emit(hp, max_hp)
@@ -72,6 +74,29 @@ func apply_damage(amount: float, is_crit: bool, source_id: StringName) -> void:
 		defeated.emit()
 
 
+func effective_damage() -> float:
+	if data == null:
+		return 0.0
+	return data.damage * (1.0 + _external_damage)
+
+
+func effective_interval() -> float:
+	if data == null:
+		return 0.0
+	return maxf(data.attack_interval / (1.0 + _external_speed), 0.1)
+
+
+## Resets accumulated Totem buffs (called once per AuraSystem pass).
+func set_external_buffs(damage_add: float, attack_speed_add: float) -> void:
+	_external_damage = maxf(damage_add, 0.0)
+	_external_speed = maxf(attack_speed_add, 0.0)
+
+
+func add_external_buff(damage_add: float, attack_speed_add: float) -> void:
+	_external_damage += maxf(damage_add, 0.0)
+	_external_speed += maxf(attack_speed_add, 0.0)
+
+
 func _physics_process(delta: float) -> void:
 	if _defeated or data == null:
 		return
@@ -84,31 +109,30 @@ func _physics_process(delta: float) -> void:
 	var target := _find_target()
 	if target == null:
 		return
-	shot_requested.emit(
-		global_position,
-		target,
-		data.projectile_speed,
-		data.damage,
-		data.crit_chance,
-		data.crit_multiplier,
-		data.projectile_texture
-	)
-	_cooldown = data.attack_interval
+	shot_requested.emit(global_position, target, _build_shot())
+	_cooldown = effective_interval()
 
 
 func _find_target() -> Enemy:
-	var best: Enemy = null
-	var best_progress := -1.0
-	for node in get_tree().get_nodes_in_group(&"enemies"):
-		var enemy := node as Enemy
-		if enemy == null or not enemy.is_alive():
-			continue
-		if global_position.distance_to(enemy.global_position) > data.range:
-			continue
-		if enemy.progress_ratio > best_progress:
-			best_progress = enemy.progress_ratio
-			best = enemy
-	return best
+	if _target_index == null:
+		return null
+	var candidates := _target_index.query_radius(global_position, data.range)
+	return TargetingStrategy.select(&"first", global_position, candidates)
+
+
+func _build_shot() -> Dictionary:
+	return {
+		"damage": effective_damage(),
+		"crit_chance": data.crit_chance,
+		"crit_multiplier": data.crit_multiplier,
+		"projectile_speed": data.projectile_speed,
+		"texture": data.projectile_texture,
+		"splash_radius": 0.0,
+		"splash_min_ratio": 1.0,
+		"slow_pct": 0.0,
+		"slow_duration": 0.0,
+		"source_id": &"tree",
+	}
 
 
 ## Collapse feedback used by the controller on defeat (scale + fade placeholder).

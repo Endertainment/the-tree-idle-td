@@ -1,19 +1,22 @@
 ## Enemy — one walking enemy moving along a lane curve.
 ##
-## The node owns its lane progress (px), samples the baked Curve2D every physics
-## tick and applies a seeded lateral offset so a wave never looks like a single
-## file. Damage is applied only through DamageResolver results handed in by
-## projectiles; this script never rolls crits or armor itself.
+## M2: pooled (never freed during a run), carries a StatusEffectComponent for
+## slows, accepts a shaman speed aura, flashes on hit and emits hp_changed so the
+## boss bar can bind to it. Damage still only arrives as a DamageResolver result;
+## this script never rolls crits or armor itself.
 class_name Enemy
 extends Node2D
 
 signal died(enemy: Enemy)
 signal leaked(enemy: Enemy)
+signal hit_taken(enemy: Enemy, amount: float, is_crit: bool, source_id: StringName)
+signal hp_changed(current_hp: float, max_hp: float)
 
 const LEAK_RATIO := 0.995
 const HP_BAR_LINGER := 2.0
 const HP_BAR_FADE := 3.0
-
+const FLASH_SECONDS := 0.08
+const HIT_FLASH_SHADER := preload("res://ui/shaders/hit_flash.gdshader")
 
 var data: EnemyData
 var enemy_uid: int = 0
@@ -33,11 +36,15 @@ var _cash_multiplier: float = 1.0
 var _clock: BattleClock
 var _finished: bool = false
 var _hp_bar_time: float = 0.0
+var _aura_speed_multiplier: float = 1.0
+var _flash_time: float = 0.0
+var _flash_material: ShaderMaterial
 
 @onready var _sprite: AnimatedSprite2D = $Sprite
 @onready var _shadow: Sprite2D = $Shadow
 @onready var _hp_bar: Node2D = $HpBar
 @onready var _hp_fill: Sprite2D = $HpBar/Fill
+@onready var _status: StatusEffectComponent = $StatusEffect
 
 
 func _ready() -> void:
@@ -45,9 +52,12 @@ func _ready() -> void:
 	set_physics_process(false)
 	_hp_bar.visible = false
 	_hp_bar.modulate.a = 0.0
+	_flash_material = ShaderMaterial.new()
+	_flash_material.shader = HIT_FLASH_SHADER
+	_sprite.material = _flash_material
 
 
-## Configures the enemy. Must be called after add_child() so @onready refs exist.
+## Configures (or reconfigures a pooled) enemy. Must be called after add_child().
 func setup(
 	p_data: EnemyData,
 	p_lane: Path2D,
@@ -71,13 +81,23 @@ func setup(
 	_curve = p_lane.curve
 	_lane_length = maxf(_curve.get_baked_length(), 0.001)
 	_progress = 0.0
+	progress_ratio = 0.0
 	_lateral = lateral
+	_finished = false
+	_aura_speed_multiplier = 1.0
+	_flash_time = 0.0
+	_status.reset()
 	if data.frames != null:
 		_sprite.sprite_frames = data.frames
 		if data.frames.has_animation(&"walk"):
 			_sprite.play(&"walk")
 	_sprite.scale = Vector2.ONE * data.scale
 	_shadow.scale = Vector2.ONE * data.scale
+	_hp_bar.visible = false
+	_hp_bar.modulate.a = 0.0
+	_hp_bar.position.y = -76.0 * maxf(data.scale, 0.8)
+	_set_flash(0.0)
+	visible = true
 	_update_position()
 	set_physics_process(true)
 
@@ -86,22 +106,73 @@ func is_alive() -> bool:
 	return not _finished and hp > 0.0
 
 
+## True while this instance sits in the pool (dead, leaked or never used).
+func is_pooled() -> bool:
+	return _finished
+
+
 ## Applies one already-resolved hit. Returns true when this hit killed the enemy.
 func apply_damage(amount: float, is_crit: bool, source_id: StringName) -> bool:
 	if _finished:
 		return false
-	hp = maxf(hp - maxf(amount, 0.0), 0.0)
+	var applied := maxf(amount, 0.0)
+	hp = maxf(hp - applied, 0.0)
+	_flash_time = FLASH_SECONDS
+	_set_flash(1.0)
 	_show_hp_bar()
-	var is_kill := hp <= 0.0
-	EventBus.damage_dealt.emit(source_id, enemy_uid, amount, is_crit, is_kill)
-	if is_kill:
+	hit_taken.emit(self, applied, is_crit, source_id)
+	hp_changed.emit(hp, max_hp)
+	if hp <= 0.0:
 		_die()
-	return is_kill
+		return true
+	return false
+
+
+## Applies (or refreshes) a slow from a StatusData resource.
+func apply_status(status: StatusData) -> void:
+	if status == null or _finished:
+		return
+	_status.apply_slow(status.slow_pct, status.duration)
+
+
+func apply_slow(pct: float, duration: float) -> void:
+	if _finished:
+		return
+	_status.apply_slow(pct, duration)
+
+
+func is_slowed() -> bool:
+	return _status.is_slowed()
 
 
 ## Cash value of a kill for this wave, rounded to a whole coin.
 func cash_value() -> int:
 	return int(round(float(data.cash_reward) * _cash_multiplier))
+
+
+## Aura speed multiplier contributed by shamans (1.0 = no aura).
+func set_aura_speed_multiplier(multiplier: float) -> void:
+	_aura_speed_multiplier = maxf(multiplier, 0.1)
+
+
+func get_aura_speed_multiplier() -> float:
+	return _aura_speed_multiplier
+
+
+## Current movement multiplier (status only; aura is applied separately).
+func movement_multiplier() -> float:
+	return _status.speed_multiplier()
+
+
+## Returns the instance to the controller pool: hidden, inert, status cleared.
+func release() -> void:
+	_finished = true
+	set_physics_process(false)
+	visible = false
+	_aura_speed_multiplier = 1.0
+	_status.reset()
+	_hp_bar.visible = false
+	_hp_bar.modulate.a = 0.0
 
 
 func _physics_process(delta: float) -> void:
@@ -110,10 +181,12 @@ func _physics_process(delta: float) -> void:
 	var dt: float = _clock.scaled(delta) if _clock != null else delta
 	if dt <= 0.0:
 		return
-	_progress = minf(_progress + speed * dt, _lane_length)
+	_status.tick(dt)
+	_progress = minf(_progress + speed * _aura_speed_multiplier * _status.speed_multiplier() * dt, _lane_length)
 	progress_ratio = _progress / _lane_length
 	_update_position()
 	_tick_hp_bar(dt)
+	_tick_flash(dt)
 	if progress_ratio >= LEAK_RATIO:
 		_leak()
 
@@ -146,13 +219,25 @@ func _tick_hp_bar(delta: float) -> void:
 			_hp_bar.visible = false
 
 
+func _tick_flash(delta: float) -> void:
+	if _flash_time <= 0.0:
+		return
+	_flash_time = maxf(_flash_time - delta, 0.0)
+	_set_flash(_flash_time / FLASH_SECONDS)
+
+
+func _set_flash(amount: float) -> void:
+	if _flash_material == null:
+		return
+	_flash_material.set_shader_parameter(&"flash_amount", clampf(amount, 0.0, 1.0))
+
+
 func _die() -> void:
 	if _finished:
 		return
 	_finished = true
 	set_physics_process(false)
 	died.emit(self)
-	queue_free()
 
 
 func _leak() -> void:
@@ -161,4 +246,3 @@ func _leak() -> void:
 	_finished = true
 	set_physics_process(false)
 	leaked.emit(self)
-	queue_free()

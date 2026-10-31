@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="TowerData" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="2_modifier"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_totem_l1.png" id="3_l1"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_totem_l2.png" id="4_l2"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_totem_l3.png" id="5_l3"]
+[ext_resource type="Resource" path="res://data/levels/tower_levels.tres" id="6_levels"]
+
+[sub_resource type="Resource" id="ModifierData_damage"]
+script = ExtResource("2_modifier")
+stat = &"damage"
+multiplier = 0.15
+
+[sub_resource type="Resource" id="ModifierData_speed"]
+script = ExtResource("2_modifier")
+stat = &"attack_speed"
+multiplier = 0.1
+
+[resource]
+script = ExtResource("1_tower")
+id = &"totem"
+display_name_key = "tower.totem"
+display_name = "Totem"
+description_key = "tower.totem.desc"
+description = "No attack. Buffs nearby towers and the Tree. Level 5: Rooted Gift."
+icon = ExtResource("3_l1")
+tier_textures = Array[Texture2D]([ExtResource("3_l1"), ExtResource("4_l2"), ExtResource("5_l3")])
+tier_thresholds = PackedInt32Array(1, 5, 8)
+build_cost = 130
+damage = 0.0
+attack_interval = 0.0
+range = 260.0
+projectile_speed = 0.0
+crit_chance = 0.0
+crit_multiplier = 2.0
+target_mode = &"first"
+aura_modifiers = Array[ExtResource("2_modifier")]([SubResource("ModifierData_damage"), SubResource("ModifierData_speed")])
+aura_radius = 260.0
+behavior_id = &"rooted_gift"
+behavior_params = {"damage_bonus": 0.1, "speed_bonus": 0.05}
+levels = ExtResource("6_levels")
+sell_refund_pct = 0.7

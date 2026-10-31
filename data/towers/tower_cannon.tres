@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="TowerData" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_cannon_l1.png" id="2_l1"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_cannon_l2.png" id="3_l2"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_cannon_l3.png" id="4_l3"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/projectiles/proj_cannonball.png" id="5_proj"]
+[ext_resource type="Resource" path="res://data/levels/tower_levels.tres" id="6_levels"]
+
+[resource]
+script = ExtResource("1_tower")
+id = &"cannon"
+display_name_key = "tower.cannon"
+display_name = "Cannon"
+description_key = "tower.cannon.desc"
+description = "Slow splash damage. Level 5: Shrapnel."
+icon = ExtResource("2_l1")
+tier_textures = Array[Texture2D]([ExtResource("2_l1"), ExtResource("3_l2"), ExtResource("4_l3")])
+tier_thresholds = PackedInt32Array(1, 5, 8)
+build_cost = 110
+damage = 45.0
+attack_interval = 2.2
+range = 280.0
+projectile_speed = 620.0
+projectile_texture = ExtResource("5_proj")
+crit_chance = 0.0
+crit_multiplier = 2.0
+splash_radius = 70.0
+splash_min_ratio = 0.35
+target_mode = &"strongest"
+behavior_id = &"shrapnel"
+behavior_params = {"radius_scale": 1.5, "min_ratio": 0.6}
+levels = ExtResource("6_levels")
+sell_refund_pct = 0.7

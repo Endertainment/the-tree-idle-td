@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LevelCurve" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/level_curve.gd" id="1_curve"]
+
+[resource]
+script = ExtResource("1_curve")
+max_level = 10
+cost_factor = 1.0
+cost_growth = 1.45
+cost_base_override = 50
+damage_growth = 1.18
+range_growth = 1.02
+interval_growth = 0.97
+min_interval = 0.35

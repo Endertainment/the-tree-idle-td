@@ -61,6 +61,22 @@ func skip_prep() -> int:
 	return bonus
 
 
+## Jumps straight to `wave_number` (tools, tests and the preview capture use it).
+## Returns false when the table has no such wave.
+func debug_start_wave(wave_number: int) -> bool:
+	var wave := _table.get_wave(wave_number)
+	if wave == null:
+		return false
+	_spawner.stop()
+	_next_wave = wave_number
+	_current_wave = wave_number
+	_alive = 0
+	_state = State.WAVE
+	_spawner.start_wave(wave)
+	wave_started.emit(wave_number)
+	return true
+
+
 func stop() -> void:
 	_state = State.FINISHED
 	_spawner.stop()

@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="UnitData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/unit_data.gd" id="1_unit"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/units/unit_mage_idle.png" id="2_idle"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/projectiles/proj_mage.png" id="3_proj"]
+[ext_resource type="Resource" path="res://data/levels/unit_levels.tres" id="4_levels"]
+
+[resource]
+script = ExtResource("1_unit")
+id = &"unit_mage"
+display_name_key = "unit.mage"
+display_name = "Mage"
+description_key = "unit.mage.desc"
+description = "Slow splash caster."
+icon = ExtResource("2_idle")
+sprite_texture = ExtResource("2_idle")
+placement_cost = 90
+damage = 18.0
+attack_interval = 1.8
+range = 320.0
+projectile_speed = 640.0
+projectile_texture = ExtResource("3_proj")
+crit_chance = 0.0
+crit_multiplier = 2.0
+splash_radius = 50.0
+splash_min_ratio = 0.4
+target_mode = &"strongest"
+levels = ExtResource("4_levels")

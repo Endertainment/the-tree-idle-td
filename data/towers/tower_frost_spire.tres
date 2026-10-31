@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="TowerData" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_frost_l1.png" id="2_l1"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_frost_l2.png" id="3_l2"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/towers/tower_frost_l3.png" id="4_l3"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/projectiles/proj_frost.png" id="5_proj"]
+[ext_resource type="Resource" path="res://data/levels/tower_levels.tres" id="6_levels"]
+[ext_resource type="Resource" path="res://data/status/slow_frost.tres" id="7_slow"]
+
+[resource]
+script = ExtResource("1_tower")
+id = &"frost_spire"
+display_name_key = "tower.frost"
+display_name = "Frost Spire"
+description_key = "tower.frost.desc"
+description = "Splash slow. Level 5: Deep Chill."
+icon = ExtResource("2_l1")
+tier_textures = Array[Texture2D]([ExtResource("2_l1"), ExtResource("3_l2"), ExtResource("4_l3")])
+tier_thresholds = PackedInt32Array(1, 5, 8)
+build_cost = 90
+damage = 6.0
+attack_interval = 1.6
+range = 260.0
+projectile_speed = 720.0
+projectile_texture = ExtResource("5_proj")
+crit_chance = 0.0
+crit_multiplier = 2.0
+splash_radius = 60.0
+splash_min_ratio = 0.5
+status_on_hit = ExtResource("7_slow")
+target_mode = &"first"
+behavior_id = &"deep_chill"
+behavior_params = {"slow_pct_bonus": 0.15, "duration_bonus": 0.5}
+levels = ExtResource("6_levels")
+sell_refund_pct = 0.7

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StatusData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/status_data.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"slow_druid"
+display_name_key = "status.slow_druid"
+slow_pct = 0.25
+duration = 1.5
+stack_mode = &"refresh"

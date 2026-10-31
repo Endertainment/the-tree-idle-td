@@ -1,7 +1,32 @@
-[gd_resource type="Resource" script_class="MapData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="MapData" load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_map"]
 [ext_resource type="Texture2D" path="res://assets/art/battle/arena/arena_bg.png" id="2_bg"]
+[ext_resource type="Script" path="res://scripts/data/slot_requirement.gd" id="3_requirement"]
+
+[sub_resource type="Resource" id="SlotRequirement_level4"]
+script = ExtResource("3_requirement")
+kind = &"level"
+value = 4
+label_key = "battle.slot_level4"
+label_text = "Player level 4"
+
+[sub_resource type="Resource" id="SlotRequirement_workshop"]
+script = ExtResource("3_requirement")
+kind = &"workshop"
+value = 0
+flag = &"third_branch"
+label_key = "battle.slot_workshop"
+label_text = "Workshop: Third Branch"
+
+[sub_resource type="Resource" id="SlotRequirement_level12"]
+script = ExtResource("3_requirement")
+kind = &"level"
+value = 12
+alt_kind = &"gems"
+alt_value = 150
+label_key = "battle.slot_level12"
+label_text = "Player level 12 or 150 gems"
 
 [resource]
 script = ExtResource("1_map")
@@ -12,3 +37,4 @@ lane_north_points = PackedVector2Array(250.0, 240.0, 300.0, 400.0, 380.0, 540.0,
 lane_south_points = PackedVector2Array(830.0, 1740.0, 780.0, 1580.0, 700.0, 1440.0, 660.0, 1290.0, 650.0, 1190.0, 610.0, 1080.0, 540.0, 940.0)
 pedestal_positions = PackedVector2Array(870.0, 980.0, 773.34, 1213.34, 540.0, 1310.0, 306.66, 1213.34, 210.0, 980.0, 306.66, 746.66, 540.0, 650.0, 773.34, 746.66)
 unit_slot_positions = PackedVector2Array(656.67, 1016.67, 423.33, 1016.67, 423.33, 783.33, 656.67, 783.33)
+unit_slot_requirements = Array[ExtResource("3_requirement")]([null, SubResource("SlotRequirement_level4"), SubResource("SlotRequirement_workshop"), SubResource("SlotRequirement_level12")])

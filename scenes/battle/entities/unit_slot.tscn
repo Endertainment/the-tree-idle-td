@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/entities/unit_slot.gd" id="1_slot"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/tree/unit_slot_empty.png" id="2_empty"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/tree/unit_slot_locked.png" id="3_locked"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/tree/unit_slot_selected.png" id="4_selected"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_slot"]
+radius = 64.0
+
+[node name="UnitSlot" type="Area2D"]
+script = ExtResource("1_slot")
+
+[node name="Base" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.8)
+texture = ExtResource("2_empty")
+
+[node name="Locked" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("3_locked")
+
+[node name="Selection" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("4_selected")
+
+[node name="Hint" type="Label" parent="."]
+visible = false
+offset_left = -100.0
+offset_top = 66.0
+offset_right = 100.0
+offset_bottom = 150.0
+theme_type_variation = &"Caption"
+theme_override_font_sizes/font_size = 24
+text = "Player level 4"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_slot")

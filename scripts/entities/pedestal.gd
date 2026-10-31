@@ -58,6 +58,13 @@ func mark_occupied(built_tower: Tower) -> void:
 	_refresh_visuals()
 
 
+## Frees the pedestal again after a tower is sold.
+func clear() -> void:
+	tower = null
+	state = State.EMPTY
+	_refresh_visuals()
+
+
 func _refresh_visuals() -> void:
 	if not is_inside_tree():
 		return

@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_boss_troll_walk_00.png" id="2_walk0"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_boss_troll_walk_01.png" id="3_walk1"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_boss_troll_walk_02.png" id="4_walk2"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_boss_troll_walk_03.png" id="5_walk3"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_boss_troll_walk_04.png" id="6_walk4"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_boss_troll_walk_05.png" id="7_walk5"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_boss_troll_walk_06.png" id="8_walk6"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_boss_troll_walk_07.png" id="9_walk7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_boss_troll"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_walk0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_walk1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_walk2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_walk3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_walk4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_walk5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_walk6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_walk7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 6.0
+}]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"boss_troll"
+display_name_key = "enemy.boss_troll"
+display_name = "Troll Warden"
+max_hp = 1800.0
+speed = 35.0
+armor = 10.0
+leak_damage_pct = 25.0
+cash_reward = 60
+frames = SubResource("SpriteFrames_boss_troll")
+scale = 1.0
+spawn_weight = 1.0
+is_boss = true
+boss_bar_scale = 1.0

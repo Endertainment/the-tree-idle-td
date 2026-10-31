@@ -1,36 +1,54 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=34 format=3]
 
 [ext_resource type="Script" path="res://scripts/battle/battle_controller.gd" id="1_controller"]
 [ext_resource type="Resource" path="res://data/maps/forest_clearing.tres" id="2_map"]
-[ext_resource type="Resource" path="res://data/waves/wave_table_m1.tres" id="3_waves"]
+[ext_resource type="Resource" path="res://data/waves/wave_table_m2.tres" id="3_waves"]
 [ext_resource type="Resource" path="res://data/tree/tree_base.tres" id="4_tree_data"]
 [ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="5_enemy_type"]
 [ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="6_tower_type"]
-[ext_resource type="Resource" path="res://data/enemies/enemy_grunt.tres" id="7_grunt"]
-[ext_resource type="Resource" path="res://data/towers/tower_archer.tres" id="8_archer"]
-[ext_resource type="PackedScene" path="res://scenes/battle/entities/enemy.tscn" id="9_enemy_scene"]
-[ext_resource type="PackedScene" path="res://scenes/battle/entities/tower.tscn" id="10_tower_scene"]
-[ext_resource type="PackedScene" path="res://scenes/battle/entities/pedestal.tscn" id="11_pedestal_scene"]
-[ext_resource type="PackedScene" path="res://scenes/battle/entities/projectile.tscn" id="12_projectile_scene"]
-[ext_resource type="PackedScene" path="res://scenes/battle/run_summary.tscn" id="13_summary"]
-[ext_resource type="PackedScene" path="res://scenes/battle/battle_hud.tscn" id="14_hud"]
-[ext_resource type="PackedScene" path="res://scenes/battle/entities/tree.tscn" id="15_tree"]
-[ext_resource type="Texture2D" path="res://assets/art/battle/tree/unit_slot_empty.png" id="16_slot"]
-[ext_resource type="Script" path="res://scripts/battle/battle_clock.gd" id="17_clock"]
+[ext_resource type="Script" path="res://scripts/data/unit_data.gd" id="7_unit_type"]
+[ext_resource type="Resource" path="res://data/enemies/enemy_grunt.tres" id="8_grunt"]
+[ext_resource type="Resource" path="res://data/enemies/enemy_runner.tres" id="9_runner"]
+[ext_resource type="Resource" path="res://data/enemies/enemy_tank.tres" id="10_tank"]
+[ext_resource type="Resource" path="res://data/enemies/enemy_shaman.tres" id="11_shaman"]
+[ext_resource type="Resource" path="res://data/enemies/enemy_boss_troll.tres" id="12_boss"]
+[ext_resource type="Resource" path="res://data/towers/tower_archer.tres" id="13_archer"]
+[ext_resource type="Resource" path="res://data/towers/tower_cannon.tres" id="14_cannon"]
+[ext_resource type="Resource" path="res://data/towers/tower_frost_spire.tres" id="15_frost"]
+[ext_resource type="Resource" path="res://data/towers/tower_totem.tres" id="16_totem"]
+[ext_resource type="Resource" path="res://data/units/unit_archer.tres" id="17_unit_archer"]
+[ext_resource type="Resource" path="res://data/units/unit_mage.tres" id="18_unit_mage"]
+[ext_resource type="Resource" path="res://data/units/unit_druid.tres" id="19_unit_druid"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/enemy.tscn" id="20_enemy_scene"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/tower.tscn" id="21_tower_scene"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/unit.tscn" id="22_unit_scene"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/pedestal.tscn" id="23_pedestal_scene"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/unit_slot.tscn" id="24_unit_slot_scene"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/projectile.tscn" id="25_projectile_scene"]
+[ext_resource type="PackedScene" path="res://scenes/battle/run_summary.tscn" id="26_summary"]
+[ext_resource type="PackedScene" path="res://scenes/battle/battle_hud.tscn" id="27_hud"]
+[ext_resource type="PackedScene" path="res://scenes/battle/entities/tree.tscn" id="28_tree"]
+[ext_resource type="Script" path="res://scripts/battle/battle_clock.gd" id="29_clock"]
+[ext_resource type="Script" path="res://scripts/battle/battle_hud_controller.gd" id="30_hud_controller"]
+[ext_resource type="Script" path="res://scripts/combat/damage_numbers.gd" id="31_damage_numbers"]
+[ext_resource type="Script" path="res://scripts/combat/fx_pool.gd" id="32_fx_pool"]
+[ext_resource type="Script" path="res://scripts/battle/range_indicator.gd" id="33_range_indicator"]
 
 [node name="Battle" type="Node2D"]
 script = ExtResource("1_controller")
 map_data = ExtResource("2_map")
 wave_table = ExtResource("3_waves")
 tree_data = ExtResource("4_tree_data")
-enemy_resources = Array[ExtResource("5_enemy_type")]([ExtResource("7_grunt")])
-tower_resources = Array[ExtResource("6_tower_type")]([ExtResource("8_archer")])
-enemy_scene = ExtResource("9_enemy_scene")
-tower_scene = ExtResource("10_tower_scene")
-pedestal_scene = ExtResource("11_pedestal_scene")
-projectile_scene = ExtResource("12_projectile_scene")
-run_summary_scene = ExtResource("13_summary")
-unit_slot_texture = ExtResource("16_slot")
+enemy_resources = Array[ExtResource("5_enemy_type")]([ExtResource("8_grunt"), ExtResource("9_runner"), ExtResource("10_tank"), ExtResource("11_shaman"), ExtResource("12_boss")])
+tower_resources = Array[ExtResource("6_tower_type")]([ExtResource("13_archer"), ExtResource("14_cannon"), ExtResource("15_frost"), ExtResource("16_totem")])
+unit_resources = Array[ExtResource("7_unit_type")]([ExtResource("17_unit_archer"), ExtResource("18_unit_mage"), ExtResource("19_unit_druid")])
+enemy_scene = ExtResource("20_enemy_scene")
+tower_scene = ExtResource("21_tower_scene")
+unit_scene = ExtResource("22_unit_scene")
+pedestal_scene = ExtResource("23_pedestal_scene")
+unit_slot_scene = ExtResource("24_unit_slot_scene")
+projectile_scene = ExtResource("25_projectile_scene")
+run_summary_scene = ExtResource("26_summary")
 
 [node name="Arena" type="Node2D" parent="."]
 
@@ -46,7 +64,10 @@ z_index = -10
 [node name="Towers" type="Node2D" parent="Arena"]
 y_sort_enabled = true
 
-[node name="Tree" parent="." instance=ExtResource("15_tree")]
+[node name="Units" type="Node2D" parent="Arena"]
+y_sort_enabled = true
+
+[node name="Tree" parent="." instance=ExtResource("28_tree")]
 position = Vector2(540, 980)
 z_index = -1
 
@@ -56,8 +77,18 @@ y_sort_enabled = true
 [node name="Projectiles" type="Node2D" parent="."]
 
 [node name="FX" type="Node2D" parent="."]
+script = ExtResource("32_fx_pool")
+
+[node name="DamageNumbers" type="Node2D" parent="."]
+script = ExtResource("31_damage_numbers")
+
+[node name="RangeIndicator" type="Node2D" parent="."]
+script = ExtResource("33_range_indicator")
 
 [node name="BattleClock" type="Node" parent="."]
-script = ExtResource("17_clock")
+script = ExtResource("29_clock")
 
-[node name="BattleHUD" parent="." instance=ExtResource("14_hud")]
+[node name="BattleHUD" parent="." instance=ExtResource("27_hud")]
+
+[node name="BattleHudController" type="Node" parent="."]
+script = ExtResource("30_hud_controller")
