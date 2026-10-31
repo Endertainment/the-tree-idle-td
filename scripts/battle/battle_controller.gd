@@ -25,6 +25,41 @@ const COLLAPSE_SECONDS := 1.2
 const AURA_INTERVAL := 0.1
 const FX_DEATH_TEXTURE := preload("res://assets/art/battle/fx/fx_death.png")
 const RUN_UPGRADE_SOURCE := &"run_tree_upgrades"
+const DESIGN_SIZE := Vector2(1080.0, 1920.0)
+
+## The battlefield is authored in a 1080x1920 design space. Tall phones (2.2:1)
+## get extra vertical space that the arena art does not cover on its own, which
+## used to leave a grey band under the field. Wrap every world node in a `World`
+## container, centre the design area in the real viewport, and stretch the
+## background beyond the design rect so the screen is always covered.
+var _world: Node2D
+
+
+func _fit_world_to_viewport() -> void:
+	_world = Node2D.new()
+	_world.name = "World"
+	add_child(_world)
+	move_child(_world, 0)
+	for node in [$Arena, $Tree, $Enemies, $Projectiles, $FX, $DamageNumbers, $RangeIndicator]:
+		(node as Node2D).reparent(_world, false)
+	_apply_world_transform()
+	get_viewport().size_changed.connect(_apply_world_transform)
+
+
+func _apply_world_transform() -> void:
+	if _world == null:
+		return
+	var viewport_size := get_viewport_rect().size
+	var fit := viewport_size.x / DESIGN_SIZE.x
+	_world.scale = Vector2(fit, fit)
+	_world.position = Vector2(0.0, (viewport_size.y - DESIGN_SIZE.y * fit) * 0.5)
+	if _background != null:
+		# Cover, not contain: the background must reach every screen edge.
+		var cover := maxf(
+			viewport_size.x / (DESIGN_SIZE.x * fit),
+			viewport_size.y / (DESIGN_SIZE.y * fit)
+		)
+		_background.scale = Vector2(cover, cover)
 
 @export var map_data: MapData
 @export var wave_table: WaveTable
@@ -96,6 +131,7 @@ var _last_tree_hp: float = -1.0
 func _ready() -> void:
 	if not _validate_content():
 		return
+	_fit_world_to_viewport()
 	var run_seed := _fresh_seed()
 	RunState.reset(run_seed)
 	_run_rng = RngService.new_run_rng(run_seed)
