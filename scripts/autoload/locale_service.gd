@@ -137,7 +137,14 @@ static func plural_form_for(count: int, code: String) -> String:
 func _pseudo_enabled() -> bool:
 	if not OS.is_debug_build():
 		return false
-	var settings := get_node_or_null("/root/SettingsService")
+	var settings: Node = null
+	if is_inside_tree():
+		settings = get_node_or_null("/root/SettingsService")
+	else:
+		# Unit tests run before autoloads enter the tree; the root still has them.
+		var loop := Engine.get_main_loop()
+		if loop != null and loop.root != null:
+			settings = loop.root.get_node_or_null("SettingsService")
 	return settings != null and bool(settings.get("pseudo_locale"))
 
 

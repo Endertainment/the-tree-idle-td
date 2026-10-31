@@ -131,6 +131,11 @@ func _run() -> void:
 
 	battle.queue_free()
 	await process_frame
+	await process_frame
+	var audio := root.get_node_or_null("AudioService")
+	if audio != null:
+		audio.call(&"release_all")
+	await process_frame
 	if save_service != null:
 		save_service.call(&"clear")
 	if game_state != null and not original.is_empty():

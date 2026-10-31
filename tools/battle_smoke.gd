@@ -200,6 +200,13 @@ func _run() -> void:
 	battle.call(&"set_sim_speed", 1.0)
 
 	# --- existing boss/composition checks ------------------------------------
+	# M8 raised the wave-10 wall; give the smoke towers the levels a real run
+	# would have by then so this check still tests the boss, not the balance.
+	battle.call(&"add_cash", 4000)
+	for tower in battle.call(&"get_towers"):
+		for _level in 10:
+			if int(tower.get(&"level")) >= 5 or not bool(battle.call(&"upgrade_tower", tower)):
+				break
 	var tree_hp_before: float = float(tree.get("hp"))
 	var cash_before: int = int(battle.call(&"get_cash"))
 	battle.call(&"debug_start_wave", BOSS_WAVE)
@@ -288,10 +295,19 @@ func _run() -> void:
 		var coins_after_duplicate: int = int(game_state.call(&"get_balance", &"coins"))
 		_check(coins_after_duplicate == coins_after_abandon, "re-shown summary never double-pays (ledger)")
 		duplicate.queue_free()
+		await process_frame
 	else:
 		_fail("cannot load %s" % SUMMARY_SCENE)
 
 	battle.queue_free()
+	await process_frame
+	await process_frame
+	# Release the battle music stream before the audio server shuts down.
+	var audio := root.get_node_or_null("AudioService")
+	if audio != null:
+		audio.call(&"release_all")
+	# Let the audio mixer drop the stopped playback before the engine shuts down.
+	await create_timer(0.2).timeout
 	await process_frame
 	_finish(game_state, save_service, original_state)
 

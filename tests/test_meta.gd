@@ -69,6 +69,9 @@ func test_corrupt_save_falls_back_to_backup() -> bool:
 	var service: Node = _temp_service()
 	if service == null:
 		return false
+	# The recovery warnings are the expected behaviour under test; keep the
+	# headless gate output free of WARNING lines.
+	service.set("quiet", true)
 	var first := {"player": {"id": "first", "level": 2}, "wallet": {"coins": 111, "gems": 1, "stones": 0}}
 	var second := {"player": {"id": "second", "level": 3}, "wallet": {"coins": 222, "gems": 2, "stones": 0}}
 	if not service.call(&"save", first) or not service.call(&"save", second):

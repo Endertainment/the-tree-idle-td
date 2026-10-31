@@ -32,6 +32,9 @@ var save_provider: Callable = Callable()
 var recovered_from_backup: bool = false
 ## Schema version found on disk before migration (0 when no save exists).
 var migrated_from_version: int = 0
+## Tests that intentionally corrupt a save set this to true so expected recovery
+## warnings never pollute the headless gate output.
+var quiet: bool = false
 
 var _dirty: bool = false
 var _last_save_msec: int = 0
@@ -133,11 +136,11 @@ func load() -> Dictionary:
 	var main_data := _read_dictionary(save_path)
 	if not _is_valid(main_data):
 		if FileAccess.file_exists(save_path):
-			push_warning("SaveService: main save is invalid, trying backup")
+			_warn("SaveService: main save is invalid, trying backup")
 		var backup_data := _read_dictionary(backup_path)
 		if _is_valid(backup_data):
 			recovered_from_backup = true
-			push_warning("SaveService: recovered progress from backup")
+			_warn("SaveService: recovered progress from backup")
 			main_data = backup_data
 		else:
 			return {}
@@ -336,10 +339,26 @@ func _read_dictionary(path: String) -> Dictionary:
 	var text := FileAccess.get_file_as_string(path)
 	if text.is_empty():
 		return {}
-	var parsed: Variant = JSON.parse_string(text)
+	var parsed: Variant = _parse_json(text)
 	if parsed is Dictionary:
 		return parsed as Dictionary
 	return {}
+
+
+## JSON.parse_string() logs an engine ERROR for malformed input even when the
+## caller handles it; JSON.parse() returns the code silently, which is what a
+## corrupt-save recovery path needs.
+static func _parse_json(text: String) -> Variant:
+	var json := JSON.new()
+	if json.parse(text) != OK:
+		return null
+	return json.data
+
+
+## Emits a recovery warning unless this instance is a quiet test double.
+func _warn(message: String) -> void:
+	if not quiet:
+		push_warning(message)
 
 
 func _is_valid(data: Dictionary) -> bool:
@@ -347,7 +366,7 @@ func _is_valid(data: Dictionary) -> bool:
 		return false
 	var version := int(data.get("schema_version", 0))
 	if version <= 0 or version > SCHEMA_VERSION:
-		push_warning("SaveService: unsupported schema version %d" % version)
+		_warn("SaveService: unsupported schema version %d" % version)
 		return false
 	if data.has("checksum"):
 		return str(data.get("checksum", "")) == _checksum(data)

@@ -276,6 +276,17 @@ func _on_voice_finished(player: AudioStreamPlayer) -> void:
 	player.stream = null
 
 
+## Releases music and every pooled voice. Headless tools call this before quit
+## so a one-shot SFX is not still holding its AudioStreamWAV at engine shutdown.
+func release_all() -> void:
+	stop_music(0.0)
+	for voice: AudioStreamPlayer in _voices:
+		voice.stop()
+		voice.stream = null
+	_sfx_streams.clear()
+	_music_id = &""
+
+
 func _music_volume_db() -> float:
 	return 0.0 + (DUCK_DB if _modal_open else 0.0)
 
