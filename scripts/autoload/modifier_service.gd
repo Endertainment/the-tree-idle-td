@@ -56,3 +56,24 @@ func get_stat(stat_name: StringName, base_value: float) -> float:
 			additive += float(entry)
 
 	return (base_value + additive) * multiplier
+
+
+## Same as get_stat(), clamped at the read site (crit chance, reductions...).
+func get_stat_clamped(stat_name: StringName, base_value: float, minimum: float, maximum: float) -> float:
+	return clampf(get_stat(stat_name, base_value), minimum, maximum)
+
+
+## Removes every source whose id starts with `prefix` (run-scoped sources).
+func remove_sources_with_prefix(prefix: StringName) -> void:
+	var wanted := String(prefix)
+	for source_id: Variant in _sources.keys():
+		if String(source_id).begins_with(wanted):
+			_sources.erase(source_id)
+
+
+## Returns the registered source ids (debug/tests).
+func get_source_ids() -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for source_id: Variant in _sources.keys():
+		ids.append(StringName(str(source_id)))
+	return ids

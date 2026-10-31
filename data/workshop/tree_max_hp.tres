@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_heart.png" id="1_brgqr"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_jbbt4"]
+
+[resource]
+script = ExtResource("2_jbbt4")
+id = &"tree_max_hp"
+category = &"defense"
+order = 1
+name_key = "workshop.tree_max_hp"
+name = "Tree Max Hp"
+description_key = "workshop.tree_max_hp_desc"
+description = "Tree Max Hp"
+icon = ExtResource("1_brgqr")
+stat = &"tree_max_hp"
+effect_per_level = 0.05

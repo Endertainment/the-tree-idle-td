@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_shop.png" id="1_qvge6"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_fpit7"]
+
+[resource]
+script = ExtResource("2_fpit7")
+id = &"in_run_discount"
+category = &"utility"
+order = 4
+name_key = "workshop.in_run_discount"
+name = "In Run Discount"
+description_key = "workshop.in_run_discount_desc"
+description = "In Run Discount"
+icon = ExtResource("1_qvge6")
+stat = &"in_run_discount"
+op = &"add"
+effect_per_level = 0.008
+cap = 0.4
+base_cost = 110

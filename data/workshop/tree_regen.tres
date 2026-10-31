@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_heart.png" id="1_y4wgj"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_85fyf"]
+
+[resource]
+script = ExtResource("2_85fyf")
+id = &"tree_regen"
+category = &"defense"
+order = 2
+name_key = "workshop.tree_regen"
+name = "Tree Regen"
+description_key = "workshop.tree_regen_desc"
+description = "Tree Regen"
+icon = ExtResource("1_y4wgj")
+stat = &"tree_regen"
+op = &"add"
+effect_per_level = 0.0004
+base_cost = 90
+display_unit = &"pp"
+display_suffix = " /s"

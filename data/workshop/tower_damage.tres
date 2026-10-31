@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_sword.png" id="1_1co1m"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_i4cvu"]
+
+[resource]
+script = ExtResource("2_i4cvu")
+id = &"tower_damage"
+order = 3
+name_key = "workshop.tower_damage"
+name = "Tower Damage"
+description_key = "workshop.tower_damage_desc"
+description = "Tower Damage"
+icon = ExtResource("1_1co1m")
+stat = &"tower_damage"
+base_cost = 70

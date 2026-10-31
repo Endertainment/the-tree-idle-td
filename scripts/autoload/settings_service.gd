@@ -126,6 +126,37 @@ func set_text_scale(value: float) -> void:
 	changed.emit(&"text_scale")
 
 
+## Returns true when a settings file already exists (first-launch check).
+func has_stored_settings() -> bool:
+	return FileAccess.file_exists(CONFIG_PATH)
+
+
+## Settings payload mirrored into the v2 save document (spec 8.2).
+func to_save_dict() -> Dictionary:
+	return {
+		"music": music_volume,
+		"sfx": sfx_volume,
+		"ui": ui_volume,
+		"haptics": haptics,
+		"language": language,
+		"text_scale": text_scale,
+		"shake": shake,
+	}
+
+
+## Applies a settings payload from a save when no settings file exists yet.
+func apply_save_dict(data: Dictionary) -> void:
+	if data.is_empty():
+		return
+	music_volume = clampf(float(data.get("music", music_volume)), 0.0, 1.0)
+	sfx_volume = clampf(float(data.get("sfx", sfx_volume)), 0.0, 1.0)
+	ui_volume = clampf(float(data.get("ui", ui_volume)), 0.0, 1.0)
+	haptics = bool(data.get("haptics", haptics))
+	language = _normalize_language(str(data.get("language", language)))
+	text_scale = clampf(float(data.get("text_scale", text_scale)), MIN_TEXT_SCALE, MAX_TEXT_SCALE)
+	shake = bool(data.get("shake", shake))
+
+
 func _apply_defaults() -> void:
 	master_volume = 1.0
 	music_volume = 0.8

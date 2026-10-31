@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_cash.png" id="1_yx3x1"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_tunoo"]
+
+[resource]
+script = ExtResource("2_tunoo")
+id = &"cash_gain"
+category = &"utility"
+order = 1
+name_key = "workshop.cash_gain"
+name = "Cash Gain"
+description_key = "workshop.cash_gain_desc"
+description = "Cash Gain"
+icon = ExtResource("1_yx3x1")
+stat = &"cash_gain"
+effect_per_level = 0.03
+base_cost = 60

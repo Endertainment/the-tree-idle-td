@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_ad.png" id="1_6l542"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_kxupd"]
+
+[resource]
+script = ExtResource("2_kxupd")
+id = &"ad_reward_bonus"
+category = &"environment"
+order = 2
+name_key = "workshop.ad_reward_bonus"
+name = "Ad Reward Bonus"
+description_key = "workshop.ad_reward_bonus_desc"
+description = "Ad Reward Bonus"
+icon = ExtResource("1_6l542")
+stat = &"ad_reward_bonus"
+base_cost = 90

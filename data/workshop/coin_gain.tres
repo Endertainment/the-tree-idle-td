@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_coin.png" id="1_7t31v"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_e4brd"]
+
+[resource]
+script = ExtResource("2_e4brd")
+id = &"coin_gain"
+category = &"utility"
+order = 2
+name_key = "workshop.coin_gain"
+name = "Coin Gain"
+description_key = "workshop.coin_gain_desc"
+description = "Coin Gain"
+icon = ExtResource("1_7t31v")
+stat = &"coin_gain"
+effect_per_level = 0.03
+base_cost = 90

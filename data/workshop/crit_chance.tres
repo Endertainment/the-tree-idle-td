@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_star.png" id="1_c1jjg"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_16msu"]
+
+[resource]
+script = ExtResource("2_16msu")
+id = &"crit_chance"
+order = 4
+name_key = "workshop.crit_chance"
+name = "Crit Chance"
+description_key = "workshop.crit_chance_desc"
+description = "Crit Chance"
+icon = ExtResource("1_c1jjg")
+stat = &"crit_chance"
+op = &"add"
+effect_per_level = 0.004
+cap = 0.25
+base_cost = 80
+display_unit = &"pp"

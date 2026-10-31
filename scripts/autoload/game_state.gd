@@ -1,10 +1,10 @@
 ## GameState — the player's persistent meta profile (autoload).
 ##
-## Runtime model only: no disk access. App loads SaveService data at boot and
-## hands it to from_dict(); to_dict() is exactly the payload SaveService writes.
-## Meta rewards enter through grant_bundle() (a RewardBundle), and run rewards are
-## idempotent through `reward_ledger` keyed by run id. WalletService proper lands
-## in M4; until then this is the one meta-wallet mutation point.
+## Runtime model only: no disk access. App loads SaveService at boot and hands the
+## document to from_dict(); build_save_document() is the full v2 payload that
+## SaveService writes. Permanent currencies are mutated only by WalletService, XP
+## only by LevelService, workshop levels only by WorkshopService; this node owns
+## the player/stats/section containers so the save shape has one owner.
 extends Node
 
 var player: Dictionary = {
@@ -13,6 +13,9 @@ var player: Dictionary = {
 	"avatar_id": "avatar_01",
 	"level": 1,
 	"xp": 0,
+	"created_at": 0,
+	"provider": "",
+	"provider_uid": "",
 	"best_wave": 0,
 	"next_wave_uses": 0,
 }
@@ -23,97 +26,128 @@ var wallet: Dictionary = {
 	"stones": 0,
 }
 
-## Feature unlock flags, e.g. &"speed_1_5". M4 replaces this with data levels.
+var stats: Dictionary = {
+	"best_wave": 0,
+	"runs_played": 0,
+	"total_kills": 0,
+	"total_playtime": 0,
+	"weekly_max_wave": 0,
+	"week_id": "",
+}
+
+var magica: Dictionary = {"research": {}, "completed": []}
+var cards: Dictionary = {"owned": [], "equipped": [null, null, null, null]}
+var missions: Dictionary = {"day_id": "", "daily": [], "week_id": "", "weekly": []}
+var shop: Dictionary = {"owned_products": [], "last_daily_claim": 0}
+var ads: Dictionary = {"rv_today": 0, "rv_day": "", "interstitial_last": 0}
+
+## Debug/QA unlock grants only (level unlocks are derived by UnlockService).
 var unlocks: Dictionary = {}
 
-## Last 50 meta-wallet grants, for support/debug (spec 6.1).
-var wallet_log: Array[Dictionary] = []
+var is_onboarded: bool = false
 
 ## Run ids whose rewards were already granted (reward-bundle idempotency).
 var reward_ledger := RewardLedger.new()
 
-var is_onboarded: bool = false
 
-
-## Serialises the profile into a plain dictionary.
-func to_dict() -> Dictionary:
+## Full schema-v2 document. SaveService adds schema_version/saved_at/checksum.
+func build_save_document() -> Dictionary:
+	var player_payload := player.duplicate(true)
+	# best_wave belongs to `stats` in v2; keep the player copy out of the file.
+	player_payload.erase("best_wave")
 	return {
-		"player": player.duplicate(true),
-		"wallet": wallet.duplicate(true),
-		"unlocks": unlocks.duplicate(true),
+		"player": player_payload,
+		"wallet": {
+			"coins": maxi(int(wallet.get("coins", 0)), 0),
+			"gems": maxi(int(wallet.get("gems", 0)), 0),
+			"stones": maxi(int(wallet.get("stones", 0)), 0),
+		},
+		"stats": stats.duplicate(true),
+		"workshop": WorkshopService.to_dict(),
+		"magica": magica.duplicate(true),
+		"cards": cards.duplicate(true),
+		"missions": missions.duplicate(true),
+		"unlocks": UnlockService.get_all_unlocked(),
+		"settings": SettingsService.to_save_dict(),
+		"shop": shop.duplicate(true),
+		"ads": ads.duplicate(true),
+		# Local extras (documented in ADR-022); both must survive a restart.
 		"is_onboarded": is_onboarded,
 		"applied_rewards": reward_ledger.to_array(),
-		"wallet_log": wallet_log.duplicate(true),
 	}
 
 
-## Restores known fields from a save payload. Missing fields keep defaults, so
-## older or partial saves never wipe the profile.
+## Backwards-compatible alias for tools that snapshot/restore the profile.
+func to_dict() -> Dictionary:
+	return build_save_document()
+
+
+## Restores known fields from a save payload (v1 or v2). Missing fields keep
+## defaults, so older or partial saves never wipe the profile.
 func from_dict(data: Dictionary) -> void:
 	if data.is_empty():
 		return
 
 	var stored_player: Variant = data.get("player", null)
 	if stored_player is Dictionary:
-		var player_data := stored_player as Dictionary
-		for key: String in player.keys():
-			if player_data.has(key):
-				player[key] = player_data[key]
+		_merge_keys(player, stored_player as Dictionary)
 
 	var stored_wallet: Variant = data.get("wallet", null)
 	if stored_wallet is Dictionary:
-		var wallet_data := stored_wallet as Dictionary
-		for key: String in wallet.keys():
-			if wallet_data.has(key):
-				wallet[key] = int(wallet_data[key])
+		_merge_keys(wallet, stored_wallet as Dictionary)
+
+	var stored_stats: Variant = data.get("stats", null)
+	if stored_stats is Dictionary:
+		_merge_keys(stats, stored_stats as Dictionary)
+
+	var stored_sections := {
+		"magica": magica,
+		"cards": cards,
+		"missions": missions,
+		"shop": shop,
+		"ads": ads,
+	}
+	for section: String in stored_sections.keys():
+		var stored: Variant = data.get(section, null)
+		if stored is Dictionary:
+			(stored_sections[section] as Dictionary).clear()
+			(stored_sections[section] as Dictionary).merge((stored as Dictionary).duplicate(true), true)
 
 	var stored_unlocks: Variant = data.get("unlocks", null)
 	if stored_unlocks is Dictionary:
 		unlocks = (stored_unlocks as Dictionary).duplicate(true)
+	elif stored_unlocks is Array:
+		unlocks.clear()
+		for entry: Variant in stored_unlocks as Array:
+			unlocks[str(entry)] = true
 
 	var stored_rewards: Variant = data.get("applied_rewards", null)
 	if stored_rewards is Array:
 		reward_ledger.from_array(stored_rewards as Array)
 
-	var stored_log: Variant = data.get("wallet_log", null)
-	if stored_log is Array:
-		wallet_log.clear()
-		for entry in stored_log as Array:
-			if entry is Dictionary:
-				wallet_log.append((entry as Dictionary).duplicate(true))
-		while wallet_log.size() > 50:
-			wallet_log.remove_at(0)
-
+	# v1 stored best_wave on the player; v2 owns it in stats. Keep both in sync.
+	var best := maxi(int(player.get("best_wave", 0)), int(stats.get("best_wave", 0)))
+	stats["best_wave"] = best
+	player["best_wave"] = best
 	is_onboarded = bool(data.get("is_onboarded", is_onboarded))
 
 
-## Returns a wallet balance with a safe int conversion.
+## Returns a wallet balance with a safe int conversion (read only).
 func get_balance(kind: StringName) -> int:
-	return int(wallet.get(String(kind), 0))
+	return maxi(int(wallet.get(String(kind), 0)), 0)
 
 
-## Applies a wallet balance and notifies listeners (meta currencies only).
-func set_balance(kind: StringName, amount: int) -> void:
-	var key := String(kind)
-	if not wallet.has(key):
-		push_warning("GameState: unknown currency '%s'" % key)
-		return
-	wallet[key] = maxi(amount, 0)
-	EventBus.currency_changed.emit(kind, int(wallet[key]))
-
-
-## Returns true when a feature flag was explicitly unlocked.
-func is_unlocked(unlock_id: StringName) -> bool:
+## True when a QA/debug unlock was granted for `unlock_id`.
+func has_extra_unlock(unlock_id: StringName) -> bool:
 	return bool(unlocks.get(String(unlock_id), false))
 
 
-## Enables a feature flag once and notifies listeners.
-func unlock(unlock_id: StringName) -> void:
+## Records a QA/debug unlock flag. Gameplay gates use UnlockService.
+func grant_extra_unlock(unlock_id: StringName) -> void:
 	var key := String(unlock_id)
 	if key.is_empty() or bool(unlocks.get(key, false)):
 		return
 	unlocks[key] = true
-	EventBus.currency_changed.emit(&"unlock", 1)
 
 
 ## Grants a RewardBundle exactly once per `run_id`. Returns false when the run was
@@ -122,20 +156,21 @@ func claim_run_reward(run_id: String) -> bool:
 	return reward_ledger.claim(run_id)
 
 
-## Applies a bundle to the meta wallet and XP, logs it and emits currency changes.
+## Applies a bundle through WalletService (currencies + xp) and returns true.
 func grant_bundle(bundle: RewardBundle, source: StringName = &"reward") -> bool:
 	if bundle == null or bundle.is_empty():
 		return false
-	bundle.apply_to(wallet, player)
-	wallet_log.append({
-		"source": String(source),
-		"bundle": bundle.to_dict(),
-	})
-	if wallet_log.size() > 50:
-		wallet_log.remove_at(0)
-	for kind in [&"coins", &"gems", &"stones"]:
-		EventBus.currency_changed.emit(kind, get_balance(kind))
-	return true
+	return WalletService.add_bundle(bundle, source)
+
+
+## Updates lifetime stats and the best wave after a run.
+func record_run_end(waves: int, kills: int, elapsed_seconds: float) -> void:
+	stats["runs_played"] = int(stats.get("runs_played", 0)) + 1
+	stats["total_kills"] = int(stats.get("total_kills", 0)) + maxi(kills, 0)
+	stats["total_playtime"] = int(stats.get("total_playtime", 0)) + maxi(int(roundf(elapsed_seconds)), 0)
+	if waves > int(stats.get("best_wave", 0)):
+		stats["best_wave"] = waves
+		player["best_wave"] = waves
 
 
 ## Increments the "Next wave" skip counter used by TapGuard (first 3 need a hold).
@@ -145,3 +180,21 @@ func record_next_wave_use() -> void:
 
 func get_next_wave_uses() -> int:
 	return int(player.get("next_wave_uses", 0))
+
+
+func get_best_wave() -> int:
+	return int(stats.get("best_wave", player.get("best_wave", 0)))
+
+
+func _merge_keys(target: Dictionary, source: Dictionary) -> void:
+	for key: String in target.keys():
+		if not source.has(key):
+			continue
+		var current: Variant = target[key]
+		var incoming: Variant = source[key]
+		if current is String:
+			target[key] = str(incoming)
+		elif current is int:
+			target[key] = int(incoming)
+		else:
+			target[key] = incoming

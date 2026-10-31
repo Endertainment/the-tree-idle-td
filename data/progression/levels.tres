@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="LevelProgression" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/level_progression.gd" id="1_tfgka"]
+
+[resource]
+script = ExtResource("1_tfgka")
+unlock_levels = {
+1: ["battle", "workshop", "settings"],
+2: ["cards", "card_slot_1"],
+3: ["magica", "speed_1_5"],
+4: ["unit_slot_2", "missions"],
+5: ["card_slot_2", "shop"],
+6: ["leaderboard"],
+8: ["tower_specialization"],
+10: ["speed_2", "unit_slot_3"],
+12: ["unit_slot_4", "tournament"],
+15: ["card_slot_3"],
+20: ["card_slot_4", "prestige"]
+}

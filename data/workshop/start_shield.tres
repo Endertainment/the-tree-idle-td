@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_shield.png" id="1_yd2tp"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_y2kgx"]
+
+[resource]
+script = ExtResource("2_y2kgx")
+id = &"start_shield"
+category = &"defense"
+order = 5
+name_key = "workshop.start_shield"
+name = "Start Shield"
+description_key = "workshop.start_shield_desc"
+description = "Start Shield"
+icon = ExtResource("1_yd2tp")
+stat = &"start_shield"
+op = &"add"
+effect_per_level = 40.0
+base_cost = 150
+display_unit = &"shield"

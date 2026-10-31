@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_sword.png" id="1_nd7r5"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_dj822"]
+
+[resource]
+script = ExtResource("2_dj822")
+id = &"tree_damage"
+order = 1
+name_key = "workshop.tree_damage"
+name = "Tree Damage"
+description_key = "workshop.tree_damage_desc"
+description = "Tree Damage"
+icon = ExtResource("1_nd7r5")

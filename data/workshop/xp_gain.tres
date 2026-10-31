@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_star.png" id="1_t70uu"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_gtkkg"]
+
+[resource]
+script = ExtResource("2_gtkkg")
+id = &"xp_gain"
+category = &"utility"
+order = 3
+name_key = "workshop.xp_gain"
+name = "Xp Gain"
+description_key = "workshop.xp_gain_desc"
+description = "Xp Gain"
+icon = ExtResource("1_t70uu")
+stat = &"xp_gain"
+effect_per_level = 0.03
+base_cost = 80

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_speed.png" id="1_b1xm8"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_lwet6"]
+
+[resource]
+script = ExtResource("2_lwet6")
+id = &"attack_speed"
+order = 6
+name_key = "workshop.attack_speed"
+name = "Attack Speed"
+description_key = "workshop.attack_speed_desc"
+description = "Attack Speed"
+icon = ExtResource("1_b1xm8")
+stat = &"attack_speed"
+effect_per_level = 0.015
+base_cost = 120

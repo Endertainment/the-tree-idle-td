@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_shield.png" id="1_n7gmc"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_am6h6"]
+
+[resource]
+script = ExtResource("2_am6h6")
+id = &"damage_reduction"
+category = &"defense"
+order = 3
+name_key = "workshop.damage_reduction"
+name = "Damage Reduction"
+description_key = "workshop.damage_reduction_desc"
+description = "Damage Reduction"
+icon = ExtResource("1_n7gmc")
+stat = &"damage_reduction"
+op = &"add"
+effect_per_level = 0.005
+cap = 0.6
+base_cost = 100

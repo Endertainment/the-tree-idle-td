@@ -28,3 +28,12 @@ signal damage_dealt(source_id: StringName, target_id: int, amount: float, is_cri
 
 ## Emitted when the in-run cash balance changes. Not a meta wallet currency.
 signal run_cash_changed(amount: int)
+
+## Emitted after a successful permanent-currency spend (workshop, research...).
+signal meta_purchased(kind: StringName, amount: int, reason: StringName)
+
+## Emitted when the player gains a level (after xp has been applied).
+signal level_up(level: int)
+
+## Emitted once per feature id when a player level unlocks it.
+signal unlocked(unlock_id: StringName)

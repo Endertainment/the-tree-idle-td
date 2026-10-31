@@ -24,8 +24,6 @@ func init_services() -> void:
 	_initialized = true
 
 	SettingsService.init_service()
-	LocaleService.init_service()
-	AudioService.init_service()
 
 	var save_data: Dictionary = {}
 	if SaveService.has_save():
@@ -33,9 +31,33 @@ func init_services() -> void:
 		if save_data.is_empty():
 			_degraded = true
 			log_warn("save file exists but could not be read; starting with defaults")
+		elif SaveService.recovered_from_backup:
+			log_warn("main save was corrupt; recovered the previous write from .bak")
+		if not save_data.is_empty() and not SettingsService.has_stored_settings():
+			SettingsService.apply_save_dict(_section(save_data, "settings"))
+
+	LocaleService.init_service()
+	AudioService.init_service()
+
 	GameState.from_dict(save_data)
+	LevelService.init_service()
+	UnlockService.init_service()
+	WorkshopService.init_service(_section(save_data, "workshop"))
+	SaveService.set_save_provider(Callable(GameState, "build_save_document"))
+	if SaveService.migrated_from_version > 0 and SaveService.migrated_from_version < SaveService.SCHEMA_VERSION:
+		# Persist the migrated v2 document on the next frame, so the one-time
+		# migration log never repeats after a restart.
+		SaveService.request_save()
 
 	log_info("boot complete, version %s" % version_string())
+
+
+## Returns a dictionary section from the save payload (or {}).
+func _section(data: Dictionary, key: String) -> Dictionary:
+	var value: Variant = data.get(key, {})
+	if value is Dictionary:
+		return value as Dictionary
+	return {}
 
 
 ## Returns the display version string (matches project.godot's config/version).

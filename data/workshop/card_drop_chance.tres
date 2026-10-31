@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_cards.png" id="1_6gtop"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_flyrk"]
+
+[resource]
+script = ExtResource("2_flyrk")
+id = &"card_drop_chance"
+category = &"environment"
+order = 6
+name_key = "workshop.card_drop_chance"
+name = "Card Drop Chance"
+description_key = "workshop.card_drop_chance_desc"
+description = "Card Drop Chance"
+icon = ExtResource("1_6gtop")
+stat = &"card_drop_chance"
+op = &"add"
+effect_per_level = 0.005
+cap = 0.15
+base_cost = 160

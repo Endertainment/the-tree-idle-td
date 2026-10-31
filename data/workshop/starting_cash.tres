@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_cash.png" id="1_7u2i8"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_6y2y1"]
+
+[resource]
+script = ExtResource("2_6y2y1")
+id = &"starting_cash"
+category = &"defense"
+order = 4
+name_key = "workshop.starting_cash"
+name = "Starting Cash"
+description_key = "workshop.starting_cash_desc"
+description = "Starting Cash"
+icon = ExtResource("1_7u2i8")
+stat = &"starting_cash"
+op = &"add"
+effect_per_level = 6.0
+base_cost = 70
+display_unit = &"flat"

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_reward.png" id="1_8e57m"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_1o5cv"]
+
+[resource]
+script = ExtResource("2_1o5cv")
+id = &"wave_clear_bonus"
+category = &"utility"
+order = 5
+name_key = "workshop.wave_clear_bonus"
+name = "Wave Clear Bonus"
+description_key = "workshop.wave_clear_bonus_desc"
+description = "Wave Clear Bonus"
+icon = ExtResource("1_8e57m")
+stat = &"wave_clear_bonus"
+op = &"add"
+effect_per_level = 4.0
+base_cost = 75
+display_unit = &"flat"

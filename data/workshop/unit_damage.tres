@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_sword.png" id="1_v6na5"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_jngqg"]
+
+[resource]
+script = ExtResource("2_jngqg")
+id = &"unit_damage"
+order = 2
+name_key = "workshop.unit_damage"
+name = "Unit Damage"
+description_key = "workshop.unit_damage_desc"
+description = "Unit Damage"
+icon = ExtResource("1_v6na5")
+stat = &"unit_damage"
+base_cost = 60

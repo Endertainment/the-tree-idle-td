@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_magic.png" id="1_adefu"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_s65s0"]
+
+[resource]
+script = ExtResource("2_s65s0")
+id = &"magica_speed"
+category = &"environment"
+order = 4
+name_key = "workshop.magica_speed"
+name = "Magica Speed"
+description_key = "workshop.magica_speed_desc"
+description = "Magica Speed"
+icon = ExtResource("1_adefu")
+stat = &"magica_speed"
+effect_per_level = 0.02
+base_cost = 130

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WorkshopTrack" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_clock.png" id="1_1r8hd"]
+[ext_resource type="Script" path="res://scripts/data/workshop_track.gd" id="2_ek1dm"]
+
+[resource]
+script = ExtResource("2_ek1dm")
+id = &"offline_coin_rate"
+category = &"environment"
+order = 1
+name_key = "workshop.offline_coin_rate"
+name = "Offline Coin Rate"
+description_key = "workshop.offline_coin_rate_desc"
+description = "Offline Coin Rate"
+icon = ExtResource("1_1r8hd")
+stat = &"offline_coin_rate"
+effect_per_level = 0.05
+base_cost = 100
