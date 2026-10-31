@@ -49,6 +49,7 @@ When that starts, or when the session feels long:
 
 - Godot binary: `$env:GODOT_BIN`, or the path in `tools/godot_path.txt`.
 - `tools/check_project.ps1` — runs the project headless and fails on parse errors, missing resources or broken imports.
+- `tools/smoke_test.gd` — theme integrity + every screen/component scene loads and instantiates (`--headless --script res://tools/smoke_test.gd`).
 - `tests/run_tests.gd` — pure-logic unit tests (damage, curves, wallet, save migration, modifiers, manifest).
 - Never report a task as done without a green check. If you could not run it, write **"not verified"** explicitly.
 

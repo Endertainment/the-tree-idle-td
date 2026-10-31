@@ -1,7 +1,7 @@
-# Godot 4 editor cache, import metadata and generated translations
+# Godot 4 editor cache and generated translations
+# NOTE: .import files ARE committed on purpose - they hold stable resource UIDs.
 .godot/
 /android/
-*.import
 *.translation
 
 # Exports and builds
