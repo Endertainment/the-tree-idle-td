@@ -682,7 +682,7 @@ Rules:
 
 - reads `docs/art_manifest.json` (`[{path, w, h, color, mode, margins}]`),
 - for each entry, if the file does not exist, writes a PNG: solid `color`, 2 px border in a darker shade, and for 9-slice assets a 1 px inner rectangle exactly on each slice line,
-- prints a summary (`created 132, skipped 0, failed 0`),
+- prints a summary (`created N, skipped N, failed N`),
 - is idempotent and **never overwrites an existing file** (that is how real art is protected),
 - also writes `assets/art/_missing.png` and `docs/art_manifest.md` from the JSON.
 
@@ -858,7 +858,9 @@ Battle HUD:
 | `meta/onboarding/avatar_frame.png` | 220×220 | 9p 24 |
 | `meta/common/modal_9p.png` | 96×96 | 9p 28 |
 
-**Totals:** 132 files (104 static UI, 16 tower/unit sprites, 26 enemy frames counted per frame, 12 projectiles/fx, 5 shaders/masks). The generator prints the live count from the manifest; keep the manifest and this table in sync.
+**Totals:** roughly 240 files — every state variant is a separate image (8 enemies × 6–8 frames, 4 towers × 3 tiers, 4 nav items × 2 states, etc.). The generator prints the exact count from `docs/art_manifest.json`; that number is authoritative, this table is the human-readable mirror. Keep both in sync.
+
+**Acceptance for this section:** the manifest is complete enough that a graphic designer can work through it top to bottom without asking a single question about sizes or names, and replacing every file with final art requires no code change.
 
 ### 9.7 Fonts
 
@@ -1271,7 +1273,7 @@ Tasks:
 7. `.gitignore` verified: `.godot/`, `android/`, `build/`, `*.apk`, `*.aab`, `export_credentials.cfg`, `.vscode/`, `*.log`. `.gitattributes` for LF and binary art.
 8. `README.md` with run/export instructions, `docs/DECISIONS.md` with the first 3 ADRs (mobile renderer, 1080×1920 expand, data-driven resources).
 
-**Acceptance:** no console errors on boot; 132 placeholder PNGs generated; F5 → menu → battle → back works; tests pass; `docs/ART_MANIFEST.md` generated.
+**Acceptance:** no console errors on boot; every manifest entry has a placeholder PNG (the generator reports `created = total, failed = 0`); F5 → menu → battle → back works; tests pass; `docs/ART_MANIFEST.md` generated.
 
 ### M1 — Battle vertical slice
 
