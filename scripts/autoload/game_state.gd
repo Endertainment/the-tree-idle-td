@@ -85,6 +85,32 @@ func build_save_document() -> Dictionary:
 	}
 
 
+## Debug-only full profile wipe used by Settings → Reset profile. Services are
+## reset by the caller; this restores the in-memory document to first-launch shape.
+func reset_profile() -> void:
+	player = {
+		"id": "", "nickname": "", "avatar_id": "avatar_01", "level": 1, "xp": 0,
+		"created_at": 0, "provider": "", "provider_uid": "", "best_wave": 0,
+		"next_wave_uses": 0, "last_seen_at": 0,
+	}
+	wallet = {"coins": 0, "gems": 0, "stones": 0}
+	stats = {
+		"best_wave": 0, "runs_played": 0, "total_kills": 0,
+		"total_playtime": 0, "weekly_max_wave": 0, "week_id": "",
+	}
+	magica = {"research": {}, "completed": [], "pending_claim": ""}
+	cards = {"owned": [], "equipped": [null, null, null, null]}
+	missions = {
+		"day_id": "", "daily": [], "week_id": "", "weekly": [],
+		"daily_bonus_claimed": false, "weekly_bonus_claimed": false,
+	}
+	shop = {"owned_products": [], "last_daily_claim": 0}
+	ads = {"rv_today": 0, "rv_day": "", "interstitial_last": 0}
+	unlocks.clear()
+	is_onboarded = false
+	reward_ledger.from_array([])
+
+
 ## Backwards-compatible alias for tools that snapshot/restore the profile.
 func to_dict() -> Dictionary:
 	return build_save_document()

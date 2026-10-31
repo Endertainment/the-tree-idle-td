@@ -16,6 +16,7 @@ signal confirmed
 
 func _ready() -> void:
 	visible = false
+	add_to_group("modal")
 	_cancel.pressed.connect(close)
 	_confirm.pressed.connect(_on_confirm_pressed)
 	_scrim.gui_input.connect(_on_scrim_gui_input)
@@ -34,11 +35,13 @@ func open(
 	_cancel.text = cancel_text
 	_cancel.visible = not cancel_text.is_empty()
 	visible = true
+	AudioBus.set_modal_open(true)
 
 
 ## Hides the modal without emitting confirmed.
 func close() -> void:
 	visible = false
+	AudioBus.set_modal_open(false)
 
 
 func _on_confirm_pressed() -> void:

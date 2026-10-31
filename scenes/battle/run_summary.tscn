@@ -53,14 +53,14 @@ theme_override_constants/separation = 20
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
-text = "Run over"
+text = "summary.title"
 horizontal_alignment = 1
 
 [node name="WaveLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Display"
-text = "Wave 0"
+text = ""
 horizontal_alignment = 1
 
 [node name="NewBest" type="Label" parent="Root/Center/Panel/Margin/Layout"]
@@ -69,14 +69,14 @@ visible = false
 layout_mode = 2
 theme_type_variation = &"Body"
 theme_override_colors/font_color = Color(1, 0.86, 0.35, 1)
-text = "NEW BEST"
+text = "summary.new_best"
 horizontal_alignment = 1
 
 [node name="BestLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Best wave: 0"
+text = ""
 horizontal_alignment = 1
 
 [node name="Divider" type="HSeparator" parent="Root/Center/Panel/Margin/Layout"]
@@ -86,7 +86,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Waves: 0"
+text = ""
 horizontal_alignment = 1
 
 [node name="CashLost" type="Label" parent="Root/Center/Panel/Margin/Layout"]
@@ -94,26 +94,26 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
 theme_override_colors/font_color = Color(1, 0.58, 0.45, 1)
-text = "Cash is lost when the run ends: 0"
+text = ""
 horizontal_alignment = 1
 
 [node name="CoinsLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Coins +0"
+text = ""
 
 [node name="GemsLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Gems +0"
+text = ""
 
 [node name="XpLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "XP +0"
+text = ""
 
 [node name="AdNote" type="Label" parent="Root/Center/Panel/Margin/Layout"]
 unique_name_in_owner = true
@@ -129,7 +129,7 @@ custom_minimum_size = Vector2(560, 112)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"GoldButton"
-text = "Double coins (AD)"
+text = "summary.double_coins"
 
 [node name="ContinueButton" type="Button" parent="Root/Center/Panel/Margin/Layout"]
 unique_name_in_owner = true
@@ -137,4 +137,4 @@ custom_minimum_size = Vector2(400, 120)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"PrimaryButton"
-text = "Continue"
+text = "summary.continue"

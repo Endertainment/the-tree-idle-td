@@ -80,12 +80,7 @@ func _on_abandon_pressed() -> void:
 
 func _on_settings_pressed() -> void:
 	_pending = Pending.NONE
-	_confirm.open(
-		LocaleService.t("battle.settings", "Settings"),
-		LocaleService.t("battle.settings_soon", "Settings menu arrives in M5. Use Esc or Resume to continue."),
-		LocaleService.t("common.ok", "OK"),
-		""
-	)
+	SceneRouter.open_overlay(&"settings")
 
 
 func _on_confirmed() -> void:

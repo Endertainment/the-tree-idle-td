@@ -54,7 +54,9 @@ func is_occupied() -> bool:
 
 ## Visible condition on a locked slot ("Player level 4", ...).
 func lock_hint() -> String:
-	return UnitSlotRules.describe(requirement)
+	if requirement == null:
+		return ""
+	return LocaleService.t(requirement.label_key, requirement.label_text)
 
 
 func select() -> void:

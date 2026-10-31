@@ -58,6 +58,7 @@ func _ready() -> void:
 	_equip_button.pressed.connect(_on_equip_pressed)
 	_nav.shop_pressed.connect(_on_shop_pressed)
 	CardService.cards_changed.connect(_refresh)
+	LocaleService.language_changed.connect(_on_language_changed)
 	_toast.visible = false
 	_detail_overlay.visible = false
 	_build_slots()
@@ -68,6 +69,43 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if CardService.cards_changed.is_connected(_refresh):
 		CardService.cards_changed.disconnect(_refresh)
+	if LocaleService.language_changed.is_connected(_on_language_changed):
+		LocaleService.language_changed.disconnect(_on_language_changed)
+
+
+func _on_language_changed(_code: String) -> void:
+	_localize()
+	_refresh_filters()
+	if _selected != &"":
+		_refresh_detail()
+	AudioBus.bind_buttons(self)
+
+
+## Localised display helpers for content resources (keys live in strings.csv).
+func _card_name(card: CardData) -> String:
+	return LocaleService.t(card.name_key, card.name)
+
+
+func _rarity_label(card: CardData) -> String:
+	var key := "cards.rarity.%s" % String(card.rarity)
+	return LocaleService.t(key, card.rarity_label())
+
+
+func _where_to_get(card: CardData) -> String:
+	var key := "card.%s_where" % String(card.id)
+	return LocaleService.t(key, card.where_to_get)
+
+
+func _effect_lines(card: CardData, level: int) -> PackedStringArray:
+	var lines: PackedStringArray = []
+	for effect: ModifierData in card.effects:
+		var line := card.effect_line(effect, level)
+		if line.is_empty():
+			continue
+		var label_entry: Array = CardData.STAT_LABELS.get(effect.stat, [String(effect.stat).capitalize(), "percent"])
+		var translated := LocaleService.t("stat.%s" % String(effect.stat), str(label_entry[0]))
+		lines.append(line.replace(str(label_entry[0]), translated))
+	return lines
 
 
 func _localize() -> void:
@@ -76,6 +114,8 @@ func _localize() -> void:
 	_upgrade_button.text = LocaleService.t("cards.upgrade", "Upgrade")
 	_equip_button.text = LocaleService.t("cards.equip", "Equip")
 	_close_detail_button.text = LocaleService.t("common.close", "Close")
+	_sort_button.add_theme_font_size_override("font_size", 24)
+	_sort_button.clip_text = true
 	_nav.setup(&"cards")
 
 
@@ -98,10 +138,12 @@ func _build_slots() -> void:
 	for slot in CardCollection.MAX_SLOTS:
 		var button := Button.new()
 		button.name = "Slot%d" % slot
-		button.custom_minimum_size = Vector2(0, 150)
+		button.custom_minimum_size = Vector2(0, 170)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.focus_mode = Control.FOCUS_NONE
-		button.add_theme_font_size_override("font_size", 24)
+		button.add_theme_font_size_override("font_size", 16)
+		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		button.clip_text = true
 		button.pressed.connect(_on_slot_pressed.bind(slot))
 		_slots_row.add_child(button)
 		_slot_buttons.append(button)
@@ -115,6 +157,9 @@ func _build_filters() -> void:
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.focus_mode = Control.FOCUS_NONE
 		button.theme_type_variation = &"SecondaryButton"
+		button.add_theme_font_size_override("font_size", 22)
+		button.clip_text = true
+		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		button.add_theme_font_size_override("font_size", 24)
 		button.pressed.connect(_on_filter_pressed.bind(filter))
 		_filter_row.add_child(button)
@@ -155,7 +200,7 @@ func _refresh_slots() -> void:
 			continue
 		var card := collection.get_card(card_id)
 		button.text = "%s\n%s %d" % [
-			card.name,
+			_card_name(card),
 			LocaleService.t("workshop.level_short", "Lv"),
 			collection.level_of(card_id),
 		]
@@ -165,14 +210,8 @@ func _refresh_slots() -> void:
 
 func _slot_requirement(slot: int) -> String:
 	match slot:
-		0:
-			return "%s 2" % LocaleService.t("cards.player_level", "Player level")
-		1:
-			return "%s 5" % LocaleService.t("cards.player_level", "Player level")
-		2:
-			return "%s 15" % LocaleService.t("cards.player_level", "Player level")
-		3:
-			return "%s 20" % LocaleService.t("cards.player_level", "Player level")
+		0, 1, 2, 3:
+			return LocaleService.t("cards.player_level_value", "Player level %d") % [2, 5, 15, 20][slot]
 		_:
 			return LocaleService.t("cards.deep_roots", "Deep Roots")
 
@@ -184,10 +223,8 @@ func _refresh_filters() -> void:
 		button.theme_type_variation = &"GoldButton" if active else &"SecondaryButton"
 		button.modulate = Color.WHITE if active else Color(0.8, 0.84, 0.78, 1.0)
 		_apply_filter_text(button, filter)
-	_sort_button.text = "%s: %s" % [
-		LocaleService.t("cards.sort", "Sort"),
-		_sort_label(_sort_mode),
-	]
+	_sort_button.text = _sort_label(_sort_mode)
+	_sort_button.tooltip_text = LocaleService.t("cards.sort", "Sort")
 
 
 func _apply_filter_text(button: Button, filter: StringName) -> void:
@@ -248,19 +285,21 @@ func _card_tile(card: CardData, collection: CardCollection) -> Button:
 	button.focus_mode = Control.FOCUS_NONE
 	button.icon = card.art
 	button.expand_icon = true
-	button.add_theme_font_size_override("font_size", 24)
+	button.add_theme_font_size_override("font_size", 22)
 	button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	button.clip_text = true
 	var owned := collection.is_owned(card.id)
 	if owned:
 		button.text = "%s\n%s %d" % [
-			card.name,
+			_card_name(card),
 			LocaleService.t("workshop.level_short", "Lv"),
 			collection.level_of(card.id),
 		]
 		button.theme_type_variation = &"GoldButton" if card.rarity == &"legendary" else &"PrimaryButton"
 		button.modulate = card.rarity_color()
 	else:
-		button.text = "%s\n%s" % [card.name, LocaleService.t("cards.not_owned", "Not owned")]
+		button.text = "%s\n%s" % [_card_name(card), LocaleService.t("cards.not_owned", "Not owned")]
 		button.theme_type_variation = &"SecondaryButton"
 		button.modulate = Color(0.58, 0.62, 0.56, 1.0)
 	button.pressed.connect(_select_card.bind(card.id))
@@ -282,8 +321,9 @@ func _refresh_stats() -> void:
 		if is_zero_approx(value):
 			continue
 		var label_entry: Array = CardData.STAT_LABELS.get(StringName(stat), [stat.capitalize(), "percent"])
-		var suffix := " pp" if str(label_entry[1]) == "pp" else ""
-		parts.append("%s %+d%s%s" % [str(label_entry[0]), int(round(value * 100.0)), suffix, unit])
+		var suffix := " " + LocaleService.t("cards.pp", "pp") if str(label_entry[1]) == "pp" else ""
+		var stat_label := LocaleService.t("stat.%s" % String(stat), str(label_entry[0]))
+		parts.append("%s %+d%s%s" % [stat_label, int(round(value * 100.0)), suffix, unit])
 		if parts.size() >= 4:
 			break
 	var summary := " · ".join(parts)
@@ -299,6 +339,7 @@ func _refresh_stats() -> void:
 
 func _select_card(card_id: StringName) -> void:
 	_selected = card_id
+	AudioBus.play_ui(&"card_flip")
 	_refresh_detail()
 	_detail_overlay.visible = true
 
@@ -311,13 +352,13 @@ func _refresh_detail() -> void:
 		return
 	var owned := collection.is_owned(card.id)
 	var level := collection.level_of(card.id) if owned else 1
-	_detail_title.text = card.name
-	_detail_rarity.text = card.rarity_label()
+	_detail_title.text = _card_name(card)
+	_detail_rarity.text = _rarity_label(card)
 	_detail_rarity.modulate = card.rarity_color()
-	_detail_effects.text = "\n".join(card.effect_lines(level))
+	_detail_effects.text = "\n".join(_effect_lines(card, level))
 	_detail_where.text = "%s %s" % [
 		LocaleService.t("cards.where_to_get", "Where to get:"),
-		card.where_to_get,
+		_where_to_get(card),
 	]
 	if owned:
 		var cost := collection.shard_cost(card.id)
@@ -354,10 +395,12 @@ func _refresh_detail() -> void:
 func _on_upgrade_pressed() -> void:
 	if _preview_state.is_empty():
 		if not CardService.try_upgrade(_selected):
+			AudioBus.play_ui(&"ui_error")
 			_show_toast(LocaleService.t("cards.not_enough_shards", "Not enough shards"))
 			return
 	else:
 		_collection().upgrade(_selected)
+	AudioBus.play_ui(&"ui_purchase")
 	_refresh()
 	_show_toast(LocaleService.t("cards.upgraded", "Card upgraded"))
 
@@ -372,10 +415,12 @@ func _on_equip_pressed() -> void:
 			CardService.unequip(current_slot)
 		else:
 			collection.unequip(current_slot)
+		AudioBus.play_ui(&"ui_toggle")
 		_show_toast(LocaleService.t("cards.unequipped", "Card unequipped"))
 		_refresh()
 		return
 	if _slot_count() <= 0:
+		AudioBus.play_ui(&"ui_error")
 		_show_toast(LocaleService.t("cards.no_slot", "Unlock a card slot first"))
 		return
 	if collection.equipped_count() >= _slot_count():
@@ -386,13 +431,14 @@ func _on_equip_pressed() -> void:
 		CardService.equip(_selected)
 	else:
 		collection.equip(_selected, -1, _slot_count())
-	_show_toast(LocaleService.t("cards.equipped", "Card equipped"))
+	_show_toast(LocaleService.t("cards.equipped_toast", "Card equipped"))
 	_refresh()
 
 
 func _on_slot_pressed(slot: int) -> void:
 	var collection := _collection()
 	if _slot_count() <= 0:
+		AudioBus.play_ui(&"ui_error")
 		_show_toast(LocaleService.t("cards.no_slot", "Unlock a card slot first"))
 		return
 	if slot >= _slot_count():
@@ -404,7 +450,7 @@ func _on_slot_pressed(slot: int) -> void:
 		else:
 			collection.equip(_replace_mode, slot, _slot_count())
 		_replace_mode = &""
-		_show_toast(LocaleService.t("cards.equipped", "Card equipped"))
+		_show_toast(LocaleService.t("cards.equipped_toast", "Card equipped"))
 		_refresh()
 		return
 	var card_id := collection.slot_card(slot)
@@ -416,7 +462,7 @@ func _on_slot_pressed(slot: int) -> void:
 			CardService.equip(_selected, slot)
 		else:
 			collection.equip(_selected, slot, _slot_count())
-		_show_toast(LocaleService.t("cards.equipped", "Card equipped"))
+		_show_toast(LocaleService.t("cards.equipped_toast", "Card equipped"))
 		_refresh()
 
 
@@ -426,7 +472,15 @@ func _close_detail() -> void:
 
 func _on_back_pressed() -> void:
 	SaveService.request_save()
-	SceneRouter.goto(&"main_menu")
+	SceneRouter.back()
+
+
+## Android back closes the detail modal before leaving the screen.
+func handle_back_request() -> bool:
+	if _detail_overlay.visible:
+		_close_detail()
+		return true
+	return false
 
 
 func _on_shop_pressed() -> void:

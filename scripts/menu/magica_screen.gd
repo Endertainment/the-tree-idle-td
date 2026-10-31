@@ -45,6 +45,7 @@ func _ready() -> void:
 	_cancel_modal.confirmed.connect(_on_cancel_confirmed)
 	_nav.shop_pressed.connect(_on_shop_pressed)
 	MagicaService.magica_changed.connect(_refresh)
+	LocaleService.language_changed.connect(_on_language_changed)
 	_toast.visible = false
 	_build_nodes()
 	_refresh()
@@ -54,6 +55,25 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if MagicaService.magica_changed.is_connected(_refresh):
 		MagicaService.magica_changed.disconnect(_refresh)
+	if LocaleService.language_changed.is_connected(_on_language_changed):
+		LocaleService.language_changed.disconnect(_on_language_changed)
+
+
+func _on_language_changed(_code: String) -> void:
+	_localize()
+	_refresh()
+
+
+func _node_name(node: MagicaNode) -> String:
+	return LocaleService.t(node.name_key, node.name)
+
+
+func _node_description(node: MagicaNode) -> String:
+	return LocaleService.t(node.description_key, node.description)
+
+
+func _node_effect_text(node: MagicaNode) -> String:
+	return LocaleService.t("magica.%s_effect" % String(node.id), node.effect_text)
 
 
 func _process(delta: float) -> void:
@@ -107,6 +127,7 @@ func _build_nodes() -> void:
 			button.pressed.connect(_on_node_pressed.bind(node.id))
 			box.add_child(button)
 			_node_buttons[node.id] = button
+	AudioBus.bind_buttons(self)
 
 
 func _refresh() -> void:
@@ -123,7 +144,7 @@ func _refresh_nodes() -> void:
 		if button == null:
 			continue
 		var status := _node_status(model, node)
-		button.text = "%s\n%s" % [node.name, status]
+		button.text = "%s\n%s" % [_node_name(node), status]
 		var state := _node_state(model, node)
 		match state:
 			"done":
@@ -171,7 +192,7 @@ func _refresh_active() -> void:
 	if model.has_pending_claim():
 		var pending := model.get_node_by_id(model.get_pending_claim())
 		_active_title.text = LocaleService.t("magica.complete", "Research complete!")
-		_active_node.text = pending.name if pending != null else ""
+		_active_node.text = _node_name(pending) if pending != null else ""
 		_active_hint.text = LocaleService.t("magica.claim_hint", "Tap Claim to activate its effect.")
 		_active_remaining.text = ""
 		_timer.progress = 1.0
@@ -182,7 +203,7 @@ func _refresh_active() -> void:
 	if model.has_active_research():
 		var node := model.get_node_by_id(model.active_node_id())
 		_active_title.text = LocaleService.t("magica.active", "Researching")
-		_active_node.text = node.name if node != null else ""
+		_active_node.text = _node_name(node) if node != null else ""
 		_active_hint.text = LocaleService.t("magica.active_hint", "Research continues while the app is closed.")
 		_claim_button.visible = false
 		_speed_up_button.visible = true
@@ -214,30 +235,33 @@ func _on_node_pressed(node_id: StringName) -> void:
 	if node == null:
 		return
 	var lines: PackedStringArray = []
-	lines.append(node.description)
-	lines.append("%s %s" % [LocaleService.t("magica.effect", "Effect:"), node.effect_text])
+	lines.append(_node_description(node))
+	lines.append("%s %s" % [LocaleService.t("magica.effect", "Effect:"), _node_effect_text(node)])
 	lines.append("%s %s" % [LocaleService.t("magica.duration", "Duration:"), _duration_text(node.duration_seconds)])
 	lines.append("%s %s" % [LocaleService.t("magica.cost", "Cost:"), _cost_text(node)])
 	if not model.missing_prerequisites(node_id).is_empty():
 		var names: PackedStringArray = []
 		for required: StringName in model.missing_prerequisites(node_id):
 			var prerequisite := MagicaService.get_node_by_id(required)
-			names.append(prerequisite.name if prerequisite != null else String(required))
+			names.append(_node_name(prerequisite) if prerequisite != null else String(required))
 		lines.append("%s %s" % [LocaleService.t("magica.requires", "Requires:"), ", ".join(names)])
 	var confirm_text := LocaleService.t("magica.start", "Start") if model.is_available(node_id) else LocaleService.t("common.ok", "OK")
-	_node_modal.open(node.name, "\n".join(lines), confirm_text, LocaleService.t("common.close", "Close"))
+	_node_modal.open(_node_name(node), "\n".join(lines), confirm_text, LocaleService.t("common.close", "Close"))
 
 
 func _on_node_confirmed() -> void:
 	if _selected == &"" or _is_preview():
 		return
 	if not MagicaService.is_available(_selected):
+		AudioBus.play_ui(&"ui_error")
 		_show_toast(_locked_reason(_model(), _selected))
 		return
 	var result := MagicaService.try_start(_selected)
 	if result.is_ok():
+		EventBus.research_started.emit(_selected)
 		_show_toast(LocaleService.t("magica.started", "Research started"))
 		return
+	AudioBus.play_ui(&"ui_error")
 	_show_toast(_spend_reason(result))
 
 
@@ -268,10 +292,12 @@ func _on_claim_pressed() -> void:
 		return
 	var claimed := MagicaService.claim()
 	if claimed == &"":
+		AudioBus.play_ui(&"ui_error")
 		_show_toast(LocaleService.t("magica.nothing_to_claim", "Nothing to claim"))
 		return
+	EventBus.research_completed.emit(claimed)
 	var node := MagicaService.get_node_by_id(claimed)
-	_show_toast(LocaleService.t("magica.claimed", "Research complete: %s") % (node.name if node != null else ""))
+	_show_toast(LocaleService.t("magica.claimed", "Research complete: %s") % (_node_name(node) if node != null else ""))
 
 
 func _on_speed_up_pressed() -> void:
@@ -296,12 +322,13 @@ func _on_cancel_confirmed() -> void:
 	var refund := MagicaService.cancel()
 	if refund.is_empty():
 		return
+	AudioBus.play_ui(&"ui_back")
 	_show_toast(LocaleService.t("magica.cancelled", "Research cancelled, 50 % refunded"))
 
 
 func _on_back_pressed() -> void:
 	SaveService.request_save()
-	SceneRouter.goto(&"main_menu")
+	SceneRouter.back()
 
 
 func _on_shop_pressed() -> void:
@@ -313,19 +340,15 @@ func _duration_text(seconds: int) -> String:
 
 
 func _format_duration(seconds: int) -> String:
-	if seconds >= 3600:
-		var hours := seconds / 3600
-		var minutes := (seconds % 3600) / 60
-		return "%dh %dm" % [hours, minutes] if minutes > 0 else "%dh" % hours
-	return "%dm" % maxi(seconds / 60, 1)
+	return LocaleService.format_duration(seconds)
 
 
 func _cost_text(node: MagicaNode) -> String:
 	var parts: PackedStringArray = []
 	if node.coin_cost > 0:
-		parts.append("%s %s" % [LocaleService.format_number(node.coin_cost), LocaleService.t("common.coins", "coins")])
+		parts.append("%s %s" % [LocaleService.format_number(node.coin_cost), LocaleService.t("common.coins_short", "coins")])
 	if node.gem_cost > 0:
-		parts.append("%d %s" % [node.gem_cost, LocaleService.t("common.gems", "gems")])
+		parts.append("%d %s" % [node.gem_cost, LocaleService.t("common.gems_short", "gems")])
 	return " + ".join(parts) if not parts.is_empty() else LocaleService.t("common.free", "Free")
 
 

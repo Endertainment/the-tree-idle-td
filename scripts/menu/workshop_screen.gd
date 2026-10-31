@@ -37,6 +37,7 @@ func _ready() -> void:
 	_environment_tab.pressed.connect(_on_tab_pressed.bind(CATEGORY_IDS[3]))
 	_back_button.pressed.connect(_on_back_pressed)
 	EventBus.currency_changed.connect(_on_currency_changed)
+	LocaleService.language_changed.connect(_on_language_changed)
 	_nav.shop_pressed.connect(_on_shop_pressed)
 	_toast.visible = false
 	_refresh()
@@ -46,6 +47,13 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if EventBus.currency_changed.is_connected(_on_currency_changed):
 		EventBus.currency_changed.disconnect(_on_currency_changed)
+	if LocaleService.language_changed.is_connected(_on_language_changed):
+		LocaleService.language_changed.disconnect(_on_language_changed)
+
+
+func _on_language_changed(_code: String) -> void:
+	_localize()
+	_rebuild_rows()
 
 
 func _localize() -> void:
@@ -75,7 +83,7 @@ func _on_tab_pressed(category: StringName) -> void:
 
 func _on_back_pressed() -> void:
 	SaveService.request_save()
-	SceneRouter.goto(&"main_menu")
+	SceneRouter.back()
 
 
 func _on_shop_pressed() -> void:
@@ -108,6 +116,7 @@ func _rebuild_rows() -> void:
 		row.apply(_payload(track))
 		row.buy_pressed.connect(_on_buy_pressed.bind(row))
 		_rows[String(track.id)] = row
+	AudioBus.bind_buttons(self)
 
 
 func _payload(track: WorkshopTrack) -> Dictionary:
@@ -124,7 +133,7 @@ func _payload(track: WorkshopTrack) -> Dictionary:
 		"current_text": track.format_total(level),
 		"next_text": track.format_total(level + 1),
 		"delta_text": "",
-		"cost_text": "" if maxed else str(cost),
+		"cost_text": "" if maxed else LocaleService.format_number(cost),
 		"maxed": maxed,
 		"affordable": affordable,
 		"reason": "" if maxed or affordable else _need_more_text(cost - balance),
@@ -134,12 +143,13 @@ func _payload(track: WorkshopTrack) -> Dictionary:
 func _on_buy_pressed(track_id: StringName, row: WorkshopRow) -> void:
 	var result := WorkshopService.try_buy(track_id)
 	if result.is_ok():
-		AudioService.play_sfx(_purchase_sfx())
+		AudioBus.play_ui(&"ui_purchase")
 		row.play_purchase_flash()
 		_refresh()
 		_apply_row(track_id)
 		return
 	row.shake()
+	AudioBus.play_ui(&"ui_error")
 	_show_toast(_reason_text(result))
 
 
@@ -197,11 +207,6 @@ func _show_toast(message: String) -> void:
 
 func _hide_toast() -> void:
 	_toast.visible = false
-
-
-func _purchase_sfx() -> AudioStream:
-	var stream: Variant = get_meta(PURCHASE_SFX_HOOK, null)
-	return stream as AudioStream
 
 
 ## Tooling-only: a populated, affordable state for docs/preview captures.

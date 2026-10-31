@@ -28,14 +28,18 @@ var _tick: float = 0.0
 var _toast_tween: Tween
 var _preview_model: MissionModel
 var _preview_state: Dictionary = {}
+var _templates_by_id: Dictionary = {}
 
 
 func _ready() -> void:
+	for template: MissionTemplate in MissionTemplateTable.load_table().templates:
+		_templates_by_id[String(template.id)] = template
 	_localize()
 	_back_button.pressed.connect(_on_back_pressed)
 	_claim_all_button.pressed.connect(_on_claim_all_pressed)
 	_nav.shop_pressed.connect(_on_shop_pressed)
 	MissionService.missions_changed.connect(_refresh)
+	LocaleService.language_changed.connect(_on_language_changed)
 	_toast.visible = false
 	_refresh()
 	set_process(true)
@@ -44,6 +48,22 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if MissionService.missions_changed.is_connected(_refresh):
 		MissionService.missions_changed.disconnect(_refresh)
+	if LocaleService.language_changed.is_connected(_on_language_changed):
+		LocaleService.language_changed.disconnect(_on_language_changed)
+
+
+func _on_language_changed(_code: String) -> void:
+	_localize()
+	_refresh()
+
+
+## Mission rows persist the English title for save stability; render the key.
+func _localized_mission_title(row: Dictionary) -> String:
+	var template: MissionTemplate = _templates_by_id.get(str(row.get("template_id", row.get("id", ""))), null)
+	if template == null:
+		return str(row.get("title", ""))
+	var target := maxi(int(row.get("target", 1)), 1)
+	return LocaleService.t(template.title_key, template.title).replace("{n}", str(target))
 
 
 func _process(delta: float) -> void:
@@ -91,6 +111,7 @@ func _refresh() -> void:
 	var claimable := model.claimable_count(&"daily") + model.claimable_count(&"weekly")
 	_claim_all_button.visible = claimable >= 2
 	_claim_all_button.disabled = claimable < 2
+	AudioBus.bind_buttons(self)
 
 
 func _refresh_countdowns() -> void:
@@ -113,10 +134,10 @@ func _format_countdown(seconds: int) -> String:
 	var hours := (total % 86400) / 3600
 	var minutes := (total % 3600) / 60
 	if days > 0:
-		return "%dd %02dh %02dm" % [days, hours, minutes]
+		return LocaleService.format_countdown(seconds)
 	if hours > 0:
-		return "%dh %02dm" % [hours, minutes]
-	return "%dm" % minutes
+		return LocaleService.format_countdown(seconds)
+	return LocaleService.format_countdown(seconds)
 
 
 func _rebuild_section(container: VBoxContainer, rows: Array[Dictionary]) -> void:
@@ -149,7 +170,7 @@ func _mission_row(row: Dictionary) -> PanelContainer:
 	box.add_child(info)
 
 	var title := Label.new()
-	title.text = str(row.get("title", ""))
+	title.text = _localized_mission_title(row)
 	title.theme_type_variation = &"Body"
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	info.add_child(title)
@@ -231,11 +252,12 @@ func _bonus_text(model: MissionModel, period: StringName) -> String:
 	if model.is_bonus_claimed(period):
 		return LocaleService.t("missions.bonus_claimed", "Completion bonus claimed")
 	var reward := model.bonus_reward(period)
-	var text := LocaleService.t("missions.bonus", "All complete: +%d coins, +%d gems") % [
-		int(reward.get("coins", 0)), int(reward.get("gems", 0))
+	var text := LocaleService.t("missions.bonus", "All complete: %s, %s") % [
+		LocaleService.plural_count(int(reward.get("coins", 0)), "plural.coins"),
+		LocaleService.plural_count(int(reward.get("gems", 0)), "plural.gems"),
 	]
 	if bool(reward.get("card_pack", false)):
-		text += ", +1 card pack"
+		text += LocaleService.t("missions.bonus_card_pack", ", +1 card pack")
 	return text
 
 
@@ -243,8 +265,10 @@ func _on_claim_pressed(mission_id: String) -> void:
 	if _preview_state.is_empty():
 		var result := MissionService.claim(mission_id)
 		if bool(result.get("ok", false)):
+			AudioBus.play_ui(&"ui_claim")
 			_show_toast(LocaleService.t("missions.claimed_toast", "Mission claimed"))
 		else:
+			AudioBus.play_ui(&"ui_error")
 			_show_toast(LocaleService.t("missions.not_complete", "Mission is not complete"))
 	else:
 		_show_toast(LocaleService.t("missions.claimed_toast", "Mission claimed"))
@@ -254,6 +278,8 @@ func _on_claim_pressed(mission_id: String) -> void:
 func _on_claim_all_pressed() -> void:
 	if _preview_state.is_empty():
 		var claimed := MissionService.claim_all()
+		if claimed > 0:
+			AudioBus.play_ui(&"ui_claim")
 		_show_toast(LocaleService.t("missions.claim_all_toast", "Claimed %d missions") % claimed)
 	else:
 		_show_toast(LocaleService.t("missions.claim_all_toast", "Claimed %d missions") % 0)
@@ -262,7 +288,7 @@ func _on_claim_all_pressed() -> void:
 
 func _on_back_pressed() -> void:
 	SaveService.request_save()
-	SceneRouter.goto(&"main_menu")
+	SceneRouter.back()
 
 
 func _on_shop_pressed() -> void:

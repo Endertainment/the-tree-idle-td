@@ -68,7 +68,7 @@ custom_minimum_size = Vector2(150, 90)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
-text = "Back"
+text = "common.back"
 
 [node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row"]
 custom_minimum_size = Vector2(64, 64)
@@ -83,7 +83,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"Title"
-text = "Missions"
+text = "missions.title"
 
 [node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row"]
 layout_mode = 2
@@ -97,7 +97,7 @@ custom_minimum_size = Vector2(240, 90)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"GoldButton"
-text = "Claim all"
+text = "missions.claim_all"
 
 [node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout"]
 layout_mode = 2
@@ -122,7 +122,7 @@ theme_override_constants/separation = 12
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"Body"
-text = "Daily"
+text = "missions.daily"
 
 [node name="Spacer" type="Control" parent="SafeArea/Layout/Scroll/Sections/DailyHeader/Row"]
 layout_mode = 2
@@ -134,7 +134,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"Caption"
-text = "Resets in --"
+text = ""
 
 [node name="DailyRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Sections"]
 unique_name_in_owner = true
@@ -145,7 +145,7 @@ theme_override_constants/separation = 8
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "All complete: +30 coins, +2 gems"
+text = ""
 horizontal_alignment = 1
 
 [node name="WeeklyHeader" type="PanelContainer" parent="SafeArea/Layout/Scroll/Sections"]
@@ -161,7 +161,7 @@ theme_override_constants/separation = 12
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"Body"
-text = "Weekly"
+text = "missions.weekly"
 
 [node name="Spacer" type="Control" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader/Row"]
 layout_mode = 2
@@ -173,7 +173,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"Caption"
-text = "Resets in --"
+text = ""
 
 [node name="WeeklyRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Sections"]
 unique_name_in_owner = true
@@ -184,14 +184,14 @@ theme_override_constants/separation = 8
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "All complete: +250 coins, +10 gems, +1 card pack"
+text = ""
 horizontal_alignment = 1
 
 [node name="ResetNote" type="Label" parent="SafeArea/Layout/Scroll/Sections"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Daily missions reset at 04:00 local time; weekly missions reset Monday 04:00."
+text = "missions.reset_note"
 horizontal_alignment = 1
 autowrap_mode = 3
 

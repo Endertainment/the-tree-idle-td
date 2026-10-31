@@ -87,6 +87,9 @@ var _aura_timer: float = 0.0
 var _finished: bool = false
 var _paused: bool = false
 var _sheet_open: bool = false
+var _shake_left: float = 0.0
+var _shake_strength: float = 0.0
+var _last_tree_hp: float = -1.0
 
 
 func _ready() -> void:
@@ -133,6 +136,7 @@ func _exit_tree() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_update_shake(delta)
 	if _finished:
 		return
 	var dt := _clock.scaled(delta)
@@ -156,6 +160,13 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 # --- public API (HUD, collaborators, tests and tools) ---------------------------
+
+
+## Android back / Esc is owned by the HUD (pause + confirm), never a silent exit.
+func handle_back_request() -> bool:
+	if _finished or _hud_controller == null:
+		return false
+	return bool(_hud_controller.call(&"handle_back_request"))
 
 
 func get_clock() -> BattleClock:
@@ -379,6 +390,7 @@ func build_tower(pedestal: Pedestal, tower_id: StringName) -> bool:
 		return false
 	var data := _tower_lookup.get(tower_id, null) as TowerData
 	if data == null or not try_spend_cash(_price(data.build_cost), &"build_tower").is_ok():
+		AudioBus.play_ui(&"ui_error")
 		return false
 	if not _place_tower(pedestal, data):
 		add_cash(_price(data.build_cost), &"refund_tower")
@@ -423,10 +435,12 @@ func upgrade_tower(tower: Tower) -> bool:
 		return false
 	var cost := _price(tower.upgrade_cost())
 	if not try_spend_cash(cost, &"upgrade_tower").is_ok():
+		AudioBus.play_ui(&"ui_error")
 		return false
 	if not tower.upgrade():
 		add_cash(cost, &"refund_tower")
 		return false
+	AudioBus.play_sfx_id(&"upgrade_buy")
 	_refresh_auras()
 	_refresh_upgrade_panel()
 	return true
@@ -443,6 +457,7 @@ func sell_tower(tower: Tower) -> int:
 	if pedestal != null:
 		pedestal.clear()
 	add_cash(refund, &"sell_tower")
+	AudioBus.play_ui(&"tower_sell")
 	_refresh_auras()
 	_refresh_upgrade_panel()
 	return refund
@@ -537,7 +552,9 @@ func try_buy_tree_upgrade(track_id: StringName) -> SpendResult:
 		return check
 	var result := try_spend_cash(_price(check.amount), &"tree_upgrade")
 	if not result.is_ok():
+		AudioBus.play_ui(&"ui_error")
 		return result
+	AudioBus.play_sfx_id(&"upgrade_buy")
 	_upgrades.record_purchase(track_id)
 	_apply_run_modifiers()
 	_tree.play_level_up()
@@ -555,7 +572,9 @@ func try_buy_unit_upgrade(row_id: StringName) -> SpendResult:
 	var cost := _price(unit.upgrade_cost())
 	var result := try_spend_cash(cost, &"upgrade_unit")
 	if not result.is_ok():
+		AudioBus.play_ui(&"ui_error")
 		return result
+	AudioBus.play_sfx_id(&"upgrade_buy")
 	if not unit.upgrade():
 		add_cash(cost, &"refund_unit")
 		return SpendResult.failure(SpendResult.Code.INVALID_AMOUNT, "battle.unknown_upgrade", cost, get_cash())
@@ -1023,6 +1042,8 @@ func _on_enemy_hit_taken(enemy: Enemy, amount: float, is_crit: bool, source_id: 
 	if not is_instance_valid(enemy) or enemy.data == null:
 		return
 	EventBus.damage_dealt.emit(source_id, enemy.enemy_uid, amount, is_crit, not enemy.is_alive())
+	if not SettingsService.damage_numbers:
+		return
 	var offset := Vector2(0.0, -78.0 * maxf(enemy.data.scale, 0.8))
 	_damage_numbers.show_number(enemy.global_position + offset, amount, is_crit)
 
@@ -1036,6 +1057,7 @@ func _on_enemy_hp_changed(enemy: Enemy, current_hp: float, max_hp: float) -> voi
 func _on_boss_spawned(enemy: Enemy) -> void:
 	_active_boss = enemy
 	boss_spawned.emit(enemy)
+	_shake_screen(14.0)
 
 
 func _on_card_dropped(card_id: StringName) -> void:
@@ -1046,12 +1068,26 @@ func _on_card_dropped(card_id: StringName) -> void:
 
 
 func _on_second_wind_used() -> void:
+	AudioBus.play_sfx_id(&"crit")
 	if _hud != null:
 		_hud.show_banner(LocaleService.t("battle.second_wind", "Second Wind: the Tree survives!"))
 
 
 func _on_shot_requested(origin: Vector2, target: Enemy, shot: Dictionary) -> void:
 	_combat.fire(origin, target, shot)
+	_play_shot_sound(StringName(str(shot.get("source_id", ""))))
+
+
+func _play_shot_sound(source_id: StringName) -> void:
+	match source_id:
+		&"tower_archer", &"unit_archer":
+			AudioBus.play_sfx_id(&"shoot_arrow")
+		&"tower_cannon":
+			AudioBus.play_sfx_id(&"shoot_cannon")
+		&"tower_frost_spire", &"unit_druid":
+			AudioBus.play_sfx_id(&"shoot_frost")
+		&"unit_mage":
+			AudioBus.play_sfx_id(&"shoot_magic")
 
 
 func _play_death_fx(enemy: Enemy) -> void:
@@ -1113,6 +1149,33 @@ func _on_tree_defeated() -> void:
 
 func _on_tree_hp_changed(current_hp: float, maximum: float) -> void:
 	tree_hp_changed.emit(current_hp, maximum)
+	if _last_tree_hp >= 0.0 and current_hp < _last_tree_hp:
+		_shake_screen(10.0)
+	_last_tree_hp = current_hp
+
+
+## Settings → screen shake. Offset decays over 0.3 s; disabled means no offset.
+func _shake_screen(strength: float) -> void:
+	if not SettingsService.shake:
+		return
+	_shake_strength = maxf(_shake_strength, strength)
+	_shake_left = maxf(_shake_left, 0.3)
+
+
+func _update_shake(delta: float) -> void:
+	if _shake_left <= 0.0:
+		if position != Vector2.ZERO:
+			position = Vector2.ZERO
+		return
+	_shake_left = maxf(_shake_left - delta, 0.0)
+	var falloff := _shake_left / 0.3
+	position = Vector2(
+		randf_range(-_shake_strength, _shake_strength),
+		randf_range(-_shake_strength, _shake_strength)
+	) * falloff
+	if _shake_left <= 0.0:
+		position = Vector2.ZERO
+		_shake_strength = 0.0
 
 
 ## Ends the run. `abandoned` skips the collapse animation but uses the same
@@ -1127,6 +1190,7 @@ func _finish_run(abandoned: bool = false) -> void:
 	_clock.set_paused(true)
 	_wave_manager.stop()
 	EventBus.run_ended.emit(_cleared_waves)
+	AudioBus.play_sfx_id(&"run_defeat")
 	var delay := 0.0
 	if not abandoned and _tree.is_defeated():
 		_tree.play_collapse(COLLAPSE_SECONDS)

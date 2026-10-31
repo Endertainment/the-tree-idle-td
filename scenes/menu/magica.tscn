@@ -72,7 +72,7 @@ custom_minimum_size = Vector2(150, 92)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
-text = "Back"
+text = "common.back"
 
 [node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row"]
 custom_minimum_size = Vector2(64, 64)
@@ -87,7 +87,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"Title"
-text = "Magica"
+text = "magica.title"
 
 [node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row"]
 layout_mode = 2
@@ -121,7 +121,7 @@ theme_override_constants/separation = 8
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "No active research"
+text = "magica.idle"
 
 [node name="ActiveRow" type="HBoxContainer" parent="SafeArea/Layout/ActiveCard/ActiveLayout"]
 layout_mode = 2
@@ -144,7 +144,7 @@ alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Pick a node to begin"
+text = "magica.pick"
 
 [node name="ActiveRemaining" type="Label" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow/ActiveInfo"]
 unique_name_in_owner = true
@@ -156,7 +156,7 @@ text = ""
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "One research at a time."
+text = "magica.one_at_a_time"
 autowrap_mode = 3
 
 [node name="Actions" type="VBoxContainer" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow"]
@@ -165,28 +165,37 @@ theme_override_constants/separation = 8
 alignment = 1
 
 [node name="ClaimButton" type="Button" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow/Actions"]
+theme_override_font_sizes/font_size = 28
+clip_text = true
+text_overrun_behavior = 3
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(250, 92)
 layout_mode = 2
 theme_type_variation = &"GoldButton"
-text = "Claim"
+text = "magica.claim"
 
 [node name="SpeedUpButton" type="Button" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow/Actions"]
+theme_override_font_sizes/font_size = 28
+clip_text = true
+text_overrun_behavior = 3
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(250, 88)
 layout_mode = 2
 theme_type_variation = &"SecondaryButton"
-text = "Speed up (AD)"
+text = "magica.speed_up"
 
 [node name="CancelButton" type="Button" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow/Actions"]
+theme_override_font_sizes/font_size = 28
+clip_text = true
+text_overrun_behavior = 3
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(250, 80)
 layout_mode = 2
 theme_type_variation = &"SecondaryButton"
-text = "Cancel"
+text = "common.cancel"
 
 [node name="Branches" type="PanelContainer" parent="SafeArea/Layout"]
 layout_mode = 2
@@ -205,7 +214,7 @@ theme_override_constants/separation = 8
 [node name="Header" type="Label" parent="SafeArea/Layout/Branches/Row/TimeBranch"]
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Time"
+text = "magica.branch.time"
 horizontal_alignment = 1
 
 [node name="BranchTimeBox" type="VBoxContainer" parent="SafeArea/Layout/Branches/Row/TimeBranch"]
@@ -221,7 +230,7 @@ theme_override_constants/separation = 8
 [node name="Header" type="Label" parent="SafeArea/Layout/Branches/Row/WealthBranch"]
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Wealth"
+text = "magica.branch.wealth"
 horizontal_alignment = 1
 
 [node name="BranchWealthBox" type="VBoxContainer" parent="SafeArea/Layout/Branches/Row/WealthBranch"]
@@ -237,7 +246,7 @@ theme_override_constants/separation = 8
 [node name="Header" type="Label" parent="SafeArea/Layout/Branches/Row/KnowledgeBranch"]
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Knowledge"
+text = "magica.branch.knowledge"
 horizontal_alignment = 1
 
 [node name="BranchKnowledgeBox" type="VBoxContainer" parent="SafeArea/Layout/Branches/Row/KnowledgeBranch"]

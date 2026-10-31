@@ -89,6 +89,18 @@ func _process(delta: float) -> void:
 		_hud.set_elapsed(_battle.get_elapsed())
 
 
+## Android back / Esc while a run is active: never leaves without confirm.
+func handle_back_request() -> bool:
+	if _battle == null or _hud == null or _battle.is_finished():
+		return false
+	if _hud.is_pause_open():
+		_hud.hide_pause()
+		_battle.set_paused(false)
+		return true
+	_on_pause_requested()
+	return true
+
+
 func close_all() -> void:
 	if _build_sheet == null:
 		return
@@ -299,6 +311,7 @@ func _on_boss_spawned(enemy: Enemy) -> void:
 	if enemy == null or enemy.data == null:
 		return
 	var boss_name := LocaleService.t(enemy.data.display_name_key, enemy.data.display_name)
+	EventBus.boss_spawned.emit()
 	_hud.show_boss(boss_name, enemy.hp, enemy.max_hp, enemy.armor)
 	_hud.show_banner("%s: %s" % [LocaleService.t("battle.boss_incoming", "Boss incoming"), boss_name])
 
@@ -308,6 +321,7 @@ func _on_boss_hp_changed(current_hp: float, max_hp: float) -> void:
 
 
 func _on_boss_removed() -> void:
+	EventBus.boss_removed.emit()
 	_hud.hide_boss()
 
 
@@ -315,6 +329,8 @@ func _on_boss_removed() -> void:
 
 
 func _on_wave_started(wave: int) -> void:
+	var every: int = _battle.get_wave_table().boss_every
+	EventBus.wave_started.emit(wave, every > 0 and wave % every == 0)
 	_hud.set_wave(wave, _battle.get_wave_table().wave_count())
 	_hud.hide_countdown()
 

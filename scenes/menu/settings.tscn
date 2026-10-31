@@ -1,0 +1,207 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/menu/settings_screen.gd" id="1_settings"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="2_bg"]
+[ext_resource type="PackedScene" path="res://ui/components/modal.tscn" id="3_modal"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_settings")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.42)
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 36
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Header" type="HBoxContainer" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 104)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"SecondaryButton"
+text = "common.back"
+
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_type_variation = &"Title"
+text = "settings.title"
+vertical_alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 24
+
+[node name="AudioSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+layout_mode = 2
+theme_type_variation = &"PanelGreen"
+
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AudioSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/AudioSection/Box"]
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "settings.audio"
+
+[node name="AudioRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AudioSection/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="GameSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+layout_mode = 2
+theme_type_variation = &"PanelGreen"
+
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/GameSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/GameSection/Box"]
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "settings.game"
+
+[node name="GameRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/GameSection/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AccountSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+layout_mode = 2
+theme_type_variation = &"PanelGreen"
+
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AccountSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/AccountSection/Box"]
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "settings.account"
+
+[node name="AccountRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AccountSection/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LegalSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+layout_mode = 2
+theme_type_variation = &"PanelGreen"
+
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/LegalSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/LegalSection/Box"]
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "settings.legal"
+
+[node name="LegalRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/LegalSection/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AboutSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+layout_mode = 2
+theme_type_variation = &"PanelGreen"
+
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AboutSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/AboutSection/Box"]
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "settings.about"
+
+[node name="AboutRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AboutSection/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Toast" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -420.0
+offset_top = -220.0
+offset_right = 420.0
+offset_bottom = -120.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"Chip"
+
+[node name="ToastLabel" type="Label" parent="Toast"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LegalModal" parent="." instance=ExtResource("3_modal")]
+unique_name_in_owner = true
+
+[node name="ResetModal" parent="." instance=ExtResource("3_modal")]
+unique_name_in_owner = true

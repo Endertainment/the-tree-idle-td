@@ -42,13 +42,13 @@ theme_override_constants/separation = 12
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Wave 0 / 30"
+text = ""
 
 [node name="TimerLabel" type="Label" parent="TopBar/VBox/Row"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "00:00"
+text = ""
 
 [node name="Spacer" type="Control" parent="TopBar/VBox/Row"]
 layout_mode = 2
@@ -59,7 +59,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 theme_type_variation = &"SecondaryButton"
-text = "II"
+text = "battle.pause_short"
 
 [node name="CashPill" parent="TopBar/VBox/Row" instance=ExtResource("2_cash_pill")]
 unique_name_in_owner = true
@@ -83,7 +83,7 @@ theme_type_variation = &"SecondaryButton"
 theme_override_font_sizes/font_size = 24
 theme_override_constants/icon_max_width = 24
 theme_override_constants/h_separation = 4
-text = "1x"
+text = "battle.speed.1x"
 
 [node name="Speed15x" type="Button" parent="TopBar/VBox/Row2/SpeedBar"]
 unique_name_in_owner = true
@@ -93,7 +93,7 @@ theme_type_variation = &"SecondaryButton"
 theme_override_font_sizes/font_size = 24
 theme_override_constants/icon_max_width = 24
 theme_override_constants/h_separation = 4
-text = "1.5x"
+text = "battle.speed.1_5x"
 icon = ExtResource("14_lock")
 icon_alignment = 2
 
@@ -105,7 +105,7 @@ theme_type_variation = &"SecondaryButton"
 theme_override_font_sizes/font_size = 24
 theme_override_constants/icon_max_width = 24
 theme_override_constants/h_separation = 4
-text = "2x"
+text = "battle.speed.2x"
 icon = ExtResource("14_lock")
 icon_alignment = 2
 
@@ -143,7 +143,7 @@ theme_override_constants/separation = 20
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
-text = "Troll Warden"
+text = ""
 
 [node name="Spacer" type="Control" parent="BossBar/VBox/Header"]
 layout_mode = 2
@@ -153,13 +153,13 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "100%"
+text = ""
 
 [node name="BossArmor" type="Label" parent="BossBar/VBox/Header"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Armor 0"
+text = ""
 
 [node name="BossHpBar" type="TextureProgressBar" parent="BossBar/VBox"]
 unique_name_in_owner = true
@@ -192,7 +192,7 @@ alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Next wave in 6"
+text = ""
 horizontal_alignment = 1
 
 [node name="NextWaveButton" type="Button" parent="CountdownBox"]
@@ -201,7 +201,7 @@ custom_minimum_size = Vector2(360, 96)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"PrimaryButton"
-text = "Next wave"
+text = "battle.next_wave"
 
 [node name="Banner" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -220,7 +220,7 @@ theme_type_variation = &"Chip"
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Wave 1 cleared"
+text = ""
 horizontal_alignment = 1
 
 [node name="TreeHpPanel" type="PanelContainer" parent="."]
@@ -253,7 +253,7 @@ stretch_mode = 5
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "HP: 100%"
+text = ""
 
 [node name="HpBar" type="TextureProgressBar" parent="TreeHpPanel/VBox"]
 unique_name_in_owner = true
@@ -283,7 +283,7 @@ offset_bottom = -48.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_type_variation = &"GoldButton"
-text = "Upgrade"
+text = "battle.upgrade"
 
 [node name="UpgradeDot" type="TextureRect" parent="UpgradeButton"]
 unique_name_in_owner = true
@@ -352,14 +352,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Title"
-text = "Build tower"
+text = "battle.build_tower"
 
 [node name="BuildClose" type="Button" parent="BuildSheet/SheetPanel/Margin/VBox/Header"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 96)
 layout_mode = 2
 theme_type_variation = &"SecondaryButton"
-text = "Close"
+text = "common.close"
 
 [node name="BuildRows" type="VBoxContainer" parent="BuildSheet/SheetPanel/Margin/VBox"]
 unique_name_in_owner = true
@@ -418,14 +418,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Title"
-text = "Archer Tower"
+text = "tower.archer"
 
 [node name="TowerClose" type="Button" parent="TowerSheet/Panel/Margin/VBox/Header"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 96)
 layout_mode = 2
 theme_type_variation = &"SecondaryButton"
-text = "Close"
+text = "common.close"
 
 [node name="TowerStats" type="VBoxContainer" parent="TowerSheet/Panel/Margin/VBox"]
 unique_name_in_owner = true
@@ -448,7 +448,7 @@ custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"PrimaryButton"
-text = "Upgrade"
+text = "battle.upgrade"
 
 [node name="TowerSellButton" type="Button" parent="TowerSheet/Panel/Margin/VBox/Actions"]
 unique_name_in_owner = true
@@ -456,7 +456,7 @@ custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SecondaryButton"
-text = "Sell"
+text = "battle.sell"
 
 [node name="UnitSheet" type="Control" parent="."]
 unique_name_in_owner = true
@@ -510,14 +510,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Title"
-text = "Place unit"
+text = "battle.place_unit"
 
 [node name="UnitClose" type="Button" parent="UnitSheet/Panel/Margin/VBox/Header"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 96)
 layout_mode = 2
 theme_type_variation = &"SecondaryButton"
-text = "Close"
+text = "common.close"
 
 [node name="UnitRows" type="VBoxContainer" parent="UnitSheet/Panel/Margin/VBox"]
 unique_name_in_owner = true
@@ -540,7 +540,7 @@ custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"PrimaryButton"
-text = "Upgrade"
+text = "battle.upgrade"
 
 [node name="UpgradePanel" type="Control" parent="."]
 unique_name_in_owner = true
@@ -596,14 +596,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Title"
-text = "Upgrades"
+text = "battle.upgrades"
 
 [node name="CloseButton" type="Button" parent="UpgradePanel/Sheet/Margin/VBox/Header"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 96)
 layout_mode = 2
 theme_type_variation = &"SecondaryButton"
-text = "Close"
+text = "common.close"
 
 [node name="Tabs" type="HBoxContainer" parent="UpgradePanel/Sheet/Margin/VBox"]
 layout_mode = 2
@@ -615,7 +615,7 @@ custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SecondaryButton"
-text = "Tree"
+text = "battle.tab_tree"
 
 [node name="TabUnits" type="Button" parent="UpgradePanel/Sheet/Margin/VBox/Tabs"]
 unique_name_in_owner = true
@@ -623,7 +623,7 @@ custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SecondaryButton"
-text = "Units"
+text = "battle.tab_units"
 
 [node name="TabTowers" type="Button" parent="UpgradePanel/Sheet/Margin/VBox/Tabs"]
 unique_name_in_owner = true
@@ -631,7 +631,7 @@ custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SecondaryButton"
-text = "Towers"
+text = "battle.tab_towers"
 
 [node name="RowsScroll" type="ScrollContainer" parent="UpgradePanel/Sheet/Margin/VBox"]
 custom_minimum_size = Vector2(0, 880)
@@ -650,7 +650,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Nothing to upgrade yet"
+text = "battle.nothing_to_upgrade"
 horizontal_alignment = 1
 
 [node name="PauseOverlay" type="Control" parent="."]
@@ -704,7 +704,7 @@ theme_override_constants/separation = 18
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
-text = "Paused"
+text = "battle.paused"
 horizontal_alignment = 1
 
 [node name="PauseStats" type="Label" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
@@ -720,28 +720,28 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 112)
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
-text = "Resume"
+text = "battle.resume"
 
 [node name="RestartButton" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 theme_type_variation = &"SecondaryButton"
-text = "Restart"
+text = "battle.restart"
 
 [node name="AbandonButton" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 theme_type_variation = &"SecondaryButton"
-text = "Abandon run"
+text = "battle.abandon"
 
 [node name="SettingsButton" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 theme_type_variation = &"GhostButton"
-text = "Settings"
+text = "battle.settings"
 
 [node name="PauseConfirm" parent="PauseOverlay" instance=ExtResource("3_modal")]
 unique_name_in_owner = true

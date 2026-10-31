@@ -27,5 +27,5 @@ func _ready() -> void:
 
 func _on_pressed() -> void:
 	if play_click_sound and click_sound != null:
-		AudioService.play_sfx(click_sound)
+		AudioBus.play_sfx(click_sound)
 	clicked.emit()

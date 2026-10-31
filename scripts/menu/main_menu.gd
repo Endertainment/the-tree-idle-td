@@ -37,6 +37,7 @@ var _toast_tween: Tween
 func _ready() -> void:
 	_localize()
 	_refresh_wallet()
+	AudioBus.bind_buttons(self)
 
 	_battle_button.pressed.connect(_on_battle_pressed)
 	_settings_button.pressed.connect(_on_settings_pressed)
@@ -50,6 +51,7 @@ func _ready() -> void:
 	_welcome_modal.confirmed.connect(_on_welcome_claimed)
 
 	EventBus.currency_changed.connect(_on_currency_changed)
+	LocaleService.language_changed.connect(_on_language_changed)
 	_toast.visible = false
 	_refresh_daily()
 	_refresh_magica()
@@ -60,6 +62,13 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if EventBus.currency_changed.is_connected(_on_currency_changed):
 		EventBus.currency_changed.disconnect(_on_currency_changed)
+	if LocaleService.language_changed.is_connected(_on_language_changed):
+		LocaleService.language_changed.disconnect(_on_language_changed)
+
+
+func _on_language_changed(_code: String) -> void:
+	_localize()
+	_refresh_daily()
 
 
 func _localize() -> void:
@@ -90,19 +99,25 @@ func _refresh_magica() -> void:
 	if MagicaService.has_pending_claim():
 		var pending := MagicaService.get_node_by_id(MagicaService.pending_claim_id())
 		_magica_status.text = LocaleService.t("menu.magica_claim", "Research complete: %s") % (
-			pending.name if pending != null else ""
+			_locale_node_name(pending) if pending != null else ""
 		)
 		_magica_badge.visible = true
 	elif MagicaService.has_active_research():
 		var active := MagicaService.get_node_by_id(MagicaService.active_node_id())
 		_magica_status.text = "%s %s" % [
 			LocaleService.t("menu.magica_researching", "Researching:"),
-			active.name if active != null else "",
+			_locale_node_name(active) if active != null else "",
 		]
 		_magica_badge.visible = false
 	else:
 		_magica_status.text = LocaleService.t("menu.magica_idle", "No active research")
 		_magica_badge.visible = false
+
+
+func _locale_node_name(node: MagicaNode) -> String:
+	if node == null:
+		return ""
+	return LocaleService.t(node.name_key, node.name)
 
 
 func _refresh_wallet() -> void:
@@ -115,7 +130,7 @@ func _on_battle_pressed() -> void:
 
 
 func _on_settings_pressed() -> void:
-	_show_toast(LocaleService.t("menu.settings_soon", "Settings is coming soon"))
+	SceneRouter.goto(&"settings")
 
 
 func _on_missions_pressed() -> void:
@@ -165,7 +180,8 @@ func _show_welcome_back() -> void:
 func _on_welcome_claimed() -> void:
 	var coins := OfflineService.claim()
 	if coins > 0:
-		_show_toast(LocaleService.t("menu.offline_claimed", "+%d coins from the forest") % coins)
+		AudioBus.play_ui(&"ui_claim")
+	_show_toast(LocaleService.t("menu.offline_claimed", "+%d coins from the forest") % coins)
 
 
 ## Shows one combined toast for features unlocked by the last level-up(s).

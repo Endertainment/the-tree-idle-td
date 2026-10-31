@@ -1,10 +1,8 @@
-## Boot — fades in the logo, initialises services, then enters the main menu.
-##
-## M0 intentionally has no first-launch branch yet; it is added in M2/M4 when
-## GameState.is_onboarded becomes meaningful.
+## Boot — fades in the logo, initialises services, then routes to onboarding or
+## the main menu. Never calls change_scene_to_file directly (SceneRouter owns it).
 extends Control
 
-const FADE_SECONDS := 0.6
+const FADE_SECONDS := 0.8
 
 @onready var _title: Label = %Title
 @onready var _subtitle: Label = %Subtitle
@@ -18,6 +16,7 @@ func _ready() -> void:
 	_version.text = "%s %s" % [LocaleService.t("app.version", "v"), App.version_string()]
 
 	App.init_services()
+	SettingsService.apply_text_scale(get_window())
 
 	_fade.visible = true
 	_fade.color.a = 1.0
@@ -26,4 +25,7 @@ func _ready() -> void:
 	await fade_in.finished
 	_fade.visible = false
 
-	SceneRouter.goto(&"main_menu")
+	if GameState.is_onboarded:
+		SceneRouter.goto(&"main_menu")
+	else:
+		SceneRouter.goto(&"onboarding")

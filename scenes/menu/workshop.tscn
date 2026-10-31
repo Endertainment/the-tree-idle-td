@@ -69,7 +69,7 @@ custom_minimum_size = Vector2(160, 96)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
-text = "Back"
+text = "common.back"
 
 [node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row"]
 custom_minimum_size = Vector2(72, 72)
@@ -84,7 +84,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"Title"
-text = "Workshop"
+text = "workshop.title"
 
 [node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row"]
 layout_mode = 2
@@ -113,7 +113,7 @@ custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"GoldButton"
-text = "Attack"
+text = "workshop.category.attack"
 
 [node name="DefenseTab" type="Button" parent="SafeArea/Layout/Tabs/Row"]
 unique_name_in_owner = true
@@ -121,7 +121,7 @@ custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SecondaryButton"
-text = "Defense"
+text = "workshop.category.defense"
 
 [node name="UtilityTab" type="Button" parent="SafeArea/Layout/Tabs/Row"]
 unique_name_in_owner = true
@@ -129,7 +129,7 @@ custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SecondaryButton"
-text = "Utility"
+text = "workshop.category.utility"
 
 [node name="EnvironmentTab" type="Button" parent="SafeArea/Layout/Tabs/Row"]
 unique_name_in_owner = true
@@ -137,13 +137,13 @@ custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SecondaryButton"
-text = "Environment"
+text = "workshop.category.environment"
 
 [node name="HintLabel" type="Label" parent="SafeArea/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Permanent upgrades. Coins are never spent inside a battle."
+text = "workshop.hint"
 horizontal_alignment = 1
 
 [node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout"]

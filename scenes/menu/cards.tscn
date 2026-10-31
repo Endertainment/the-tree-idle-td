@@ -68,7 +68,7 @@ custom_minimum_size = Vector2(150, 90)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
-text = "Back"
+text = "common.back"
 
 [node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row"]
 custom_minimum_size = Vector2(64, 64)
@@ -83,7 +83,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"Title"
-text = "Cards"
+text = "cards.title"
 
 [node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row"]
 layout_mode = 2
@@ -96,7 +96,7 @@ custom_minimum_size = Vector2(260, 88)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
-text = "Sort: Rarity"
+text = ""
 icon = ExtResource("5_sort")
 
 [node name="SlotsPanel" type="PanelContainer" parent="SafeArea/Layout"]
@@ -111,7 +111,7 @@ theme_override_constants/separation = 6
 [node name="Header" type="Label" parent="SafeArea/Layout/SlotsPanel/Layout"]
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Loadout"
+text = "cards.loadout"
 horizontal_alignment = 1
 
 [node name="SlotsRow" type="HBoxContainer" parent="SafeArea/Layout/SlotsPanel/Layout"]
@@ -146,7 +146,7 @@ columns = 3
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Equipped 0/1 · No cards equipped"
+text = ""
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -221,14 +221,14 @@ theme_override_constants/separation = 16
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
-text = "Card"
+text = "cards.card"
 horizontal_alignment = 1
 
 [node name="DetailRarity" type="Label" parent="DetailOverlay/Center/DetailPanel/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Common"
+text = "cards.rarity.common"
 horizontal_alignment = 1
 
 [node name="DetailEffects" type="Label" parent="DetailOverlay/Center/DetailPanel/Layout"]
@@ -236,7 +236,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(780, 0)
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Effect"
+text = "cards.effect"
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -244,7 +244,7 @@ autowrap_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Lv 1 / 5"
+text = ""
 horizontal_alignment = 1
 
 [node name="ShardsBar" type="ProgressBar" parent="DetailOverlay/Center/DetailPanel/Layout"]
@@ -260,7 +260,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(780, 0)
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Where to get"
+text = "cards.where_to_get"
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -274,18 +274,18 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 96)
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
-text = "Upgrade"
+text = "cards.upgrade"
 
 [node name="EquipButton" type="Button" parent="DetailOverlay/Center/DetailPanel/Layout/Buttons"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 96)
 layout_mode = 2
 theme_type_variation = &"GoldButton"
-text = "Equip"
+text = "cards.equip"
 
 [node name="CloseDetailButton" type="Button" parent="DetailOverlay/Center/DetailPanel/Layout/Buttons"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(220, 96)
 layout_mode = 2
 theme_type_variation = &"SecondaryButton"
-text = "Close"
+text = "common.close"

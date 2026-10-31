@@ -25,15 +25,17 @@ texture = ExtResource("4_selected")
 
 [node name="Hint" type="Label" parent="."]
 visible = false
-offset_left = -100.0
-offset_top = 66.0
-offset_right = 100.0
-offset_bottom = 150.0
+offset_left = -92.0
+offset_top = 62.0
+offset_right = 92.0
+offset_bottom = 164.0
 theme_type_variation = &"Caption"
-theme_override_font_sizes/font_size = 24
-text = "Player level 4"
+theme_override_font_sizes/font_size = 20
+text = ""
 horizontal_alignment = 1
-autowrap_mode = 2
+autowrap_mode = 3
+clip_text = true
+text_overrun_behavior = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_slot")

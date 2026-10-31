@@ -16,7 +16,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_type_variation = &"Title"
-text = "Header"
+text = ""
 
 [node name="Content" type="VBoxContainer" parent="Layout"]
 unique_name_in_owner = true

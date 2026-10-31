@@ -1,0 +1,180 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/menu/onboarding_screen.gd" id="1_onboarding"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="2_bg"]
+
+[node name="FirstLaunch" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_onboarding")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.46)
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 48
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Header" type="HBoxContainer" parent="SafeArea/Layout"]
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(190, 96)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"SecondaryButton"
+text = "common.back"
+
+[node name="StepLabel" type="Label" parent="SafeArea/Layout/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_type_variation = &"Caption"
+vertical_alignment = 1
+
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Display"
+text = "onboarding.title"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "onboarding.language_subtitle"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SpacerTop" type="Control" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="LanguagePage" type="VBoxContainer" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="LanguageTitle" type="Label" parent="SafeArea/Layout/LanguagePage"]
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "onboarding.language_title"
+horizontal_alignment = 1
+
+[node name="LanguageButtons" type="HBoxContainer" parent="SafeArea/Layout/LanguagePage"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="ProfilePage" type="VBoxContainer" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ProfileTitle" type="Label" parent="SafeArea/Layout/ProfilePage"]
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "onboarding.profile_title"
+horizontal_alignment = 1
+
+[node name="NicknameLabel" type="Label" parent="SafeArea/Layout/ProfilePage"]
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "onboarding.nickname"
+
+[node name="NicknameEdit" type="LineEdit" parent="SafeArea/Layout/ProfilePage"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+placeholder_text = "onboarding.nickname"
+max_length = 16
+alignment = 1
+
+[node name="NicknameHint" type="Label" parent="SafeArea/Layout/ProfilePage"]
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "onboarding.nickname_hint"
+
+[node name="ErrorLabel" type="Label" parent="SafeArea/Layout/ProfilePage"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"Caption"
+modulate = Color(1, 0.35, 0.3, 1)
+autowrap_mode = 2
+
+[node name="AvatarLabel" type="Label" parent="SafeArea/Layout/ProfilePage"]
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "onboarding.avatar"
+
+[node name="AvatarGrid" type="GridContainer" parent="SafeArea/Layout/ProfilePage"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 18
+theme_override_constants/v_separation = 18
+columns = 3
+
+[node name="ChangeLater" type="Label" parent="SafeArea/Layout/ProfilePage"]
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "onboarding.change_later"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SpacerBottom" type="Control" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="ContinueButton" type="Button" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PrimaryButton"
+text = "onboarding.continue"

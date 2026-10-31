@@ -143,14 +143,14 @@ alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
-text = "The Tree"
+text = "app.title"
 horizontal_alignment = 1
 
 [node name="SubtitleLabel" type="Label" parent="SafeArea/Layout/TitleArea/Center/Titles"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Idle Tower Defense"
+text = "app.subtitle"
 horizontal_alignment = 1
 
 [node name="SpacerTop" type="Control" parent="SafeArea/Layout"]
@@ -165,7 +165,7 @@ custom_minimum_size = Vector2(0, 240)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"BattleButton"
-text = "Battle"
+text = "menu.battle"
 icon_texture = ExtResource("8_sword")
 
 [node name="DailyCard" type="PanelContainer" parent="SafeArea/Layout"]
@@ -187,13 +187,13 @@ alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Daily Missions"
+text = "menu.daily_missions"
 
 [node name="DailyProgress" type="Label" parent="SafeArea/Layout/DailyCard/Row/Info"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "0 / 3 Complete"
+text = ""
 
 [node name="ViewButton" type="Button" parent="SafeArea/Layout/DailyCard/Row"]
 unique_name_in_owner = true
@@ -201,7 +201,7 @@ custom_minimum_size = Vector2(220, 96)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
-text = "View"
+text = "menu.view"
 
 [node name="MagicaCard" type="PanelContainer" parent="SafeArea/Layout"]
 custom_minimum_size = Vector2(0, 150)
@@ -229,13 +229,13 @@ alignment = 1
 [node name="Title" type="Label" parent="SafeArea/Layout/MagicaCard/Row/Info"]
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "Magica"
+text = "magica.title"
 
 [node name="MagicaStatus" type="Label" parent="SafeArea/Layout/MagicaCard/Row/Info"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "No active research"
+text = "magica.idle"
 
 [node name="MagicaBadge" type="Label" parent="SafeArea/Layout/MagicaCard/Row"]
 unique_name_in_owner = true
@@ -244,7 +244,7 @@ custom_minimum_size = Vector2(52, 52)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"Title"
-text = "!"
+text = "menu.badge"
 horizontal_alignment = 1
 vertical_alignment = 1
 modulate = Color(1, 0.78, 0.3, 1)
@@ -255,7 +255,7 @@ custom_minimum_size = Vector2(210, 88)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
-text = "Open"
+text = "menu.open"
 
 [node name="SpacerBottom" type="Control" parent="SafeArea/Layout"]
 layout_mode = 2
@@ -301,7 +301,7 @@ stretch_mode = 5
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Home"
+text = "menu.nav.home"
 horizontal_alignment = 1
 
 [node name="NavWorkshop" type="Button" parent="SafeArea/Layout/NavBar/Row"]
@@ -335,7 +335,7 @@ stretch_mode = 5
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Workshop"
+text = "menu.nav.workshop"
 horizontal_alignment = 1
 
 [node name="NavCards" type="Button" parent="SafeArea/Layout/NavBar/Row"]
@@ -369,7 +369,7 @@ stretch_mode = 5
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Cards"
+text = "menu.nav.cards"
 horizontal_alignment = 1
 
 [node name="NavMissions" type="Button" parent="SafeArea/Layout/NavBar/Row"]
@@ -403,7 +403,7 @@ stretch_mode = 5
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Missions"
+text = "menu.nav.missions"
 horizontal_alignment = 1
 
 [node name="NavShop" type="Button" parent="SafeArea/Layout/NavBar/Row"]
@@ -437,7 +437,7 @@ stretch_mode = 5
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Shop"
+text = "menu.nav.shop"
 horizontal_alignment = 1
 
 [node name="VersionLabel" type="Label" parent="."]
@@ -452,7 +452,7 @@ offset_right = 448.0
 offset_bottom = -280.0
 grow_vertical = 0
 theme_type_variation = &"Caption"
-text = "Version 0.1.0"
+text = ""
 
 [node name="Toast" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -476,7 +476,7 @@ theme_type_variation = &"Chip"
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "Coming soon"
+text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 

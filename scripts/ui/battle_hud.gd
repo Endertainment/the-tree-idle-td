@@ -338,8 +338,9 @@ func _create_build_row(data: TowerData, affordable: bool) -> PanelContainer:
 
 
 func show_tower_sheet(info: Dictionary) -> void:
-	_tower_title.text = "%s  Lv %d / %d" % [
+	_tower_title.text = "%s  %s %d / %d" % [
 		_t(str(info.get("name_key", "")), str(info.get("name", ""))),
+		_t("battle.level_short", "Lv"),
 		int(info.get("level", 1)),
 		int(info.get("max_level", 10)),
 	]
@@ -432,8 +433,9 @@ func show_unit_sheet(info: Dictionary) -> void:
 				continue
 			_unit_rows.add_child(_create_unit_row(data, bool(option_data.get("affordable", false))))
 	else:
-		_unit_title.text = "%s  Lv %d / %d" % [
+		_unit_title.text = "%s  %s %d / %d" % [
 			_t(str(info.get("name_key", "")), str(info.get("name", ""))),
+			_t("battle.level_short", "Lv"),
 			int(info.get("level", 1)),
 			int(info.get("max_level", 10)),
 		]
@@ -733,7 +735,7 @@ func _add_stat_row(
 		arrow.text = "→"
 		row.add_child(arrow)
 		var next := Label.new()
-		next.text = "MAX" if maxed else next_text
+		next.text = _t("battle.max_level_short", "MAX") if maxed else next_text
 		next.modulate = DELTA_COLOR if not maxed else Color(0.82, 0.82, 0.78, 1.0)
 		row.add_child(next)
 

@@ -10,7 +10,9 @@ const CONFIG_PATH := "user://settings.cfg"
 const SECTION_AUDIO := "audio"
 const SECTION_GAME := "game"
 const SECTION_ACCESSIBILITY := "accessibility"
+const SECTION_DEBUG := "debug"
 
+var config_path: String = CONFIG_PATH
 const MIN_TEXT_SCALE := 1.0
 const MAX_TEXT_SCALE := 1.3
 
@@ -22,6 +24,10 @@ var language: String = "en"
 var haptics: bool = true
 var text_scale: float = 1.0
 var shake: bool = true
+var damage_numbers: bool = true
+## Debug/QA only. FPS overlay and pseudo-locale are hidden in release builds.
+var show_fps: bool = false
+var pseudo_locale: bool = false
 
 var _initialized: bool = false
 
@@ -41,7 +47,7 @@ func init_service() -> void:
 ## Replaces current values with on-disk values (or defaults on first launch).
 func load_settings() -> void:
 	var config := ConfigFile.new()
-	var error: Error = config.load(CONFIG_PATH)
+	var error: Error = config.load(config_path)
 	if error != OK:
 		_apply_defaults()
 		return
@@ -54,6 +60,9 @@ func load_settings() -> void:
 	text_scale = clampf(float(config.get_value(SECTION_GAME, "text_scale", 1.0)), MIN_TEXT_SCALE, MAX_TEXT_SCALE)
 	haptics = bool(config.get_value(SECTION_ACCESSIBILITY, "haptics", true))
 	shake = bool(config.get_value(SECTION_ACCESSIBILITY, "shake", true))
+	damage_numbers = bool(config.get_value(SECTION_GAME, "damage_numbers", true))
+	show_fps = bool(config.get_value(SECTION_DEBUG, "show_fps", false))
+	pseudo_locale = bool(config.get_value(SECTION_DEBUG, "pseudo_locale", false))
 
 
 ## Writes current values to user://settings.cfg.
@@ -67,8 +76,11 @@ func save_settings() -> void:
 	config.set_value(SECTION_GAME, "text_scale", text_scale)
 	config.set_value(SECTION_ACCESSIBILITY, "haptics", haptics)
 	config.set_value(SECTION_ACCESSIBILITY, "shake", shake)
+	config.set_value(SECTION_GAME, "damage_numbers", damage_numbers)
+	config.set_value(SECTION_DEBUG, "show_fps", show_fps)
+	config.set_value(SECTION_DEBUG, "pseudo_locale", pseudo_locale)
 
-	var error: Error = config.save(CONFIG_PATH)
+	var error: Error = config.save(config_path)
 	if error != OK:
 		push_warning("SettingsService: could not save settings (error %d)" % error)
 
@@ -109,6 +121,12 @@ func set_flag(key: StringName, enabled: bool) -> void:
 			haptics = enabled
 		&"shake":
 			shake = enabled
+		&"damage_numbers":
+			damage_numbers = enabled
+		&"show_fps":
+			show_fps = enabled
+		&"pseudo_locale":
+			pseudo_locale = enabled
 		_:
 			push_warning("SettingsService: unknown flag '%s'" % key)
 			return
@@ -126,9 +144,16 @@ func set_text_scale(value: float) -> void:
 	changed.emit(&"text_scale")
 
 
+## Applies the text scale to the live UI theme (no scene reload).
+func apply_text_scale(root: Window) -> void:
+	if root == null:
+		return
+	ThemeScaler.apply(root, text_scale)
+
+
 ## Returns true when a settings file already exists (first-launch check).
 func has_stored_settings() -> bool:
-	return FileAccess.file_exists(CONFIG_PATH)
+	return FileAccess.file_exists(config_path)
 
 
 ## Settings payload mirrored into the v2 save document (spec 8.2).
@@ -141,6 +166,7 @@ func to_save_dict() -> Dictionary:
 		"language": language,
 		"text_scale": text_scale,
 		"shake": shake,
+		"damage_numbers": damage_numbers,
 	}
 
 
@@ -155,6 +181,7 @@ func apply_save_dict(data: Dictionary) -> void:
 	language = _normalize_language(str(data.get("language", language)))
 	text_scale = clampf(float(data.get("text_scale", text_scale)), MIN_TEXT_SCALE, MAX_TEXT_SCALE)
 	shake = bool(data.get("shake", shake))
+	damage_numbers = bool(data.get("damage_numbers", damage_numbers))
 
 
 func _apply_defaults() -> void:
@@ -166,6 +193,9 @@ func _apply_defaults() -> void:
 	haptics = true
 	text_scale = 1.0
 	shake = true
+	damage_numbers = true
+	show_fps = false
+	pseudo_locale = false
 
 
 func _normalize_language(code: String) -> String:

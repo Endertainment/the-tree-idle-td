@@ -138,7 +138,7 @@ func _on_double_pressed() -> void:
 	var debug_fake := bool(result.get("debug_fake", false))
 	_ad_note.text = LocaleService.t("summary.doubled", "Coins doubled")
 	if debug_fake:
-		_ad_note.text += " (debug fake)"
+		_ad_note.text += " " + LocaleService.t("summary.debug_fake", "(debug fake)")
 	_animate_reward(_coins, LocaleService.t("summary.coins", "Coins"), _bundle.coins * 2)
 
 
