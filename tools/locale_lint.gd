@@ -23,6 +23,11 @@ const DYNAMIC_PREFIXES: Array[String] = [
 	"unlock.",
 	"onboarding.",
 	"plural.",
+	"menu.nav.",
+	"shop.product.",
+	"shop.contents.",
+	"shop.tab.",
+	"leaderboard.tab.",
 ]
 
 

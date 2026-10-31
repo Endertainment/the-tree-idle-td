@@ -13,6 +13,8 @@ const ART_BUTTONS := "res://assets/art/ui/buttons/"
 const ART_COMMON := "res://assets/art/ui/common/"
 const ART_MENU := "res://assets/art/ui/menu/"
 const ART_NAV := "res://assets/art/ui/nav/"
+const ART_SHOP := "res://assets/art/meta/shop/"
+const ART_BOARD := "res://assets/art/meta/leaderboard/"
 
 const COLOR_TEXT := Color(0.96, 0.94, 0.85, 1.0)
 const COLOR_TEXT_MUTED := Color(0.72, 0.78, 0.68, 1.0)
@@ -27,6 +29,7 @@ func _initialize() -> void:
 	_build_labels(theme)
 	_build_buttons(theme)
 	_build_panels(theme)
+	_build_progress(theme)
 
 	var error: Error = ResourceSaver.save(theme, THEME_PATH)
 	if error != OK:
@@ -127,6 +130,23 @@ func _build_buttons(theme: Theme) -> void:
 	theme.set_font_size("font_size", &"NavButtonActive", 28)
 	theme.set_constant("icon_max_width", &"NavButtonActive", 56)
 
+	# Main-menu stats card (tap target that opens the profile screen).
+	theme.set_type_variation(&"StatsCard", &"Button")
+	_apply_button_skin(theme, &"StatsCard",
+		ART_MENU + "stat_row_9p.png",
+		ART_MENU + "stat_row_9p.png",
+		ART_MENU + "stat_row_9p.png", 20, 16)
+	theme.set_font_size("font_size", &"StatsCard", 40)
+
+	# Blue rewarded-ad offer bar under the Battle CTA.
+	theme.set_type_variation(&"SpeedTrial", &"Button")
+	_apply_button_skin(theme, &"SpeedTrial",
+		ART_MENU + "speed_trial_9p.png",
+		ART_MENU + "speed_trial_9p.png",
+		ART_MENU + "speed_trial_9p.png", 40, 26)
+	theme.set_font_size("font_size", &"SpeedTrial", 42)
+	theme.set_constant("icon_max_width", &"SpeedTrial", 56)
+
 
 func _build_panels(theme: Theme) -> void:
 	theme.set_type_variation(&"PanelGreen", &"PanelContainer")
@@ -153,9 +173,32 @@ func _build_panels(theme: Theme) -> void:
 	theme.set_type_variation(&"NavBar", &"PanelContainer")
 	_apply_panel_skin(theme, &"NavBar", ART_NAV + "nav_bg_9p.png", 24, 24, 16)
 
+	theme.set_type_variation(&"Toast", &"PanelContainer")
+	_apply_panel_skin(theme, &"Toast", ART_COMMON + "toast_9p.png", 20, 16, 18)
+
+	theme.set_type_variation(&"OfferCard", &"PanelContainer")
+	_apply_panel_skin(theme, &"OfferCard", ART_SHOP + "offer_card_9p.png", 24, 24, 18)
+
+	theme.set_type_variation(&"LeaderRow", &"PanelContainer")
+	_apply_panel_skin(theme, &"LeaderRow", ART_BOARD + "row_9p.png", 16, 12, 14)
+
+	theme.set_type_variation(&"PlayerRow", &"PanelContainer")
+	_apply_panel_skin(theme, &"PlayerRow", ART_COMMON + "panel_9p_green.png", 24, 24, 18)
+
 	# Every plain PanelContainer should look like a dark card by default.
 	theme.set_stylebox("panel", &"PanelContainer",
 		_texture_style(ART_COMMON + "panel_9p_dark.png", 24, 24, 24, 24, 20, 16))
+
+
+## XP and progress bars share the green fill; the shop/leaderboard do not need a
+## second fill colour yet, so one stylebox keeps the theme honest.
+func _build_progress(theme: Theme) -> void:
+	var background := _texture_style(ART_COMMON + "progress_bg.png", 12, 8, 12, 8, 6, 4)
+	var fill := _texture_style(ART_COMMON + "progress_fill_green.png", 12, 8, 12, 8, 6, 4)
+	theme.set_stylebox("background", &"ProgressBar", background)
+	theme.set_stylebox("fill", &"ProgressBar", fill)
+	theme.set_font_size("font_size", &"ProgressBar", 24)
+	theme.set_color("font_color", &"ProgressBar", COLOR_TEXT)
 
 func _apply_button_skin(
 	theme: Theme,

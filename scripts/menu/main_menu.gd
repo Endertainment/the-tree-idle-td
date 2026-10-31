@@ -1,60 +1,61 @@
-## MainMenu — M0 shell: currencies, title, Battle CTA, daily card, bottom tabs.
+## MainMenu — the approved menu reference (spec 13.3).
 ##
-## Only Battle navigates. Settings and the four locked tabs intentionally show a
-## "coming soon" toast; their screens ship in later milestones.
+## Top bar (coins/gems + buy shortcuts, settings), logotype, stats card (best
+## wave, avatar, nickname, level + XP), Battle CTA, Speed Trial rewarded offer,
+## daily missions card, Magica entry and the five-tab navigation. Wallet state is
+## read-only here; currency mutations stay behind WalletService and the shop.
 extends Control
+
+const AVATAR_DIR := "res://assets/art/ui/menu/"
+const AVATAR_FALLBACK := "avatar_01"
 
 @onready var _coins: CurrencyPill = %CoinsPill
 @onready var _gems: CurrencyPill = %GemsPill
-@onready var _battle_button: PrimaryButton = %BattleButton
+@onready var _coin_plus: Button = %CoinPlus
+@onready var _gem_plus: Button = %GemPlus
 @onready var _settings_button: Button = %SettingsButton
+@onready var _battle_button: PrimaryButton = %BattleButton
 @onready var _title_label: Label = %TitleLabel
 @onready var _subtitle_label: Label = %SubtitleLabel
-@onready var _version_label: Label = %VersionLabel
-@onready var _daily_title: Label = %DailyTitle
+@onready var _stats_card: Button = %StatsCard
+@onready var _best_wave_value: Label = %BestWaveValue
+@onready var _avatar: TextureRect = %Avatar
+@onready var _nickname: Label = %Nickname
+@onready var _player_level: Label = %PlayerLevel
+@onready var _xp_bar: ProgressBar = %XpBar
+@onready var _xp_label: Label = %XpLabel
+@onready var _speed_trial: Button = %SpeedTrial
 @onready var _daily_progress: Label = %DailyProgress
 @onready var _view_button: Button = %ViewButton
-@onready var _nav_home: Button = %NavHome
-@onready var _nav_workshop: Button = %NavWorkshop
-@onready var _nav_cards: Button = %NavCards
-@onready var _nav_missions: Button = %NavMissions
-@onready var _nav_shop: Button = %NavShop
-@onready var _nav_home_label: Label = %NavHomeLabel
-@onready var _nav_workshop_label: Label = %NavWorkshopLabel
-@onready var _nav_cards_label: Label = %NavCardsLabel
-@onready var _nav_missions_label: Label = %NavMissionsLabel
-@onready var _nav_shop_label: Label = %NavShopLabel
+@onready var _nav: MenuNav = %NavBar
 @onready var _magica_button: Button = %MagicaButton
 @onready var _magica_status: Label = %MagicaStatus
 @onready var _magica_badge: Label = %MagicaBadge
 @onready var _welcome_modal: Modal = %WelcomeModal
-@onready var _toast: PanelContainer = %Toast
-@onready var _toast_label: Label = %ToastLabel
-
-var _toast_tween: Tween
 
 
 func _ready() -> void:
 	_localize()
 	_refresh_wallet()
+	_refresh_stats()
+	_refresh_daily()
+	_refresh_magica()
 	AudioBus.bind_buttons(self)
 
 	_battle_button.pressed.connect(_on_battle_pressed)
 	_settings_button.pressed.connect(_on_settings_pressed)
+	_coin_plus.pressed.connect(_on_buy_pressed.bind(&"coins"))
+	_gem_plus.pressed.connect(_on_buy_pressed.bind(&"gems"))
+	_stats_card.pressed.connect(_on_profile_pressed)
+	_speed_trial.pressed.connect(_on_speed_trial_pressed)
 	_view_button.pressed.connect(_on_missions_pressed)
-	_nav_home.pressed.connect(_on_home_pressed)
-	_nav_workshop.pressed.connect(_on_workshop_pressed)
-	_nav_cards.pressed.connect(_on_cards_pressed)
-	_nav_missions.pressed.connect(_on_missions_pressed)
-	_nav_shop.pressed.connect(_on_shop_pressed)
+	_nav.setup(&"home")
 	_magica_button.pressed.connect(_on_magica_pressed)
 	_welcome_modal.confirmed.connect(_on_welcome_claimed)
 
 	EventBus.currency_changed.connect(_on_currency_changed)
+	EventBus.level_up.connect(_on_level_up)
 	LocaleService.language_changed.connect(_on_language_changed)
-	_toast.visible = false
-	_refresh_daily()
-	_refresh_magica()
 	_show_welcome_back()
 	_show_pending_unlocks()
 
@@ -62,12 +63,15 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if EventBus.currency_changed.is_connected(_on_currency_changed):
 		EventBus.currency_changed.disconnect(_on_currency_changed)
+	if EventBus.level_up.is_connected(_on_level_up):
+		EventBus.level_up.disconnect(_on_level_up)
 	if LocaleService.language_changed.is_connected(_on_language_changed):
 		LocaleService.language_changed.disconnect(_on_language_changed)
 
 
 func _on_language_changed(_code: String) -> void:
 	_localize()
+	_refresh_stats()
 	_refresh_daily()
 	_refresh_magica()
 
@@ -75,25 +79,57 @@ func _on_language_changed(_code: String) -> void:
 func _localize() -> void:
 	_title_label.text = LocaleService.t("app.title", "The Tree")
 	_subtitle_label.text = LocaleService.t("app.subtitle", "Idle Tower Defense")
-	_version_label.text = "%s %s" % [LocaleService.t("menu.version", "Version"), App.version_string()]
 	_battle_button.text = LocaleService.t("menu.battle", "Battle")
-	_daily_title.text = LocaleService.t("menu.daily_missions", "Daily Missions")
-	_daily_progress.text = LocaleService.t("menu.daily_progress", "0 / 3 Complete")
+	_speed_trial.text = LocaleService.t("menu.speed_trial_offer", "Speed Trial  +1.5x")
+	_speed_trial.tooltip_text = LocaleService.t(
+		"menu.speed_trial_hint", "Watch an ad for a 24 h speed boost"
+	)
 	_view_button.text = LocaleService.t("menu.view", "View")
-	_nav_home_label.text = LocaleService.t("menu.nav.home", "Home")
-	_nav_workshop_label.text = LocaleService.t("menu.nav.workshop", "Workshop")
-	_nav_cards_label.text = LocaleService.t("menu.nav.cards", "Cards")
-	_nav_missions_label.text = LocaleService.t("menu.nav.missions", "Missions")
-	_nav_shop_label.text = LocaleService.t("menu.nav.shop", "Shop")
 	_settings_button.tooltip_text = LocaleService.t("menu.settings", "Settings")
+	_coin_plus.tooltip_text = LocaleService.t("menu.buy_coins", "Buy coins")
+	_gem_plus.tooltip_text = LocaleService.t("menu.buy_gems", "Buy gems")
+	_stats_card.tooltip_text = LocaleService.t("menu.open_profile", "Player profile")
 	_magica_button.text = LocaleService.t("menu.open", "Open")
-	_refresh_magica()
+	_nav.setup(&"home")
+
+
+func _refresh_wallet() -> void:
+	_coins.set_amount(GameState.get_balance(&"coins"))
+	_gems.set_amount(GameState.get_balance(&"gems"))
+
+
+func _refresh_stats() -> void:
+	_best_wave_value.text = LocaleService.format_number(GameState.get_best_wave())
+	var level := LevelService.get_level()
+	var xp := LevelService.get_xp()
+	var required := LevelService.xp_required()
+	_player_level.text = str(level)
+	_xp_bar.max_value = float(maxi(required, 1))
+	_xp_bar.value = float(mini(xp, maxi(required, 1)))
+	_xp_label.text = LocaleService.t("menu.xp_progress", "%d / %d XP") % [xp, required]
+	var nickname := str(GameState.player.get("nickname", "")).strip_edges()
+	_nickname.text = nickname if not nickname.is_empty() else LocaleService.t(
+		"menu.nickname_fallback", "Tree Warden"
+	)
+	_avatar.texture = _avatar_texture(str(GameState.player.get("avatar_id", AVATAR_FALLBACK)))
+
+
+func _avatar_texture(avatar_id: String) -> Texture2D:
+	var safe_id := avatar_id if not avatar_id.is_empty() else AVATAR_FALLBACK
+	var path := AVATAR_DIR + safe_id + ".png"
+	if not ResourceLoader.exists(path):
+		path = AVATAR_DIR + AVATAR_FALLBACK + ".png"
+	return load(path) as Texture2D
 
 
 func _refresh_daily() -> void:
-	var claimed := MissionService.claimed_count(&"daily")
-	var total := 3
-	_daily_progress.text = LocaleService.t("menu.daily_progress", "%d / %d Complete") % [claimed, total]
+	var completed := 0
+	for row: Dictionary in MissionService.get_daily():
+		if int(row.get("progress", 0)) >= int(row.get("target", 1)):
+			completed += 1
+	_daily_progress.text = LocaleService.t("menu.daily_progress", "%d / %d Complete") % [
+		completed, MissionService.get_daily().size()
+	]
 
 
 func _refresh_magica() -> void:
@@ -121,11 +157,6 @@ func _locale_node_name(node: MagicaNode) -> String:
 	return LocaleService.t(node.name_key, node.name)
 
 
-func _refresh_wallet() -> void:
-	_coins.set_amount(GameState.get_balance(&"coins"))
-	_gems.set_amount(GameState.get_balance(&"gems"))
-
-
 func _on_battle_pressed() -> void:
 	SceneRouter.goto(&"battle")
 
@@ -134,29 +165,28 @@ func _on_settings_pressed() -> void:
 	SceneRouter.goto(&"settings")
 
 
+func _on_profile_pressed() -> void:
+	SceneRouter.goto(&"profile")
+
+
 func _on_missions_pressed() -> void:
 	SceneRouter.goto(&"missions")
-
-
-func _on_cards_pressed() -> void:
-	SceneRouter.goto(&"cards")
-
-
-func _on_shop_pressed() -> void:
-	_show_toast(LocaleService.t("menu.shop_soon", "Shop arrives with M6"))
 
 
 func _on_magica_pressed() -> void:
 	SceneRouter.goto(&"magica")
 
 
-func _on_home_pressed() -> void:
-	# Already on Home; keep the active tab inert.
-	pass
+## Both "+" shortcuts open the shop; M5b has no direct purchase from the menu.
+func _on_buy_pressed(tab: StringName) -> void:
+	SceneRouter.goto(&"shop", {"tab": String(tab)})
 
 
-func _on_workshop_pressed() -> void:
-	SceneRouter.goto(&"workshop")
+## The rewarded speed offer is intentionally a stub until M6: AdsService reports
+## the debug fake and the player sees the M6 toast instead of a fake reward.
+func _on_speed_trial_pressed() -> void:
+	AdsService.show_rewarded(&"speed_unlock_24h")
+	ToastService.show_toast(LocaleService.t("menu.ads_soon", "Ads arrive with M6"))
 
 
 func _show_welcome_back() -> void:
@@ -182,7 +212,9 @@ func _on_welcome_claimed() -> void:
 	var coins := OfflineService.claim()
 	if coins > 0:
 		AudioBus.play_ui(&"ui_claim")
-	_show_toast(LocaleService.t("menu.offline_claimed", "+%d coins from the forest") % LocaleService.format_number(coins))
+	ToastService.show_toast(
+		LocaleService.t("menu.offline_claimed", "+%s coins from the forest") % LocaleService.format_number(coins)
+	)
 
 
 ## Shows one combined toast for features unlocked by the last level-up(s).
@@ -193,11 +225,12 @@ func _show_pending_unlocks() -> void:
 	var names: PackedStringArray = []
 	for unlock_id: StringName in pending:
 		names.append(UnlockService.display_name(unlock_id))
-	_show_toast(LocaleService.t("menu.unlocked", "Unlocked: %s") % ", ".join(names))
+	ToastService.show_toast(LocaleService.t("menu.unlocked", "Unlocked: %s") % ", ".join(names))
 
 
-func _on_locked_tab() -> void:
-	_show_toast(LocaleService.t("menu.coming_soon", "Coming soon"))
+func _on_level_up(_level: int) -> void:
+	_refresh_stats()
+	_show_pending_unlocks()
 
 
 func _on_currency_changed(kind: StringName, amount: int) -> void:
@@ -208,27 +241,20 @@ func _on_currency_changed(kind: StringName, amount: int) -> void:
 			_gems.set_amount(amount)
 
 
-func _show_toast(message: String) -> void:
-	_toast_label.text = message
-	_toast.visible = true
-	_toast.modulate.a = 0.0
-	if _toast_tween != null and _toast_tween.is_valid():
-		_toast_tween.kill()
-	_toast_tween = create_tween()
-	_toast_tween.tween_property(_toast, "modulate:a", 1.0, 0.12)
-	_toast_tween.tween_interval(1.5)
-	_toast_tween.tween_property(_toast, "modulate:a", 0.0, 0.25)
-	_toast_tween.tween_callback(_hide_toast)
-
-
-func _hide_toast() -> void:
-	_toast.visible = false
-
-
 ## Tooling-only populated state for docs/preview captures.
 func stage_preview() -> void:
 	_coins.set_amount(12480)
 	_gems.set_amount(350)
+	_best_wave_value.text = "18"
+	_player_level.text = "7"
+	_xp_bar.max_value = 120.0
+	_xp_bar.value = 50.0
+	_xp_label.text = LocaleService.t("menu.xp_progress", "%d / %d XP") % [50, 120]
+	_nickname.text = "Elderwood"
+	_avatar.texture = _avatar_texture("avatar_04")
 	_daily_progress.text = LocaleService.t("menu.daily_progress", "%d / %d Complete") % [1, 3]
 	_magica_status.text = LocaleService.t("menu.magica_claim", "Research complete: %s") % "Golden Sap I"
 	_magica_badge.visible = true
+	_nav.set_notification(&"missions", true)
+	_nav.set_notification(&"cards", true)
+	_nav.set_notification(&"home", true)

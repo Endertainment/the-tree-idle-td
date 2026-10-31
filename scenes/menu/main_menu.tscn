@@ -1,21 +1,24 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://scripts/menu/main_menu.gd" id="1_menu"]
-[ext_resource type="PackedScene" path="res://ui/components/primary_button.tscn" id="2_button"]
-[ext_resource type="PackedScene" path="res://ui/components/currency_pill.tscn" id="3_pill"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="4_bg"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_coin.png" id="5_coin"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_gem.png" id="6_gem"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_settings.png" id="7_settings"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_sword.png" id="8_sword"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/nav/nav_home_pressed.png" id="9_home"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/nav/nav_workshop_normal.png" id="10_workshop"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/nav/nav_cards_normal.png" id="11_cards"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/nav/nav_missions_normal.png" id="12_missions"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/nav/nav_shop_normal.png" id="13_shop"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/menu/logo_title.png" id="14_logo"]
-[ext_resource type="PackedScene" path="res://ui/components/modal.tscn" id="15_modal"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_magic.png" id="16_magic"]
+[ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="2_nav"]
+[ext_resource type="PackedScene" path="res://ui/components/primary_button.tscn" id="3_button"]
+[ext_resource type="PackedScene" path="res://ui/components/currency_pill.tscn" id="4_pill"]
+[ext_resource type="PackedScene" path="res://ui/components/modal.tscn" id="5_modal"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="6_bg"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_coin.png" id="7_coin"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_gem.png" id="8_gem"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_settings.png" id="9_settings"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_sword.png" id="10_sword"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/buttons/button_plus_normal.png" id="11_plus"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_trophy.png" id="12_trophy"]
+[ext_resource type="Texture2D" path="res://assets/art/meta/missions/mission_icon.png" id="13_mission"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_magic.png" id="14_magic"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/logo_title.png" id="15_logo"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/profile_frame.png" id="16_frame"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/avatar_01.png" id="17_avatar"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_speed.png" id="18_speed"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/common/divider.png" id="19_divider"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -34,7 +37,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("4_bg")
+texture = ExtResource("6_bg")
 expand_mode = 1
 stretch_mode = 6
 
@@ -46,7 +49,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 0.18)
+color = Color(0, 0, 0, 0.2)
 
 [node name="SafeArea" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -55,38 +58,57 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 48
-theme_override_constants/margin_top = 36
-theme_override_constants/margin_right = 48
-theme_override_constants/margin_bottom = 36
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 22
 
 [node name="Layout" type="VBoxContainer" parent="SafeArea"]
 layout_mode = 2
-theme_override_constants/separation = 28
+theme_override_constants/separation = 14
 
 [node name="TopBar" type="PanelContainer" parent="SafeArea/Layout"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 
 [node name="Row" type="HBoxContainer" parent="SafeArea/Layout/TopBar"]
 layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 0
+theme_override_constants/separation = 10
 
-[node name="CoinsPill" parent="SafeArea/Layout/TopBar/Row" instance=ExtResource("3_pill")]
+[node name="CoinsPill" parent="SafeArea/Layout/TopBar/Row" instance=ExtResource("4_pill")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 96)
+custom_minimum_size = Vector2(286, 92)
 layout_mode = 2
 size_flags_vertical = 4
-icon_texture = ExtResource("5_coin")
+icon_texture = ExtResource("7_coin")
 
-[node name="GemsPill" parent="SafeArea/Layout/TopBar/Row" instance=ExtResource("3_pill")]
+[node name="CoinPlus" type="Button" parent="SafeArea/Layout/TopBar/Row"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 96)
+custom_minimum_size = Vector2(82, 82)
 layout_mode = 2
 size_flags_vertical = 4
-icon_texture = ExtResource("6_gem")
+focus_mode = 0
+theme_type_variation = &"IconButton"
+icon = ExtResource("11_plus")
+expand_icon = true
+
+[node name="GemsPill" parent="SafeArea/Layout/TopBar/Row" instance=ExtResource("4_pill")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(286, 92)
+layout_mode = 2
+size_flags_vertical = 4
+icon_texture = ExtResource("8_gem")
+
+[node name="GemPlus" type="Button" parent="SafeArea/Layout/TopBar/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(82, 82)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+theme_type_variation = &"IconButton"
+icon = ExtResource("11_plus")
+expand_icon = true
 
 [node name="Spacer" type="Control" parent="SafeArea/Layout/TopBar/Row"]
 layout_mode = 2
@@ -95,37 +117,48 @@ mouse_filter = 2
 
 [node name="SettingsButton" type="Button" parent="SafeArea/Layout/TopBar/Row"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(112, 112)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_vertical = 4
+focus_mode = 0
 theme_type_variation = &"IconButton"
-icon = ExtResource("7_settings")
+icon = ExtResource("9_settings")
 expand_icon = true
 
-[node name="TitleArea" type="Control" parent="SafeArea/Layout"]
-custom_minimum_size = Vector2(0, 340)
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="LogoArea" type="Control" parent="SafeArea/Layout/Scroll/Content"]
+custom_minimum_size = Vector2(0, 256)
 layout_mode = 2
 
-[node name="Logo" type="TextureRect" parent="SafeArea/Layout/TitleArea"]
+[node name="Logo" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/LogoArea"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -380.0
-offset_top = -170.0
-offset_right = 380.0
-offset_bottom = 170.0
+offset_left = -350.0
+offset_top = -124.0
+offset_right = 350.0
+offset_bottom = 124.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-modulate = Color(1, 1, 1, 0.16)
-texture = ExtResource("14_logo")
+modulate = Color(1, 1, 1, 0.0)
+texture = ExtResource("15_logo")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Center" type="CenterContainer" parent="SafeArea/Layout/TitleArea"]
+[node name="Titles" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/LogoArea"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -133,352 +166,332 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-
-[node name="Titles" type="VBoxContainer" parent="SafeArea/Layout/TitleArea/Center"]
-layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 0
 alignment = 1
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/TitleArea/Center/Titles"]
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Scroll/Content/LogoArea/Titles"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"Title"
+theme_type_variation = &"Display"
+theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
 text = "app.title"
 horizontal_alignment = 1
 
-[node name="SubtitleLabel" type="Label" parent="SafeArea/Layout/TitleArea/Center/Titles"]
+[node name="SubtitleLabel" type="Label" parent="SafeArea/Layout/Scroll/Content/LogoArea/Titles"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"Caption"
+theme_type_variation = &"Title"
+theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color = Color(0.96, 0.94, 0.85, 1)
 text = "app.subtitle"
 horizontal_alignment = 1
 
-[node name="SpacerTop" type="Control" parent="SafeArea/Layout"]
-layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 3.0
-mouse_filter = 2
-
-[node name="BattleButton" parent="SafeArea/Layout" instance=ExtResource("2_button")]
+[node name="StatsCard" type="Button" parent="SafeArea/Layout/Scroll/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 240)
+custom_minimum_size = Vector2(0, 190)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"BattleButton"
-text = "menu.battle"
-icon_texture = ExtResource("8_sword")
+focus_mode = 0
+theme_type_variation = &"StatsCard"
 
-[node name="DailyCard" type="PanelContainer" parent="SafeArea/Layout"]
-custom_minimum_size = Vector2(0, 180)
-layout_mode = 2
-theme_type_variation = &"DailyCard"
+[node name="Content" type="MarginContainer" parent="SafeArea/Layout/Scroll/Content/StatsCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 14
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/DailyCard"]
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content"]
 layout_mode = 2
-theme_override_constants/separation = 24
+mouse_filter = 2
+theme_override_constants/separation = 16
 
-[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/DailyCard/Row"]
+[node name="BestBlock" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 4
+mouse_filter = 2
+theme_override_constants/separation = 0
 alignment = 1
 
-[node name="DailyTitle" type="Label" parent="SafeArea/Layout/DailyCard/Row/Info"]
+[node name="BestIcon" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row/BestBlock"]
+custom_minimum_size = Vector2(62, 62)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = ExtResource("12_trophy")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BestCaption" type="Label" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row/BestBlock"]
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "menu.best_wave"
+horizontal_alignment = 1
+
+[node name="BestWaveValue" type="Label" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row/BestBlock"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = "menu.daily_missions"
+theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
+text = "0"
+horizontal_alignment = 1
 
-[node name="DailyProgress" type="Label" parent="SafeArea/Layout/DailyCard/Row/Info"]
+[node name="Divider" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row"]
+custom_minimum_size = Vector2(3, 120)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("19_divider")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AvatarFrame" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("16_frame")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Avatar" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row/AvatarFrame"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -54.0
+offset_top = -54.0
+offset_right = 54.0
+offset_bottom = 54.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("17_avatar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PlayerBlock" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="Nickname" type="Label" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row/PlayerBlock"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = ""
+text_overrun_behavior = 3
+
+[node name="LevelRow" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row/PlayerBlock"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="LevelCaption" type="Label" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row/PlayerBlock/LevelRow"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Caption"
+text = "menu.player_level"
+
+[node name="PlayerLevel" type="Label" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row/PlayerBlock/LevelRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Body"
+theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
+text = "1"
+
+[node name="XpBar" type="ProgressBar" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row/PlayerBlock"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+mouse_filter = 2
+max_value = 120.0
+value = 0.0
+show_percentage = false
+
+[node name="XpLabel" type="Label" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row/PlayerBlock"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
 text = ""
+horizontal_alignment = 2
 
-[node name="ViewButton" type="Button" parent="SafeArea/Layout/DailyCard/Row"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 96)
-layout_mode = 2
-size_flags_vertical = 4
-theme_type_variation = &"SecondaryButton"
-text = "menu.view"
-
-[node name="MagicaCard" type="PanelContainer" parent="SafeArea/Layout"]
-custom_minimum_size = Vector2(0, 150)
+[node name="BattlePanel" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
 layout_mode = 2
 theme_type_variation = &"DailyCard"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/MagicaCard"]
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/BattlePanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PrepareLabel" type="Label" parent="SafeArea/Layout/Scroll/Content/BattlePanel/Box"]
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "menu.prepare"
+horizontal_alignment = 1
+
+[node name="BattleButton" parent="SafeArea/Layout/Scroll/Content/BattlePanel/Box" instance=ExtResource("3_button")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"BattleButton"
+text = "menu.battle"
+icon_texture = ExtResource("10_sword")
+
+[node name="SpeedTrial" type="Button" parent="SafeArea/Layout/Scroll/Content/BattlePanel/Box"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"SpeedTrial"
+icon = ExtResource("18_speed")
+text = "menu.speed_trial_offer"
+alignment = 0
+
+[node name="AdBadge" type="Label" parent="SafeArea/Layout/Scroll/Content/BattlePanel/Box/SpeedTrial"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -116.0
+offset_top = -24.0
+offset_right = -24.0
+offset_bottom = 24.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"Caption"
+theme_override_colors/font_color = Color(1, 0.86, 0.35, 1)
+text = "AD"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="DailyCard" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+custom_minimum_size = Vector2(0, 156)
+layout_mode = 2
+theme_type_variation = &"DailyCard"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content/DailyCard"]
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="Icon" type="TextureRect" parent="SafeArea/Layout/MagicaCard/Row"]
-custom_minimum_size = Vector2(64, 64)
+[node name="Icon" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/DailyCard/Row"]
+custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("16_magic")
+mouse_filter = 2
+texture = ExtResource("13_mission")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/MagicaCard/Row"]
+[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/DailyCard/Row"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 2
 alignment = 1
 
-[node name="Title" type="Label" parent="SafeArea/Layout/MagicaCard/Row/Info"]
+[node name="DailyTitle" type="Label" parent="SafeArea/Layout/Scroll/Content/DailyCard/Row/Info"]
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "menu.daily_missions"
+
+[node name="DailyProgress" type="Label" parent="SafeArea/Layout/Scroll/Content/DailyCard/Row/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
+text = ""
+
+[node name="ViewButton" type="Button" parent="SafeArea/Layout/Scroll/Content/DailyCard/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 92)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+theme_type_variation = &"PrimaryButton"
+text = "menu.view"
+
+[node name="MagicaCard" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+theme_type_variation = &"DailyCard"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content/MagicaCard"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Icon" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/MagicaCard/Row"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("14_magic")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/MagicaCard/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/MagicaCard/Row/Info"]
 layout_mode = 2
 theme_type_variation = &"Body"
 text = "magica.title"
 
-[node name="MagicaStatus" type="Label" parent="SafeArea/Layout/MagicaCard/Row/Info"]
+[node name="MagicaStatus" type="Label" parent="SafeArea/Layout/Scroll/Content/MagicaCard/Row/Info"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = "magica.idle"
+text = "menu.magica_idle"
+autowrap_mode = 3
+max_lines_visible = 2
 
-[node name="MagicaBadge" type="Label" parent="SafeArea/Layout/MagicaCard/Row"]
+[node name="MagicaBadge" type="Label" parent="SafeArea/Layout/Scroll/Content/MagicaCard/Row"]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(52, 52)
+custom_minimum_size = Vector2(46, 46)
 layout_mode = 2
 size_flags_vertical = 4
-theme_type_variation = &"Title"
+theme_type_variation = &"Body"
+theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
 text = "menu.badge"
 horizontal_alignment = 1
 vertical_alignment = 1
-modulate = Color(1, 0.78, 0.3, 1)
 
-[node name="MagicaButton" type="Button" parent="SafeArea/Layout/MagicaCard/Row"]
+[node name="MagicaButton" type="Button" parent="SafeArea/Layout/Scroll/Content/MagicaCard/Row"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(210, 88)
+custom_minimum_size = Vector2(190, 84)
 layout_mode = 2
 size_flags_vertical = 4
+focus_mode = 0
 theme_type_variation = &"SecondaryButton"
 text = "menu.open"
 
-[node name="SpacerBottom" type="Control" parent="SafeArea/Layout"]
+[node name="ContentSpacer" type="Control" parent="SafeArea/Layout/Scroll/Content"]
+custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 1.0
 mouse_filter = 2
 
-[node name="NavBar" type="PanelContainer" parent="SafeArea/Layout"]
-custom_minimum_size = Vector2(0, 220)
-layout_mode = 2
-theme_type_variation = &"NavBar"
-
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/NavBar"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="NavHome" type="Button" parent="SafeArea/Layout/NavBar/Row"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 170)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"NavButtonActive"
-
-[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/NavBar/Row/NavHome"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/separation = 4
-alignment = 1
-
-[node name="Icon" type="TextureRect" parent="SafeArea/Layout/NavBar/Row/NavHome/Content"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-texture = ExtResource("9_home")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="NavHomeLabel" type="Label" parent="SafeArea/Layout/NavBar/Row/NavHome/Content"]
+[node name="NavBar" parent="SafeArea/Layout" instance=ExtResource("2_nav")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"Caption"
-text = "menu.nav.home"
-horizontal_alignment = 1
 
-[node name="NavWorkshop" type="Button" parent="SafeArea/Layout/NavBar/Row"]
-unique_name_in_owner = true
-modulate = Color(0.58, 0.62, 0.56, 1)
-custom_minimum_size = Vector2(0, 170)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_type_variation = &"NavButton"
-
-[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/NavBar/Row/NavWorkshop"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/separation = 4
-alignment = 1
-
-[node name="Icon" type="TextureRect" parent="SafeArea/Layout/NavBar/Row/NavWorkshop/Content"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-texture = ExtResource("10_workshop")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="NavWorkshopLabel" type="Label" parent="SafeArea/Layout/NavBar/Row/NavWorkshop/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"Caption"
-text = "menu.nav.workshop"
-horizontal_alignment = 1
-
-[node name="NavCards" type="Button" parent="SafeArea/Layout/NavBar/Row"]
-unique_name_in_owner = true
-modulate = Color(0.58, 0.62, 0.56, 1)
-custom_minimum_size = Vector2(0, 170)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_type_variation = &"NavButton"
-
-[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/NavBar/Row/NavCards"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/separation = 4
-alignment = 1
-
-[node name="Icon" type="TextureRect" parent="SafeArea/Layout/NavBar/Row/NavCards/Content"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-texture = ExtResource("11_cards")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="NavCardsLabel" type="Label" parent="SafeArea/Layout/NavBar/Row/NavCards/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"Caption"
-text = "menu.nav.cards"
-horizontal_alignment = 1
-
-[node name="NavMissions" type="Button" parent="SafeArea/Layout/NavBar/Row"]
-unique_name_in_owner = true
-modulate = Color(0.58, 0.62, 0.56, 1)
-custom_minimum_size = Vector2(0, 170)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_type_variation = &"NavButton"
-
-[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/NavBar/Row/NavMissions"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/separation = 4
-alignment = 1
-
-[node name="Icon" type="TextureRect" parent="SafeArea/Layout/NavBar/Row/NavMissions/Content"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-texture = ExtResource("12_missions")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="NavMissionsLabel" type="Label" parent="SafeArea/Layout/NavBar/Row/NavMissions/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"Caption"
-text = "menu.nav.missions"
-horizontal_alignment = 1
-
-[node name="NavShop" type="Button" parent="SafeArea/Layout/NavBar/Row"]
-unique_name_in_owner = true
-modulate = Color(0.58, 0.62, 0.56, 1)
-custom_minimum_size = Vector2(0, 170)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_type_variation = &"NavButton"
-
-[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/NavBar/Row/NavShop"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/separation = 4
-alignment = 1
-
-[node name="Icon" type="TextureRect" parent="SafeArea/Layout/NavBar/Row/NavShop/Content"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-texture = ExtResource("13_shop")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="NavShopLabel" type="Label" parent="SafeArea/Layout/NavBar/Row/NavShop/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"Caption"
-text = "menu.nav.shop"
-horizontal_alignment = 1
-
-[node name="VersionLabel" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 48.0
-offset_top = -320.0
-offset_right = 448.0
-offset_bottom = -280.0
-grow_vertical = 0
-theme_type_variation = &"Caption"
-text = ""
-
-[node name="Toast" type="PanelContainer" parent="."]
-unique_name_in_owner = true
-visible = false
-modulate = Color(1, 1, 1, 0)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -320.0
-offset_top = -360.0
-offset_right = 320.0
-offset_bottom = -280.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_type_variation = &"Chip"
-
-[node name="ToastLabel" type="Label" parent="Toast"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"Caption"
-text = ""
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="WelcomeModal" parent="." instance=ExtResource("15_modal")]
+[node name="WelcomeModal" parent="." instance=ExtResource("5_modal")]
 unique_name_in_owner = true

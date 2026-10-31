@@ -1,14 +1,12 @@
 ## MenuNav — the five-tab bottom navigation shared by every meta screen.
 ##
 ## Builds Home / Upgrades / Cards / Missions / Shop buttons from the art manifest,
-## highlights the active tab and routes through SceneRouter. Shop emits
-## `shop_pressed` (the real shop arrives with M6) so the current screen can show a
-## toast instead of navigating. Home is never active on a sub-screen.
+## highlights the active tab, shows notification dots from the live services and
+## routes through SceneRouter. Shop now opens the real shop screen (M5b).
 class_name MenuNav
 extends PanelContainer
 
-signal shop_pressed
-
+const BADGE_TEXTURE := "res://assets/art/ui/common/badge_dot.png"
 const TABS: Array[StringName] = [&"home", &"workshop", &"cards", &"missions", &"shop"]
 const ICONS: Dictionary = {
 	&"home": "res://assets/art/ui/nav/nav_home_normal.png",
@@ -26,6 +24,8 @@ const LABELS: Dictionary = {
 }
 
 var _buttons: Dictionary = {}
+var _dots: Dictionary = {}
+var _labels: Dictionary = {}
 var _active: StringName = &""
 var _row: HBoxContainer
 
@@ -35,6 +35,18 @@ func _ready() -> void:
 	custom_minimum_size = Vector2(0, 220)
 	_build()
 	setup(_active)
+	_connect_services()
+
+
+func _exit_tree() -> void:
+	if MissionService.missions_changed.is_connected(_refresh_notifications):
+		MissionService.missions_changed.disconnect(_refresh_notifications)
+	if CardService.cards_changed.is_connected(_refresh_notifications):
+		CardService.cards_changed.disconnect(_refresh_notifications)
+	if MagicaService.magica_changed.is_connected(_refresh_notifications):
+		MagicaService.magica_changed.disconnect(_refresh_notifications)
+	if LocaleService.language_changed.is_connected(_on_language_changed):
+		LocaleService.language_changed.disconnect(_on_language_changed)
 
 
 ## Highlights `active`; an empty id leaves every tab inactive (Magica screen).
@@ -45,6 +57,45 @@ func setup(active_tab: StringName) -> void:
 		var is_active := tab == _active
 		button.theme_type_variation = &"NavButtonActive" if is_active else &"NavButton"
 		button.modulate = Color.WHITE if is_active else Color(0.58, 0.62, 0.56, 1.0)
+	_refresh_notifications()
+
+
+## Shows or hides the red notification dot for one tab.
+func set_notification(tab: StringName, visible: bool) -> void:
+	var dot: TextureRect = _dots.get(tab, null)
+	if dot != null:
+		dot.visible = visible
+
+
+func _connect_services() -> void:
+	if not MissionService.missions_changed.is_connected(_refresh_notifications):
+		MissionService.missions_changed.connect(_refresh_notifications)
+	if not CardService.cards_changed.is_connected(_refresh_notifications):
+		CardService.cards_changed.connect(_refresh_notifications)
+	if not MagicaService.magica_changed.is_connected(_refresh_notifications):
+		MagicaService.magica_changed.connect(_refresh_notifications)
+	if not LocaleService.language_changed.is_connected(_on_language_changed):
+		LocaleService.language_changed.connect(_on_language_changed)
+
+
+func _on_language_changed(_code: String) -> void:
+	for tab: StringName in _labels.keys():
+		var label: Label = _labels[tab]
+		var entry: Array = LABELS[tab]
+		label.text = LocaleService.t(str(entry[0]), str(entry[1]))
+
+
+## Dots: missions ready to claim, cards ready to upgrade, Magica claim on Home.
+func _refresh_notifications() -> void:
+	var missions_ready := MissionService.claimable_count(&"daily") + MissionService.claimable_count(&"weekly") > 0
+	set_notification(&"missions", missions_ready)
+	var card_ready := false
+	for card: CardData in CardService.get_cards():
+		if CardService.can_upgrade(card.id):
+			card_ready = true
+			break
+	set_notification(&"cards", card_ready)
+	set_notification(&"home", MagicaService.has_pending_claim())
 
 
 func _build() -> void:
@@ -87,6 +138,23 @@ func _create_button(tab: StringName) -> Button:
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	content.add_child(label)
+	_labels[tab] = label
+
+	var dot := TextureRect.new()
+	dot.name = "Notification"
+	dot.texture = load(BADGE_TEXTURE) as Texture2D
+	dot.custom_minimum_size = Vector2(34, 34)
+	dot.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	dot.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	dot.visible = false
+	dot.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	dot.offset_left = -46.0
+	dot.offset_top = 6.0
+	dot.offset_right = -12.0
+	dot.offset_bottom = 40.0
+	button.add_child(dot)
+	_dots[tab] = dot
 
 	_buttons[tab] = button
 	return button
@@ -105,4 +173,4 @@ func _on_pressed(tab: StringName) -> void:
 		&"missions":
 			SceneRouter.goto(&"missions")
 		&"shop":
-			shop_pressed.emit()
+			SceneRouter.goto(&"shop")
