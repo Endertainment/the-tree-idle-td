@@ -1,9 +1,10 @@
 ## AnalyticsService — privacy-aware event logging (spec 8.6).
 ##
 ## Debug builds always print events. Network batching is OFF unless
-## res://config/monetization.tres sets analytics_enabled + analytics_endpoint.
-## Events are dropped when offline or when the request fails (no unbounded queue),
-## and the only identifier is the random player UUID.
+## res://config/monetization.tres sets analytics_enabled. Batches go through
+## ApiClient to POST /v1/events (the only HTTPRequest owner since M7). Events are
+## dropped when offline or when the request fails (no unbounded queue), and the
+## only identifier the server stores is the authenticated player id.
 extends Node
 
 const MAX_QUEUE := 100
@@ -11,9 +12,7 @@ const FLUSH_INTERVAL_SECONDS := 30.0
 
 var _config: MonetizationConfig
 var _enabled: bool = false
-var _endpoint: String = ""
 var _queue: Array[Dictionary] = []
-var _http: HTTPRequest
 var _flush_timer: float = 0.0
 var _sending: bool = false
 var _sent_count: int = 0
@@ -22,8 +21,7 @@ var _dropped_count: int = 0
 
 func _ready() -> void:
 	_config = MonetizationConfig.load_config()
-	_enabled = _config.analytics_enabled and not _config.analytics_endpoint.is_empty()
-	_endpoint = _config.analytics_endpoint
+	_enabled = _config.analytics_enabled
 	set_process(_enabled)
 	# Launch events from the global bus (spec 8.6); no gameplay code changes.
 	EventBus.run_started.connect(func() -> void:
@@ -49,9 +47,8 @@ func track(event: StringName, props: Dictionary = {}) -> void:
 	if not _enabled:
 		return
 	var entry := {
-		"event": String(event),
-		"ts": TimeService.now_unix(),
-		"player_id": str(GameState.player.get("id", "")),
+		"name": String(event),
+		"client_ts": TimeService.now_unix(),
 		"props": _sanitize(props),
 	}
 	_queue.append(entry)
@@ -69,47 +66,31 @@ func _process(delta: float) -> void:
 		flush()
 
 
-## Sends the pending batch. Safe to call from tests: no-op when disabled.
+## Sends the pending batch through ApiClient. Safe to call from tests.
 func flush() -> void:
 	if not _enabled or _sending or _queue.is_empty():
 		return
-	if _endpoint.is_empty() or not _endpoint.begins_with("http"):
+	if not ApiClient.is_online() or not ApiClient.is_authenticated():
+		_dropped_count += _queue.size()
 		_queue.clear()
 		return
-	_http = _http if _http != null else HTTPRequest.new()
-	if _http.get_parent() == null:
-		_http.timeout = 10.0
-		add_child(_http)
-		_http.request_completed.connect(_on_request_completed)
 	var batch_size := clampi(_config.analytics_batch_size, 1, _queue.size())
 	var batch: Array = _queue.slice(0, batch_size)
-	var payload := {"events": batch}
-	var error := _http.request(
-		_endpoint,
-		PackedStringArray(["Content-Type: application/json"]),
-		HTTPClient.METHOD_POST,
-		JSON.stringify(payload)
-	)
-	if error != OK:
-		_queue = _queue.slice(batch_size)
-		_dropped_count += batch.size()
-		return
-	_sending = true
 	# Remove optimistically: a failed request is dropped, per spec 8.6.
 	_queue = _queue.slice(batch_size)
+	_sending = true
+	_send_batch(batch)
 
 
-func _on_request_completed(
-	_result: int,
-	response_code: int,
-	_headers: PackedStringArray,
-	_body: PackedByteArray
-) -> void:
+func _send_batch(batch: Array) -> void:
+	var result: ApiResult = await ApiClient.request(
+		&"POST", "/v1/events", {"events": batch}, {"queue": false, "retry_attempts": 1}
+	)
 	_sending = false
-	if response_code >= 200 and response_code < 300:
-		_sent_count += _config.analytics_batch_size
+	if result.ok:
+		_sent_count += batch.size()
 	else:
-		_dropped_count += _config.analytics_batch_size
+		_dropped_count += batch.size()
 	if not _queue.is_empty():
 		flush()
 

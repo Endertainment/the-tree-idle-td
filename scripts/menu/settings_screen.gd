@@ -23,12 +23,14 @@ const MAX_SLIDER_WIDTH := 520
 
 var _toast_tween: Tween
 var _fps_label: Label
+var _sync_status_label: Label
 
 
 func _ready() -> void:
 	_localize()
 	_back_button.pressed.connect(_on_back_pressed)
 	LocaleService.language_changed.connect(_on_language_changed)
+	SaveSyncService.status_changed.connect(_on_sync_status_changed)
 	_toast.visible = false
 	_legal_modal.confirmed.connect(func() -> void: pass)
 	_reset_modal.confirmed.connect(_on_reset_confirmed)
@@ -40,6 +42,8 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if LocaleService.language_changed.is_connected(_on_language_changed):
 		LocaleService.language_changed.disconnect(_on_language_changed)
+	if SaveSyncService.status_changed.is_connected(_on_sync_status_changed):
+		SaveSyncService.status_changed.disconnect(_on_sync_status_changed)
 
 
 func _process(_delta: float) -> void:
@@ -307,6 +311,30 @@ func _build_account() -> void:
 	profile_button.custom_minimum_size = Vector2(240, 88)
 	profile_row.add_child(profile_button)
 	_account_rows.add_child(profile_row)
+
+	# M7 cloud-save state: always visible, updating live from SaveSyncService.
+	var sync_row := _row()
+	sync_row.add_child(_row_label(LocaleService.t("settings.cloud_sync", "Cloud save")))
+	_sync_status_label = _value_label(SaveSyncService.status_text())
+	_sync_status_label.custom_minimum_size = Vector2(420, 0)
+	_sync_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	sync_row.add_child(_sync_status_label)
+	var sync_button := _option_button(
+		LocaleService.t("settings.sync_now", "Sync now"), false, _on_sync_now_pressed
+	)
+	sync_button.custom_minimum_size = Vector2(200, 88)
+	sync_row.add_child(sync_button)
+	_account_rows.add_child(sync_row)
+
+
+func _on_sync_status_changed(_status: StringName, _detail: Dictionary) -> void:
+	if is_instance_valid(_sync_status_label):
+		_sync_status_label.text = SaveSyncService.status_text()
+
+
+func _on_sync_now_pressed() -> void:
+	SaveSyncService.sync_now()
+	_show_toast(LocaleService.t("settings.sync_started", "Sync started"))
 
 
 func _on_profile_pressed() -> void:

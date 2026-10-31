@@ -54,6 +54,7 @@ func _ready() -> void:
 	_back_button.pressed.connect(_on_back_pressed)
 	_refresh_button.pressed.connect(_on_refresh_pressed)
 	LeaderboardService.refresh_failed.connect(_on_refresh_failed)
+	LeaderboardService.refreshed.connect(_on_refreshed)
 	_refresh_content()
 	AudioBus.bind_buttons(self)
 
@@ -63,6 +64,17 @@ func _exit_tree() -> void:
 		LocaleService.language_changed.disconnect(_on_language_changed)
 	if LeaderboardService.refresh_failed.is_connected(_on_refresh_failed):
 		LeaderboardService.refresh_failed.disconnect(_on_refresh_failed)
+	if LeaderboardService.refreshed.is_connected(_on_refreshed):
+		LeaderboardService.refreshed.disconnect(_on_refreshed)
+
+
+func _on_refreshed(board: StringName) -> void:
+	if board != _active_tab:
+		return
+	if _loading:
+		_finish_refresh()
+	else:
+		_refresh_content()
 
 
 func _on_refresh_failed(_board: StringName, _reason: StringName) -> void:
@@ -290,7 +302,7 @@ func _rank_row(rank: int, entry: Dictionary) -> PanelContainer:
 
 
 func _refresh_own() -> void:
-	var own := LeaderboardService.get_own_entry()
+	var own := LeaderboardService.get_own_entry(_active_tab)
 	var rank := LeaderboardService.get_own_rank(_active_tab)
 	_own_rank.text = ("#%d" % rank) if rank > 0 else "#—"
 	var nickname := str(own.get("nickname", "")).strip_edges()
@@ -317,8 +329,15 @@ func _on_refresh_pressed() -> void:
 	_refresh_button.disabled = true
 	_loading_label.visible = true
 	AudioBus.play_ui(&"ui_toggle")
-	await get_tree().create_timer(0.35).timeout
 	LeaderboardService.refresh(_active_tab)
+	await get_tree().create_timer(0.35).timeout
+	if LeaderboardService.is_fetching(_active_tab):
+		# A live request is in flight; _on_refreshed() finishes the state.
+		return
+	_finish_refresh()
+
+
+func _finish_refresh() -> void:
 	_loading_label.visible = false
 	_refresh_button.disabled = false
 	_loading = false

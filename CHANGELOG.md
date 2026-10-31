@@ -3,6 +3,73 @@
 All notable changes are recorded per milestone. The project follows semantic
 versioning for tags; unreleased work stays under `[Unreleased]`.
 
+## [0.8.0-m7] — 2026-10-31 — M7 backend, cloud saves, live leaderboard
+
+### Added
+
+- **Server (`server/`)**: FastAPI app with Pydantic v2 and SQLAlchemy 2 async,
+  JWT access/refresh auth, guest accounts, cloud saves with revision conflicts
+  (409 + server copy) and Idempotency-Key replay, remote config, weekly
+  leaderboard with cursor pagination and own rank, tournaments with 50-player
+  cohorts/standings/submission, run telemetry, purchase verification stub,
+  signed AdMob SSV callback and batched analytics. SQLite (`aiosqlite`) is the
+  default; PostgreSQL/Neon works through `DATABASE_URL` with no code changes.
+- **Server operations**: `Dockerfile`, `docker-compose.yml`, `.env.example`,
+  `alembic.ini` + async Alembic baseline, `create_all` bootstrap, seed script
+  (`python -m app.seed`), `api.http` collection, OpenAPI at `/docs`,
+  `server/README.md` and an implementation contract in `server/SPEC.md`.
+- **Client `ApiClient`** (`scripts/platform/api_client.gd`): the project's only
+  `HTTPRequest` owner. Await-able typed `ApiResult`, 10 s timeout (15 s saves),
+  1/2/4/8/16 s retry backoff with jitter, one refresh-token rotation on 401,
+  Idempotency-Key on every mutation, tokens in `user://auth.json` and a persisted
+  offline queue in `user://api_queue.json` flushed on reconnect.
+- **`LoginService`**: guest login on the first online boot using the save's UUID
+  as `device_id`, refresh when expiring, periodic recovery after an offline
+  period, and no login while the onboarding wizard has not created the player.
+- **Cloud save sync (`SaveSyncService`)**: local-first autosave push (2 s
+  debounce), pull on boot when the server is newer, three-way merge with the last
+  synced payload as base — real conflicts resolve to the server, local-only
+  changes are pushed as a patch. Persisted sync state and a live status row with
+  "Sync now" in Settings.
+- **Live leaderboard**: `LeaderboardService` now fetches `/leaderboard` and
+  `/tournaments/current`, maps server rows through `LeaderboardBackend`, keeps
+  own rank/live tournament info, caches to `user://leaderboard_cache.json`, and
+  falls back to `LocalBackendStub` offline or on any error. The screen refreshes
+  when a live response arrives.
+- **Remote config**: `RemoteConfigService` merges `GET /config` over
+  `config/remote_defaults.tres`, caches it in `user://remote_config.json` for one
+  hour and exposes feature flags/ad frequency. `config/env.tres` holds the
+  debug/Android-debug/release base URLs.
+- **Analytics**: batched events now go through `ApiClient` to `POST /events`;
+  the last `HTTPRequest` outside `ApiClient` was removed.
+- **Tests**: server **31 pytest** (auth/refresh, save 409 + idempotency,
+  leaderboard ordering/own rank/pagination, tournament accept/reject with a
+  stored rejection reason, DST week boundaries, events validation, SSV
+  signatures, purchases, URL normalisation). Client **+10 (70 total)**:
+  backoff schedule, URL building, typed result, queue persistence/retry/drop,
+  sync policy, three-way merge, remote-config merge/TTL, server-row mapping,
+  env resources, and a guard that `ApiClient` is the only `HTTPRequest` owner.
+- **Proof**: `tools/api_e2e.ps1` starts uvicorn on 127.0.0.1:8000, runs
+  `server/e2e_client.py` (guest login → save PUT → leaderboard GET → tournament
+  submit → standings), prints PASS and always stops the server.
+
+### Changed
+
+- Project version is now **0.8.0** (`project.godot`, `App.VERSION`).
+- `SaveService` emits `saved(payload)` so cloud sync can react to local writes.
+- The app boot sequence adds api → login → remote config → save sync →
+  leaderboard after the existing services; all of them degrade offline.
+
+### Known limits
+
+- Neon, Docker and a real device were not available in this environment: the
+  PostgreSQL path is URL-normalisation-tested and documented, the Docker files
+  are provided but unverified, and all runtime proofs use SQLite.
+- Purchase validation and AdMob SSV use explicit shared-secret stubs; a real
+  Play/App Store verifier and Google's ECDSA keys are M8 work.
+- The leaderboard still falls back to deterministic stub rows until the first
+  successful authenticated fetch (online: real data and own rank).
+
 ## [0.7.0-m6] — 2026-10-31 — M6 Android, ads, billing, telemetry
 
 ### Added

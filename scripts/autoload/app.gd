@@ -5,7 +5,7 @@
 ## so Boot may call init_services() defensively without starting twice.
 extends Node
 
-const VERSION := "0.7.0"
+const VERSION := "0.8.0"
 
 var _initialized: bool = false
 var _degraded: bool = false
@@ -54,6 +54,13 @@ func init_services() -> void:
 	AnalyticsService.init_service()
 	AnalyticsService.track(&"app_open", {"version": version_string()})
 	SaveService.set_save_provider(Callable(GameState, "build_save_document"))
+	# M7 local-first networking. Every service degrades to offline and must never
+	# block or fail the boot (spec 8.1); ApiClient is the only HTTPRequest owner.
+	ApiClient.init_service()
+	LoginService.init_service()
+	RemoteConfigService.init_service()
+	SaveSyncService.init_service()
+	LeaderboardService.init_service()
 	if SaveService.migrated_from_version > 0 and SaveService.migrated_from_version < SaveService.SCHEMA_VERSION:
 		# Persist the migrated v2 document on the next frame, so the one-time
 		# migration log never repeats after a restart.
@@ -98,6 +105,21 @@ func log_info(message: String) -> void:
 ## Prints a non-fatal warning prefixed with the app tag.
 func log_warn(message: String) -> void:
 	push_warning("[App] " + message)
+
+
+## Rebuilds the live stateful services from a save payload pulled from the cloud.
+## Settings stay device-local on purpose; OfflineService is not re-run because
+## that would grant offline income twice.
+func reload_services_from_save(payload: Dictionary) -> void:
+	if payload.is_empty():
+		return
+	GameState.from_dict(payload)
+	WorkshopService.init_service(_section(payload, "workshop"))
+	MagicaService.init_service(_section(payload, "magica"))
+	CardService.init_service(_section(payload, "cards"))
+	MissionService.init_service(_section(payload, "missions"))
+	LevelService.init_service()
+	UnlockService.init_service()
 
 
 ## Routes back to the main menu and clears any paused state.

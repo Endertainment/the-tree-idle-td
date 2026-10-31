@@ -2,13 +2,13 @@
 
 Single source of truth for "where are we". Updated at the end of every session.
 
-**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M6 done (tagged) → M7 next
+**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M7 done (tagged) → M8 next
 **Branch:** `main` · **Godot:** `C:\Tools\godot-4.7.2\Godot_v4.7.2-stable_win64.exe` (4.7.2)
-**Verification (M6, green except device ad fill):** check_project exit 0 · tests
-**60/60** · smoke **25/25 scenes** · battle_smoke PASS · ads_flow_smoke PASS ·
-lint_locale **640 keys, 0 missing, 0 unused** · debug APK **179 MB**, installed
-and launched on LDPlayer · previews `m6_device.png`, `m6_shop_device.png`,
-`m6_ads_failure.png`
+**Verification (M7):** check_project exit 0 · tests **70/70** · smoke **25/25
+scenes** · lint_locale **649 keys, 0 missing, 0 unused** · server pytest
+**31 passed** · `tools/api_e2e.ps1` **PASS** (uvicorn + guest→save→leaderboard→
+tournament submit) · Docker/Neon/device **not available** (SQLite-only runtime
+proof, documented)
 **Toolchain:** Android SDK `C:\Android\Sdk`, JDK 17 `C:\Tools\jdk-17`, LDPlayer
 `E:\LDPlayer\LDPlayer14`, adb `127.0.0.1:5555` (see `docs/ANDROID.md`)
 
@@ -23,7 +23,7 @@ and launched on LDPlayer · previews `m6_device.png`, `m6_shop_device.png`,
 | M4 | Meta progression and persistence | done | `v0.5.0-m4` |
 | M5 | Shell, UX, localization, audio | done | `v0.6.0-m5` |
 | M6 | Android, ads, billing, telemetry | done, tagged (ad fill blocked by env network) | `v0.7.0-m6` |
-| M7 | Backend (FastAPI + Neon), live features | not started | `v0.8.0-m7` |
+| M7 | Backend (FastAPI + Neon), live features | done (Neon/Docker runtime unverified) | `v0.8.0-m7` |
 | M8 | Balance, polish, release readiness | not started | `v1.0.0-m8` |
 
 ## M5a delivered (first half of M5, no tag)
@@ -148,6 +148,60 @@ and launched on LDPlayer · previews `m6_device.png`, `m6_shop_device.png`,
 - **Android back**: `config/quit_on_go_back=false` + a SceneRouter debounce;
   verified Shop → menu, menu → exit, battle → pause, pause → battle on LDPlayer.
 
+## M7 delivered (tagged `v0.8.0-m7`)
+
+- **Server** `server/`: FastAPI + Pydantic v2 + SQLAlchemy 2 async with the full
+  §8.5 endpoint table (`/healthz` unauthenticated, everything else `/v1` with
+  bearer auth except guest/refresh and the signed SSV callback). Tables:
+  `players`, `saves`, `runs`, `leaderboard_entries`, `tournaments`,
+  `tournament_entries`, `purchases`, `events`, `missions_state`, plus
+  `idempotency_keys`. JSON→JSONB variant means SQLite locally and Neon in
+  production with only `DATABASE_URL` changed (`?ssl=require` supported).
+  Alembic baseline + `create_all` bootstrap, seed script, `api.http`, Dockerfile
+  and compose file (Docker unavailable here), `.env.example`, `README.md`, and
+  `SPEC.md` matching the implementation.
+- **Auth**: guest device account, HS256 access (15 min) + rotating refresh
+  (30 days, SHA-256 stored), `hashlib`/`secrets` only. No token ever logged.
+- **Cloud save**: revision-checked PUT (409 with the server copy), `Idempotency-Key`
+  replay, profile mirror (nickname/avatar/level/xp) on save.
+- **Leaderboard**: weekly/all-time/tournament scopes, deterministic tie-break
+  (wave desc → earlier submission → lower play time), cursor pagination, own rank
+  computed against the full board.
+- **Tournaments**: lazy weekly tournament (same Kyiv 04:00 reset), cohorts of 50,
+  eligibility level 12, standings with percentile + §6.7 reward tiers, validated
+  submission. Anti-cheat rejects duration < waves × 20 s, >2.5 waves/min,
+  >250 k DPS and oversized cash; every attempt (accepted or not) is stored with
+  its reason. Optional HMAC run signature via `RUN_HMAC_SECRET`.
+- **Monetization/telemetry stubs**: idempotent purchase verify (`verified_by=stub`,
+  `PURCHASES_MODE=disabled` returns 503), signed AdMob SSV (HMAC stopgap,
+  transaction-id idempotency, timestamp skew check), batched events (≤100,
+  scalar props, 90-day prune).
+- **Client**:
+  - `ApiClient` autoload is the only `HTTPRequest` owner (test-enforced): typed
+    `ApiResult`, 10 s/15 s timeouts, 1/2/4/8/16 s jittered retries, 401 refresh,
+    Idempotency-Key on mutations, tokens in `user://auth.json`, persisted queue
+    in `user://api_queue.json` flushed on reconnect, offline cooldown + recovery.
+  - `LoginService` guest login on first online boot (device id = save UUID),
+    refresh, retry loop; waits for onboarding so the first account is stable.
+  - `SaveSyncService` local-first sync with 2 s debounce, boot pull when the
+    server is newer, three-way merge (server wins conflicts, local-only changes
+    pushed as a patch), persisted state, Settings status row + "Sync now".
+  - `LeaderboardService` fetches real weekly/all-time/tournament boards and
+    `/tournaments/current`, maps rows, keeps own rank, caches to
+    `user://leaderboard_cache.json`, falls back to `LocalBackendStub` offline or
+    on error; the screen rebuilds when live data arrives.
+  - `RemoteConfigService` merges `GET /config` over `config/remote_defaults.tres`
+    with a 1 h `user://remote_config.json` cache; `config/env.tres` holds base
+    URLs. `AnalyticsService` now posts through `ApiClient`.
+- **Tests**: server **31 pytest**; client **+10 → 70/70**, all green, including a
+  guard that no script other than `ApiClient` creates an `HTTPRequest`.
+- **Proof**: `tools/api_e2e.ps1` (uvicorn on 127.0.0.1:8000 → guest login → save
+  PUT + idempotent replay → profile → leaderboard → tournament submit →
+  standings → leaderboard own rank) prints **PASS** and stops the server.
+- **Not verified (environment):** Neon/PostgreSQL runtime, Docker build/compose,
+  Android device run of the live API. The PostgreSQL URL path, TLS normalisation
+  and shared metadata are unit-tested; the runtime proofs all use SQLite.
+
 ## Earlier milestones (summary)
 
 - **M4**: save v2 (checksum/atomic/.bak/migration), WalletService, Level/Unlock,
@@ -182,21 +236,25 @@ and launched on LDPlayer · previews `m6_device.png`, `m6_shop_device.png`,
 - Safe-area insets apply to every Control screen's `SafeArea` MarginContainer.
   The battle HUD is a CanvasLayer without that container, so a notch-aware HUD
   pass is deferred to M8 (no cutout on the LDPlayer test image).
-- **Leaderboard is local (M5b/M7):** `LeaderboardService` always serves the
-  deterministic `LocalBackendStub` cohort and reports `is_offline() == true`.
-  M7 replaces one `_load()` call with the HTTP client; the UI is unchanged.
+- **Leaderboard is live-or-local (M7):** `LeaderboardService` fetches the real
+  API when authenticated and online (own rank included), caches the last
+  response and falls back to the deterministic `LocalBackendStub` when offline or
+  on any request error. The screen is unchanged.
+- **Backend runtime gaps:** Neon/PostgreSQL, Docker and a real Android device
+  were unavailable this session. SQLite is the verified runtime; the Postgres
+  path is URL-normalisation-tested and the compose file is unverified. Purchase
+  and SSV verification remain explicit stubs (ADR-039/040/041).
 - Capture helper now finishes `App.init_services()` before applying the capture
   language/pseudo-locale and only stages the preview afterwards (ADR-033).
 
-## Next tasks — M7 (Backend, live features)
+## Next tasks — M8 (Balance, polish, release readiness)
 
-1. **ApiClient + backend**: stand up the FastAPI + Neon skeleton from §8.3,
-   wire `ApiClient` (auth, retries, offline queue) and point
-   `LeaderboardService._load()` at it; keep `LocalBackendStub` for editor/offline.
-2. **Server-side commerce**: replace `IapService._verify_receipt()` with Google
-   Play receipt validation, add AdMob SSV callback validation for
-   `rewarded_earned` (server confirms a placement before the client grants), and
-   move `AnalyticsService` to the real `POST /events` endpoint.
-3. **Live-ops**: missions/tournament refresh from the backend, remote config for
-   `config/monetization.tres` ad IDs and caps, and an admin-less migration path
-   for save v3 if the profile gains server IDs.
+1. **Balance pass**: run `tools/simulate_run.gd --runs=200 --profile=new|mid|max`,
+   tune wave data to the §14.1 targets (new 8–12, mid 25–35, maxed 45+), and
+   record distributions in `docs/BALANCE.md`.
+2. **Real monetization verification**: replace the stub purchase verifier with
+   Google Play Developer API validation and AdMob SSV with Google's ECDSA public
+   keys; add Play Console internal testing + real device run of cloud saves.
+3. **Release build**: release keystore + AAB (not debug), draw-call/atlas pass
+   from 532 toward the M2 target, notch-safe battle HUD, and a full
+   `docs/QA_CHECKLIST.md` pass on LDPlayer and a physical device.

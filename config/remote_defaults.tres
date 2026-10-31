@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="RemoteConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/platform/remote_config.gd" id="1_m7"]
+
+[resource]
+script = ExtResource("1_m7")
+version = 1
+feature_flags = {
+"tournaments": true,
+"weekly_leaderboard": true,
+"cloud_saves": true,
+"remote_config": true,
+"ads": true,
+"iap": true,
+"friends": false
+}
+ad_frequency = {
+"rewarded_daily_cap": 8,
+"interstitial_every_runs": 3,
+"interstitial_min_interval_s": 120,
+"interstitial_min_wave": 5
+}
+balance_overrides = {}
+shop_catalog_version = 1

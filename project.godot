@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="The Tree  IDLE TD"
-config/version="0.7.0"
+config/version="0.8.0"
 run/main_scene="res://scenes/boot/boot.tscn"
 config/quit_on_go_back=false
 config/features=PackedStringArray("4.7", "Mobile")
@@ -40,6 +40,10 @@ MagicaService="*res://scripts/economy/magica_service.gd"
 CardService="*res://scripts/economy/card_service.gd"
 MissionService="*res://scripts/economy/mission_service.gd"
 OfflineService="*res://scripts/economy/offline_service.gd"
+ApiClient="*res://scripts/platform/api_client.gd"
+LoginService="*res://scripts/platform/login_service.gd"
+RemoteConfigService="*res://scripts/platform/remote_config_service.gd"
+SaveSyncService="*res://scripts/platform/save_sync_service.gd"
 LeaderboardService="*res://scripts/platform/leaderboard_service.gd"
 AdsService="*res://scripts/platform/ads_service.gd"
 IapService="*res://scripts/platform/iap_service.gd"

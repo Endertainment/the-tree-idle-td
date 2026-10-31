@@ -13,6 +13,7 @@ const TestM4b := preload("res://tests/test_m4b.gd")
 const TestM5a := preload("res://tests/test_m5a.gd")
 const TestM5b := preload("res://tests/test_m5b.gd")
 const TestM6 := preload("res://tests/test_m6.gd")
+const TestM7 := preload("res://tests/test_m7.gd")
 
 
 func _initialize() -> void:
@@ -25,6 +26,7 @@ func _initialize() -> void:
 	var m5a: RefCounted = TestM5a.new()
 	var m5b: RefCounted = TestM5b.new()
 	var m6: RefCounted = TestM6.new()
+	var m7: RefCounted = TestM7.new()
 	var cases: Array[Dictionary] = [
 		{"name": "art manifest paths exist", "callable": Callable(core, "test_manifest_paths")},
 		{"name": "SaveService round-trip", "callable": Callable(core, "test_save_roundtrip")},
@@ -86,6 +88,16 @@ func _initialize() -> void:
 		{"name": "speed boost persistence", "callable": Callable(m6, "test_speed_boost_persistence")},
 		{"name": "M6 locale keys", "callable": Callable(m6, "test_m6_locale_keys")},
 		{"name": "analytics privacy sanitize", "callable": Callable(m6, "test_analytics_privacy_sanitize")},
+		{"name": "API retry backoff schedule", "callable": Callable(m7, "test_api_backoff_schedule")},
+		{"name": "API URL building", "callable": Callable(m7, "test_api_url_building")},
+		{"name": "ApiResult typed contract", "callable": Callable(m7, "test_api_result_typed")},
+		{"name": "offline API queue persistence", "callable": Callable(m7, "test_api_queue_persistence")},
+		{"name": "save sync revision policy", "callable": Callable(m7, "test_save_sync_policy")},
+		{"name": "save sync three-way merge", "callable": Callable(m7, "test_save_sync_three_way_merge")},
+		{"name": "remote config merge and TTL", "callable": Callable(m7, "test_remote_config_merge_and_ttl")},
+		{"name": "leaderboard server row mapping", "callable": Callable(m7, "test_leaderboard_backend_mapping")},
+		{"name": "M7 env and remote defaults resources", "callable": Callable(m7, "test_env_and_remote_defaults_resources")},
+		{"name": "ApiClient owns HTTPRequest", "callable": Callable(m7, "test_only_api_client_owns_http_request")},
 	]
 
 	var failures := 0

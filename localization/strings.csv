@@ -639,3 +639,12 @@ shop.purchase_product_unavailable,This product is not available right now.,Це�
 settings.ad_consent,Ad privacy options,Параметри реклами та приватності
 settings.ad_consent_on,Personalised ads enabled.,Персоналізовану рекламу ввімкнено.
 settings.ad_consent_off,Non-personalised ads only.,Лише неперсоналізована реклама.
+settings.cloud_sync,Cloud save,Хмарне збереження
+settings.sync_now,Sync now,Синхронізувати
+settings.sync.offline,Offline — plays locally,Офлайн — грає локально
+settings.sync.pending,Pending upload,Очікує вивантаження
+settings.sync.syncing,Syncing…,Синхронізація…
+settings.sync.synced,Synced,Синхронізовано
+settings.sync.conflict,Synced (conflicts resolved),Синхронізовано (конфлікти вирішено)
+settings.sync.error,Sync error,Помилка синхронізації
+settings.sync_started,Sync started,Синхронізацію розпочато

@@ -12,6 +12,9 @@
 ## GameState owns the document shape; SaveService only adds metadata/checksum.
 extends Node
 
+## Emitted after a local document was written successfully (M7 cloud sync hook).
+signal saved(payload: Dictionary)
+
 const SCHEMA_VERSION := 2
 const DEFAULT_SAVE_PATH := "user://save_v1.json"
 const DEFAULT_BACKUP_PATH := "user://save_v1.bak.json"
@@ -78,6 +81,7 @@ func flush() -> bool:
 
 ## Serialises `data` and writes it atomically. Returns true on success.
 func save(data: Dictionary) -> bool:
+	var base_document := data.duplicate(true)
 	var payload := data.duplicate(true)
 	payload["schema_version"] = SCHEMA_VERSION
 	payload["saved_at"] = int(Time.get_unix_time_from_system())
@@ -116,6 +120,7 @@ func save(data: Dictionary) -> bool:
 		_remove_file(temp_path)
 		return false
 	_last_save_msec = Time.get_ticks_msec()
+	saved.emit(base_document)
 	return true
 
 

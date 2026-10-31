@@ -765,3 +765,62 @@ delegates every decision to these objects.
 
 **Consequences:** `tests/run_tests.gd` covers caps, rollover, cadence, duplicate
 earned callbacks and the ad-limit reason without touching native code.
+
+## ADR-039 — SQLite by default, PostgreSQL/Neon through the same metadata (M7)
+
+**Status:** accepted (M7)
+
+**Context:** no Neon credentials or Docker were available, but the deliverable
+must be production-ready for Neon and one-command local for reviewers.
+
+**Decision:** `DATABASE_URL` defaults to `sqlite+aiosqlite:///./thetree.db`.
+`prepare_database_url()` normalises `postgres://`/`postgresql://` to
+`postgresql+asyncpg://`, extracts `?ssl=require`/`?sslmode=require` into an SSL
+context, and `JSON().with_variant(JSONB, "postgresql")` keeps one model
+definition for both backends. `tzdata` is a pinned dependency because Windows
+Python ships no IANA database. Schema creation is `create_all` by default with
+an Alembic baseline as the formal path.
+
+**Consequences:** local development needs no service; production changes only
+environment variables. PostgreSQL runtime was not exercised in this environment
+(no server available), only URL normalisation and the shared metadata are tested;
+this is recorded as a known verification gap, not as tested behaviour.
+
+## ADR-040 — Cloud save conflict policy: server wins conflicts, local-only changes are patched (M7)
+
+**Status:** accepted (M7)
+
+**Context:** two devices can edit the same guest save; the client must never
+silently delete local progress, and the server must stay authoritative when the
+same field changed on both sides.
+
+**Decision:** `SaveSyncMerge` classifies by revision. Same revision + dirty →
+push. Server revision newer + clean → pull. Server newer + dirty → three-way
+merge with the last synced payload as the base: fields changed only locally are
+kept (and pushed as a patch on top of the server revision), fields changed only
+on the server are taken, and true conflicts resolve to the server value. The
+merge result is applied locally, then pushed with the server revision; any
+failure keeps the save dirty and retries later. Settings stay device-local.
+
+**Consequences:** no local change is discarded without being reported in
+`pending_conflicts`; a save can advance a revision to publish a local patch even
+when the server was newer. The policy is pure and unit-tested; it does not
+attempt field-level timestamps, so a conflict always favours the server.
+
+## ADR-041 — One HTTP owner and one offline queue (M7)
+
+**Status:** accepted (M7)
+
+**Context:** M6 had a second `HTTPRequest` inside `AnalyticsService`, and
+retries, tokens and idempotency would otherwise be reimplemented per service.
+
+**Decision:** `ApiClient` is the only script allowed to create `HTTPRequest`
+(enforced by `tests/test_m7.gd`). It owns base URLs (`config/env.tres`), tokens
+(`user://auth.json`), typed results, retry/backoff, 401 refresh, Idempotency-Key
+and the persisted mutating-op queue (`user://api_queue.json`). Analytics, login,
+cloud saves, remote config and the leaderboard all go through it. Analytics still
+drops batches on failure (spec §8.6) rather than queuing them.
+
+**Consequences:** a service cannot bypass auth/retries, and the hard rule is a
+test rather than a convention. A new endpoint only needs a `request()` call; a
+second HTTP owner would fail the test.
