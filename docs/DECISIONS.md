@@ -115,7 +115,7 @@ path `$Tree` plus the type `TreeEntity`.
 
 ## ADR-008 — M1 scope cuts: no selling and no tower sheet (M1)
 
-**Status:** accepted (M1)
+**Status:** accepted (M1), superseded by ADR-014 (M2)
 
 **Context:** the M1 brief requires a build sheet and a placeholder Upgrade
 button, while `docs/milestones/M1.md` also lists tower selling. Both are
@@ -127,4 +127,114 @@ and the pause menu stay in M3 per the M3 brief.
 
 **Consequences:** no refund path to test yet; the build sheet is the only bottom
 sheet. This is a deliberate vertical-slice cut, not an oversight.
+
+## ADR-009 — Enemy pooling and a per-tick spatial hash (M2)
+
+**Status:** accepted (M2)
+
+**Context:** M2 acceptance is 120 concurrent enemies at >= 55 FPS with no
+per-frame group scans, and the M1 `Tower._find_nearest_target()` walked
+`get_nodes_in_group("enemies")` (including dead nodes) on every attack.
+
+**Decision:** `BattleController` keeps a fixed pool of `Enemy` nodes, releases
+them on death/leak instead of freeing, and rebuilds a `SpatialHash` from the owned
+active array once per battle tick. Towers, units, the Tree, splash damage and the
+aura pass query that grid. `EventBus.damage_dealt` is emitted by the controller
+(not `Enemy`) so pure-logic tests can load `Enemy` without autoloads.
+
+**Consequences:** no per-kill allocation, no group scans, and targeting is a
+small candidate list. The grid is one frame stale (rebuild happens before child
+`_physics_process`), which is <= ~2 px at runner speed and invisible in play.
+Pooling requires every enemy reset in `setup()` and `release()`; a missed reset
+would leak status/flash state into the next spawn.
+
+## ADR-010 — Level curves and unit prices as shared data resources (M2)
+
+**Status:** accepted (M2)
+
+**Context:** spec 4.5 gives one tower formula (`base*0.8*1.55^(lvl-1)`, damage
+x1.18, range x1.02, interval x0.97 floor 0.35) and the M2 brief adds a unit curve
+(`50*1.45^(lvl-1)`). Unit placement costs are not specified.
+
+**Decision:** `LevelCurve` resources hold max level, cost factor/growth,
+per-level growth and the interval floor. Towers share
+`data/levels/tower_levels.tres`; units share `data/levels/unit_levels.tres` with
+`cost_base_override = 50` so every unit's upgrade curve is identical regardless of
+placement price. Placement prices are authored per unit (50/90/70 cash) in
+`UnitData.placement_cost`.
+
+**Consequences:** a new tower/unit is data + a scene, and a balance pass touches
+`.tres` only. The three placement prices are an M2 designer choice, not spec
+numbers; record them in `BALANCE.md`.
+
+## ADR-011 — Boss cadence lives on SpawnGroup, boss bar replaces the wave label (M2)
+
+**Status:** accepted (M2)
+
+**Context:** spec 4.8 wants "boss_troll with hp_mult from the table (e.g. wave 10:
+x1.6 of scaled HP)" and a dedicated boss bar; §13.4 says the boss bar replaces the
+wave bar while the boss is alive.
+
+**Decision:** `SpawnGroup.hp_multiplier` carries the per-group boss multiplier
+(1.6 in the wave table) and the Spawner passes it to the controller, so boss HP
+stays authored data and the rest of the wave keeps its normal scaling. The HUD
+shows `BossBar` and hides `WaveLabel` on `boss_spawned`, restoring it on
+`boss_removed`. The wave table remains the only place that decides which wave is
+a boss; `WaveManager` has no boss rules.
+
+**Consequences:** wave 10 is 1 boss + 17 supports with one 1.6x group; the boss
+group can be tuned without touching wave scaling. `debug_start_wave()` exists for
+tools/tests to jump to a boss wave.
+
+## ADR-012 — Behaviors are strategies selected by data id, shared by towers and units (M2)
+
+**Status:** accepted (M2)
+
+**Context:** the brief forbids `if tower_id == ...` chains and requires a
+level-5 `TowerBehavior` registry. Units use the same combat pipeline and may need
+behaviors later.
+
+**Decision:** `TowerData.behavior_id`/`UnitData.behavior_id` name a strategy in
+`TowerBehaviorRegistry`. Strategies receive `behavior_params` (a data Dictionary),
+the level and the shot/aura dictionary, so one behavior works for any tower or unit
+and all numbers stay in `.tres`. Behaviors are only instantiated at
+`level >= unlock_level`.
+
+**Consequences:** adding a behavior is one script + one registry entry, and its
+power is tunable per tower in data. Unknown ids fall back to null (base behavior)
+instead of crashing content loads.
+
+## ADR-013 — M2 draw-call target deferred to the art/atlas pass (M2 deviation)
+
+**Status:** accepted (M2), follow-up in M5/M8
+
+**Context:** `docs/milestones/M2.md` targets < 120 draw calls at 120 enemies.
+Placeholder enemy art is one texture per walk frame (6-8 files per enemy) and each
+enemy also draws a shadow and an HP bar, so the measured peak is 532 draw calls
+while FPS is far above the 55 floor (1907.2 FPS on desktop, vsync off).
+
+**Decision:** ship M2 with measured numbers recorded; do not hide entities to game
+the metric. Batch/atlas work belongs with the art pipeline (one atlas per screen
+family is already spec 14.3) and is scheduled for M5/M8.
+
+**Consequences:** the FPS acceptance is met on desktop, the draw-call acceptance is
+not. LDPlayer FPS is unmeasurable until the M6 Android export, so mobile
+performance remains an M6 gate.
+
+## ADR-014 — M2 delivers the tower/unit sheets and selling (M2)
+
+**Status:** accepted (M2)
+
+**Context:** ADR-008 deferred tower sheets and selling to M3, but the M2 brief
+explicitly requires build/upgrade/sell UI, unit placement and in-run unit
+upgrades.
+
+**Decision:** M2 implements the tower sheet (level, stat preview, upgrade, sell at
+70 %), the unit sheet (placement + L1-10 upgrade) and keeps the tree upgrade panel
+placeholder for M3. The old 540-line `BattleController` is split into state/flow +
+`BattleHudController`, `BuildSheet`, `TowerSheet`, `UnitSlots`.
+
+**Consequences:** ADR-008's cuts are closed for towers/units; M3 is now tree
+upgrades, speed control, pause menu and the reward bundle. Sheets pause the battle
+clock (ADR-005 still applies).
 
