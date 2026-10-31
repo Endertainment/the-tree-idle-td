@@ -1,9 +1,9 @@
 ## ShopScreen — Gems / Coins / Special offer grid (spec 13.10).
 ##
-## The store is not connected in M5b: every price shows "—", every buy button is
-## disabled with "Store unavailable" and the restore link reports the local
-## ownership list. A debug-only footer button exercises the same RewardBundle
-## grant path the M6 billing adapter will call, so the flow is testable offline.
+## Prices, buy buttons and restore are driven by IapService. On desktop (no store)
+## every price falls back to "—" and the button reads "Store unavailable". On
+## Android the Play Billing adapter supplies formatted prices and the purchase
+## sheet; pending/cancelled/already-owned results are all surfaced explicitly.
 extends Control
 
 const TABS: Array[StringName] = [&"gems", &"coins", &"special"]
@@ -23,9 +23,11 @@ const TAB_LABELS: Dictionary = {
 @onready var _restore_button: Button = %RestoreButton
 @onready var _debug_button: Button = %DebugButton
 @onready var _nav: MenuNav = %NavBar
+@onready var _confirm: Modal = %PurchaseConfirm
 
 var _active_tab: StringName = &"gems"
 var _tab_buttons: Dictionary = {}
+var _pending_product: String = ""
 
 
 func _ready() -> void:
@@ -38,8 +40,14 @@ func _ready() -> void:
 	_back_button.pressed.connect(_on_back_pressed)
 	_restore_button.pressed.connect(_on_restore_pressed)
 	_debug_button.pressed.connect(_on_debug_purchase_pressed)
+	_confirm.confirmed.connect(_on_purchase_confirmed)
 	_debug_button.visible = OS.is_debug_build()
 	IapService.purchases_restored.connect(_on_purchases_restored)
+	IapService.purchase_completed.connect(_on_purchase_completed)
+	IapService.purchase_failed.connect(_on_purchase_failed)
+	IapService.purchase_pending.connect(_on_purchase_pending)
+	IapService.store_availability_changed.connect(_on_store_availability_changed)
+	IapService.products_updated.connect(_refresh_offers)
 	EventBus.currency_changed.connect(_on_currency_changed)
 	LocaleService.language_changed.connect(_on_language_changed)
 	_refresh_wallet()
@@ -50,6 +58,16 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if IapService.purchases_restored.is_connected(_on_purchases_restored):
 		IapService.purchases_restored.disconnect(_on_purchases_restored)
+	if IapService.purchase_completed.is_connected(_on_purchase_completed):
+		IapService.purchase_completed.disconnect(_on_purchase_completed)
+	if IapService.purchase_failed.is_connected(_on_purchase_failed):
+		IapService.purchase_failed.disconnect(_on_purchase_failed)
+	if IapService.purchase_pending.is_connected(_on_purchase_pending):
+		IapService.purchase_pending.disconnect(_on_purchase_pending)
+	if IapService.store_availability_changed.is_connected(_on_store_availability_changed):
+		IapService.store_availability_changed.disconnect(_on_store_availability_changed)
+	if IapService.products_updated.is_connected(_refresh_offers):
+		IapService.products_updated.disconnect(_refresh_offers)
 	if EventBus.currency_changed.is_connected(_on_currency_changed):
 		EventBus.currency_changed.disconnect(_on_currency_changed)
 	if LocaleService.language_changed.is_connected(_on_language_changed):
@@ -65,9 +83,13 @@ func _on_language_changed(_code: String) -> void:
 func _localize() -> void:
 	_title_label.text = LocaleService.t("shop.title", "Shop")
 	_back_button.text = LocaleService.t("common.back", "Back")
-	_store_note.text = LocaleService.t(
-		"shop.store_unavailable_note",
-		"In-app purchases arrive with M6. Prices and the buy button stay disabled in this build."
+	_store_note.text = (
+		LocaleService.t("shop.store_connected_note", "Purchases are processed securely by Google Play.")
+		if IapService.is_available()
+		else LocaleService.t(
+			"shop.store_unavailable_note",
+			"The store is not available in this build. Prices and purchases stay disabled."
+		)
 	)
 	_restore_button.text = LocaleService.t("shop.restore", "Restore purchases")
 	_debug_button.text = LocaleService.t("shop.debug_simulate", "Debug: simulate purchase")
@@ -116,12 +138,14 @@ func _refresh_offers() -> void:
 	for child: Node in _offers.get_children():
 		_offers.remove_child(child)
 		child.queue_free()
-	for product: Dictionary in IapCatalog.for_tab(String(_active_tab)):
-		_offers.add_child(_offer_card(product))
+	var available := IapService.is_available()
+	for product: Dictionary in IapService.query_products():
+		if str(product.get("tab", "")) == String(_active_tab):
+			_offers.add_child(_offer_card(product, available))
 	AudioBus.bind_buttons(self)
 
 
-func _offer_card(product: Dictionary) -> PanelContainer:
+func _offer_card(product: Dictionary, store_available: bool) -> PanelContainer:
 	var card := PanelContainer.new()
 	card.name = "Offer_%s" % str(product.get("id", "")).replace(".", "_")
 	card.custom_minimum_size = Vector2(0, 470)
@@ -189,6 +213,12 @@ func _offer_card(product: Dictionary) -> PanelContainer:
 	if owned:
 		buy.text = LocaleService.t("shop.owned", "Owned")
 		buy.theme_type_variation = &"SecondaryButton"
+	elif store_available:
+		var store_price := str(product.get("price", ""))
+		buy.text = store_price if not store_price.is_empty() else LocaleService.t("shop.buy", "Buy")
+		buy.disabled = false
+		buy.theme_type_variation = &"PrimaryButton"
+		buy.pressed.connect(_on_buy_pressed.bind(product_id))
 	else:
 		buy.text = LocaleService.t("shop.store_unavailable", "Store unavailable")
 		buy.theme_type_variation = &"PrimaryButton"
@@ -210,6 +240,68 @@ func _badge(text: String, color: Color) -> PanelContainer:
 func _on_restore_pressed() -> void:
 	AudioBus.play_ui(&"ui_toggle")
 	IapService.restore()
+
+
+func _on_buy_pressed(product_id: String) -> void:
+	var product := IapCatalog.find(product_id)
+	if product.is_empty():
+		return
+	_pending_product = product_id
+	var price := str(IapService.query_products().filter(
+		func(entry: Dictionary) -> bool: return str(entry.get("id", "")) == product_id
+	)[0].get("price", ""))
+	_confirm.open(
+		LocaleService.t(str(product.get("title_key", "")), product_id),
+		"%s\n%s" % [
+			LocaleService.t(str(product.get("contents_key", "")), ""),
+			price if not price.is_empty() else LocaleService.t("shop.price_unavailable", "—"),
+		],
+		LocaleService.t("shop.confirm_purchase", "Buy"),
+		LocaleService.t("common.cancel", "Cancel")
+	)
+
+
+func _on_purchase_confirmed() -> void:
+	if _pending_product.is_empty():
+		return
+	AudioBus.play_ui(&"ui_toggle")
+	IapService.purchase(StringName(_pending_product))
+
+
+func _on_purchase_pending(product_id: StringName) -> void:
+	_pending_product = ""
+	ToastService.show_toast(
+		LocaleService.t("shop.purchase_pending", "Payment is pending. The item will unlock when the store confirms it.")
+	)
+	_refresh_offers()
+
+
+func _on_purchase_completed(product_id: StringName, _receipt: Dictionary) -> void:
+	_pending_product = ""
+	AudioBus.play_ui(&"ui_purchase")
+	var product := IapCatalog.find(String(product_id))
+	ToastService.show_toast(
+		LocaleService.t("shop.purchase_success", "Purchase complete: %s") % LocaleService.t(
+			str(product.get("title_key", "")), String(product_id)
+		)
+	)
+	AnalyticsService.track(&"purchase", {"product_id": String(product_id)})
+	_refresh_wallet()
+	_refresh_offers()
+
+
+func _on_purchase_failed(product_id: StringName, reason: StringName) -> void:
+	_pending_product = ""
+	AudioBus.play_ui(&"ui_error")
+	var key := BillingReasons.locale_key(reason)
+	var fallback := LocaleService.t("shop.purchase_failed", "Purchase could not be completed. Try again later.")
+	ToastService.show_toast(LocaleService.t(key, fallback))
+	_refresh_offers()
+
+
+func _on_store_availability_changed(_available: bool) -> void:
+	_localize()
+	_refresh_offers()
 
 
 func _on_purchases_restored(products: PackedStringArray) -> void:

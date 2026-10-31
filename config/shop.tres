@@ -1,0 +1,97 @@
+[gd_resource type="Resource" script_class="ShopCatalog" format=3]
+
+[ext_resource type="Script" path="res://scripts/platform/shop_catalog.gd" id="1_jwhcl"]
+
+[resource]
+script = ExtResource("1_jwhcl")
+products = Array[Dictionary]([{
+"best_value": false,
+"bonus_percent": 0,
+"bundle": {
+"gems": 100
+},
+"consumable": true,
+"contents_key": "shop.contents.gems_100",
+"icon": "res://assets/art/ui/icons/icon_gem.png",
+"id": "thetree.gems_100",
+"price": "",
+"tab": "gems",
+"title_key": "shop.product.gems_100"
+}, {
+"best_value": false,
+"bonus_percent": 10,
+"bundle": {
+"gems": 550
+},
+"consumable": true,
+"contents_key": "shop.contents.gems_550",
+"icon": "res://assets/art/ui/icons/icon_gem.png",
+"id": "thetree.gems_550",
+"price": "",
+"tab": "gems",
+"title_key": "shop.product.gems_550"
+}, {
+"best_value": true,
+"bonus_percent": 20,
+"bundle": {
+"gems": 1200
+},
+"consumable": true,
+"contents_key": "shop.contents.gems_1200",
+"icon": "res://assets/art/ui/icons/icon_gem.png",
+"id": "thetree.gems_1200",
+"price": "",
+"tab": "gems",
+"title_key": "shop.product.gems_1200"
+}, {
+"best_value": false,
+"bonus_percent": 0,
+"bundle": {
+"coins": 5000
+},
+"consumable": true,
+"contents_key": "shop.contents.coins_5000",
+"icon": "res://assets/art/ui/icons/icon_coin.png",
+"id": "thetree.coins_5000",
+"price": "",
+"tab": "coins",
+"title_key": "shop.product.coins_5000"
+}, {
+"best_value": true,
+"bonus_percent": 0,
+"bundle": {
+"coins": 2500,
+"gems": 300
+},
+"card_rarity": "epic",
+"consumable": false,
+"contents_key": "shop.contents.starter_pack",
+"icon": "res://assets/art/meta/shop/icon_starter_pack.png",
+"id": "thetree.starter_pack",
+"price": "",
+"tab": "special",
+"title_key": "shop.product.starter_pack"
+}, {
+"best_value": false,
+"bonus_percent": 0,
+"bundle": {},
+"consumable": false,
+"contents_key": "shop.contents.no_ads",
+"icon": "res://assets/art/meta/shop/icon_no_ads.png",
+"id": "thetree.no_ads",
+"price": "",
+"tab": "special",
+"title_key": "shop.product.no_ads"
+}, {
+"best_value": false,
+"bonus_percent": 0,
+"bundle": {},
+"consumable": false,
+"contents_key": "shop.contents.speed_pack",
+"icon": "res://assets/art/ui/icons/icon_speed.png",
+"id": "thetree.speed_pack",
+"price": "",
+"tab": "special",
+"title_key": "shop.product.speed_pack",
+"unlock": "speed_pack"
+}])

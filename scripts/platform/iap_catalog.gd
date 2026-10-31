@@ -11,6 +11,7 @@ const TAB_COINS := "coins"
 const TAB_SPECIAL := "special"
 
 ## Every launch product. `bundle` is a RewardBundle-compatible dictionary.
+## Kept as the built-in fallback for res://config/shop.tres (spec 7.3).
 const PRODUCTS: Array[Dictionary] = [
 	{
 		"id": "thetree.gems_100",
@@ -101,15 +102,25 @@ const PRODUCTS: Array[Dictionary] = [
 ]
 
 
+## Returns a deep copy of the built-in catalogue (never touches config resources).
+static func builtin_products() -> Array[Dictionary]:
+	return PRODUCTS.duplicate(true)
+
+
+## Catalogue actually used at runtime: res://config/shop.tres when present.
+static func products() -> Array[Dictionary]:
+	return ShopCatalog.load_products()
+
+
 ## Returns a deep copy of every product (callers may annotate ownership).
 static func all() -> Array[Dictionary]:
-	return PRODUCTS.duplicate(true)
+	return products()
 
 
 ## Products belonging to one shop tab, in catalogue order.
 static func for_tab(tab: String) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
-	for product: Dictionary in PRODUCTS:
+	for product: Dictionary in products():
 		if str(product.get("tab", "")) == tab:
 			result.append(product.duplicate(true))
 	return result
@@ -117,7 +128,7 @@ static func for_tab(tab: String) -> Array[Dictionary]:
 
 ## Looks a product up by store id; returns an empty dictionary when unknown.
 static func find(product_id: String) -> Dictionary:
-	for product: Dictionary in PRODUCTS:
+	for product: Dictionary in products():
 		if str(product.get("id", "")) == product_id:
 			return product.duplicate(true)
 	return {}
