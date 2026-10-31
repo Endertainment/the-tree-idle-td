@@ -594,3 +594,80 @@ combat numbers do not grow.
 **Consequences:** overlays have no history entry; closing returns to the exact
 frozen battle. Theme scaling is reversible and does not mutate the committed
 `.tres`. A future overlay stack would need a small array instead of one slot.
+
+## ADR-030 — Monetization stubs behind the spec §7.1 interfaces (M5b)
+
+**Status:** accepted (M5b)
+
+**Context:** M5b needs the shop and Speed Trial UI before M6 can add the AdMob
+and Google Play Billing plugins. Shipping a half-wired store would either fake
+purchases or leave broken buttons.
+
+**Decision:** `AdsService` and `IapService` are autoload stubs with the exact
+signals and methods from §7.1. `IapService.is_available()` is false, `query_products()`
+returns the seven-product `IapCatalog`, and `purchase()` always emits
+`purchase_failed(store_unavailable)`. The shop therefore shows `—` prices and
+disabled "Store unavailable" buttons. `AdsService.show_rewarded()` logs the
+placement, emits `rewarded_failed(stub_not_implemented)` and returns false; the
+Speed Trial shows the localized "Ads arrive with M6" toast. A debug-only
+`IapService.debug_simulate_purchase()` runs the real local path (RewardBundle ->
+WalletService -> ownership -> `purchase_completed`) so the UI can be exercised.
+
+**Consequences:** no release build can grant a purchase or reward for free; the
+M6 adapters replace the stub bodies without touching screens. The debug purchase
+button is compiled into debug builds only and must be removed/hidden when the
+real store ships.
+
+## ADR-031 — Leaderboard UI against LocalBackendStub behind one service seam (M5b)
+
+**Status:** accepted (M5b)
+
+**Context:** spec §6.7 requires weekly/all-time/tournament screens that work
+offline until the M7 backend exists, and M7 must swap the implementation without
+rewriting UI.
+
+**Decision:** `LeaderboardService` (autoload) owns caching, the offline flag,
+last-updated timestamps, own-rank insertion and reward tiers.
+`LocalBackendStub` generates 50 deterministic names/waves around the player's
+best and implements the §6.7 sort (wave desc, earlier submission, lower play
+time). Screens never import the stub; the single M7 swap point is the marked
+`_load()` call. The stub reports `is_offline() == true` so the banner is always
+visible in M5b.
+
+**Consequences:** the screen behaviour is fully testable headless and
+deterministic for screenshots. M7 must preserve the response fields
+(`id/nickname/avatar_id/best_wave/playtime/submitted_at`) and the sort contract.
+
+## ADR-032 — One global toast channel with a pure FIFO queue (M5b)
+
+**Status:** accepted (M5b)
+
+**Context:** each screen had its own toast tween and node, so two services
+firing together could overlap or replace each other; screens also duplicated
+fade timing. Spec §4.12 asks for consistent feedback.
+
+**Decision:** `ToastService` (autoload, CanvasLayer 110) owns one panel, one
+tween and a pure `ToastQueue` FIFO. A new message waits until the visible one
+finishes; consecutive duplicates are dropped. Screens call
+`ToastService.show_toast(localized_text)` and keep their scene-local toast nodes
+dormant for compatibility with existing scenes.
+
+**Consequences:** message order is predictable and unit-tested; toasts survive
+scene changes. Screens no longer control duration. A future modal-specific
+message channel would need a separate queue.
+
+## ADR-033 — Capture helper boots services before staging previews (M5b)
+
+**Status:** accepted (M5b)
+
+**Context:** `App` defers `init_services()`. Capture previously applied the
+requested language and called `stage_preview()` before that deferred boot; the
+boot then switched back to the saved language and refreshed live stats, so UK
+and pseudo screenshots silently showed stale English defaults.
+
+**Decision:** `tools/capture_scene.gd` calls `App.init_services()` (idempotent)
+before applying the capture locale, pseudo flag and text scale, and calls the
+scene's `stage_preview()` only after the scene has been in the tree for 0.2 s.
+
+**Consequences:** captures reflect the requested locale and staged state. The
+helper remains tooling-only and never writes settings back to `user://`.

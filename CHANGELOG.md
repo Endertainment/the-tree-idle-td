@@ -3,11 +3,11 @@
 All notable changes are recorded per milestone. The project follows semantic
 versioning for tags; unreleased work stays under `[Unreleased]`.
 
-## [Unreleased] — M5a (localization, audio, settings, onboarding, navigation)
+## [0.6.0-m5] — 2026-10-31 — M5 shell, UX, localization, audio
 
 ### Added
 
-- **Localization**: `localization/strings.csv` with **530 keys** in English and
+- **Localization**: `localization/strings.csv` with **607 keys** in English and
   Ukrainian (Godot CSV import, both catalogues registered in Project Settings).
   Every `.tscn` label now stores a translation key; code strings go through
   `LocaleService.t()`. Data resources (`tower`, `unit`, `enemy`, `workshop`,
@@ -44,12 +44,54 @@ versioning for tags; unreleased work stays under `[Unreleased]`.
   number/duration/countdown formatting, pseudo-locale, settings persistence,
   nickname validation + UUID v4 and audio dB mapping.
 
+### Added (M5b — menu, shop, leaderboard, profile, polish)
+
+- **Reference main menu** (`scenes/menu/main_menu.tscn`): coin/gem pills with
+  shop shortcuts, gear, centered logotype, clickable stats card (best wave,
+  avatar frame, nickname, level + XP bar), Battle CTA, Speed Trial rewarded-ad
+  offer, daily missions `n/3` card, Magica entry and the five-tab nav with
+  notification dots. A ScrollContainer keeps it usable at 130 % text and pseudo
+  locale.
+- **Shop** (`scenes/menu/shop.tscn`): `Gems` / `Coins` / `Special` tabs,
+  2-column offer cards, the 7 spec §7.3 products with bonus/best-value badges,
+  `—` prices, disabled "Store unavailable" buy buttons, restore link and the
+  `No Ads` / `Starter Pack` offers. `IapCatalog` + `IapService` stub; a
+  debug-only simulate purchase grants through `RewardBundle`.
+- **Leaderboard** (`scenes/menu/leaderboard.tscn`): weekly / all-time /
+  tournament tabs, 50 deterministic `LocalBackendStub` entries, top-3 medals,
+  own rank pinned at the bottom, refresh with loading state, offline banner with
+  last-updated, empty state, cohort header and percentile reward tiers. All via
+  `LeaderboardService` (single M7 swap point).
+- **Profile** (`scenes/menu/profile.tscn`): avatar frame, read-only nickname +
+  Settings hint, player ID with copy, level + XP bar, lifetime stats and
+  Leaderboard/Settings actions. Linked from the menu stats card and Settings.
+- **Polish**: global `ToastService` FIFO queue, notification dots in `MenuNav`,
+  card rarity frame skins, coin-fly animation on mission claims, shop and
+  leaderboard SFX hooks, leaderboard/empty/loading states, modal scrim dismiss.
+- **Tests +4 (51 total)**: shop catalog integrity, leaderboard sort/own-rank,
+  profile stats aggregation, toast queue.
+- **Screenshots**: `docs/preview/m5b_menu_en.png`, `m5b_menu_uk.png`,
+  `m5b_menu_pseudo.png`, `m5b_shop.png`, `m5b_leaderboard.png`,
+  `m5b_profile.png`.
+
 ### Changed
 
 - Main menu gear now opens Settings instead of a "coming soon" toast.
 - Battle pause "Settings" now opens the real settings overlay.
 - `SettingsService` persists `damage_numbers`, `show_fps` and `pseudo_locale`.
 - Locale-aware formatting replaces per-screen number/duration strings.
+- Shop tab now opens the real shop screen on every meta screen; the "coming
+  soon" toast path is gone.
+- All screen toasts route through one global queue instead of per-screen tweens.
+- `GameState.stats.coins_earned` is tracked by `WalletService` for the profile
+  stat (old saves fall back to the current coin balance).
+
+### Fixed
+
+- `tools/smoke_test.gd` no longer leaks the battle music stream: it stops music
+  and frees scene instances before quitting, so the run has no ERROR lines.
+- `tools/capture_scene.gd` boots services before applying the capture locale, so
+  UK/pseudo screenshots are real and staged previews are no longer overwritten.
 
 ## [0.5.0-m4] — 2026-10-31
 

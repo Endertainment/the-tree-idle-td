@@ -2,13 +2,13 @@
 
 Single source of truth for "where are we". Updated at the end of every session.
 
-**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M5a done → M5b next
+**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M5 done → M6 next
 **Branch:** `main` · **Godot:** `C:\Tools\godot-4.7.2\Godot_v4.7.2-stable_win64.exe` (4.7.2)
-**Verification (M5a, green):** check_project exit 0 · tests **47/47** ·
-smoke **22/22 scenes** · battle_smoke PASS · m4b_acceptance PASS ·
-lint_locale 530 keys, 0 missing, 0 unused · previews `m5_settings_uk.png`,
-`m5_settings_pseudo.png`, `m5_onboarding.png`, `m5_onboarding_profile.png`,
-`m5_battle_uk.png`, `m5_battle_pseudo.png`
+**Verification (M5b, green):** check_project exit 0 · tests **51/51** ·
+smoke **25/25 scenes** (exit 0, no ERROR lines) · battle_smoke PASS ·
+lint_locale **607 keys, 0 missing, 0 unused** · previews `m5b_menu_en.png`,
+`m5b_menu_uk.png`, `m5b_menu_pseudo.png`, `m5b_shop.png`,
+`m5b_leaderboard.png`, `m5b_profile.png`
 **Toolchain gaps (M6):** Android SDK/adb; LDPlayer `E:\LDPlayer\LDPlayer14`; SDK `C:\Android\Sdk`
 
 ## Milestones
@@ -20,7 +20,7 @@ lint_locale 530 keys, 0 missing, 0 unused · previews `m5_settings_uk.png`,
 | M2 | Combat depth | done | `v0.3.0-m2` |
 | M3 | Run economy, upgrades, speed | done (M3.1 balance pass) | `v0.4.1-m3` |
 | M4 | Meta progression and persistence | done | `v0.5.0-m4` |
-| M5 | Shell, UX, localization, audio | **M5a done, M5b next** | `v0.6.0-m5` (M5b) |
+| M5 | Shell, UX, localization, audio | done | `v0.6.0-m5` |
 | M6 | Android, ads, billing, telemetry | not started | `v0.7.0-m6` |
 | M7 | Backend (FastAPI + Neon), live features | not started | `v0.8.0-m7` |
 | M8 | Balance, polish, release readiness | not started | `v1.0.0-m8` |
@@ -64,6 +64,43 @@ lint_locale 530 keys, 0 missing, 0 unused · previews `m5_settings_uk.png`,
   number/duration/countdown formatting, pseudo-locale, settings persistence,
   nickname validation + UUID v4, audio dB mapping.
 
+## M5b delivered (completes M5, tagged `v0.6.0-m5`)
+
+- **Main menu** rebuilt to `docs/reference/ui_main_menu.png`: coin/gem pills with
+  `+` shortcuts (route to the shop tab), gear, centered logotype, clickable stats
+  card (best wave, avatar frame, nickname, player level + XP bar), Battle CTA,
+  Speed Trial rewarded offer (M6 toast, no fake grant), daily missions `n/3` card
+  with View, compact Magica entry, and the five-tab nav with active state +
+  notification dots (missions claimable, cards upgradable, Magica claim on Home).
+  A ScrollContainer keeps the layout alive at 130 % text and +60 % pseudo text.
+- **Shop** `scenes/menu/shop.tscn`: `Gems` / `Coins` / `Special` tabs, 2-column
+  offer cards, 7 products from spec §7.3 (`IapCatalog`), bonus/best-value badges,
+  price `—` and disabled `Store unavailable` buy buttons until M6, restore link,
+  `No Ads` + `Starter Pack`, and a debug-only simulate-purchase button that runs
+  the RewardBundle grant path through `IapService`.
+- **Leaderboard** `scenes/menu/leaderboard.tscn`: Weekly / All-time / Tournament,
+  50 deterministic fake entries from `LocalBackendStub` around the player's best,
+  top-3 medals, own rank pinned at the bottom, refresh with loading state,
+  offline banner + last-updated time, empty state, and a tournament cohort with
+  percentile reward tiers. All access goes through `LeaderboardService`, whose
+  `_load()` is the single M7 swap point.
+- **Profile** `scenes/menu/profile.tscn`: avatar frame, read-only nickname +
+  "change in Settings" hint, player ID with copy, level + XP bar, lifetime stats
+  (best wave, runs, kills, playtime, coins earned) and Leaderboard / Settings
+  actions. Linked from the menu stats card and Settings → Account.
+- **Polish**: one global `ToastService` FIFO (no overlapping toasts), refreshed
+  modal scrim dismiss, leaderboard loading/empty states, notification dots,
+  card rarity frame skins, tweened coin-fly on mission claims, shop/leaderboard
+  UI SFX, and a clean smoke-test exit (no leaked audio stream / ERROR lines).
+- Navigation: every bottom tab now opens its real screen; no "coming soon" path
+  remains. Shop is a real tab, not a toast.
+- Tests: **+4 (51 total)** — shop catalogue integrity (7 products, tabs, bundles,
+  en/uk keys), leaderboard deterministic order + own-rank insertion + tiers,
+  profile stats aggregation/legacy fallback, and the toast FIFO.
+- Previews: `docs/preview/m5b_menu_en.png`, `m5b_menu_uk.png`,
+  `m5b_menu_pseudo.png`, `m5b_shop.png`, `m5b_leaderboard.png`,
+  `m5b_profile.png`.
+
 ## Earlier milestones (summary)
 
 - **M4**: save v2 (checksum/atomic/.bak/migration), WalletService, Level/Unlock,
@@ -83,16 +120,25 @@ lint_locale 530 keys, 0 missing, 0 unused · previews `m5_settings_uk.png`,
 - Text scale is a duplicated runtime theme; battle HUD `theme_override_font_sizes`
   stay authored (HUD numbers must not grow).
 - `battle_controller.gd`/`battle_hud.gd` still exceed the 400-line guideline.
-- 532 draw calls > M2 target 120 (placeholder art, atlas pass M5b/M8).
+- 532 draw calls > M2 target 120 (placeholder art; atlas pass moved to M8).
+- **Monetization is stubbed (M6):** `IapService.is_available()` is false and all
+  buy buttons show "Store unavailable"; `AdsService.show_rewarded()` reports
+  `stub_not_implemented` and the Speed Trial shows the M6 toast. The shop's
+  debug-only simulate button grants through `RewardBundle` on debug builds only.
+- **Leaderboard is local (M5b/M7):** `LeaderboardService` always serves the
+  deterministic `LocalBackendStub` cohort and reports `is_offline() == true`.
+  M7 replaces one `_load()` call with the HTTP client; the UI is unchanged.
+- Capture helper now finishes `App.init_services()` before applying the capture
+  language/pseudo-locale and only stages the preview afterwards (ADR-033).
 
-## Next tasks — M5b (owns tag `v0.6.0-m5`)
+## Next tasks — M6 (Android, ads, billing, telemetry)
 
-1. **Main menu per reference** (`docs/reference/ui_main_menu.png`): top bar with
-   `+` buttons, stats card (best wave/level/XP/avatar), speed-trial bar, daily
-   card, 5-tab nav; keep the Magica entry and the gear → Settings.
-2. **Shop UI** with stub products (`Gems`, `Coins`, `Special`, restore, disabled
-   "Store unavailable"), **Leaderboard** against `LocalBackendStub` (weekly /
-   all-time / tournament, offline banner, empty state), **Profile** screen.
-3. **Toasts/modals/loading/empty states/notification dots** polish; card rarity
-   frames; audio for shop/leaderboard stubs.
-4. Tag `v0.6.0-m5` after all M5 acceptance checks, update CHANGELOG/PROGRESS.
+1. **Android toolchain + export**: install/verify SDK/adb, create the export
+   preset, build the first APK/AAB on LDPlayer, and wire the CI check
+   (`Android SDK/adb; LDPlayer E:\LDPlayer\LDPlayer14; SDK C:\Android\Sdk`).
+2. **AdsService adapter**: AdMob plugin pinned in `docs/DECISIONS.md`, rewarded
+   placements from §7.2 with caps, the debug ad overlay/countdown, consent flag,
+   and replace the Speed Trial stub with the real `speed_unlock_24h` flow.
+3. **IapService adapter**: Google Play Billing query/purchase/restore with
+   receipt validation hook, enable the shop buttons/prices, and handle pending,
+   cancelled, owned and network-error states end to end.
