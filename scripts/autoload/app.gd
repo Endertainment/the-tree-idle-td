@@ -43,6 +43,10 @@ func init_services() -> void:
 	LevelService.init_service()
 	UnlockService.init_service()
 	WorkshopService.init_service(_section(save_data, "workshop"))
+	MagicaService.init_service(_section(save_data, "magica"))
+	CardService.init_service(_section(save_data, "cards"))
+	MissionService.init_service(_section(save_data, "missions"))
+	OfflineService.init_service(save_data)
 	SaveService.set_save_provider(Callable(GameState, "build_save_document"))
 	if SaveService.migrated_from_version > 0 and SaveService.migrated_from_version < SaveService.SCHEMA_VERSION:
 		# Persist the migrated v2 document on the next frame, so the one-time

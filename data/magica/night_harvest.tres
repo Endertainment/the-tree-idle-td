@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="MagicaNode" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="1_4brrh"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_clock.png" id="2_mpynk"]
+[ext_resource type="Script" path="res://scripts/data/magica_node.gd" id="3_wi5sa"]
+
+[sub_resource type="Resource" id="Resource_ismr6"]
+script = ExtResource("1_4brrh")
+stat = &"offline_coin_rate"
+multiplier = 1.0
+
+[resource]
+script = ExtResource("3_wi5sa")
+id = &"night_harvest"
+branch = &"wealth"
+order = 3
+name_key = "magica.night_harvest"
+name = "Night Harvest"
+description_key = "magica.night_harvest_desc"
+description = "The forest works while you sleep."
+icon = ExtResource("2_mpynk")
+requires = Array[StringName]([&"golden_sap_1"])
+duration_seconds = 21600
+coin_cost = 2000
+gem_cost = 20
+effects = Array[ExtResource("1_4brrh")]([SubResource("Resource_ismr6")])
+effect_text = "+100 % offline income"

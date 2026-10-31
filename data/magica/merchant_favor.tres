@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="MagicaNode" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="1_eqa5c"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_coin.png" id="2_klhke"]
+[ext_resource type="Script" path="res://scripts/data/magica_node.gd" id="3_tiq35"]
+
+[sub_resource type="Resource" id="Resource_ampiq"]
+script = ExtResource("1_eqa5c")
+stat = &"in_run_discount"
+add = 0.05
+
+[sub_resource type="Resource" id="Resource_yafqy"]
+script = ExtResource("1_eqa5c")
+stat = &"shop_discount"
+add = 0.05
+
+[resource]
+script = ExtResource("3_tiq35")
+id = &"merchant_favor"
+branch = &"wealth"
+order = 4
+name_key = "magica.merchant_favor"
+name = "Merchant's Favor"
+description_key = "magica.merchant_favor_desc"
+description = "Old debts become old discounts."
+icon = ExtResource("2_klhke")
+requires = Array[StringName]([&"golden_sap_1"])
+duration_seconds = 7200
+coin_cost = 800
+effects = Array[ExtResource("1_eqa5c")]([SubResource("Resource_ampiq"), SubResource("Resource_yafqy")])
+effect_text = "Shop prices -5 %, in-run upgrades -5 %"

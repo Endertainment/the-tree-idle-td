@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/meta/cards/card_art_placeholder.png" id="1_56au3"]
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="2_wg0qb"]
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="3_t1nh7"]
+
+[sub_resource type="Resource" id="Resource_s087h"]
+script = ExtResource("2_wg0qb")
+stat = &"tower_damage"
+multiplier = 0.12
+
+[sub_resource type="Resource" id="Resource_hxwe4"]
+script = ExtResource("2_wg0qb")
+stat = &"tower_range"
+multiplier = 0.08
+
+[resource]
+script = ExtResource("3_t1nh7")
+id = &"overgrowth"
+name_key = "card.overgrowth"
+name = "Overgrowth"
+rarity = &"rare"
+description_key = "card.overgrowth_desc"
+description = "Towers grow into the canopy."
+art = ExtResource("1_56au3")
+effects = Array[ExtResource("2_wg0qb")]([SubResource("Resource_s087h"), SubResource("Resource_hxwe4")])
+where_to_get = "Rare card packs and weekly bonuses"

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/meta/cards/card_art_placeholder.png" id="1_1oawp"]
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="2_fxxpm"]
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="3_uutr6"]
+
+[sub_resource type="Resource" id="Resource_g7v76"]
+script = ExtResource("2_fxxpm")
+stat = &"crit_chance"
+add = 0.08
+
+[resource]
+script = ExtResource("3_uutr6")
+id = &"sharpened_tips"
+name_key = "card.sharpened_tips"
+name = "Sharpened Tips"
+rarity = &"rare"
+description_key = "card.sharpened_tips_desc"
+description = "Every branch ends in a point."
+art = ExtResource("1_1oawp")
+effects = Array[ExtResource("2_fxxpm")]([SubResource("Resource_g7v76")])
+where_to_get = "Rare card packs and weekly bonuses"

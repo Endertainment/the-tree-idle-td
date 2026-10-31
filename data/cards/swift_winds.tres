@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/meta/cards/card_art_placeholder.png" id="1_ug60v"]
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="2_j2a6d"]
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="3_g1lbk"]
+
+[sub_resource type="Resource" id="Resource_4l4bv"]
+script = ExtResource("2_j2a6d")
+stat = &"attack_speed"
+multiplier = 0.15
+
+[resource]
+script = ExtResource("3_g1lbk")
+id = &"swift_winds"
+name_key = "card.swift_winds"
+name = "Swift Winds"
+rarity = &"epic"
+description_key = "card.swift_winds_desc"
+description = "The canopy never stops moving."
+art = ExtResource("1_ug60v")
+effects = Array[ExtResource("2_j2a6d")]([SubResource("Resource_4l4bv")])
+where_to_get = "Epic card packs and the weekly bonus"

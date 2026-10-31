@@ -202,6 +202,8 @@ static func migrate_v1_to_v2(v1: Dictionary) -> Dictionary:
 		"provider_uid": str(old_player.get("provider_uid", "")),
 		# Local extra: TapGuard's first-three-skips counter survives a reload.
 		"next_wave_uses": maxi(int(old_player.get("next_wave_uses", 0)), 0),
+		# Local extra (M4b): offline-income delta anchor, UTC unix seconds.
+		"last_seen_at": maxi(int(old_player.get("last_seen_at", 0)), 0),
 	}
 	var stats := {
 		"best_wave": best_wave,
@@ -222,13 +224,16 @@ static func migrate_v1_to_v2(v1: Dictionary) -> Dictionary:
 	}
 	var magica: Dictionary = _as_dictionary(v1.get("magica", {}))
 	if magica.is_empty():
-		magica = {"research": {}, "completed": []}
+		magica = {"research": {}, "completed": [], "pending_claim": ""}
 	var cards: Dictionary = _as_dictionary(v1.get("cards", {}))
 	if cards.is_empty():
 		cards = {"owned": [], "equipped": [null, null, null, null]}
 	var missions: Dictionary = _as_dictionary(v1.get("missions", {}))
 	if missions.is_empty():
-		missions = {"day_id": "", "daily": [], "week_id": "", "weekly": []}
+		missions = {
+			"day_id": "", "daily": [], "week_id": "", "weekly": [],
+			"daily_bonus_claimed": false, "weekly_bonus_claimed": false,
+		}
 	var shop: Dictionary = _as_dictionary(v1.get("shop", {}))
 	if shop.is_empty():
 		shop = {"owned_products": [], "last_daily_claim": 0}

@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MagicaNode" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="1_5ie74"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_clock.png" id="2_ldskk"]
+[ext_resource type="Script" path="res://scripts/data/magica_node.gd" id="3_je7it"]
+
+[sub_resource type="Resource" id="Resource_wc4uf"]
+script = ExtResource("1_5ie74")
+stat = &"magica_speed"
+multiplier = 0.1
+
+[resource]
+script = ExtResource("3_je7it")
+id = &"quickened_roots_3"
+order = 2
+name_key = "magica.quickened_roots_3"
+name = "Quickened Roots III"
+description_key = "magica.quickened_roots_3_desc"
+description = "Time bends around the canopy."
+icon = ExtResource("2_ldskk")
+requires = Array[StringName]([&"quickened_roots_2"])
+duration_seconds = 28800
+coin_cost = 3000
+effects = Array[ExtResource("1_5ie74")]([SubResource("Resource_wc4uf")])
+effect_text = "+10 % research speed"

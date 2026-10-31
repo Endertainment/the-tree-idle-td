@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/meta/cards/card_art_placeholder.png" id="1_sqvhj"]
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="2_4821x"]
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="3_ktuw7"]
+
+[sub_resource type="Resource" id="Resource_w4fjc"]
+script = ExtResource("2_4821x")
+stat = &"armor"
+add = 3.0
+
+[sub_resource type="Resource" id="Resource_feoc1"]
+script = ExtResource("2_4821x")
+stat = &"leak_damage_reduction"
+add = 0.2
+
+[resource]
+script = ExtResource("3_ktuw7")
+id = &"bark_shield"
+name_key = "card.bark_shield"
+name = "Bark Shield"
+rarity = &"rare"
+description_key = "card.bark_shield_desc"
+description = "A second skin of ironwood."
+art = ExtResource("1_sqvhj")
+effects = Array[ExtResource("2_4821x")]([SubResource("Resource_w4fjc"), SubResource("Resource_feoc1")])
+where_to_get = "Rare card packs and weekly bonuses"

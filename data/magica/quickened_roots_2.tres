@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MagicaNode" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="1_13gbl"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_clock.png" id="2_j6tdv"]
+[ext_resource type="Script" path="res://scripts/data/magica_node.gd" id="3_h5t3t"]
+
+[sub_resource type="Resource" id="Resource_ivt1k"]
+script = ExtResource("1_13gbl")
+stat = &"magica_speed"
+multiplier = 0.1
+
+[resource]
+script = ExtResource("3_h5t3t")
+id = &"quickened_roots_2"
+order = 1
+name_key = "magica.quickened_roots_2"
+name = "Quickened Roots II"
+description_key = "magica.quickened_roots_2_desc"
+description = "Older roots remember older seasons."
+icon = ExtResource("2_j6tdv")
+requires = Array[StringName]([&"quickened_roots_1"])
+duration_seconds = 7200
+coin_cost = 900
+effects = Array[ExtResource("1_13gbl")]([SubResource("Resource_ivt1k")])
+effect_text = "+10 % research speed"

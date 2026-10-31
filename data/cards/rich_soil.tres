@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/meta/cards/card_art_placeholder.png" id="1_1plje"]
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="2_ufi3u"]
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="3_8q6qu"]
+
+[sub_resource type="Resource" id="Resource_hg84p"]
+script = ExtResource("2_ufi3u")
+stat = &"coin_gain"
+multiplier = 0.1
+
+[resource]
+script = ExtResource("3_8q6qu")
+id = &"rich_soil"
+name_key = "card.rich_soil"
+name = "Rich Soil"
+description_key = "card.rich_soil_desc"
+description = "Everything grows a little more valuable."
+art = ExtResource("1_1plje")
+effects = Array[ExtResource("2_ufi3u")]([SubResource("Resource_hg84p")])
+where_to_get = "Wave clears and card packs"

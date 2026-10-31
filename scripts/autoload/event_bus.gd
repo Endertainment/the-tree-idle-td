@@ -29,6 +29,21 @@ signal damage_dealt(source_id: StringName, target_id: int, amount: float, is_cri
 ## Emitted when the in-run cash balance changes. Not a meta wallet currency.
 signal run_cash_changed(amount: int)
 
+## Emitted once per enemy death (mission progress; `is_boss` for future quests).
+signal enemy_killed(enemy_id: StringName, is_boss: bool)
+
+## Emitted when an enemy reaches the Tree (mission progress).
+signal enemy_leaked(enemy_id: StringName)
+
+## Emitted after a tower is built. `run_count` is the number built in this run.
+signal tower_built(tower_id: StringName, run_count: int)
+
+## Emitted when a card drop was granted (battle banner / collection badge).
+signal card_dropped(card_id: StringName)
+
+## Emitted when the Magica "Second Wind" node saves the Tree from a lethal hit.
+signal second_wind_used()
+
 ## Emitted after a successful permanent-currency spend (workshop, research...).
 signal meta_purchased(kind: StringName, amount: int, reason: StringName)
 

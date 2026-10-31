@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/meta/cards/card_art_placeholder.png" id="1_dbfo8"]
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="2_gcj3u"]
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="3_r5hea"]
+
+[sub_resource type="Resource" id="Resource_wd56a"]
+script = ExtResource("2_gcj3u")
+stat = &"crit_damage"
+multiplier = 0.3
+
+[resource]
+script = ExtResource("3_r5hea")
+id = &"heavy_bolts"
+name_key = "card.heavy_bolts"
+name = "Heavy Bolts"
+rarity = &"rare"
+description_key = "card.heavy_bolts_desc"
+description = "Slow to load, terrible to meet."
+art = ExtResource("1_dbfo8")
+effects = Array[ExtResource("2_gcj3u")]([SubResource("Resource_wd56a")])
+where_to_get = "Rare card packs and weekly bonuses"

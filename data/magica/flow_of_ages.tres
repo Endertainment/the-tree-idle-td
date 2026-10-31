@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MagicaNode" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="1_bfo7c"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_clock.png" id="2_h1psl"]
+[ext_resource type="Script" path="res://scripts/data/magica_node.gd" id="3_o5lt8"]
+
+[sub_resource type="Resource" id="Resource_7ps82"]
+script = ExtResource("1_bfo7c")
+stat = &"battle_speed_extra"
+add = 0.25
+
+[resource]
+script = ExtResource("3_o5lt8")
+id = &"flow_of_ages"
+order = 3
+name_key = "magica.flow_of_ages"
+name = "Flow of Ages"
+description_key = "magica.flow_of_ages_desc"
+description = "A fourth pace for the battle clock."
+icon = ExtResource("2_h1psl")
+requires = Array[StringName]([&"quickened_roots_1"])
+duration_seconds = 14400
+coin_cost = 1200
+effects = Array[ExtResource("1_bfo7c")]([SubResource("Resource_7ps82")])
+effect_text = "Battle speed option +0.25x"

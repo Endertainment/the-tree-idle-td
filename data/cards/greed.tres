@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/meta/cards/card_art_placeholder.png" id="1_ocseo"]
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="2_3ax60"]
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="3_bxkxk"]
+
+[sub_resource type="Resource" id="Resource_e73qs"]
+script = ExtResource("2_3ax60")
+stat = &"enemies_per_wave"
+multiplier = 0.25
+
+[sub_resource type="Resource" id="Resource_tq486"]
+script = ExtResource("2_3ax60")
+stat = &"cash_gain"
+multiplier = 0.2
+
+[resource]
+script = ExtResource("3_bxkxk")
+id = &"greed"
+name_key = "card.greed"
+name = "Greed"
+description_key = "card.greed_desc"
+description = "More enemies, more pockets to empty."
+art = ExtResource("1_ocseo")
+effects = Array[ExtResource("2_3ax60")]([SubResource("Resource_e73qs"), SubResource("Resource_tq486")])
+where_to_get = "Wave clears and card packs"

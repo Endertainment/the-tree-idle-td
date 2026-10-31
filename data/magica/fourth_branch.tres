@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MagicaNode" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="1_x7nm1"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_gem.png" id="2_5vk7v"]
+[ext_resource type="Script" path="res://scripts/data/magica_node.gd" id="3_enpnw"]
+
+[sub_resource type="Resource" id="Resource_7378u"]
+script = ExtResource("1_x7nm1")
+stat = &"unit_slot_bonus"
+add = 1.0
+
+[resource]
+script = ExtResource("3_enpnw")
+id = &"fourth_branch"
+branch = &"knowledge"
+name_key = "magica.fourth_branch"
+name = "Fourth Branch"
+description_key = "magica.fourth_branch_desc"
+description = "One more canopy for a guardian."
+icon = ExtResource("2_5vk7v")
+duration_seconds = 28800
+gem_cost = 25
+effects = Array[ExtResource("1_x7nm1")]([SubResource("Resource_7378u")])
+effect_text = "Unit slot 3"

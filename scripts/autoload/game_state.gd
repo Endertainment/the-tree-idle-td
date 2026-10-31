@@ -18,6 +18,7 @@ var player: Dictionary = {
 	"provider_uid": "",
 	"best_wave": 0,
 	"next_wave_uses": 0,
+	"last_seen_at": 0,
 }
 
 var wallet: Dictionary = {
@@ -35,9 +36,16 @@ var stats: Dictionary = {
 	"week_id": "",
 }
 
-var magica: Dictionary = {"research": {}, "completed": []}
+var magica: Dictionary = {"research": {}, "completed": [], "pending_claim": ""}
 var cards: Dictionary = {"owned": [], "equipped": [null, null, null, null]}
-var missions: Dictionary = {"day_id": "", "daily": [], "week_id": "", "weekly": []}
+var missions: Dictionary = {
+	"day_id": "",
+	"daily": [],
+	"week_id": "",
+	"weekly": [],
+	"daily_bonus_claimed": false,
+	"weekly_bonus_claimed": false,
+}
 var shop: Dictionary = {"owned_products": [], "last_daily_claim": 0}
 var ads: Dictionary = {"rv_today": 0, "rv_day": "", "interstitial_last": 0}
 

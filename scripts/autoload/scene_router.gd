@@ -9,6 +9,9 @@ const SCENES: Dictionary = {
 	&"boot": "res://scenes/boot/boot.tscn",
 	&"main_menu": "res://scenes/menu/main_menu.tscn",
 	&"workshop": "res://scenes/menu/workshop.tscn",
+	&"magica": "res://scenes/menu/magica.tscn",
+	&"cards": "res://scenes/menu/cards.tscn",
+	&"missions": "res://scenes/menu/missions.tscn",
 	&"battle": "res://scenes/battle/battle.tscn",
 }
 

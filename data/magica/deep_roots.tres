@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="MagicaNode" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="1_1v7vn"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_cards.png" id="2_lpob7"]
+[ext_resource type="Script" path="res://scripts/data/magica_node.gd" id="3_30wu5"]
+
+[sub_resource type="Resource" id="Resource_7woaf"]
+script = ExtResource("1_1v7vn")
+stat = &"card_slot_bonus"
+add = 1.0
+
+[resource]
+script = ExtResource("3_30wu5")
+id = &"deep_roots"
+branch = &"knowledge"
+order = 1
+name_key = "magica.deep_roots"
+name = "Deep Roots"
+description_key = "magica.deep_roots_desc"
+description = "Room for one more card in the loadout."
+icon = ExtResource("2_lpob7")
+requires = Array[StringName]([&"fourth_branch"])
+duration_seconds = 18000
+coin_cost = 1500
+effects = Array[ExtResource("1_1v7vn")]([SubResource("Resource_7woaf")])
+effect_text = "+1 card slot"

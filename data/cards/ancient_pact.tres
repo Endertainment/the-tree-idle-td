@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/meta/cards/card_art_placeholder.png" id="1_d7y0n"]
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="2_6f2l0"]
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="3_2kabo"]
+
+[sub_resource type="Resource" id="Resource_hrcaf"]
+script = ExtResource("2_6f2l0")
+stat = &"tree_damage"
+multiplier = 0.25
+
+[sub_resource type="Resource" id="Resource_y1lv6"]
+script = ExtResource("2_6f2l0")
+stat = &"tower_damage"
+multiplier = 0.25
+
+[sub_resource type="Resource" id="Resource_hpevq"]
+script = ExtResource("2_6f2l0")
+stat = &"unit_damage"
+multiplier = 0.25
+
+[sub_resource type="Resource" id="Resource_x7ivs"]
+script = ExtResource("2_6f2l0")
+stat = &"tree_max_hp"
+multiplier = -0.1
+
+[resource]
+script = ExtResource("3_2kabo")
+id = &"ancient_pact"
+name_key = "card.ancient_pact"
+name = "Ancient Pact"
+rarity = &"legendary"
+description_key = "card.ancient_pact_desc"
+description = "Power borrowed from the old forest, paid in bark."
+art = ExtResource("1_d7y0n")
+effects = Array[ExtResource("2_6f2l0")]([SubResource("Resource_hrcaf"), SubResource("Resource_y1lv6"), SubResource("Resource_hpevq"), SubResource("Resource_x7ivs")])
+where_to_get = "Legendary packs and the weekly completion bonus"

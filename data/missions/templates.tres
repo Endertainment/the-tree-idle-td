@@ -1,0 +1,206 @@
+[gd_resource type="Resource" script_class="MissionTemplateTable" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/mission_template_table.gd" id="1_21erv"]
+[ext_resource type="Script" path="res://scripts/data/mission_template.gd" id="2_qkqnj"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_sword.png" id="3_3pjjt"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_hammer.png" id="4_w5drl"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_trophy.png" id="5_2y7qi"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_star.png" id="6_re5em"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_heart.png" id="7_inw1j"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_cards.png" id="8_4htr0"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_ad.png" id="9_0ae5w"]
+
+[sub_resource type="Resource" id="Resource_c4xar"]
+script = ExtResource("2_qkqnj")
+id = &"d_waves"
+title_key = "mission.d_waves"
+title = "Clear {n} waves"
+description_key = "mission.d_waves_desc"
+description = "Clear {n} waves"
+metric = &"waves_cleared"
+base_target = 8
+icon = ExtResource("3_3pjjt")
+
+[sub_resource type="Resource" id="Resource_xfftk"]
+script = ExtResource("2_qkqnj")
+id = &"d_kills"
+order = 1
+title_key = "mission.d_kills"
+title = "Kill {n} enemies"
+description_key = "mission.d_kills_desc"
+description = "Kill {n} enemies"
+base_target = 60
+base_coins = 30
+icon = ExtResource("3_3pjjt")
+
+[sub_resource type="Resource" id="Resource_rbj35"]
+script = ExtResource("2_qkqnj")
+id = &"d_towers"
+order = 2
+title_key = "mission.d_towers"
+title = "Build {n} towers in one run"
+description_key = "mission.d_towers_desc"
+description = "Build {n} towers in one run"
+metric = &"towers_built"
+mode = &"max"
+base_target = 4
+base_coins = 30
+icon = ExtResource("4_w5drl")
+
+[sub_resource type="Resource" id="Resource_lv0wy"]
+script = ExtResource("2_qkqnj")
+id = &"d_reach"
+order = 3
+title_key = "mission.d_reach"
+title = "Reach wave {n}"
+description_key = "mission.d_reach_desc"
+description = "Reach wave {n}"
+metric = &"wave_reached"
+mode = &"max"
+base_target = 7
+base_coins = 35
+base_xp = 25
+icon = ExtResource("5_2y7qi")
+
+[sub_resource type="Resource" id="Resource_wrtl1"]
+script = ExtResource("2_qkqnj")
+id = &"d_crits"
+order = 4
+title_key = "mission.d_crits"
+title = "Deal {n} critical hits"
+description_key = "mission.d_crits_desc"
+description = "Deal {n} critical hits"
+metric = &"crits"
+base_target = 15
+icon = ExtResource("6_re5em")
+
+[sub_resource type="Resource" id="Resource_7gyno"]
+script = ExtResource("2_qkqnj")
+id = &"d_clean"
+order = 5
+title_key = "mission.d_clean"
+title = "Clear a run without leaking"
+description_key = "mission.d_clean_desc"
+description = "Clear a run without leaking"
+metric = &"clean_runs"
+base_target = 1
+base_coins = 40
+base_gems = 1
+base_xp = 25
+icon = ExtResource("7_inw1j")
+
+[sub_resource type="Resource" id="Resource_1icea"]
+script = ExtResource("2_qkqnj")
+id = &"w_waves"
+period = &"weekly"
+title_key = "mission.w_waves"
+title = "Clear {n} waves"
+description_key = "mission.w_waves_desc"
+description = "Clear {n} waves"
+metric = &"waves_cleared"
+base_target = 60
+base_coins = 150
+base_gems = 3
+base_xp = 150
+icon = ExtResource("3_3pjjt")
+
+[sub_resource type="Resource" id="Resource_rvjd0"]
+script = ExtResource("2_qkqnj")
+id = &"w_kills"
+period = &"weekly"
+order = 1
+title_key = "mission.w_kills"
+title = "Kill {n} enemies"
+description_key = "mission.w_kills_desc"
+description = "Kill {n} enemies"
+base_target = 500
+base_coins = 180
+base_gems = 3
+base_xp = 150
+icon = ExtResource("3_3pjjt")
+
+[sub_resource type="Resource" id="Resource_pu1s6"]
+script = ExtResource("2_qkqnj")
+id = &"w_reach"
+period = &"weekly"
+order = 2
+title_key = "mission.w_reach"
+title = "Reach wave {n}"
+description_key = "mission.w_reach_desc"
+description = "Reach wave {n}"
+metric = &"wave_reached"
+mode = &"max"
+base_target = 12
+base_coins = 200
+base_gems = 4
+base_xp = 200
+icon = ExtResource("5_2y7qi")
+
+[sub_resource type="Resource" id="Resource_n86it"]
+script = ExtResource("2_qkqnj")
+id = &"w_towers"
+period = &"weekly"
+order = 3
+title_key = "mission.w_towers"
+title = "Build {n} towers in one run"
+description_key = "mission.w_towers_desc"
+description = "Build {n} towers in one run"
+metric = &"towers_built"
+mode = &"max"
+base_target = 8
+base_coins = 160
+base_xp = 120
+icon = ExtResource("4_w5drl")
+
+[sub_resource type="Resource" id="Resource_u8eyj"]
+script = ExtResource("2_qkqnj")
+id = &"w_cards"
+period = &"weekly"
+order = 4
+title_key = "mission.w_cards"
+title = "Equip {n} cards at once"
+description_key = "mission.w_cards_desc"
+description = "Equip {n} cards at once"
+metric = &"cards_equipped"
+mode = &"max"
+base_target = 3
+base_coins = 160
+base_gems = 2
+base_xp = 120
+icon = ExtResource("8_4htr0")
+
+[sub_resource type="Resource" id="Resource_rujif"]
+script = ExtResource("2_qkqnj")
+id = &"w_ads"
+period = &"weekly"
+order = 5
+title_key = "mission.w_ads"
+title = "Watch {n} rewarded ads"
+description_key = "mission.w_ads_desc"
+description = "Watch {n} rewarded ads"
+metric = &"ads_watched"
+base_target = 3
+base_coins = 120
+base_gems = 2
+base_xp = 100
+icon = ExtResource("9_0ae5w")
+
+[sub_resource type="Resource" id="Resource_viea1"]
+script = ExtResource("2_qkqnj")
+id = &"w_clean"
+period = &"weekly"
+order = 6
+title_key = "mission.w_clean"
+title = "Clear {n} runs without leaking"
+description_key = "mission.w_clean_desc"
+description = "Clear {n} runs without leaking"
+metric = &"clean_runs"
+base_target = 2
+base_coins = 180
+base_gems = 3
+base_xp = 150
+icon = ExtResource("7_inw1j")
+
+[resource]
+script = ExtResource("1_21erv")
+templates = Array[ExtResource("2_qkqnj")]([SubResource("Resource_c4xar"), SubResource("Resource_xfftk"), SubResource("Resource_rbj35"), SubResource("Resource_lv0wy"), SubResource("Resource_wrtl1"), SubResource("Resource_7gyno"), SubResource("Resource_1icea"), SubResource("Resource_rvjd0"), SubResource("Resource_pu1s6"), SubResource("Resource_n86it"), SubResource("Resource_u8eyj"), SubResource("Resource_rujif"), SubResource("Resource_viea1")])

@@ -9,14 +9,16 @@ const TestCore := preload("res://tests/test_core.gd")
 const TestBattle := preload("res://tests/test_battle.gd")
 const TestEconomy := preload("res://tests/test_economy.gd")
 const TestMeta := preload("res://tests/test_meta.gd")
+const TestM4b := preload("res://tests/test_m4b.gd")
 
 
 func _initialize() -> void:
-	print("== The Tree: M0+M4a tests ==")
+	print("== The Tree: M0+M4b tests ==")
 	var core: RefCounted = TestCore.new()
 	var battle: RefCounted = TestBattle.new()
 	var economy: RefCounted = TestEconomy.new()
 	var meta: RefCounted = TestMeta.new()
+	var m4b: RefCounted = TestM4b.new()
 	var cases: Array[Dictionary] = [
 		{"name": "art manifest paths exist", "callable": Callable(core, "test_manifest_paths")},
 		{"name": "SaveService round-trip", "callable": Callable(core, "test_save_roundtrip")},
@@ -47,6 +49,16 @@ func _initialize() -> void:
 		{"name": "unlock gating at levels 3/4/10/12", "callable": Callable(meta, "test_unlock_gating_levels")},
 		{"name": "modifier stacking and caps", "callable": Callable(meta, "test_modifier_stacking_and_caps")},
 		{"name": "workshop bonus reaches battle DPS", "callable": Callable(meta, "test_workshop_bonus_reaches_battle_dps")},
+		{"name": "magica prerequisites and one research", "callable": Callable(m4b, "test_magica_prerequisites_and_research")},
+		{"name": "magica cancel refund and speed", "callable": Callable(m4b, "test_magica_cancel_refund_and_speed")},
+		{"name": "magica offline completion survives restart", "callable": Callable(m4b, "test_magica_offline_completion_survives_restart")},
+		{"name": "card equip/unequip restores stats", "callable": Callable(m4b, "test_card_equip_unequip_restores_stats")},
+		{"name": "card duplicate shards and upgrade curve", "callable": Callable(m4b, "test_card_upgrade_and_duplicates")},
+		{"name": "card slot limits", "callable": Callable(m4b, "test_card_slot_limits")},
+		{"name": "mission 04:00 boundary", "callable": Callable(m4b, "test_mission_schedule_0400_boundary")},
+		{"name": "missions claim once and reroll", "callable": Callable(m4b, "test_missions_claim_once_and_reset")},
+		{"name": "mission completion bonus once", "callable": Callable(m4b, "test_mission_completion_bonus_once")},
+		{"name": "offline income caps", "callable": Callable(m4b, "test_offline_income_caps")},
 	]
 
 	var failures := 0

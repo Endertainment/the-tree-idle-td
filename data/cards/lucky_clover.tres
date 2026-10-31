@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/meta/cards/card_art_placeholder.png" id="1_xjm2h"]
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="2_jnyul"]
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="3_ihfy0"]
+
+[sub_resource type="Resource" id="Resource_3ol46"]
+script = ExtResource("2_jnyul")
+stat = &"gem_chance"
+add = 0.1
+
+[resource]
+script = ExtResource("3_ihfy0")
+id = &"lucky_clover"
+name_key = "card.lucky_clover"
+name = "Lucky Clover"
+rarity = &"epic"
+description_key = "card.lucky_clover_desc"
+description = "Gems hide between the roots."
+art = ExtResource("1_xjm2h")
+effects = Array[ExtResource("2_jnyul")]([SubResource("Resource_3ol46")])
+where_to_get = "Epic card packs and the weekly bonus"

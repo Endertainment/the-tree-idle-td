@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MagicaNode" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="1_xvmnn"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_sword.png" id="2_5s3ys"]
+[ext_resource type="Script" path="res://scripts/data/magica_node.gd" id="3_ah8kp"]
+
+[sub_resource type="Resource" id="Resource_jpiqq"]
+script = ExtResource("1_xvmnn")
+stat = &"free_archer_voucher"
+add = 1.0
+
+[resource]
+script = ExtResource("3_ah8kp")
+id = &"ancient_memory"
+branch = &"knowledge"
+order = 2
+name_key = "magica.ancient_memory"
+name = "Ancient Memory"
+description_key = "magica.ancient_memory_desc"
+description = "The forest remembers its first archer."
+icon = ExtResource("2_5s3ys")
+duration_seconds = 10800
+coin_cost = 1000
+effects = Array[ExtResource("1_xvmnn")]([SubResource("Resource_jpiqq")])
+effect_text = "Start each run with a free Archer Tower"

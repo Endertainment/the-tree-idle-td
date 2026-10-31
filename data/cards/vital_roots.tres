@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CardData" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/meta/cards/card_art_placeholder.png" id="1_wibm5"]
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="2_0crho"]
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="3_fiha4"]
+
+[sub_resource type="Resource" id="Resource_e8khk"]
+script = ExtResource("2_0crho")
+stat = &"tree_max_hp"
+multiplier = 0.15
+
+[resource]
+script = ExtResource("3_fiha4")
+id = &"vital_roots"
+name_key = "card.vital_roots"
+name = "Vital Roots"
+description_key = "card.vital_roots_desc"
+description = "The trunk drinks deeper."
+art = ExtResource("1_wibm5")
+effects = Array[ExtResource("2_0crho")]([SubResource("Resource_e8khk")])
+where_to_get = "Wave clears and card packs"

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="MagicaNode" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="1_q111x"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_coin.png" id="2_r86am"]
+[ext_resource type="Script" path="res://scripts/data/magica_node.gd" id="3_2jtj6"]
+
+[sub_resource type="Resource" id="Resource_gfden"]
+script = ExtResource("1_q111x")
+stat = &"coin_gain"
+multiplier = 0.1
+
+[resource]
+script = ExtResource("3_2jtj6")
+id = &"golden_sap_3"
+branch = &"wealth"
+order = 2
+name_key = "magica.golden_sap_3"
+name = "Golden Sap III"
+description_key = "magica.golden_sap_3_desc"
+description = "A season of gold."
+icon = ExtResource("2_r86am")
+requires = Array[StringName]([&"golden_sap_2"])
+duration_seconds = 36000
+coin_cost = 3500
+effects = Array[ExtResource("1_q111x")]([SubResource("Resource_gfden")])
+effect_text = "+10 % coins from waves"

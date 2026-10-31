@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="MagicaNode" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier_data.gd" id="1_tin41"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_heart.png" id="2_vdoh3"]
+[ext_resource type="Script" path="res://scripts/data/magica_node.gd" id="3_8mxhw"]
+
+[sub_resource type="Resource" id="Resource_dqhsi"]
+script = ExtResource("1_tin41")
+stat = &"second_wind"
+add = 1.0
+
+[resource]
+script = ExtResource("3_8mxhw")
+id = &"second_wind"
+branch = &"knowledge"
+order = 3
+name_key = "magica.second_wind"
+name = "Second Wind"
+description_key = "magica.second_wind_desc"
+description = "Once per run, the Tree refuses to fall."
+icon = ExtResource("2_vdoh3")
+requires = Array[StringName]([&"ancient_memory"])
+duration_seconds = 64800
+gem_cost = 40
+effects = Array[ExtResource("1_tin41")]([SubResource("Resource_dqhsi")])
+effect_text = "Once per run: survive a lethal hit at 15 % HP"

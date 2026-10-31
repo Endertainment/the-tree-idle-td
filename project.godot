@@ -31,9 +31,13 @@ LevelService="*res://scripts/economy/level_service.gd"
 UnlockService="*res://scripts/economy/unlock_service.gd"
 RunState="*res://scripts/autoload/run_state.gd"
 ModifierService="*res://scripts/autoload/modifier_service.gd"
-WorkshopService="*res://scripts/economy/workshop_service.gd"
 TimeService="*res://scripts/autoload/time_service.gd"
 RngService="*res://scripts/autoload/rng_service.gd"
+WorkshopService="*res://scripts/economy/workshop_service.gd"
+MagicaService="*res://scripts/economy/magica_service.gd"
+CardService="*res://scripts/economy/card_service.gd"
+MissionService="*res://scripts/economy/mission_service.gd"
+OfflineService="*res://scripts/economy/offline_service.gd"
 
 [display]
 
