@@ -99,6 +99,10 @@ func sync_now() -> void:
 
 func _boot() -> void:
 	await get_tree().process_frame
+	if not GameState.is_onboarded:
+		# LoginService emits auth_changed after onboarding; sync starts then.
+		_set_status(STATUS_OFFLINE)
+		return
 	await _sync_from_server()
 
 

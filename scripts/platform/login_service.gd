@@ -34,6 +34,9 @@ func is_authenticated() -> bool:
 
 ## Ensures a usable access token. Returns false when offline/login is impossible.
 func ensure_login() -> bool:
+	if not GameState.is_onboarded:
+		# Never create a guest account before the wizard assigns the player UUID.
+		return false
 	if not ApiClient.is_online():
 		_set_authenticated(ApiClient.is_authenticated())
 		return _authenticated
