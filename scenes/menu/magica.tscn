@@ -1,0 +1,270 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/menu/magica_screen.gd" id="1_screen"]
+[ext_resource type="PackedScene" path="res://ui/components/currency_pill.tscn" id="2_pill"]
+[ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="3_nav"]
+[ext_resource type="Script" path="res://scripts/menu/radial_timer.gd" id="4_timer"]
+[ext_resource type="PackedScene" path="res://ui/components/modal.tscn" id="5_modal"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="6_bg"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_magic.png" id="7_magic"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_coin.png" id="8_coin"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_gem.png" id="9_gem"]
+
+[node name="Magica" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_screen")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.32)
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 28
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="PanelContainer" parent="SafeArea/Layout"]
+custom_minimum_size = Vector2(0, 132)
+layout_mode = 2
+theme_type_variation = &"TopBar"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 92)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"SecondaryButton"
+text = "Back"
+
+[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("7_magic")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Title"
+text = "Magica"
+
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="CoinsPill" parent="SafeArea/Layout/Header/Row" instance=ExtResource("2_pill")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 88)
+layout_mode = 2
+size_flags_vertical = 4
+icon_texture = ExtResource("8_coin")
+
+[node name="GemsPill" parent="SafeArea/Layout/Header/Row" instance=ExtResource("2_pill")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 88)
+layout_mode = 2
+size_flags_vertical = 4
+icon_texture = ExtResource("9_gem")
+
+[node name="ActiveCard" type="PanelContainer" parent="SafeArea/Layout"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+theme_type_variation = &"PanelGreen"
+
+[node name="ActiveLayout" type="VBoxContainer" parent="SafeArea/Layout/ActiveCard"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ActiveTitle" type="Label" parent="SafeArea/Layout/ActiveCard/ActiveLayout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "No active research"
+
+[node name="ActiveRow" type="HBoxContainer" parent="SafeArea/Layout/ActiveCard/ActiveLayout"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Timer" type="Control" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_vertical = 4
+script = ExtResource("4_timer")
+
+[node name="ActiveInfo" type="VBoxContainer" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="ActiveNode" type="Label" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow/ActiveInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "Pick a node to begin"
+
+[node name="ActiveRemaining" type="Label" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow/ActiveInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Title"
+text = ""
+
+[node name="ActiveHint" type="Label" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow/ActiveInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "One research at a time."
+autowrap_mode = 3
+
+[node name="Actions" type="VBoxContainer" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="ClaimButton" type="Button" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow/Actions"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(250, 92)
+layout_mode = 2
+theme_type_variation = &"GoldButton"
+text = "Claim"
+
+[node name="SpeedUpButton" type="Button" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow/Actions"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(250, 88)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+text = "Speed up (AD)"
+
+[node name="CancelButton" type="Button" parent="SafeArea/Layout/ActiveCard/ActiveLayout/ActiveRow/Actions"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(250, 80)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+text = "Cancel"
+
+[node name="Branches" type="PanelContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"PanelDark"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Branches"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TimeBranch" type="VBoxContainer" parent="SafeArea/Layout/Branches/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="SafeArea/Layout/Branches/Row/TimeBranch"]
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "Time"
+horizontal_alignment = 1
+
+[node name="BranchTimeBox" type="VBoxContainer" parent="SafeArea/Layout/Branches/Row/TimeBranch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="WealthBranch" type="VBoxContainer" parent="SafeArea/Layout/Branches/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="SafeArea/Layout/Branches/Row/WealthBranch"]
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "Wealth"
+horizontal_alignment = 1
+
+[node name="BranchWealthBox" type="VBoxContainer" parent="SafeArea/Layout/Branches/Row/WealthBranch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="KnowledgeBranch" type="VBoxContainer" parent="SafeArea/Layout/Branches/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="SafeArea/Layout/Branches/Row/KnowledgeBranch"]
+layout_mode = 2
+theme_type_variation = &"Body"
+text = "Knowledge"
+horizontal_alignment = 1
+
+[node name="BranchKnowledgeBox" type="VBoxContainer" parent="SafeArea/Layout/Branches/Row/KnowledgeBranch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Toast" type="PanelContainer" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_type_variation = &"Chip"
+
+[node name="ToastLabel" type="Label" parent="SafeArea/Layout/Toast"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuNav" parent="SafeArea/Layout" instance=ExtResource("3_nav")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NodeModal" parent="." instance=ExtResource("5_modal")]
+unique_name_in_owner = true
+
+[node name="CancelModal" parent="." instance=ExtResource("5_modal")]
+unique_name_in_owner = true

@@ -17,7 +17,7 @@ kind = &"workshop"
 value = 0
 flag = &"third_branch"
 label_key = "battle.slot_workshop"
-label_text = "Workshop: Third Branch"
+label_text = "Magica: Fourth Branch"
 
 [sub_resource type="Resource" id="SlotRequirement_level12"]
 script = ExtResource("3_requirement")

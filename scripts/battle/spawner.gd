@@ -24,12 +24,20 @@ var _group_started: bool = false
 var _spawned_in_group: int = 0
 var _active: bool = false
 var _prefer_north: bool = true
+## Mission/card multiplier on every authored group count (1.0 = spec counts).
+var count_multiplier: float = 1.0
 
 
 ## Starts spawning `wave`. Any previous wave is replaced.
 func start_wave(wave: WaveDefinition) -> void:
 	_wave = wave
-	_groups = wave.groups
+	_groups.clear()
+	for authored: SpawnGroup in wave.groups:
+		if authored == null:
+			continue
+		var group := authored.duplicate(true) as SpawnGroup
+		group.count = maxi(1, int(round(float(authored.count) * maxf(count_multiplier, 0.1))))
+		_groups.append(group)
 	_index = 0
 	_group_timer = 0.0
 	_group_started = false

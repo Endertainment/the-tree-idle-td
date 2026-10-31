@@ -145,5 +145,9 @@ func _is_unlocked(requirement: SlotRequirement) -> bool:
 		return true
 	var level := int(GameState.player.get("level", 1))
 	var gems := GameState.get_balance(&"gems")
-	var workshop_flags: Dictionary = {}
+	# The map's `third_branch` flag is the Magica "Fourth Branch" node (unit slot 3);
+	# cards such as Guardian Bond can add the same bonus stat.
+	var workshop_flags: Dictionary = {
+		"third_branch": ModifierService.get_stat(&"unit_slot_bonus", 0.0) >= 1.0,
+	}
 	return UnitSlotRules.meets_requirement(requirement, level, gems, workshop_flags)

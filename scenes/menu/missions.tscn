@@ -1,0 +1,214 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/menu/missions_screen.gd" id="1_screen"]
+[ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="2_nav"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="3_bg"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_calendar.png" id="4_calendar"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_trophy.png" id="5_trophy"]
+
+[node name="Missions" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_screen")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.32)
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 26
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="PanelContainer" parent="SafeArea/Layout"]
+custom_minimum_size = Vector2(0, 126)
+layout_mode = 2
+theme_type_variation = &"TopBar"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 90)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"SecondaryButton"
+text = "Back"
+
+[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("4_calendar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Title"
+text = "Missions"
+
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="ClaimAllButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(240, 90)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"GoldButton"
+text = "Claim all"
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Sections" type="VBoxContainer" parent="SafeArea/Layout/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="DailyHeader" type="PanelContainer" parent="SafeArea/Layout/Scroll/Sections"]
+custom_minimum_size = Vector2(0, 92)
+layout_mode = 2
+theme_type_variation = &"PanelGreen"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Sections/DailyHeader"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Sections/DailyHeader/Row"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Body"
+text = "Daily"
+
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Scroll/Sections/DailyHeader/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="DailyCountdown" type="Label" parent="SafeArea/Layout/Scroll/Sections/DailyHeader/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Caption"
+text = "Resets in --"
+
+[node name="DailyRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Sections"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="DailyBonusLabel" type="Label" parent="SafeArea/Layout/Scroll/Sections"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "All complete: +30 coins, +2 gems"
+horizontal_alignment = 1
+
+[node name="WeeklyHeader" type="PanelContainer" parent="SafeArea/Layout/Scroll/Sections"]
+custom_minimum_size = Vector2(0, 92)
+layout_mode = 2
+theme_type_variation = &"PanelGreen"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader/Row"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Body"
+text = "Weekly"
+
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="WeeklyCountdown" type="Label" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"Caption"
+text = "Resets in --"
+
+[node name="WeeklyRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Sections"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="WeeklyBonusLabel" type="Label" parent="SafeArea/Layout/Scroll/Sections"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "All complete: +250 coins, +10 gems, +1 card pack"
+horizontal_alignment = 1
+
+[node name="ResetNote" type="Label" parent="SafeArea/Layout/Scroll/Sections"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Daily missions reset at 04:00 local time; weekly missions reset Monday 04:00."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Toast" type="PanelContainer" parent="SafeArea/Layout"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 76)
+layout_mode = 2
+theme_type_variation = &"Chip"
+
+[node name="ToastLabel" type="Label" parent="SafeArea/Layout/Toast"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuNav" parent="SafeArea/Layout" instance=ExtResource("2_nav")]
+unique_name_in_owner = true
+layout_mode = 2

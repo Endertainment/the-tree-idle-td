@@ -42,6 +42,12 @@ func get_cards() -> Array[CardData]:
 	return _collection.get_cards()
 
 
+## Read-only access for the collection UI and tests (never mutate through it).
+func get_collection() -> CardCollection:
+	_ensure_collection()
+	return _collection
+
+
 func get_card(card_id: StringName) -> CardData:
 	_ensure_collection()
 	return _collection.get_card(card_id)

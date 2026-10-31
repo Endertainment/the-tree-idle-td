@@ -80,6 +80,7 @@ var _unit_slots: Array[UnitSlot] = []
 var _active_boss: Enemy
 var _kills: int = 0
 var _leaks: int = 0
+var _run_towers_built: int = 0
 var _cleared_waves: int = 0
 var _elapsed: float = 0.0
 var _aura_timer: float = 0.0
@@ -114,11 +115,14 @@ func _ready() -> void:
 	_build_tree()
 	_build_systems()
 	_hud_controller.call(&"setup", self, _hud)
+	EventBus.card_dropped.connect(_on_card_dropped)
+	EventBus.second_wind_used.connect(_on_second_wind_used)
 	if App.is_debug_build():
 		_debug_overlay = DebugOverlay.new()
 		_debug_overlay.name = "DebugOverlay"
 		add_child(_debug_overlay)
 		_debug_overlay.setup(self)
+	_grant_free_archer()
 	EventBus.run_started.emit()
 	_wave_manager.start()
 
@@ -376,6 +380,16 @@ func build_tower(pedestal: Pedestal, tower_id: StringName) -> bool:
 	var data := _tower_lookup.get(tower_id, null) as TowerData
 	if data == null or not try_spend_cash(_price(data.build_cost), &"build_tower").is_ok():
 		return false
+	if not _place_tower(pedestal, data):
+		add_cash(_price(data.build_cost), &"refund_tower")
+		return false
+	return true
+
+
+## Instantiates and registers one tower without a cash transaction.
+func _place_tower(pedestal: Pedestal, data: TowerData) -> bool:
+	if pedestal == null or data == null or not pedestal.is_buildable():
+		return false
 	var tower := tower_scene.instantiate() as Tower
 	_towers_root.add_child(tower)
 	tower.global_position = pedestal.global_position
@@ -384,8 +398,23 @@ func build_tower(pedestal: Pedestal, tower_id: StringName) -> bool:
 	tower.pressed.connect(_on_tower_pressed)
 	pedestal.mark_occupied(tower)
 	_towers.append(tower)
+	_run_towers_built += 1
 	_refresh_auras()
+	EventBus.tower_built.emit(data.id, _run_towers_built)
 	return true
+
+
+## Ancient Memory: the first free pedestal starts with an Archer Tower.
+func _grant_free_archer() -> void:
+	if ModifierService.get_stat(&"free_archer_voucher", 0.0) < 1.0:
+		return
+	var data := _tower_lookup.get(&"tower_archer", null) as TowerData
+	if data == null:
+		return
+	for pedestal: Pedestal in _arena.pedestals:
+		if pedestal != null and pedestal.is_buildable():
+			_place_tower(pedestal, data)
+			return
 
 
 ## Upgrades a built tower one level (cash checked here, level in Tower).
@@ -931,6 +960,7 @@ func _build_systems() -> void:
 	_spawner.name = "Spawner"
 	add_child(_spawner)
 	_spawner.spawn_requested.connect(_on_spawn_requested)
+	_spawner.count_multiplier = maxf(ModifierService.get_stat(&"enemies_per_wave", 1.0), 0.1)
 
 	_wave_manager = WaveManager.new()
 	_wave_manager.name = "WaveManager"
@@ -974,6 +1004,7 @@ func _on_enemy_died(enemy: Enemy) -> void:
 	if enemy.data != null and enemy.data.is_boss:
 		_active_boss = null
 		boss_removed.emit()
+	EventBus.enemy_killed.emit(enemy.data.id if enemy.data != null else &"", enemy.data.is_boss if enemy.data != null else false)
 	_wave_manager.on_enemy_removed()
 
 
@@ -984,6 +1015,7 @@ func _on_enemy_leaked(enemy: Enemy) -> void:
 	if enemy.data != null and enemy.data.is_boss:
 		_active_boss = null
 		boss_removed.emit()
+	EventBus.enemy_leaked.emit(enemy.data.id if enemy.data != null else &"")
 	_wave_manager.on_enemy_removed()
 
 
@@ -1004,6 +1036,18 @@ func _on_enemy_hp_changed(enemy: Enemy, current_hp: float, max_hp: float) -> voi
 func _on_boss_spawned(enemy: Enemy) -> void:
 	_active_boss = enemy
 	boss_spawned.emit(enemy)
+
+
+func _on_card_dropped(card_id: StringName) -> void:
+	var card := CardService.get_card(card_id)
+	if card == null or _hud == null:
+		return
+	_hud.show_banner(LocaleService.t("battle.card_found", "Card found: %s") % card.name)
+
+
+func _on_second_wind_used() -> void:
+	if _hud != null:
+		_hud.show_banner(LocaleService.t("battle.second_wind", "Second Wind: the Tree survives!"))
 
 
 func _on_shot_requested(origin: Vector2, target: Enemy, shot: Dictionary) -> void:

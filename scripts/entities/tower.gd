@@ -107,7 +107,7 @@ func effective_damage() -> float:
 
 
 func effective_range() -> float:
-	return range_at(level)
+	return range_at(level) * maxf(ModifierService.get_stat(&"tower_range", 1.0), 0.01)
 
 
 func effective_interval() -> float:

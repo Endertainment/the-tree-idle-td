@@ -10,6 +10,9 @@ const SCENES := [
 	["res://scenes/boot/boot.tscn", 2],
 	["res://scenes/menu/main_menu.tscn", 2],
 	["res://scenes/menu/workshop.tscn", 20],
+	["res://scenes/menu/magica.tscn", 40],
+	["res://scenes/menu/cards.tscn", 30],
+	["res://scenes/menu/missions.tscn", 30],
 	["res://scenes/battle/battle.tscn", 40],
 	["res://scenes/battle/battle_hud.tscn", 25],
 	["res://scenes/battle/run_summary.tscn", 10],
@@ -30,7 +33,7 @@ var failures := 0
 
 
 func _initialize() -> void:
-	print("== The Tree: M0-M4a smoke test ==")
+	print("== The Tree: M0-M4b smoke test ==")
 	_check_theme()
 	_check_scenes()
 	print("== %s ==" % ("OK" if failures == 0 else "%d FAILED" % failures))

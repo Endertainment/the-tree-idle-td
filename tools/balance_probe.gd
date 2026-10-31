@@ -4,6 +4,7 @@
 ##   godot --headless --path . --script res://tools/balance_probe.gd -- [policy] [seed]
 ##   policy: fill | four | two | tree (opening heuristic)
 ##   seed:   integer run seed (RunState.seed), default 1
+##   min_wave: exit 0 when cleared >= this (default 7; M4 acceptance uses 10)
 ##
 ## It plays one run at 8x with greedy buying and prep skips, then prints the
 ## cleared wave, peak concurrent enemies and the damage share by source (the
@@ -30,6 +31,7 @@ var _temp_save := "user://m3_balance_save.json"
 var _tick := 0
 var _policy := "two"
 var _seed := 1
+var _min_wave := 7
 var _damage_by_source: Dictionary = {}
 var _event_bus: Node
 
@@ -40,6 +42,8 @@ func _initialize() -> void:
 		_policy = str(args[0])
 	if args.size() > 1:
 		_seed = int(args[1])
+	if args.size() > 2:
+		_min_wave = int(args[2])
 	_run.call_deferred()
 
 
@@ -140,7 +144,7 @@ func _run() -> void:
 			workshop_service.call(&"init_service", original.get("workshop", {}))
 		if unlock_service != null:
 			unlock_service.call(&"refresh")
-	quit(0 if cleared >= 7 else 1)
+	quit(0 if cleared >= _min_wave else 1)
 
 
 func _reset_profile(game_state: Node, run_state: Node) -> void:
@@ -151,14 +155,25 @@ func _reset_profile(game_state: Node, run_state: Node) -> void:
 		})
 		game_state.set("wallet", {"coins": 0, "gems": 0, "stones": 0})
 		game_state.set("unlocks", {})
+		game_state.set("is_onboarded", true)
 		game_state.get("reward_ledger").call(&"from_array", [])
 		var wallet_service := game_state.get_node_or_null("/root/WalletService")
 		var workshop_service := game_state.get_node_or_null("/root/WorkshopService")
 		var unlock_service := game_state.get_node_or_null("/root/UnlockService")
+		var magica_service := game_state.get_node_or_null("/root/MagicaService")
+		var card_service := game_state.get_node_or_null("/root/CardService")
+		var mission_service := game_state.get_node_or_null("/root/MissionService")
 		if wallet_service != null:
 			wallet_service.call(&"reset")
 		if workshop_service != null:
 			workshop_service.call(&"reset")
+		if magica_service != null:
+			magica_service.call(&"reset")
+		if card_service != null:
+			card_service.set(&"drops_enabled", false)
+			card_service.call(&"reset")
+		if mission_service != null:
+			mission_service.call(&"reset")
 		if unlock_service != null:
 			unlock_service.call(&"refresh")
 	if run_state != null:

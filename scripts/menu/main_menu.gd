@@ -24,6 +24,10 @@ extends Control
 @onready var _nav_cards_label: Label = %NavCardsLabel
 @onready var _nav_missions_label: Label = %NavMissionsLabel
 @onready var _nav_shop_label: Label = %NavShopLabel
+@onready var _magica_button: Button = %MagicaButton
+@onready var _magica_status: Label = %MagicaStatus
+@onready var _magica_badge: Label = %MagicaBadge
+@onready var _welcome_modal: Modal = %WelcomeModal
 @onready var _toast: PanelContainer = %Toast
 @onready var _toast_label: Label = %ToastLabel
 
@@ -39,12 +43,17 @@ func _ready() -> void:
 	_view_button.pressed.connect(_on_missions_pressed)
 	_nav_home.pressed.connect(_on_home_pressed)
 	_nav_workshop.pressed.connect(_on_workshop_pressed)
-	_nav_cards.pressed.connect(_on_locked_tab)
-	_nav_missions.pressed.connect(_on_locked_tab)
-	_nav_shop.pressed.connect(_on_locked_tab)
+	_nav_cards.pressed.connect(_on_cards_pressed)
+	_nav_missions.pressed.connect(_on_missions_pressed)
+	_nav_shop.pressed.connect(_on_shop_pressed)
+	_magica_button.pressed.connect(_on_magica_pressed)
+	_welcome_modal.confirmed.connect(_on_welcome_claimed)
 
 	EventBus.currency_changed.connect(_on_currency_changed)
 	_toast.visible = false
+	_refresh_daily()
+	_refresh_magica()
+	_show_welcome_back()
 	_show_pending_unlocks()
 
 
@@ -67,6 +76,33 @@ func _localize() -> void:
 	_nav_missions_label.text = LocaleService.t("menu.nav.missions", "Missions")
 	_nav_shop_label.text = LocaleService.t("menu.nav.shop", "Shop")
 	_settings_button.tooltip_text = LocaleService.t("menu.settings", "Settings")
+	_magica_button.text = LocaleService.t("menu.open", "Open")
+	_refresh_magica()
+
+
+func _refresh_daily() -> void:
+	var claimed := MissionService.claimed_count(&"daily")
+	var total := 3
+	_daily_progress.text = LocaleService.t("menu.daily_progress", "%d / %d Complete") % [claimed, total]
+
+
+func _refresh_magica() -> void:
+	if MagicaService.has_pending_claim():
+		var pending := MagicaService.get_node_by_id(MagicaService.pending_claim_id())
+		_magica_status.text = LocaleService.t("menu.magica_claim", "Research complete: %s") % (
+			pending.name if pending != null else ""
+		)
+		_magica_badge.visible = true
+	elif MagicaService.has_active_research():
+		var active := MagicaService.get_node_by_id(MagicaService.active_node_id())
+		_magica_status.text = "%s %s" % [
+			LocaleService.t("menu.magica_researching", "Researching:"),
+			active.name if active != null else "",
+		]
+		_magica_badge.visible = false
+	else:
+		_magica_status.text = LocaleService.t("menu.magica_idle", "No active research")
+		_magica_badge.visible = false
 
 
 func _refresh_wallet() -> void:
@@ -83,7 +119,19 @@ func _on_settings_pressed() -> void:
 
 
 func _on_missions_pressed() -> void:
-	_show_toast(LocaleService.t("menu.missions_soon", "Missions are coming soon"))
+	SceneRouter.goto(&"missions")
+
+
+func _on_cards_pressed() -> void:
+	SceneRouter.goto(&"cards")
+
+
+func _on_shop_pressed() -> void:
+	_show_toast(LocaleService.t("menu.shop_soon", "Shop arrives with M6"))
+
+
+func _on_magica_pressed() -> void:
+	SceneRouter.goto(&"magica")
 
 
 func _on_home_pressed() -> void:
@@ -93,6 +141,31 @@ func _on_home_pressed() -> void:
 
 func _on_workshop_pressed() -> void:
 	SceneRouter.goto(&"workshop")
+
+
+func _show_welcome_back() -> void:
+	var pending := OfflineService.get_pending()
+	if pending.is_empty() or int(pending.get("coins", 0)) <= 0:
+		return
+	var away := LocaleService.format_duration(int(pending.get("away_seconds", 0)))
+	var body := LocaleService.t(
+		"menu.welcome_body",
+		"You were away for %s. The forest gathered %d coins while you were gone."
+	) % [away, int(pending.get("coins", 0))]
+	if bool(pending.get("capped", false)):
+		body += "\n" + LocaleService.t("menu.welcome_capped", "Offline income is capped by your Offline Cap upgrade.")
+	_welcome_modal.open(
+		LocaleService.t("menu.welcome_title", "Welcome back"),
+		body,
+		LocaleService.t("menu.claim", "Claim"),
+		""
+	)
+
+
+func _on_welcome_claimed() -> void:
+	var coins := OfflineService.claim()
+	if coins > 0:
+		_show_toast(LocaleService.t("menu.offline_claimed", "+%d coins from the forest") % coins)
 
 
 ## Shows one combined toast for features unlocked by the last level-up(s).
@@ -133,3 +206,12 @@ func _show_toast(message: String) -> void:
 
 func _hide_toast() -> void:
 	_toast.visible = false
+
+
+## Tooling-only populated state for docs/preview captures.
+func stage_preview() -> void:
+	_coins.set_amount(12480)
+	_gems.set_amount(350)
+	_daily_progress.text = LocaleService.t("menu.daily_progress", "%d / %d Complete") % [1, 3]
+	_magica_status.text = LocaleService.t("menu.magica_claim", "Research complete: %s") % "Golden Sap I"
+	_magica_badge.visible = true

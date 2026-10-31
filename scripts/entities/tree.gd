@@ -27,6 +27,7 @@ var _rng: RandomNumberGenerator
 var _target_index: SpatialHash
 var _cooldown: float = 0.0
 var _defeated: bool = false
+var _second_wind_used: bool = false
 var _external_damage: float = 0.0
 var _external_speed: float = 0.0
 
@@ -90,6 +91,13 @@ func apply_damage(amount: float, is_crit: bool, source_id: StringName) -> void:
 	EventBus.damage_dealt.emit(source_id, 0, amount, is_crit, is_kill)
 	hp_changed.emit(hp, max_hp)
 	if is_kill:
+		# Magica "Second Wind": once per run, survive a lethal hit at 15 % HP.
+		if not _second_wind_used and ModifierService.get_stat(&"second_wind", 0.0) >= 1.0:
+			_second_wind_used = true
+			hp = maxf(max_hp * 0.15, 1.0)
+			hp_changed.emit(hp, max_hp)
+			EventBus.second_wind_used.emit()
+			return
 		_defeated = true
 		set_physics_process(false)
 		defeated.emit()

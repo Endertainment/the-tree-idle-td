@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://ui/components/menu_nav.gd" id="1_nav"]
+
+[node name="MenuNav" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+theme_type_variation = &"NavBar"
+script = ExtResource("1_nav")
