@@ -1,0 +1,31 @@
+# Godot 4 editor cache and imported resources
+.godot/
+/android/
+*.translation
+
+# Exports and builds
+build/
+*.apk
+*.aab
+*.pck
+*.exe
+*.ipa
+*.dmg
+
+# Android signing / credentials
+*.jks
+*.keystore
+export_credentials.cfg
+.env
+.env.*
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs and temp files
+*.log
+*.tmp
