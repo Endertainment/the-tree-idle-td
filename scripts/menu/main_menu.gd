@@ -69,6 +69,7 @@ func _exit_tree() -> void:
 func _on_language_changed(_code: String) -> void:
 	_localize()
 	_refresh_daily()
+	_refresh_magica()
 
 
 func _localize() -> void:

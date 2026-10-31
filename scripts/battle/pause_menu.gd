@@ -25,16 +25,30 @@ var _pending: Pending = Pending.NONE
 
 func _ready() -> void:
 	visible = false
-	_title.text = LocaleService.t("battle.paused", "Paused")
-	_resume.text = LocaleService.t("battle.resume", "Resume")
-	_restart.text = LocaleService.t("battle.restart", "Restart")
-	_abandon.text = LocaleService.t("battle.abandon", "Abandon run")
-	_settings.text = LocaleService.t("battle.settings", "Settings")
+	_localize()
+	LocaleService.language_changed.connect(_on_language_changed)
 	_resume.pressed.connect(_on_resume_pressed)
 	_restart.pressed.connect(_on_restart_pressed)
 	_abandon.pressed.connect(_on_abandon_pressed)
 	_settings.pressed.connect(_on_settings_pressed)
 	_confirm.confirmed.connect(_on_confirmed)
+
+
+func _exit_tree() -> void:
+	if LocaleService.language_changed.is_connected(_on_language_changed):
+		LocaleService.language_changed.disconnect(_on_language_changed)
+
+
+func _on_language_changed(_code: String) -> void:
+	_localize()
+
+
+func _localize() -> void:
+	_title.text = LocaleService.t("battle.paused", "Paused")
+	_resume.text = LocaleService.t("battle.resume", "Resume")
+	_restart.text = LocaleService.t("battle.restart", "Restart")
+	_abandon.text = LocaleService.t("battle.abandon", "Abandon run")
+	_settings.text = LocaleService.t("battle.settings", "Settings")
 
 
 func open(stats_text: String = "") -> void:
