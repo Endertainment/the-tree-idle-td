@@ -19,6 +19,7 @@ const PURCHASE_SFX_HOOK := "metadata/workshop_purchase_sfx"
 @onready var _rows_box: VBoxContainer = %Rows
 @onready var _toast: PanelContainer = %Toast
 @onready var _toast_label: Label = %ToastLabel
+@onready var _nav: MenuNav = %MenuNav
 
 var _category: StringName = &"attack"
 var _rows: Dictionary = {}
@@ -36,6 +37,7 @@ func _ready() -> void:
 	_environment_tab.pressed.connect(_on_tab_pressed.bind(CATEGORY_IDS[3]))
 	_back_button.pressed.connect(_on_back_pressed)
 	EventBus.currency_changed.connect(_on_currency_changed)
+	_nav.shop_pressed.connect(_on_shop_pressed)
 	_toast.visible = false
 	_refresh()
 	select_category(_category)
@@ -57,6 +59,7 @@ func _localize() -> void:
 	_defense_tab.text = LocaleService.t("workshop.category.defense", "Defense")
 	_utility_tab.text = LocaleService.t("workshop.category.utility", "Utility")
 	_environment_tab.text = LocaleService.t("workshop.category.environment", "Environment")
+	_nav.setup(&"workshop")
 
 
 ## Switches the visible category and rebuilds its rows.
@@ -73,6 +76,10 @@ func _on_tab_pressed(category: StringName) -> void:
 func _on_back_pressed() -> void:
 	SaveService.request_save()
 	SceneRouter.goto(&"main_menu")
+
+
+func _on_shop_pressed() -> void:
+	_show_toast(LocaleService.t("menu.shop_soon", "Shop arrives with M6"))
 
 
 func _refresh() -> void:
