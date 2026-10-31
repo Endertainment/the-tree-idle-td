@@ -528,3 +528,69 @@ tested with simulated timestamps; no mission ever asks for premium currency. A
 clock that moves backwards only causes an extra reroll, never a duplicate claim.
 The bonus flags and `pending` sections are local extras in the v2 document.
 
+
+
+## ADR-027 — Translation keys in scenes, LocaleService only in code (M5a)
+
+**Status:** accepted (M5a)
+
+**Context:** spec §10 requires one `strings.csv`, keys in `.tscn` labels instead
+of literals, `LocaleService` formatting/plurals, instant switching and a
+pseudo-locale for layout stress. Godot already re-translates a `Control.text`
+that exactly matches a key when the locale changes, while values built in code
+(e.g. `"Wave %d"` plus a number) cannot be translated by the engine.
+
+**Decision:** static labels store the key as `text` and rely on engine
+`tr()`/`auto_translate_mode`; every dynamic string calls
+`LocaleService.t(key, fallback)`. Screens that build rows in code connect
+`LocaleService.language_changed` and rebuild, so a switch is complete without a
+scene reload. Formatting and plural rules live in the pure `LocaleFormat`
+helper (unit-testable), with `LocaleService` as the autoload façade. Plural
+catalogues use `.one/.few/.many/.other`; English uses `.one`/`.other`, Ukrainian
+implements the 11–14 exception. `pseudo` doubles vowels and appends `…`; the
++60 % layout stress is captured through `tools/capture_scene.gd` because engine
+auto-translated labels bypass `LocaleService.t()`.
+
+**Consequences:** translators only edit CSV; scene files show keys in the editor
+(by design). The lint tool treats runtime-composed prefixes (`stat.`,
+`settings.`, `unlock.`, `plural.`, card `_where`/`_effect`) as used by
+convention, so it still catches missing keys and ordinary unused rows. Fallback
+strings in code are authoring aids only; lint fails if the key is absent.
+
+## ADR-028 — Placeholder audio is synthesized WAV, 20 s loops (M5a)
+
+**Status:** accepted (M5a)
+
+**Context:** spec §9.9 names 60/90 s OGG loops and a concrete SFX list; M5a needs
+audible, distinct placeholders without shipping licensed audio or requiring an
+encoder in the toolchain.
+
+**Decision:** `tools/generate_audio_placeholders.py` (bundled Python + numpy)
+synthesizes three 20 s seamless loops and 30 SFX as 16-bit mono 44.1 kHz WAV in
+`assets/audio/{music,ui,battle,meta}/`. `AudioService` addresses streams by id,
+not by extension, so the final OGG files can replace the WAVs without touching
+screens. Music players set `AudioStreamWAV.LOOP_FORWARD` at load time.
+
+**Consequences:** the repository grows ~5 MB of placeholder audio; no gameplay
+timing depends on track length. Before release, regenerate/replace with the
+spec lengths and re-import; no code change is expected.
+
+## ADR-029 — Modal screens via SceneRouter overlay, theme duplicate for text scale (M5a)
+
+**Status:** accepted (M5a)
+
+**Context:** the battle pause menu needs Settings without ending the run, and
+100/115/130 % text size must apply live to a theme whose font sizes are authored
+per type variation.
+
+**Decision:** `SceneRouter.open_overlay(scene_id)` instantiates a screen on a
+dedicated CanvasLayer above the running scene; `close_overlay()` frees it and
+Android back closes it first. This is used for Settings from the pause menu;
+normal navigation stays scene-based. `ThemeScaler` snapshots the authored font
+sizes once, duplicates `main_theme.tres`, multiplies every type's font sizes and
+assigns the duplicate to the Window. Battle HUD font overrides stay fixed so
+combat numbers do not grow.
+
+**Consequences:** overlays have no history entry; closing returns to the exact
+frozen battle. Theme scaling is reversible and does not mutate the committed
+`.tres`. A future overlay stack would need a small array instead of one slot.

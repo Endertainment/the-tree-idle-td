@@ -8,7 +8,9 @@ const REQUIRED_BUTTON_VARIATIONS := ["PrimaryButton", "SecondaryButton", "GoldBu
 const REQUIRED_PANEL_VARIATIONS := ["PanelGreen", "PanelDark", "ListRow", "Chip", "CurrencyPill"]
 const SCENES := [
 	["res://scenes/boot/boot.tscn", 2],
+	["res://scenes/onboarding/first_launch.tscn", 2],
 	["res://scenes/menu/main_menu.tscn", 2],
+	["res://scenes/menu/settings.tscn", 2],
 	["res://scenes/menu/workshop.tscn", 20],
 	["res://scenes/menu/magica.tscn", 40],
 	["res://scenes/menu/cards.tscn", 30],

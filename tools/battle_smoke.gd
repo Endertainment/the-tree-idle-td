@@ -23,6 +23,11 @@ var _temp_tmp: String = "user://m3_smoke_save.tmp.json"
 
 
 func _initialize() -> void:
+	# The tool asserts English fallback labels; pin the locale regardless of host.
+	TranslationServer.set_locale("en")
+	var locale_service := get_root().get_node_or_null("LocaleService")
+	if locale_service != null:
+		locale_service.call("set_language", "en")
 	_run.call_deferred()
 
 
@@ -243,7 +248,14 @@ func _run() -> void:
 	if overlay != null:
 		overlay.call(&"toggle")
 		var debug_text: String = str(overlay.call(&"get_debug_text"))
-		_check("FPS" in debug_text and "Projectiles" in debug_text, "F3 overlay reports fps/projectiles")
+		var projectiles_word := "Projectiles"
+		var locale_service := get_root().get_node_or_null("LocaleService")
+		if locale_service != null:
+			projectiles_word = str(locale_service.call("t", "debug.projectiles", "Projectiles"))
+		_check(
+			"FPS" in debug_text and projectiles_word in debug_text,
+			"F3 overlay reports fps/projectiles"
+		)
 		overlay.call(&"toggle")
 
 	# --- abandon === death rewards + bundle idempotency -----------------------

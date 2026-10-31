@@ -1,14 +1,14 @@
 # PROGRESS
 
 Single source of truth for "where are we". Updated at the end of every session.
-Keep it under 90 lines — it is read at the start of every session.
 
-**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M4 done → M5 next
+**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M5a done → M5b next
 **Branch:** `main` · **Godot:** `C:\Tools\godot-4.7.2\Godot_v4.7.2-stable_win64.exe` (4.7.2)
-**Verification (M4b, green):** check_project exit 0 · tests 39/39 · smoke 20/20 scenes ·
-battle_smoke PASS · m4b_acceptance PASS · balance_probe exit 0 (default 9 waves;
-`-- fill 1 10` clears 11) · previews `m4_magica.png`, `m4_cards.png`,
-`m4_cards_detail.png`, `m4_missions.png`
+**Verification (M5a, green):** check_project exit 0 · tests **47/47** ·
+smoke **22/22 scenes** · battle_smoke PASS · m4b_acceptance PASS ·
+lint_locale 530 keys, 0 missing, 0 unused · previews `m5_settings_uk.png`,
+`m5_settings_pseudo.png`, `m5_onboarding.png`, `m5_onboarding_profile.png`,
+`m5_battle_uk.png`, `m5_battle_pseudo.png`
 **Toolchain gaps (M6):** Android SDK/adb; LDPlayer `E:\LDPlayer\LDPlayer14`; SDK `C:\Android\Sdk`
 
 ## Milestones
@@ -19,84 +19,80 @@ battle_smoke PASS · m4b_acceptance PASS · balance_probe exit 0 (default 9 wave
 | M1 | Battle vertical slice | done | `v0.2.0-m1` |
 | M2 | Combat depth | done | `v0.3.0-m2` |
 | M3 | Run economy, upgrades, speed | done (M3.1 balance pass) | `v0.4.1-m3` |
-| M4 | Meta progression and persistence | **done (M4a + M4b)** | `v0.5.0-m4` |
-| M5 | Shell, UX, localization, audio | not started | `v0.6.0-m5` |
+| M4 | Meta progression and persistence | done | `v0.5.0-m4` |
+| M5 | Shell, UX, localization, audio | **M5a done, M5b next** | `v0.6.0-m5` (M5b) |
 | M6 | Android, ads, billing, telemetry | not started | `v0.7.0-m6` |
 | M7 | Backend (FastAPI + Neon), live features | not started | `v0.8.0-m7` |
 | M8 | Balance, polish, release readiness | not started | `v1.0.0-m8` |
 
-## M4b delivered (finishes M4, tags v0.5.0-m4)
+## M5a delivered (first half of M5, no tag)
 
-- **Magica**: `MagicaNode` + **14 `.tres`** in `data/magica/` (all named §6.4 rows:
-  Quickened Roots I–III, Flow of Ages, Auto-Restart, Golden Sap I–III, Night Harvest,
-  Merchant's Favor, Fourth Branch, Deep Roots, Ancient Memory, Second Wind).
-  `MagicaModel` + `MagicaService`: one active research, UTC `started_at`/`ends_at`,
-  offline completion on boot/focus into a claimable badge, 50 % cancel refund,
-  research-speed modifier at start, one `magica:<id>` ModifierService source per
-  completed node. `scenes/menu/magica.tscn`: 3 branch columns, node states
-  (locked/available/active/done), radial timer, Speed up (AD) stub, Cancel confirm.
-- **Cards**: `CardData` + **12 `.tres`** in `data/cards/` (rarity, 5 levels, shard
-  curve 20/40/80/160, effect lists), `CardCollection` + `CardService` (owned/levels/
-  shards, duplicates→shards with auto-upgrade, equip 1–5 slots gated by
-  `card_slot_1..4` + Deep Roots, 8 % + `card_drop_chance` drops on wave clear, one
-  `&"cards"` source applied on equip and removed on unequip). `scenes/menu/cards.tscn`:
-  loadout slots, filters/sort collection grid, detail modal with live effect numbers,
-  Upgrade, Equip/Unequip, where-to-get.
-- **Missions**: `MissionTemplate` pool in `data/missions/templates.tres`, `MissionSchedule`
-  (pure 04:00 / Monday-04:00 local maths), `MissionModel` + `MissionService`
-  (3 daily + 5 weekly, level-scaled targets/rewards, battle-event progress,
-  claim-once, all-3/all-5 bonuses incl. weekly card pack, persisted + rerolled).
-  `scenes/menu/missions.tscn`: countdowns, progress bars, reward chips, Claim,
-  Claim all (≥2), reset footer.
-- **Offline income**: `OfflineModel` + `OfflineService` (`last_seen_at` UTC in the
-  save, 0.01 coins/s base, 8 h cap + workshop `offline_cap_minutes`, Night Harvest
-  multiplier), claim through `WalletService`, Welcome back modal on the main menu.
-- **Nav + environment**: Cards/Missions/Shop tabs wired (Shop shows "arrives with M6"),
-  shared `MenuNav` with correct active state, Magica entry on the home screen with a
-  completion badge; new `EventBus` signals (`enemy_killed`, `enemy_leaked`,
-  `tower_built`, `card_dropped`, `second_wind_used`); Ancient Memory grants a free
-  Archer, Second Wind saves the Tree once, Greed scales spawner counts, Overgrowth
-  scales tower range.
-- Tests: **+10 (39 total)** — magica prerequisites/timer/cancel/offline restart,
-  card equip/unequip aggregation, duplicate shards, slot limits, mission 04:00
-  boundary, claim-once/reroll, completion bonus, offline caps.
-  `tools/m4b_acceptance.gd` proves the five M4 acceptance criteria end-to-end;
-  `tools/balance_probe.gd` now isolates cards/magica/missions and accepts a min-wave.
+- **Localization**: `localization/strings.csv` (`keys,en,uk`, **530 keys**, real
+  English + Ukrainian, registered in Project Settings). All scene labels now hold
+  keys (engine `tr()`); all code strings go through `LocaleService.t(key)`. No
+  literals left in `.tscn` labels except symbols. `LocaleService`: live
+  `set_language`, `format_number` (`12 480` NBSP / `12,480`), `format_percent`,
+  `format_duration` (`2г 15хв` / `2h 15m`), `format_countdown`, `plural(n, base)`
+  with Ukrainian one/few/many incl. 11–14, `.one/.few/.many/.other` CSV rows and
+  `pseudo` (+~60 %). Data resources keep `name_key`/`description_key`/
+  `label_key`; card stats, magica effects, mission titles and unlock names are
+  localized at render time. `tools/lint_locale.gd` audits `.tscn/.gd/.tres` vs CSV,
+  key format, empty cells and placeholder parity; non-zero on failure.
+- **Audio**: `tools/generate_audio_placeholders.py` (numpy) writes 3×20 s music
+  loops + 30 SFX WAVs into `assets/audio/{music,ui,battle,meta}/` (16-bit mono
+  44.1 kHz). `AudioService` owns one music player (0.8 s crossfade, no restart on
+  scene change), a 16-voice SFX pool (40 ms per-sound cooldown, ±5 % pitch),
+  master/music/SFX/UI buses driven by `SettingsService`, −6 dB modal duck and
+  focus resume. EventBus hooks: wave start/clear, boss spawn/remove, kills,
+  leaks, crits, tower hits/shots, build/upgrade/sell, research start/complete,
+  card flip/drop, level-up, purchases, and every Button (global UI click).
+- **Settings** `scenes/menu/settings.tscn`: audio sliders (live), language uk/en
+  (instant), text scale 100/115/130 % through a runtime theme duplicate, screen
+  shake, haptics, damage numbers, debug FPS/pseudo-locale, read-only nickname,
+  player ID + copy, legal placeholders, version, debug reset profile. The main
+  menu gear routes here; the battle pause menu opens it as a modal overlay (run
+  stays alive).
+- **Onboarding** `scenes/onboarding/first_launch.tscn`: language → nickname
+  (3–16, Unicode letters/digits/underscore, inline errors) + 6 avatars → Play;
+  creates UUID v4 `player.id`, nickname, avatar, `is_onboarded`, flushes save.
+  Boot routes to it when the save is not onboarded.
+- **Navigation**: `SceneRouter` fade + history + `open_overlay()`, Android
+  `NOTIFICATION_WM_GO_BACK_REQUEST`/`ui_cancel`, modals closed first, settings
+  overlay closed before leaving, onboarding back steps inside the wizard, and
+  battle back opens pause (abandon still needs confirm).
+- Tests: **+8 (47 total)** — locale lint, en/uk catalogues, Ukrainian plurals,
+  number/duration/countdown formatting, pseudo-locale, settings persistence,
+  nickname validation + UUID v4, audio dB mapping.
 
-## M4a delivered (tagged as part of v0.5.0-m4)
+## Earlier milestones (summary)
 
-- **Save v2** (`SaveService`): spec §8.2 document + local extras, SHA-256 checksum,
-  atomic temp+rename, `.bak` fallback, pure `migrate_v1_to_v2()`, event-driven
-  autosave + immediate pause/close flush. ADR-022.
-- **`WalletService`/`MetaWallet`** (only currency mutation path, typed
-  `SpendResult`, 50-entry log) and **`LevelService`/`UnlockService`**
-  (XP `round(120*1.18^(level-1))`, §6.2 gates at 3/4/10/12).
-- **Workshop**: 24 `WorkshopTrack` `.tres` (cost `base*1.18^level` rounded to 5,
-  max 50), `WorkshopModel`/`WorkshopService`, `scenes/menu/workshop.tscn`.
-- **One modifier pipeline**: workshop, Tree, cards, magica and offline bonuses
-  aggregate in `ModifierService`; entities only call `get_stat()`. ADR-023.
+- **M4**: save v2 (checksum/atomic/.bak/migration), WalletService, Level/Unlock,
+  Workshop (24 tracks), Magica (14 nodes), Cards (12 + slots), Missions
+  (3 daily / 5 weekly, 04:00), OfflineService, modifier pipeline. Tag
+  `v0.5.0-m4`, 39 tests.
+- **M0–M3**: boot/menu shell, battle vertical slice, combat depth, run economy,
+  upgrades and speed. Tags `v0.1.0-m0` … `v0.4.1-m3`.
 
 ## Deviations / open items
 
-- §6.4's table names **14** nodes; the M4 brief's "12" was a pre-table count. All 14
-  are data-driven and tested by id.
-- Flow of Ages publishes `battle_speed_extra` but the battle HUD still exposes the
-  three M3 speed buttons; the fourth step is an M5 UI task. Auto-Restart publishes a
-  flag but the run-summary toggle is M5.
-- Merchant's Favor `shop_discount` is stored for M6; its in-run discount is live.
-- Ads speed-up/card pack are stubs until M6 (`AdsService`); the mission "watch ads"
-  template stays at 0 until the ad bridge calls `MissionService.record_rewarded_ad()`.
-- Card art is the placeholder square; per-rarity 9-slice frames and M5 polish remain.
-- Save schema stays v2; the M4b extras default on load (no v3 migration needed).
+- Placeholder music is **20 s WAV** (brief) rather than the final 60/90 s OGG
+  from §9.9; the path/API is already OGG-compatible (ADR-028).
+- Pseudo-locale is applied to `LocaleService.t()` at runtime and the +60 %
+  layout stress is captured with a scene-wide transform in
+  `tools/capture_scene.gd` (ADR-027). Normal language switching is engine-live.
+- Text scale is a duplicated runtime theme; battle HUD `theme_override_font_sizes`
+  stay authored (HUD numbers must not grow).
 - `battle_controller.gd`/`battle_hud.gd` still exceed the 400-line guideline.
-- 532 draw calls > M2 target 120 (placeholder art, atlas pass M5/M8).
+- 532 draw calls > M2 target 120 (placeholder art, atlas pass M5b/M8).
 
-## Next tasks — M5 (first 3)
+## Next tasks — M5b (owns tag `v0.6.0-m5`)
 
 1. **Main menu per reference** (`docs/reference/ui_main_menu.png`): top bar with
-   currency `+` buttons, stats card (best wave/level/XP/avatar), Battle CTA, speed
-   trial bar, daily card, 5-tab nav; keep the Magica entry.
-2. **SceneRouter + navigation**: fade transitions on every screen, back stack,
-   Android back-button behaviour, no dead ends.
-3. **Settings screen**: audio sliders, language switch, text scale, haptics, shake,
-   debug FPS counter; persist via `SettingsService`.
+   `+` buttons, stats card (best wave/level/XP/avatar), speed-trial bar, daily
+   card, 5-tab nav; keep the Magica entry and the gear → Settings.
+2. **Shop UI** with stub products (`Gems`, `Coins`, `Special`, restore, disabled
+   "Store unavailable"), **Leaderboard** against `LocalBackendStub` (weekly /
+   all-time / tournament, offline banner, empty state), **Profile** screen.
+3. **Toasts/modals/loading/empty states/notification dots** polish; card rarity
+   frames; audio for shop/leaderboard stubs.
+4. Tag `v0.6.0-m5` after all M5 acceptance checks, update CHANGELOG/PROGRESS.

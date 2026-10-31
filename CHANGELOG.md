@@ -3,6 +3,54 @@
 All notable changes are recorded per milestone. The project follows semantic
 versioning for tags; unreleased work stays under `[Unreleased]`.
 
+## [Unreleased] — M5a (localization, audio, settings, onboarding, navigation)
+
+### Added
+
+- **Localization**: `localization/strings.csv` with **530 keys** in English and
+  Ukrainian (Godot CSV import, both catalogues registered in Project Settings).
+  Every `.tscn` label now stores a translation key; code strings go through
+  `LocaleService.t()`. Data resources (`tower`, `unit`, `enemy`, `workshop`,
+  `card`, `magica`, `tree_upgrade`, `mission`) render their `*_key` fields through
+  the active locale. `LocaleService` gained live `set_language()`,
+  `format_number()` (`12 480` / `12,480`), `format_percent()`,
+  `format_duration()` (`2г 15хв` / `2h 15m`), `format_countdown()`,
+  `plural()`/`plural_count()` with Ukrainian one/few/many (11–14 exception) and a
+  debug `pseudo` transform (+~60 % length). `tools/lint_locale.gd` fails on
+  missing keys, unused keys, bad key format, empty cells or placeholder mismatch.
+- **Audio**: `tools/generate_audio_placeholders.py` generates 3×20 s music loops
+  and 30 short SFX (16-bit mono 44.1 kHz) into `assets/audio/{music,ui,battle,meta}/`.
+  `AudioService` now has one persistent music player with an 0.8 s crossfade
+  (menu/battle/boss themes), a 16-voice SFX pool with a 40 ms per-sound cooldown
+  and ±5 % pitch, master/music/SFX/UI bus volumes from SettingsService, a −6 dB
+  duck while a modal is visible, focus resume, and EventBus hooks for wave
+  start/clear, boss spawn/remove, hit/crit/kill/leak, shots, build/upgrade/sell,
+  research start/complete, card flip/drop, level-up, purchases and UI buttons.
+- **Settings** (`scenes/menu/settings.tscn`): live music/SFX/UI sliders, instant
+  language switch (uk/en), text scale 100/115/130 % applied to the live theme,
+  screen shake, haptics, damage numbers, debug FPS counter and pseudo-locale,
+  read-only nickname, player ID with copy, privacy/terms placeholders, version,
+  and a debug-only reset profile. Reached from the main-menu gear; opened as a
+  modal overlay from the battle pause menu without losing the run.
+- **Onboarding** (`scenes/onboarding/first_launch.tscn`): language → nickname
+  (3–16 chars, Unicode-letters validation, inline errors) + 6 avatars → Play.
+  Creates a UUID v4 `player.id`, nickname and `avatar_id`, sets `is_onboarded`
+  and flushes the save; Boot routes here when the profile is not onboarded.
+- **Navigation**: `SceneRouter` history/back stack, `open_overlay()` modal
+  screens, fade transitions, Android back / `ui_cancel` handling that closes
+  modals first, steps back inside onboarding, and opens the pause menu (never a
+  silent exit) while a battle is running.
+- Tests: **+8 (47 total)** for locale lint, catalogues, Ukrainian plurals,
+  number/duration/countdown formatting, pseudo-locale, settings persistence,
+  nickname validation + UUID v4 and audio dB mapping.
+
+### Changed
+
+- Main menu gear now opens Settings instead of a "coming soon" toast.
+- Battle pause "Settings" now opens the real settings overlay.
+- `SettingsService` persists `damage_numbers`, `show_fps` and `pseudo_locale`.
+- Locale-aware formatting replaces per-screen number/duration strings.
+
 ## [0.5.0-m4] — 2026-10-31
 
 ### Added (M4a)

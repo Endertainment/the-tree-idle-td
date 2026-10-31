@@ -10,6 +10,7 @@ const TestBattle := preload("res://tests/test_battle.gd")
 const TestEconomy := preload("res://tests/test_economy.gd")
 const TestMeta := preload("res://tests/test_meta.gd")
 const TestM4b := preload("res://tests/test_m4b.gd")
+const TestM5a := preload("res://tests/test_m5a.gd")
 
 
 func _initialize() -> void:
@@ -19,6 +20,7 @@ func _initialize() -> void:
 	var economy: RefCounted = TestEconomy.new()
 	var meta: RefCounted = TestMeta.new()
 	var m4b: RefCounted = TestM4b.new()
+	var m5a: RefCounted = TestM5a.new()
 	var cases: Array[Dictionary] = [
 		{"name": "art manifest paths exist", "callable": Callable(core, "test_manifest_paths")},
 		{"name": "SaveService round-trip", "callable": Callable(core, "test_save_roundtrip")},
@@ -59,6 +61,14 @@ func _initialize() -> void:
 		{"name": "missions claim once and reroll", "callable": Callable(m4b, "test_missions_claim_once_and_reset")},
 		{"name": "mission completion bonus once", "callable": Callable(m4b, "test_mission_completion_bonus_once")},
 		{"name": "offline income caps", "callable": Callable(m4b, "test_offline_income_caps")},
+		{"name": "locale key lint", "callable": Callable(m5a, "test_locale_key_lint")},
+		{"name": "en/uk translation catalogues", "callable": Callable(m5a, "test_translation_catalogues_load")},
+		{"name": "ukrainian plural rules", "callable": Callable(m5a, "test_ukrainian_plural_rules")},
+		{"name": "number and duration formatting", "callable": Callable(m5a, "test_number_and_duration_formatting")},
+		{"name": "pseudo-locale transform", "callable": Callable(m5a, "test_pseudo_locale")},
+		{"name": "settings persistence", "callable": Callable(m5a, "test_settings_persistence")},
+		{"name": "nickname validation and uuid", "callable": Callable(m5a, "test_nickname_validation")},
+		{"name": "audio bus volume mapping", "callable": Callable(m5a, "test_audio_bus_volume_mapping")},
 	]
 
 	var failures := 0
