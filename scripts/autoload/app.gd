@@ -48,6 +48,11 @@ func is_initialized() -> bool:
 	return _initialized
 
 
+## Returns true for editor/debug builds (debug overlay, fake reward grants).
+func is_debug_build() -> bool:
+	return OS.is_debug_build()
+
+
 ## Returns true when a non-fatal service failure happened during boot.
 func is_degraded() -> bool:
 	return _degraded

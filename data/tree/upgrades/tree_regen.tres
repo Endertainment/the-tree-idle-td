@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="UpgradeTrack" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/upgrade_track.gd" id="1_track"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_heart.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_track")
+id = &"tree_regen"
+order = 6
+name_key = "tree_upgrade.regen"
+name = "Regen"
+description_key = "tree_upgrade.regen_desc"
+description = "Tree health per second"
+icon = ExtResource("2_icon")
+stat_id = &"regen"
+effect_per_level = 0.003
+display_suffix = " /s"
+cost_base = 80
+cost_growth = 1.4
+max_level = 30

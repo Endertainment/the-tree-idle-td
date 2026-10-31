@@ -44,6 +44,13 @@ func goto(scene_id: StringName, params: Dictionary = {}) -> void:
 	await _transition(scene_id, params, true)
 
 
+## Reloads the current scene (run restart). Keeps the same scene id and history.
+func reload(params: Dictionary = {}) -> void:
+	if _current_id == &"":
+		return
+	await _transition(_current_id, params, false, true)
+
+
 ## Returns to the previous scene, or the main menu when history is empty.
 func back() -> void:
 	var target: StringName = &"main_menu"
@@ -72,13 +79,18 @@ func is_transitioning() -> bool:
 	return _transitioning
 
 
-func _transition(scene_id: StringName, params: Dictionary, push_history: bool) -> void:
+func _transition(
+	scene_id: StringName,
+	params: Dictionary,
+	push_history: bool,
+	allow_same: bool = false
+) -> void:
 	if _transitioning:
 		return
 	if not SCENES.has(scene_id):
 		push_error("SceneRouter: unknown scene id '%s'" % scene_id)
 		return
-	if scene_id == _current_id:
+	if scene_id == _current_id and not allow_same:
 		return
 
 	_transitioning = true

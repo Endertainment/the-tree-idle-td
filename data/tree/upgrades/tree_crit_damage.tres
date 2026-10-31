@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeTrack" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/upgrade_track.gd" id="1_track"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_magic.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_track")
+id = &"tree_crit_damage"
+order = 4
+name_key = "tree_upgrade.crit_damage"
+name = "Crit Damage"
+description_key = "tree_upgrade.crit_damage_desc"
+description = "Critical hit multiplier"
+icon = ExtResource("2_icon")
+stat_id = &"crit_damage"
+effect_per_level = 0.15
+cost_base = 60
+cost_growth = 1.45
+max_level = 30

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="UpgradeTrack" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/upgrade_track.gd" id="1_track"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_star.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_track")
+id = &"tree_crit_chance"
+order = 3
+name_key = "tree_upgrade.crit_chance"
+name = "Crit Chance"
+description_key = "tree_upgrade.crit_chance_desc"
+description = "Chance to hit critically (cap 60 %)"
+icon = ExtResource("2_icon")
+stat_id = &"crit_chance"
+effect_per_level = 0.02
+cap = 0.6
+display_suffix = " pp"
+cost_base = 60
+cost_growth = 1.45
+max_level = 30

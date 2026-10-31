@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeTrack" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/upgrade_track.gd" id="1_track"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_speed.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_track")
+id = &"tree_attack_speed"
+order = 2
+name_key = "tree_upgrade.attack_speed"
+name = "Attack Speed"
+description_key = "tree_upgrade.attack_speed_desc"
+description = "Shots per second"
+icon = ExtResource("2_icon")
+stat_id = &"attack_speed"
+effect_per_level = 0.06
+cost_base = 50
+cost_growth = 1.4
+max_level = 30
