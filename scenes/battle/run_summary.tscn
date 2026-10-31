@@ -72,6 +72,13 @@ theme_override_colors/font_color = Color(1, 0.86, 0.35, 1)
 text = "NEW BEST"
 horizontal_alignment = 1
 
+[node name="BestLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Best wave: 0"
+horizontal_alignment = 1
+
 [node name="Divider" type="HSeparator" parent="Root/Center/Panel/Margin/Layout"]
 layout_mode = 2
 
@@ -80,6 +87,14 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
 text = "Waves: 0"
+horizontal_alignment = 1
+
+[node name="CashLost" type="Label" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+theme_override_colors/font_color = Color(1, 0.58, 0.45, 1)
+text = "Cash is lost when the run ends: 0"
 horizontal_alignment = 1
 
 [node name="CoinsLabel" type="Label" parent="Root/Center/Panel/Margin/Layout"]
@@ -99,6 +114,22 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
 text = "XP +0"
+
+[node name="AdNote" type="Label" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="DoubleButton" type="Button" parent="Root/Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(560, 112)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"GoldButton"
+text = "Double coins (AD)"
 
 [node name="ContinueButton" type="Button" parent="Root/Center/Panel/Margin/Layout"]
 unique_name_in_owner = true
