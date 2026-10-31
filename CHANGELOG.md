@@ -3,9 +3,9 @@
 All notable changes are recorded per milestone. The project follows semantic
 versioning for tags; unreleased work stays under `[Unreleased]`.
 
-## [Unreleased] — M4a (meta progression and persistence, part 1)
+## [0.5.0-m4] — 2026-10-31
 
-### Added
+### Added (M4a)
 
 - `SaveService` schema **v2**: full spec 8.2 document (player, wallet, stats,
   workshop, magica, cards, missions, unlocks, settings, shop, ads) plus local
@@ -45,6 +45,48 @@ versioning for tags; unreleased work stays under `[Unreleased]`.
   workshop level, reloads with a fresh SaveService and asserts it survived.
 - Preview: `docs/preview/m4_workshop.png`.
 
+### Added (M4b)
+
+- **Magica** (`MagicaNode`, `MagicaModel`, `MagicaService`): 14 data nodes in
+  `data/magica/` covering every named §6.4 row (Time/Wealth/Knowledge), one
+  active research, UTC `started_at`/`ends_at`, offline completion on boot/focus
+  into a claimable badge, 50 % cancel refund, research-speed modifier at start and
+  one `magica:<id>` ModifierService source per completed node. `scenes/menu/magica.tscn`
+  has the three branch columns, locked/available/active/done node states, a radial
+  timer, "Speed up (AD)" stub and a Cancel confirmation.
+- **Cards** (`CardData`, `CardCollection`, `CardService`): 12 cards in
+  `data/cards/` (4 rarities, levels 1–5, shards 20/40/80/160, effect lists),
+  duplicate shards with auto-upgrade, 1–5 equip slots (levels 2/5/15/20 + Deep
+  Roots), one aggregated `&"cards"` source on equip and removal on unequip, and an
+  8 % + `card_drop_chance` wave-clear drop. `scenes/menu/cards.tscn` adds loadout
+  slots, filter/sort collection grid and a detail modal with live effect numbers,
+  Upgrade, Equip/Unequip and where-to-get.
+- **Missions** (`MissionTemplate`, `MissionTemplateTable`, `MissionSchedule`,
+  `MissionModel`, `MissionService`): 3 daily + 5 weekly generated from
+  `data/missions/templates.tres`, level-scaled targets/rewards, battle-event
+  progress (`waves_cleared`, `kills`, `towers_built`, `wave_reached`, `crits`,
+  `clean_runs`, `cards_equipped`, `ads_watched`), claim-once, all-3/all-5 bonuses
+  (weekly includes a card pack), persist/reroll at 04:00 local and Monday 04:00.
+  `scenes/menu/missions.tscn`: countdowns, progress bars, reward chips, Claim,
+  Claim all (≥2) and the reset footer.
+- **Offline income** (`OfflineModel`, `OfflineService`): UTC `last_seen_at`,
+  0.01 coins/s base, 8 h cap + workshop `offline_cap_minutes`, Night Harvest
+  multiplier, claim through `WalletService`, Welcome back modal on the main menu.
+- **Navigation/UI**: Cards, Missions and Shop tabs wired (Shop shows "arrives with
+  M6"), shared `MenuNav` with correct active state, Magica home-screen entry with a
+  completion badge, Welcome back modal. New EventBus signals for kills/leaks/tower
+  builds/card drops/Second Wind; Ancient Memory, Second Wind, Greed and Overgrowth
+  reach the live battle.
+- Tests: **+10 (39 total)** and `tools/m4b_acceptance.gd`; previews
+  `m4_magica.png`, `m4_cards.png`, `m4_cards_detail.png`, `m4_missions.png`.
+
+### Changed (M4b)
+
+- `GameState.player.last_seen_at`, `magica.pending_claim` and the mission bonus
+  flags are local extras inside the same v2 document; older saves default them.
+- `tools/balance_probe.gd` isolates cards/magica/missions between runs and accepts
+  an optional minimum-wave argument; `tests/run_tests.gd` runs the M4b suite.
+
 ### Changed
 
 - `GameState` is now the profile container only: wallet mutations through
@@ -55,10 +97,13 @@ versioning for tags; unreleased work stays under `[Unreleased]`.
   gain, wave-clear bonus, in-run discount, coin/XP gain) — all no-ops at level 0,
   so M3/M3.1 battle balance numbers are unchanged.
 
-### Verification (M4a)
+### Verification (M4)
 
-- `check_project` exit 0 · unit tests 29/29 · scene smoke 18/18 ·
-  battle smoke PASS (53 checks) · persistence proof PASS (16 checks).
+- `check_project` exit 0 · unit tests 39/39 · scene smoke 20/20 ·
+  battle smoke PASS · `m4b_acceptance` PASS (research offline/restart, workshop
+  DPS, card equip/unequip + Deep Roots, mission claim-once/04:00 reroll, offline
+  claim, corrupt→`.bak`, Welcome back modal) · `balance_probe` exit 0
+  (fill seed 1 cleared 11 waves; the M4 acceptance run used min-wave 10).
 
 ## [0.4.1-m3] — 2026-10-31
 

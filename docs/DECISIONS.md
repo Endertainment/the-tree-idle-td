@@ -445,3 +445,86 @@ meaningful base (e.g. attack speed as a multiplier) must pass a sensible base
 Cards and Magica must use `add_source`/`remove_source` and never mutate stats
 directly; if a future system needs per-frame values, it registers the source
 again instead of caching a second aggregation.
+
+## ADR-024 — Magica research uses UTC timestamps and a claim step (M4b)
+
+**Status:** accepted (M4b)
+
+**Context:** spec §6.4 requires real-time research that continues while the app is
+closed, one active research, a 50 % cancel refund and a "Research complete"
+badge. A save can be offline for weeks, so a countdown based on monotonic timers
+would be wrong. Two behaviours were ambiguous: whether the effect applies the
+instant `ends_at` passes, and how a second research slot would fit later.
+
+**Decision:** store `research = {node_id, started_at, ends_at}` as UTC unix
+seconds and derive everything from `TimeService.now_unix()`. `reconcile()` runs on
+boot, on app focus/pause and on the screen tick; when `now >= ends_at` it moves the
+node id to a saved `pending_claim` field and clears the active research. The
+node's effects are published to `ModifierService` only after the player taps
+Claim, so the badge cannot be missed while offline. `cancel()` refunds
+`floor(cost * 0.5)` for coins and gems through `WalletService` and clears the
+research. The research-speed modifier (`magica_speed`, shared with the workshop
+track) is applied when research starts, not while it runs, so the shown duration
+matches the stored `ends_at`. Each completed node registers its own
+`magica:<id>` source, which keeps additive and multiplicative stacking explicit.
+`pending_claim` is a local extra inside the existing v2 `magica` section.
+
+**Consequences:** an app kill/restart is indistinguishable from a normal tick, and
+a test can move `TimeService.override_unix` instead of waiting. A finished
+research occupies the "one active research" slot until claimed, which is
+deliberate (the player chooses when to acknowledge it). Adding a premium second
+slot later is a `research` array migration, not a rewrite.
+
+## ADR-025 — Card levels scale effect values, duplicates become shards (M4b)
+
+**Status:** accepted (M4b)
+
+**Context:** spec §6.5 fixes rarities, levels 1–5, the shard costs
+(20/40/80/160) and the 12 launch cards, but not how a card level changes its
+effect. Duplicates and the manual Upgrade button both spend the same shard
+currency, so one rule has to cover both.
+
+**Decision:** each `ModifierData` on a `CardData` is authored at level 1 and scaled
+by `1 + 0.25 * (level - 1)` (level 5 = ×2.0). A duplicate grants 20 shards and
+auto-upgrades while the next-level cost is affordable; the Upgrade button performs
+one level-up from the same shard pool. The loadout is published as a single
+`&"cards"` source built with `ModifierBuilder`, which sums `add`/`mul` parts per
+stat before `ModifierService` sees them, so two copies of one stat on a card (or
+two cards touching one stat) cannot overwrite each other. Slots are counted from
+`UnlockService` (`card_slot_1..4`) plus the `card_slot_bonus` modifier (Deep Roots);
+the save still writes four slots until the fifth is actually used, keeping old v2
+documents byte-compatible.
+
+**Consequences:** every card has a predictable power curve and a duplicate is
+always useful; a card that adds a unit slot can reach +2 at level 5, which is
+harmless because the map has four physical slots and the unlock check is `>= 1`.
+The ×2.0 ceiling is a balance number, documented in `BALANCE.md`; if M8 wants a
+different curve, only `CardData.LEVEL_STEP` and the doc change.
+
+## ADR-026 — Missions are generated instances, not live template queries (M4b)
+
+**Status:** accepted (M4b)
+
+**Context:** spec §6.6 needs 3 daily + 5 weekly missions, scaling targets, a
+04:00 local reset, claim-once rewards and completion bonuses. The device clock can
+change timezone or jump; the app may be closed across several resets.
+
+**Decision:** `MissionSchedule` is a pure helper over `now_unix` plus a UTC offset
+in minutes. A mission cycle id is the shifted local date (`2026-10-31`, day starts
+at 04:00) or ISO week (`2026-W44`, week starts Monday 04:00). `MissionModel.setup()`
+compares the saved ids with the current ones and regenerates on mismatch, which
+also clears progress, claims and the bonus flags. Generated missions are stored as
+instances (`id`, template id, title, metric, mode, target, progress, claimed,
+reward amounts), so a later template edit cannot invalidate an in-progress
+mission. Targets scale `+12 %` per player level and rewards `+8 %` per level;
+`mission_reward_bonus` from the workshop multiplies the claim. Rewards are paid
+with `RewardBundle` through `GameState.grant_bundle` (which delegates to
+`WalletService`), and `claimed` is set before any grant, so a double tap cannot
+pay twice. The all-3/all-5 bonus is auto-granted exactly once when the last mission
+is claimed; the weekly bonus also grants a random card through `CardService`.
+
+**Consequences:** resetting across a 04:00 boundary is a pure id comparison and is
+tested with simulated timestamps; no mission ever asks for premium currency. A
+clock that moves backwards only causes an extra reroll, never a duplicate claim.
+The bonus flags and `pending` sections are local extras in the v2 document.
+

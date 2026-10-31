@@ -73,7 +73,9 @@ func _run() -> void:
 	_test_workshop_dps()
 	_test_cards()
 	_test_missions()
+	_test_mission_events()
 	_test_offline()
+	await _test_welcome_modal()
 	_test_corrupt_save()
 
 	_time.call(&"set_now_override", -1)
@@ -201,6 +203,34 @@ func _test_missions() -> void:
 	_time.call(&"set_now_override", T0)
 
 
+func _test_mission_events() -> void:
+	print("[ proof ] battle events advance mission progress")
+	_reset_profile()
+	var state: Dictionary = _game_state.get("missions")
+	state["daily"] = [
+		{"id": "d_kills", "template_id": "d_kills", "progress": 0, "claimed": false},
+		{"id": "d_towers", "template_id": "d_towers", "progress": 0, "claimed": false},
+		{"id": "d_clean", "template_id": "d_clean", "progress": 0, "claimed": false},
+	]
+	state["weekly"] = []
+	_missions.call(&"init_service", state)
+	var bus := root.get_node_or_null("EventBus")
+	if bus == null:
+		_fail("EventBus is missing")
+		return
+	bus.emit_signal(&"enemy_killed", &"grunt", false)
+	bus.emit_signal(&"tower_built", &"tower_archer", 3)
+	bus.emit_signal(&"run_started")
+	bus.emit_signal(&"run_ended", 7)
+	var model: Variant = _missions.call(&"get_model")
+	var kills_row: Dictionary = model.call(&"get_mission", "d_kills")
+	var towers_row: Dictionary = model.call(&"get_mission", "d_towers")
+	var clean_row: Dictionary = model.call(&"get_mission", "d_clean")
+	_check(int(kills_row.get("progress", 0)) == 1, "enemy_killed advanced the kill mission")
+	_check(int(towers_row.get("progress", 0)) == 3, "tower_built advanced the tower mission (max mode)")
+	_check(int(clean_row.get("progress", 0)) == 1, "a leak-free run advanced the clean-run mission")
+
+
 func _test_offline() -> void:
 	print("[ proof ] offline income computes and claims through the wallet")
 	_reset_profile()
@@ -213,6 +243,25 @@ func _test_offline() -> void:
 	_check(claimed == 108, "offline claim returned 108 coins")
 	_check(int(_wallet.call(&"get_balance", &"coins")) == before + 108, "offline coins landed in the wallet")
 	_check(int(_offline.call(&"claim")) == 0, "offline claim is once per pending modal")
+
+
+func _test_welcome_modal() -> void:
+	print("[ proof ] main menu shows the welcome-back modal")
+	_reset_profile()
+	_game_state.get("player")["last_seen_at"] = T0 - 3600
+	_offline.call(&"init_service", {})
+	var packed := load("res://scenes/menu/main_menu.tscn") as PackedScene
+	if packed == null:
+		_fail("cannot load main menu")
+		return
+	var menu := packed.instantiate()
+	root.add_child(menu)
+	await process_frame
+	var modal := menu.get_node_or_null("%WelcomeModal") as Modal
+	_check(modal != null and modal.visible, "welcome-back modal opened for 36 pending coins")
+	menu.queue_free()
+	await process_frame
+	_offline.call(&"claim")
 
 
 func _test_corrupt_save() -> void:

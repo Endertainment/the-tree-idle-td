@@ -3,10 +3,12 @@
 Single source of truth for "where are we". Updated at the end of every session.
 Keep it under 90 lines — it is read at the start of every session.
 
-**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M4a done, M4b next
+**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M4 done → M5 next
 **Branch:** `main` · **Godot:** `C:\Tools\godot-4.7.2\Godot_v4.7.2-stable_win64.exe` (4.7.2)
-**Verification (M4a, green):** check_project exit 0 · tests 29/29 · smoke 18/18 scenes ·
-battle_smoke PASS (53 checks) · persistence_proof PASS (16 checks) · preview `docs/preview/m4_workshop.png`
+**Verification (M4b, green):** check_project exit 0 · tests 39/39 · smoke 20/20 scenes ·
+battle_smoke PASS · m4b_acceptance PASS · balance_probe exit 0 (default 9 waves;
+`-- fill 1 10` clears 11) · previews `m4_magica.png`, `m4_cards.png`,
+`m4_cards_detail.png`, `m4_missions.png`
 **Toolchain gaps (M6):** Android SDK/adb; LDPlayer `E:\LDPlayer\LDPlayer14`; SDK `C:\Android\Sdk`
 
 ## Milestones
@@ -17,90 +19,84 @@ battle_smoke PASS (53 checks) · persistence_proof PASS (16 checks) · preview `
 | M1 | Battle vertical slice | done | `v0.2.0-m1` |
 | M2 | Combat depth | done | `v0.3.0-m2` |
 | M3 | Run economy, upgrades, speed | done (M3.1 balance pass) | `v0.4.1-m3` |
-| M4 | Meta progression and persistence | M4a done, M4b next | `v0.5.0-m4` (after M4b) |
+| M4 | Meta progression and persistence | **done (M4a + M4b)** | `v0.5.0-m4` |
 | M5 | Shell, UX, localization, audio | not started | `v0.6.0-m5` |
 | M6 | Android, ads, billing, telemetry | not started | `v0.7.0-m6` |
 | M7 | Backend (FastAPI + Neon), live features | not started | `v0.8.0-m7` |
 | M8 | Balance, polish, release readiness | not started | `v1.0.0-m8` |
 
-## M4a delivered (tagged by M4b as part of v0.5.0-m4)
+## M4b delivered (finishes M4, tags v0.5.0-m4)
 
-- **Save schema v2** (`SaveService`): full spec §8.2 document + local
-  `is_onboarded`/`applied_rewards`, canonical SHA-256 checksum, atomic temp+rename,
-  `.bak` fallback on parse/checksum failure, pure `migrate_v1_to_v2()` + one-time
-  `save_migrated` log, immediate v2 write after migration. Autosave: run start/end,
-  wave cleared (≤1/s), meta purchase, scene change, app pause, `WM_CLOSE_REQUEST`.
-  ADR-022.
-- **`WalletService` + `MetaWallet`**: only coin/gem/stone mutation path;
-  `add(RewardBundle)`, `try_spend(kind, amount, reason) -> SpendResult`, 50-entry
-  memory log, `currency_changed`/`meta_purchased`, debounced save-on-mutation.
-  Run summary, double-coins and debug grants use it; no direct wallet writes.
-- **`LevelService` + `UnlockService`**: XP `round(120 * 1.18^(level-1))`,
-  multi-level grants, `level_up` event; spec §6.2 table in
-  `data/progression/levels.tres` (levels 1–20); `is_unlocked(id)`; combined unlock
-  toast on the next menu visit. Speed 1.5x/2x gates read UnlockService; debug
-  grants still refused outside debug builds.
-- **Workshop**: `WorkshopTrack` + 24 `.tres` in `data/workshop/` (4×6, spec §6.3
-  effects/caps/base costs; cost `base*1.18^level` rounded to 5; max 50),
-  `WorkshopModel` + `WorkshopService` (`level_of`, `cost_of`, `try_buy`,
-  add/mul aggregation into ModifierService). `scenes/menu/workshop.tscn`: coin
-  header, 4 tabs, scrollable generated rows, current → next, cost, Buy,
-  insufficient-funds shake + "Need N more coins", purchase flash/SFX hook. The
-  `Upgrades` nav tab routes to it.
-- **One modifier pipeline**: workshop + in-run Tree tracks register
-  `ModifierService` sources; Tree/Tower/Unit read `get_stat` for damage, speed,
-  crit, regen, range, max HP, starting cash, shield, damage reduction, cash/coin/
-  XP gain and in-run discount. Run sources removed on battle exit. ADR-023.
-- Tests +7 (29 total): migration, corrupt→`.bak`, wallet never negative, workshop
-  curve/caps, unlock gates 3/4/10/12, modifier stacking caps, workshop → DPS.
-  `tools/persistence_proof.gd` buys a level, reloads with a fresh SaveService and
-  asserts level, coins and the +4 % modifier survived.
+- **Magica**: `MagicaNode` + **14 `.tres`** in `data/magica/` (all named §6.4 rows:
+  Quickened Roots I–III, Flow of Ages, Auto-Restart, Golden Sap I–III, Night Harvest,
+  Merchant's Favor, Fourth Branch, Deep Roots, Ancient Memory, Second Wind).
+  `MagicaModel` + `MagicaService`: one active research, UTC `started_at`/`ends_at`,
+  offline completion on boot/focus into a claimable badge, 50 % cancel refund,
+  research-speed modifier at start, one `magica:<id>` ModifierService source per
+  completed node. `scenes/menu/magica.tscn`: 3 branch columns, node states
+  (locked/available/active/done), radial timer, Speed up (AD) stub, Cancel confirm.
+- **Cards**: `CardData` + **12 `.tres`** in `data/cards/` (rarity, 5 levels, shard
+  curve 20/40/80/160, effect lists), `CardCollection` + `CardService` (owned/levels/
+  shards, duplicates→shards with auto-upgrade, equip 1–5 slots gated by
+  `card_slot_1..4` + Deep Roots, 8 % + `card_drop_chance` drops on wave clear, one
+  `&"cards"` source applied on equip and removed on unequip). `scenes/menu/cards.tscn`:
+  loadout slots, filters/sort collection grid, detail modal with live effect numbers,
+  Upgrade, Equip/Unequip, where-to-get.
+- **Missions**: `MissionTemplate` pool in `data/missions/templates.tres`, `MissionSchedule`
+  (pure 04:00 / Monday-04:00 local maths), `MissionModel` + `MissionService`
+  (3 daily + 5 weekly, level-scaled targets/rewards, battle-event progress,
+  claim-once, all-3/all-5 bonuses incl. weekly card pack, persisted + rerolled).
+  `scenes/menu/missions.tscn`: countdowns, progress bars, reward chips, Claim,
+  Claim all (≥2), reset footer.
+- **Offline income**: `OfflineModel` + `OfflineService` (`last_seen_at` UTC in the
+  save, 0.01 coins/s base, 8 h cap + workshop `offline_cap_minutes`, Night Harvest
+  multiplier), claim through `WalletService`, Welcome back modal on the main menu.
+- **Nav + environment**: Cards/Missions/Shop tabs wired (Shop shows "arrives with M6"),
+  shared `MenuNav` with correct active state, Magica entry on the home screen with a
+  completion badge; new `EventBus` signals (`enemy_killed`, `enemy_leaked`,
+  `tower_built`, `card_dropped`, `second_wind_used`); Ancient Memory grants a free
+  Archer, Second Wind saves the Tree once, Greed scales spawner counts, Overgrowth
+  scales tower range.
+- Tests: **+10 (39 total)** — magica prerequisites/timer/cancel/offline restart,
+  card equip/unequip aggregation, duplicate shards, slot limits, mission 04:00
+  boundary, claim-once/reroll, completion bonus, offline caps.
+  `tools/m4b_acceptance.gd` proves the five M4 acceptance criteria end-to-end;
+  `tools/balance_probe.gd` now isolates cards/magica/missions and accepts a min-wave.
 
-## M3 delivered (historical summary)
+## M4a delivered (tagged as part of v0.5.0-m4)
 
-- 6 Tree upgrade tracks in `data/tree/upgrades/` (damage 8 %, speed 6 %, crit 2 pp
-  cap 60 %, crit dmg 15 %, range 3 %, regen 0.3 %/s); `RunWallet` is the only cash
-  mutation point; generated upgrade panel with hold-to-buy; speed control via
-  `BattleClock`; pause/restart/abandon; TapGuard; RunSummary with RewardBundle +
-  RewardLedger; F3 debug overlay.
-- M3.1 balance: starting cash 120, tower ranges 400/370/340, HP `1.11^w`, clear
-  bonus `60+14w`; 18-run probe median 9 (range 9–11). ADR-020/021.
+- **Save v2** (`SaveService`): spec §8.2 document + local extras, SHA-256 checksum,
+  atomic temp+rename, `.bak` fallback, pure `migrate_v1_to_v2()`, event-driven
+  autosave + immediate pause/close flush. ADR-022.
+- **`WalletService`/`MetaWallet`** (only currency mutation path, typed
+  `SpendResult`, 50-entry log) and **`LevelService`/`UnlockService`**
+  (XP `round(120*1.18^(level-1))`, §6.2 gates at 3/4/10/12).
+- **Workshop**: 24 `WorkshopTrack` `.tres` (cost `base*1.18^level` rounded to 5,
+  max 50), `WorkshopModel`/`WorkshopService`, `scenes/menu/workshop.tscn`.
+- **One modifier pipeline**: workshop, Tree, cards, magica and offline bonuses
+  aggregate in `ModifierService`; entities only call `get_stat()`. ADR-023.
 
 ## Deviations / open items
 
-- M4a does **not** implement Magica, Cards, Missions, offline income, shop/ads
-  (M4b). Their save sections exist with spec defaults, but no UI reads them yet.
-- Workshop row "purchase SFX" is a hook (`metadata/workshop_purchase_sfx`); no
-  audio asset exists until M5/M6, so it is a no-op (like the rest of the SFX bank).
-- Settings are mirrored into the save (spec §8.2) but `settings.cfg` stays
-  authoritative on load; the save copy is for future server sync.
-- Shield HP is simulated but not drawn separately on the battle HP bar (M5 UI).
-- Save filename stays `user://save_v1.json` although the schema is 2 (ADR-022).
-- `battle_controller.gd` (1100) and `battle_hud.gd` (792) still exceed the
-  400-line guideline; the M4 split was not in scope.
+- §6.4's table names **14** nodes; the M4 brief's "12" was a pre-table count. All 14
+  are data-driven and tested by id.
+- Flow of Ages publishes `battle_speed_extra` but the battle HUD still exposes the
+  three M3 speed buttons; the fourth step is an M5 UI task. Auto-Restart publishes a
+  flag but the run-summary toggle is M5.
+- Merchant's Favor `shop_discount` is stored for M6; its in-run discount is live.
+- Ads speed-up/card pack are stubs until M6 (`AdsService`); the mission "watch ads"
+  template stays at 0 until the ad bridge calls `MissionService.record_rewarded_ad()`.
+- Card art is the placeholder square; per-rarity 9-slice frames and M5 polish remain.
+- Save schema stays v2; the M4b extras default on load (no v3 migration needed).
+- `battle_controller.gd`/`battle_hud.gd` still exceed the 400-line guideline.
 - 532 draw calls > M2 target 120 (placeholder art, atlas pass M5/M8).
-- LDPlayer FPS needs the Android export (M6); 20-min memory soak not run.
 
-## Next tasks — M4b (Magica, Cards, Missions, offline income)
+## Next tasks — M5 (first 3)
 
-1. **Magica**: `data/magica/magica_nodes.tres` with 12 nodes (Time/Wealth/
-   Knowledge), prerequisites, durations, coin/gem costs and effect modifiers;
-   `MagicaService` with one active research, UTC `started_at`/`ends_at`, offline
-   completion on boot (clamped by the Offline Cap track), cancel refund 50 %,
-   claim badge; `scenes/menu/magica.tscn` routed from the nav; tests for
-   prerequisite gating, completion across a timestamp delta and cancel refund.
-2. **Cards**: `data/cards/cards.tres` 12 cards (rarity, effect modifiers),
-   levels 1–5, shards (20/40/80/160), 4 equip slots gated by
-   `card_slot_1..4`, drop chance from the workshop `card_drop_chance` stat;
-   `CardService` + collection/equip screen; card modifiers enter ModifierService
-   as one `&"cards"` source; tests for equip/unequip restoring aggregated stats.
-3. **Missions**: daily (3) + weekly (5) from templates, event-driven progress
-   from kills/waves/runs, claim-once ledger, 04:00 local reset (UTC storage),
-   `MissionService` + screen with progress bars and claim state; tests for
-   idempotent increments and a simulated 04:00 boundary.
-4. **Offline income**: store `last_seen_at` UTC in the save, compute the delta on
-   boot, apply `offline_coin_rate`/`offline_cap_minutes` workshop tracks, show a
-   capped "while you were away" modal; tests for 0 s, under-cap and over-cap.
-5. Extend `ModifierService` sources for cards/magica, wire the remaining nav
-   tabs, add all M4 acceptance tests, update `PROGRESS`/`CHANGELOG`/`BALANCE`
-   and tag `v0.5.0-m4` (M4b only — not M4a).
+1. **Main menu per reference** (`docs/reference/ui_main_menu.png`): top bar with
+   currency `+` buttons, stats card (best wave/level/XP/avatar), Battle CTA, speed
+   trial bar, daily card, 5-tab nav; keep the Magica entry.
+2. **SceneRouter + navigation**: fade transitions on every screen, back stack,
+   Android back-button behaviour, no dead ends.
+3. **Settings screen**: audio sliders, language switch, text scale, haptics, shake,
+   debug FPS counter; persist via `SettingsService`.

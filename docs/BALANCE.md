@@ -105,6 +105,86 @@ cadence so towers get more time-in-range.
   `10*cleared`; boss waves carry +50 coins in wave data for the reward bundle.
 - Run cash is lost; coins, gems, XP and best wave persist.
 
+## M4b meta economy (new in 0.5.0-m4)
+
+### Offline income (ADR-024 context)
+
+| Value | Number |
+|---|---|
+| Base rate | **0.01 coins/s** (`OfflineModel.BASE_COINS_PER_SECOND`) |
+| Base cap | **8 h** (`28 800 s`) |
+| Cap per workshop `offline_cap_minutes` level | +20 min |
+| Night Harvest (Magica) | ×2 offline rate |
+| Minimum away time for the modal | 60 s |
+| Claim | `floor(counted_seconds * 0.01 * rate_multiplier)` via `WalletService` |
+
+### Magica nodes (`data/magica/*.tres`)
+
+Durations are real-time; the starter research speed is 1.0 and Quickened Roots
+I–III (+10 % each) and the workshop `magica_speed` track (+2 %/level) divide the
+started duration. Cancel refunds 50 % of each cost.
+
+| Node | Duration | Cost | Effect |
+|---|---|---|---|
+| Quickened Roots I / II / III | 30 m / 2 h / 8 h | 200 / 900 / 3 000 coins | +10 % research speed each |
+| Flow of Ages | 4 h | 1 200 coins | battle speed option +0.25× (HUD step in M5) |
+| Auto-Restart | 12 h | 15 gems | auto-restart flag (toggle UI in M5) |
+| Golden Sap I / II / III | 45 m / 3 h / 10 h | 250 / 1 000 / 3 500 coins | +10 % coins each |
+| Night Harvest | 6 h | 2 000 coins + 20 gems | offline income ×2 |
+| Merchant's Favor | 2 h | 800 coins | in-run upgrades −5 %, shop −5 % (M6) |
+| Fourth Branch | 8 h | 25 gems | unit slot 3 |
+| Deep Roots | 5 h | 1 500 coins | +1 card slot (5 total) |
+| Ancient Memory | 3 h | 1 000 coins | free Archer on the first pedestal |
+| Second Wind | 18 h | 40 gems | once per run survive a lethal hit at 15 % HP |
+
+### Cards (`data/cards/*.tres`)
+
+Level 1 effects below; level scaling is `1 + 0.25 × (level − 1)` (L5 = ×2.0,
+ADR-025). Shards to upgrade: **20 / 40 / 80 / 160**; a duplicate grants **20**
+shards and auto-upgrades while affordable. Card drop chance is **8 %** per wave
+clear + `card_drop_chance` (+0.5 %/level, cap 15 %).
+
+| Card | Rarity | Effect at L1 |
+|---|---|---|
+| Greed | Common | +25 % enemies per wave, +20 % cash |
+| Vital Roots | Common | +15 % tree max HP |
+| Regrowth | Rare | +0.35 %/s tree regen |
+| Sharpened Tips | Rare | +8 pp crit chance |
+| Heavy Bolts | Rare | +30 % crit damage |
+| Swift Winds | Epic | +15 % attack speed |
+| Rich Soil | Common | +10 % coins |
+| Bark Shield | Rare | +3 armor, +20 % leak damage reduction |
+| Lucky Clover | Epic | +10 % gem chance on wave clear |
+| Guardian Bond | Epic | +1 unit slot |
+| Overgrowth | Rare | +12 % tower damage, +8 % tower range |
+| Ancient Pact | Legendary | +25 % all damage, −10 % tree max HP |
+
+### Missions (`data/missions/templates.tres`, ADR-026)
+
+Targets scale **+12 % per player level** and rewards **+8 % per player level**.
+Daily reset 04:00 local; weekly Monday 04:00 local. No mission requires premium
+currency. Daily bonus (all 3): **30 coins + 2 gems**. Weekly bonus (all 5):
+**250 coins + 10 gems + 1 card pack**.
+
+| Daily template | Base target | Base reward |
+|---|---|---|
+| Clear waves | 8 | 25 coins |
+| Kill enemies | 60 | 30 coins |
+| Build towers in one run | 4 | 30 coins |
+| Reach wave | 7 | 35 coins |
+| Deal crits | 15 | 25 coins |
+| Clear a run without leaking | 1 | 40 coins + 1 gem |
+
+| Weekly template | Base target | Base reward |
+|---|---|---|
+| Clear waves | 60 | 150 coins + 3 gems |
+| Kill enemies | 500 | 180 coins + 3 gems |
+| Reach wave | 12 | 200 coins + 4 gems |
+| Build towers in one run | 8 | 160 coins |
+| Equip cards at once | 3 | 160 coins + 2 gems |
+| Watch rewarded ads | 3 | 120 coins + 2 gems |
+| Clear runs without leaking | 2 | 180 coins + 3 gems |
+
 ## M3 in-run Tree upgrades (`data/tree/upgrades/*.tres`)
 
 | Track | Effect / level | Cost base | Growth | Cap | Max |
