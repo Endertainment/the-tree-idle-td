@@ -6,8 +6,10 @@ Keep it under 60 lines — it is read at the start of every session.
 **Spec version:** 1.0 (`docs/AI_BUILD_PROMPT.md`)
 **Current milestone:** M0 — Foundation
 **Current branch:** `main` (M0 work may go straight to `main`; from M1 use `feat/mN-*`)
-**Godot:** set `$env:GODOT_BIN` or create `tools/godot_path.txt` with the executable path
-**Test device:** LDPlayer (Android x86_64)
+**Godot:** `C:\Tools\godot-4.7.2\Godot_v4.7.2-stable_win64.exe` (4.7.2.stable) — configured in `tools/godot_path.txt`
+**Verification:** `pwsh -File tools/check_project.ps1` — green on the current scaffold
+**Toolchain gaps (M6 only):** export templates (standard), JDK 17, Android SDK, adb — see `docs/ENVIRONMENT.md`
+**Test device:** LDPlayer (Android x86_64) — path not yet recorded
 
 ## Milestones
 
