@@ -14,6 +14,7 @@ var _tower_sheet: TowerSheet
 var _unit_slots: UnitSlots
 var _elapsed_timer: float = 0.0
 var _ad_pending: StringName = &""
+var _tutorial_hint: TutorialHint
 
 
 ## Wires every signal once. Called by BattleController after the arena exists.
@@ -55,6 +56,10 @@ func setup(battle: BattleController, hud: BattleHUD) -> void:
 	AdsService.rewarded_failed.connect(_on_ad_failed)
 	_hud.set_upgrade_purchase_handler(_purchase_upgrade)
 	_hud.set_upgrade_open_handler(_open_tower_row)
+
+	# One non-blocking tip layer above every sheet; hints are one-shot via the save.
+	_tutorial_hint = TutorialHint.new()
+	_hud.add_child(_tutorial_hint)
 
 	_battle.pedestal_pressed.connect(_on_pedestal_pressed)
 	_battle.tower_pressed.connect(_on_tower_pressed)
@@ -148,6 +153,8 @@ func open_upgrade_panel(tab: StringName = &"tree") -> void:
 	close_all()
 	_hud.show_upgrade_panel(_battle.upgrade_rows(), tab)
 	_battle.set_sheet_open(true)
+	if _tutorial_hint != null and TutorialService.take(&"first_upgrade"):
+		_tutorial_hint.show_hint(TutorialService.text(&"first_upgrade"))
 
 
 func open_tower_sheet_for(tower: Tower) -> void:
@@ -337,6 +344,8 @@ func _on_wave_started(wave: int) -> void:
 	EventBus.wave_started.emit(wave, every > 0 and wave % every == 0)
 	_hud.set_wave(wave, _battle.get_wave_table().wave_count())
 	_hud.hide_countdown()
+	if wave == 1 and _tutorial_hint != null and TutorialService.take(&"first_build"):
+		_tutorial_hint.show_hint(TutorialService.text(&"first_build"))
 
 
 func _on_wave_cleared(wave: int) -> void:

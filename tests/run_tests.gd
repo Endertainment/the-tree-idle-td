@@ -14,6 +14,7 @@ const TestM5a := preload("res://tests/test_m5a.gd")
 const TestM5b := preload("res://tests/test_m5b.gd")
 const TestM6 := preload("res://tests/test_m6.gd")
 const TestM7 := preload("res://tests/test_m7.gd")
+const TestM8 := preload("res://tests/test_m8.gd")
 
 
 func _initialize() -> void:
@@ -27,6 +28,7 @@ func _initialize() -> void:
 	var m5b: RefCounted = TestM5b.new()
 	var m6: RefCounted = TestM6.new()
 	var m7: RefCounted = TestM7.new()
+	var m8: RefCounted = TestM8.new()
 	var cases: Array[Dictionary] = [
 		{"name": "art manifest paths exist", "callable": Callable(core, "test_manifest_paths")},
 		{"name": "SaveService round-trip", "callable": Callable(core, "test_save_roundtrip")},
@@ -98,6 +100,10 @@ func _initialize() -> void:
 		{"name": "leaderboard server row mapping", "callable": Callable(m7, "test_leaderboard_backend_mapping")},
 		{"name": "M7 env and remote defaults resources", "callable": Callable(m7, "test_env_and_remote_defaults_resources")},
 		{"name": "ApiClient owns HTTPRequest", "callable": Callable(m7, "test_only_api_client_owns_http_request")},
+		{"name": "tutorial hints one-shot and persistent", "callable": Callable(m8, "test_tutorial_one_shot_and_persistence")},
+		{"name": "tutorial locale catalogues", "callable": Callable(m8, "test_tutorial_locale_catalogues")},
+		{"name": "tutorial hint control", "callable": Callable(m8, "test_tutorial_hint_control")},
+		{"name": "release wave curve", "callable": Callable(m8, "test_release_wave_curve")},
 	]
 
 	var failures := 0

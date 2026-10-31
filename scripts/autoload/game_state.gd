@@ -49,6 +49,9 @@ var missions: Dictionary = {
 }
 var shop: Dictionary = {"owned_products": [], "last_daily_claim": 0}
 var ads: Dictionary = {"rv_today": 0, "rv_day": "", "interstitial_last": 0}
+## First-run tutorial hints already shown (M8). One-shot flags live in the save
+## so a reinstall-free restart never repeats a tip.
+var tutorial: Dictionary = {"shown": {}}
 
 ## Debug/QA unlock grants only (level unlocks are derived by UnlockService).
 var unlocks: Dictionary = {}
@@ -80,6 +83,7 @@ func build_save_document() -> Dictionary:
 		"settings": SettingsService.to_save_dict(),
 		"shop": shop.duplicate(true),
 		"ads": ads.duplicate(true),
+		"tutorial": tutorial.duplicate(true),
 		# Local extras (documented in ADR-022); both must survive a restart.
 		"is_onboarded": is_onboarded,
 		"applied_rewards": reward_ledger.to_array(),
@@ -108,6 +112,7 @@ func reset_profile() -> void:
 	}
 	shop = {"owned_products": [], "last_daily_claim": 0}
 	ads = {"rv_today": 0, "rv_day": "", "interstitial_last": 0}
+	tutorial = {"shown": {}}
 	unlocks.clear()
 	is_onboarded = false
 	reward_ledger.from_array([])
@@ -142,6 +147,7 @@ func from_dict(data: Dictionary) -> void:
 		"missions": missions,
 		"shop": shop,
 		"ads": ads,
+		"tutorial": tutorial,
 	}
 	for section: String in stored_sections.keys():
 		var stored: Variant = data.get(section, null)

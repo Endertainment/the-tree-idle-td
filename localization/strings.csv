@@ -428,6 +428,10 @@ tower.frost,Frost Spire,Морозний шпиль
 tower.frost.desc,Splash slow. Level 5: Deep Chill.,Уповільнення по площі. Рівень 5: глибокий холод.
 tower.totem,Totem,Тотем
 tower.totem.desc,No attack. Buffs nearby towers and the Tree. Level 5: Rooted Gift.,Не атакує. Підсилює сусідні вежі й Дерево. Рівень 5: дар коріння.
+tutorial.build_hint,Tap a pedestal to build,Торкніться п’єдесталу, щоб збудувати вежу
+tutorial.upgrade_hint,Spend cash to grow stronger,Витрачайте готівку, щоб стати сильнішими
+tutorial.coins_hint,Coins are permanent — upgrade the Workshop,Монети залишаються назавжди — покращуйте Майстерню
+tutorial.dismiss,Got it,Зрозуміло
 tree_upgrade.attack_speed,Attack Speed,Швидкість атаки
 tree_upgrade.attack_speed_desc,Shots per second,Пострілів за секунду
 tree_upgrade.crit_chance,Crit Chance,Шанс крита

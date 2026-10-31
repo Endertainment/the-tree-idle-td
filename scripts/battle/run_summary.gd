@@ -31,6 +31,7 @@ var _applied: bool = false
 var _doubled: bool = false
 var _already_claimed: bool = false
 var _ad_pending: bool = false
+var _tutorial_hint: TutorialHint
 
 
 func _ready() -> void:
@@ -101,6 +102,10 @@ func setup(
 	if _already_claimed:
 		_ad_note.text = LocaleService.t("summary.already_claimed", "Rewards were already granted for this run.")
 	_double_button.disabled = _doubled or _bundle.coins <= 0
+	if TutorialService.take(&"first_defeat"):
+		_tutorial_hint = TutorialHint.new()
+		add_child(_tutorial_hint)
+		_tutorial_hint.show_hint(TutorialService.text(&"first_defeat"), 12.0)
 
 
 ## Applies the bundle once per run id; a re-shown summary never double-pays.
