@@ -5,7 +5,7 @@
 ## so Boot may call init_services() defensively without starting twice.
 extends Node
 
-const VERSION := "0.1.0"
+const VERSION := "0.7.0"
 
 var _initialized: bool = false
 var _degraded: bool = false
@@ -47,6 +47,12 @@ func init_services() -> void:
 	CardService.init_service(_section(save_data, "cards"))
 	MissionService.init_service(_section(save_data, "missions"))
 	OfflineService.init_service(save_data)
+	# Monetization/telemetry services only read their config and defer SDK init;
+	# a missing store or ad SDK must never stop the boot (spec 8.1).
+	AdsService.init_service()
+	IapService.init_service()
+	AnalyticsService.init_service()
+	AnalyticsService.track(&"app_open", {"version": version_string()})
 	SaveService.set_save_provider(Callable(GameState, "build_save_document"))
 	if SaveService.migrated_from_version > 0 and SaveService.migrated_from_version < SaveService.SCHEMA_VERSION:
 		# Persist the migrated v2 document on the next frame, so the one-time

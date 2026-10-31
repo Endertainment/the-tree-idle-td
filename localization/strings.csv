@@ -404,13 +404,11 @@ stat.unit_slot_bonus,Unit slots,Слоти вартових
 stat.unit_slots,Unit slots,Слоти вартових
 status.slow_druid,Druid slow,Уповільнення друїда
 status.slow_frost,Frost slow,Морозне уповільнення
-summary.ads_soon,Rewarded ads arrive in M6. Continue is unaffected.,Реклама за винагороду з’явиться в M6. Це не заважає продовжити.
 summary.already_claimed,Rewards were already granted for this run.,Нагороди за цей забіг уже нараховано.
 summary.best_wave,Best wave,Найкраща хвиля
 summary.cash_lost,Cash is lost when the run ends,Готівка зникає після завершення забігу
 summary.coins,Coins,Монети
 summary.continue,Continue,Далі
-summary.debug_fake,(debug fake),(налагоджувальна імітація)
 summary.double_coins,Double coins (AD),Подвоїти монети (реклама)
 summary.doubled,Coins doubled,Монети подвоєно
 summary.gems,Gems,Самоцвіти
@@ -532,7 +530,6 @@ menu.xp_progress,%d / %d XP,%d / %d XP
 menu.nickname_fallback,Tree Warden,Лісовий вартовий
 menu.speed_trial_offer,Speed Trial  +1.5x,Швидкісний забіг  +1.5x
 menu.speed_trial_hint,Watch an ad for a 24 h speed boost,Подивіться рекламу, щоб отримати прискорення на 24 год
-menu.ads_soon,Ads arrive with M6,Реклама з’явиться в M6
 menu.buy_coins,Buy coins,Купити монети
 menu.buy_gems,Buy gems,Купити самоцвіти
 menu.open_profile,Player profile,Профіль гравця
@@ -560,7 +557,7 @@ shop.best_value,Best value,Найкраща ціна
 shop.price_unavailable,—,—
 shop.owned,Owned,Придбано
 shop.store_unavailable,Store unavailable,Магазин недоступний
-shop.store_unavailable_note,In-app purchases arrive with M6. Prices and the buy button stay disabled in this build.,Покупки з’являться в M6. Ціни й кнопка купівлі вимкнені в цій збірці.
+shop.store_unavailable_note,The store is not available in this build. Prices and purchases stay disabled.,Магазин недоступний у цій збірці. Ціни та покупки вимкнено.
 shop.restore,Restore purchases,Відновити покупки
 shop.restore_none,No purchases to restore.,Немає покупок для відновлення.
 shop.restore_done,Restored %d purchases.,Відновлено покупок: %d.
@@ -606,3 +603,39 @@ profile.coins_earned,Coins earned,Зароблено монет
 profile.leaderboard,Leaderboard,Таблиця лідерів
 profile.max_level,Max level,Максимальний рівень
 leaderboard.updated_toast,Leaderboard refreshed,Таблицю лідерів оновлено
+debug_ad.title,Rewarded ad (debug),Рекламний ролик (налагодження)
+debug_ad.body,Fake ad for debug builds. No network is used.,Фальшивий ролик для налагоджувальних збірок. Мережа не використовується.
+debug_ad.countdown,%d s,%d с
+consent.title,Ads and privacy,Реклама та приватність
+consent.body,"We show optional rewarded ads to support development. Choose whether personalised ads may use your advertising ID. You can change this later in Settings.","Ми показуємо необов'язкову рекламу за винагороду для підтримки розробки. Оберіть, чи персоналізована реклама може використовувати ваш рекламний ідентифікатор. Це можна змінити в налаштуваннях."
+consent.accept,Allow personalised ads,Дозволити персоналізовану рекламу
+consent.decline,Use non-personalised ads only,Лише неперсоналізована реклама
+ads.cap_reached,You have reached the ad limit for now.,Ви досягли ліміту реклами на цей час.
+ads.not_available,"Ad not available, try again later","Реклама недоступна, спробуйте пізніше"
+ads.consent_required,Ads need your consent first.,Спочатку потрібна ваша згода на рекламу.
+summary.ad_loading,Loading ad…,Завантаження реклами…
+summary.ad_loading_note,Watch the ad to double this run's coins.,Подивіться рекламу, щоб подвоїти монети за забіг.
+summary.ad_failed,"Ad not available, try again later","Реклама недоступна, спробуйте пізніше"
+menu.ad_loading,Loading ad…,Завантаження реклами…
+menu.speed_trial_active,Speed Trial  %s left,Швидкісний забіг  залишилось %s
+menu.speed_trial_active_toast,Speed Trial active for %s,Швидкісний забіг активний ще %s
+menu.speed_trial_granted,Speed Trial unlocked for 24 h!,Швидкісний забіг відкрито на 24 год!
+menu.speed_trial_maxed,Both speeds are already unlocked.,Обидві швидкості вже відкриті.
+battle.ad_free_cash,Free cash (AD),Безкоштовні гроші (AD)
+battle.ad_tree_blessing,Restore 25% tree HP (AD),Відновити 25% здоров'я дерева (AD)
+battle.ad_cash_granted,+%d cash,+%d монет
+battle.ad_blessing_granted,Tree restored by 25%,Дерево відновлено на 25%
+magica.speed_up_granted,Research shortened by 30 minutes,Дослідження скорочено на 30 хвилин
+magica.speed_up_none,No active research to speed up,Немає активного дослідження
+shop.store_connected_note,Purchases are processed securely by Google Play.,Покупки безпечно обробляються Google Play.
+shop.buy,Buy,Купити
+shop.confirm_purchase,Buy,Купити
+shop.purchase_pending,Payment is pending. The item will unlock when the store confirms it.,Платіж очікує підтвердження. Товар відкриється після підтвердження магазином.
+shop.purchase_success,Purchase complete: %s,Покупку завершено: %s
+shop.purchase_cancelled,Purchase cancelled.,Покупку скасовано.
+shop.purchase_already_owned,You already own this item.,Ви вже володієте цим товаром.
+shop.purchase_network_error,Network error. Check your connection and try again.,Помилка мережі. Перевірте з'єднання та спробуйте ще раз.
+shop.purchase_product_unavailable,This product is not available right now.,Цей товар зараз недоступний.
+settings.ad_consent,Ad privacy options,Параметри реклами та приватності
+settings.ad_consent_on,Personalised ads enabled.,Персоналізовану рекламу ввімкнено.
+settings.ad_consent_off,Non-personalised ads only.,Лише неперсоналізована реклама.

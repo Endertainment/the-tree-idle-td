@@ -323,6 +323,24 @@ func _on_copy_pressed() -> void:
 func _build_legal() -> void:
 	_add_legal_row("settings.privacy", "settings.privacy_body")
 	_add_legal_row("settings.terms", "settings.terms_body")
+	var consent_row := _row()
+	var consent := _option_button(
+		LocaleService.t("settings.ad_consent", "Ad privacy options"), false, _on_ad_consent_pressed
+	)
+	consent.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	consent_row.add_child(consent)
+	_legal_rows.add_child(consent_row)
+
+
+## Re-opens the consent flow (UMP where available, local dialog otherwise).
+func _on_ad_consent_pressed() -> void:
+	AdsService.request_consent(func(granted: bool) -> void:
+		_show_toast(
+			LocaleService.t("settings.ad_consent_on", "Personalised ads enabled.")
+			if granted
+			else LocaleService.t("settings.ad_consent_off", "Non-personalised ads only.")
+		)
+	)
 
 
 func _add_legal_row(title_key: String, body_key: String) -> void:

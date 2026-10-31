@@ -27,6 +27,7 @@ const DYNAMIC_PREFIXES: Array[String] = [
 	"shop.product.",
 	"shop.contents.",
 	"shop.tab.",
+	"shop.purchase_",
 	"leaderboard.tab.",
 ]
 

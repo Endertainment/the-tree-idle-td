@@ -100,6 +100,7 @@ func open_overlay(scene_id: StringName, params: Dictionary = {}) -> bool:
 	_overlay_id = scene_id
 	_last_params = params.duplicate(true)
 	_overlay_layer.add_child(_overlay_scene)
+	SafeArea.apply(_overlay_scene)
 	var audio := get_node_or_null("/root/AudioService")
 	if audio != null:
 		audio.call("bind_buttons", _overlay_scene)
@@ -221,6 +222,9 @@ func _transition(
 
 	EventBus.scene_changed.emit(scene_id)
 	await get_tree().process_frame
+	var current := get_tree().current_scene
+	if current is Control:
+		SafeArea.apply(current as Control)
 
 	if FADE_IN_SECONDS > 0.0:
 		var fade_in := create_tween()

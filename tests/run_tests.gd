@@ -12,6 +12,7 @@ const TestMeta := preload("res://tests/test_meta.gd")
 const TestM4b := preload("res://tests/test_m4b.gd")
 const TestM5a := preload("res://tests/test_m5a.gd")
 const TestM5b := preload("res://tests/test_m5b.gd")
+const TestM6 := preload("res://tests/test_m6.gd")
 
 
 func _initialize() -> void:
@@ -23,6 +24,7 @@ func _initialize() -> void:
 	var m4b: RefCounted = TestM4b.new()
 	var m5a: RefCounted = TestM5a.new()
 	var m5b: RefCounted = TestM5b.new()
+	var m6: RefCounted = TestM6.new()
 	var cases: Array[Dictionary] = [
 		{"name": "art manifest paths exist", "callable": Callable(core, "test_manifest_paths")},
 		{"name": "SaveService round-trip", "callable": Callable(core, "test_save_roundtrip")},
@@ -75,6 +77,15 @@ func _initialize() -> void:
 		{"name": "leaderboard sorting and own rank", "callable": Callable(m5b, "test_leaderboard_sorting_and_own_rank")},
 		{"name": "profile stats aggregation", "callable": Callable(m5b, "test_profile_stats_aggregation")},
 		{"name": "toast queue", "callable": Callable(m5b, "test_toast_queue")},
+		{"name": "ad placement caps", "callable": Callable(m6, "test_ad_placement_caps")},
+		{"name": "interstitial cadence", "callable": Callable(m6, "test_interstitial_cadence")},
+		{"name": "reward once guard", "callable": Callable(m6, "test_reward_once_guard")},
+		{"name": "IAP catalog resource", "callable": Callable(m6, "test_iap_catalog_resource")},
+		{"name": "monetization config", "callable": Callable(m6, "test_monetization_config")},
+		{"name": "billing reason mapping", "callable": Callable(m6, "test_billing_reason_mapping")},
+		{"name": "speed boost persistence", "callable": Callable(m6, "test_speed_boost_persistence")},
+		{"name": "M6 locale keys", "callable": Callable(m6, "test_m6_locale_keys")},
+		{"name": "analytics privacy sanitize", "callable": Callable(m6, "test_analytics_privacy_sanitize")},
 	]
 
 	var failures := 0
