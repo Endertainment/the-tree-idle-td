@@ -13,8 +13,19 @@ signal scene_changed(scene_id: StringName)
 ## &"coins", &"gems", &"stones".
 signal currency_changed(kind: StringName, amount: int)
 
+## Emitted when a wave begins spawning. `is_boss` selects the boss music.
+signal wave_started(wave: int, is_boss: bool)
+
 ## Emitted after the last enemy of a wave has been cleared.
 signal wave_cleared(wave: int)
+
+## Emitted when a boss spawns and when its corpse is removed (HUD + audio).
+signal boss_spawned()
+signal boss_removed()
+
+## Emitted by MagicaService/screen when research starts or a node completes.
+signal research_started(node_id: StringName)
+signal research_completed(node_id: StringName)
 
 ## Emitted when a run starts (after RunState.reset()).
 signal run_started()

@@ -1,0 +1,531 @@
+keys,en,uk
+app.subtitle,Idle Tower Defense,Баштова оборона в простої
+app.title,The Tree,The Tree
+app.version,v,v
+aura.shaman_haste,Shaman haste,Прискорення шамана
+battle.abandon,Abandon run,Покинути забіг
+battle.abandon_confirm_body,You keep the rewards for cleared waves. Cash is lost.,Нагороди за відбиті хвилі залишаться. Готівку втрачено.
+battle.abandon_confirm_title,Abandon run?,Покинути забіг?
+battle.armor,Armor,Броня
+battle.attack_speed,attack speed,швидкість атаки
+battle.aura,Aura,Аура
+battle.boss_incoming,Boss incoming,Насувається бос
+battle.build,Build,Збудувати
+battle.build_title,Build tower,Збудувати вежу
+battle.build_tower,Build tower,Збудувати вежу
+battle.buy,Buy,Купити
+battle.card_found,Card found: %s,Знайдено картку: %s
+battle.cash,Cash,Готівка
+battle.close,Close,Закрити
+battle.cost,Cost,Вартість
+battle.damage,damage,шкода
+battle.debug_unlock,Debug unlock,Відкрити (налагодження)
+battle.debug_unlocked,Speed unlocked (debug),Швидкість відкрито (налагодження)
+battle.early_wave,Early wave,Дострокова хвиля
+battle.hold_to_skip,Hold 0.25 s to skip the wait,"Утримуйте 0.25 с, щоб пропустити очікування"
+battle.hp,HP,Життя
+battle.interval,Interval,Інтервал
+battle.level_short,Lv,Рів.
+battle.max_level,Max level,Максимальний рівень
+battle.max_level_short,MAX,МАКС
+battle.next_wave,Next wave,Наступна хвиля
+battle.next_wave_in,Next wave in,Наступна хвиля через
+battle.no_towers,Build a tower to upgrade it,"Збудуйте вежу, щоб її покращити"
+battle.no_units,No guardian units placed yet,Вартових ще не розміщено
+battle.no_upgrades,No upgrades available,Немає доступних покращень
+battle.not_enough_cash,Not enough cash,Недостатньо готівки
+battle.nothing_to_upgrade,Nothing to upgrade yet,Поки нічого покращувати
+battle.open,Open,Відкрити
+battle.pause,Pause,Пауза
+battle.pause_short,II,II
+battle.paused,Paused,Пауза
+battle.place,Place,Розмістити
+battle.place_unit,Place unit,Розмістити вартового
+battle.radius,Radius,Радіус
+battle.range,range,дальність
+battle.restart,Restart,Перезапустити
+battle.restart_confirm_body,The current run ends now and its cash is lost.,"Поточний забіг завершиться, а готівку буде втрачено."
+battle.restart_confirm_title,Restart run?,Перезапустити забіг?
+battle.resume,Resume,Продовжити
+battle.second_wind,Second Wind: the Tree survives!,Друге дихання: Дерево витримало!
+battle.sell,Sell,Продати
+battle.settings,Settings,Налаштування
+battle.slot_level12,Player level 12 or 150 gems,Рівень гравця 12 або 150 самоцвітів
+battle.slot_level4,Player level 4,Рівень гравця 4
+battle.slot_locked,Locked,Заблоковано
+battle.slot_workshop,Magica: Fourth Branch,Магіка: четверта гілка
+battle.slow,Slow,Уповільнення
+battle.sold,Sold,Продано
+battle.speed,Speed,Швидкість
+battle.speed.1_5x,1.5x,1.5x
+battle.speed.1x,1x,1x
+battle.speed.2x,2x,2x
+battle.speed_15x,1.5x speed,Швидкість 1.5x
+battle.speed_1x,Normal speed,Звичайна швидкість
+battle.speed_2x,2x speed,Швидкість 2x
+battle.speed_locked_body,Reach player level %d to unlock this speed.,"Досягніть рівня гравця %d, щоб відкрити цю швидкість."
+battle.splash,Splash,Площина
+battle.tab_towers,Towers,Вежі
+battle.tab_tree,Tree,Дерево
+battle.tab_units,Units,Вартові
+battle.upgrade,Upgrade,Покращити
+battle.upgrades,Upgrades,Покращення
+battle.wave,Wave,Хвиля
+battle.wave_cleared,Wave cleared,Хвилю відбито
+card.ancient_pact,Ancient Pact,Стародавній пакт
+card.ancient_pact_desc,"Power borrowed from the old forest, paid in bark.","Сила, позичена в давнього лісу й оплачена корою."
+card.ancient_pact_where,Legendary packs and the weekly completion bonus,Легендарні набори та тижневий бонус
+card.bark_shield,Bark Shield,Кора-щит
+card.bark_shield_desc,A second skin of ironwood.,Друга шкіра із залізного дерева.
+card.bark_shield_where,Rare card packs and weekly bonuses,Рідкісні набори та тижневі бонуси
+card.greed,Greed,Жадібність
+card.greed_desc,"More enemies, more pockets to empty.",Більше ворогів — більше кишень спорожнити.
+card.greed_where,Wave clears and card packs,Відбиті хвилі та набори карток
+card.guardian_bond,Guardian Bond,Зв’язок вартових
+card.guardian_bond_desc,One more guardian answers the call.,Ще один вартовий відгукується на поклик.
+card.guardian_bond_where,Epic card packs and the weekly bonus,Епічні набори та тижневий бонус
+card.heavy_bolts,Heavy Bolts,Важкі болти
+card.heavy_bolts_desc,"Slow to load, terrible to meet.","Довго заряджати, страшно зустріти."
+card.heavy_bolts_where,Rare card packs and weekly bonuses,Рідкісні набори та тижневі бонуси
+card.lucky_clover,Lucky Clover,Щаслива конюшина
+card.lucky_clover_desc,Gems hide between the roots.,Самоцвіти ховаються між корінням.
+card.lucky_clover_where,Epic card packs and the weekly bonus,Епічні набори та тижневий бонус
+card.overgrowth,Overgrowth,Буйне зростання
+card.overgrowth_desc,Towers grow into the canopy.,Вежі сягають крони.
+card.overgrowth_where,Rare card packs and weekly bonuses,Рідкісні набори та тижневі бонуси
+card.regrowth,Regrowth,Відростання
+card.regrowth_desc,Bark knits itself closed.,Кора заростає сама.
+card.regrowth_where,Rare card packs and weekly bonuses,Рідкісні набори та тижневі бонуси
+card.rich_soil,Rich Soil,Родючий ґрунт
+card.rich_soil_desc,Everything grows a little more valuable.,Усе зростає трохи ціннішим.
+card.rich_soil_where,Wave clears and card packs,Відбиті хвилі та набори карток
+card.sharpened_tips,Sharpened Tips,Загострені вістря
+card.sharpened_tips_desc,Every branch ends in a point.,Кожна гілка закінчується вістрям.
+card.sharpened_tips_where,Rare card packs and weekly bonuses,Рідкісні набори та тижневі бонуси
+card.swift_winds,Swift Winds,Прудкі вітри
+card.swift_winds_desc,The canopy never stops moving.,Крона ніколи не завмирає.
+card.swift_winds_where,Epic card packs and the weekly bonus,Епічні набори та тижневий бонус
+card.vital_roots,Vital Roots,Живлюще коріння
+card.vital_roots_desc,The trunk drinks deeper.,Стовбур п’є глибше.
+card.vital_roots_where,Wave clears and card packs,Відбиті хвилі та набори карток
+cards.card,Card,Картка
+cards.deep_roots,Deep Roots,Глибоке коріння
+cards.effect,Effect,Ефект
+cards.empty_slot,Empty,Порожньо
+cards.equip,Equip,Спорядити
+cards.equipped,Equipped,Споряджено
+cards.equipped_toast,Card equipped,Картку споряджено
+cards.filter.all,All,Усі
+cards.filter.owned,Owned,У власності
+cards.loadout,Loadout,Спорядження
+cards.locked_slot,Locked,Заблоковано
+cards.max_level,Max level,Максимальний рівень
+cards.no_bonus,No cards equipped,Картки не споряджено
+cards.no_slot,Unlock a card slot first,Спершу відкрийте слот для картки
+cards.not_enough_shards,Not enough shards,Недостатньо уламків
+cards.not_owned,Not owned,Не належить
+cards.pick_slot,Tap a slot to replace,Натисніть слот для заміни
+cards.player_level_value,Player level %d,Рівень гравця %d
+cards.pp,pp,в.п.
+cards.rarity.common,Common,Звичайна
+cards.rarity.epic,Epic,Епічна
+cards.rarity.legendary,Legendary,Легендарна
+cards.rarity.rare,Rare,Рідкісна
+cards.shards,shards,уламків
+cards.slot,Slot,Слот
+cards.sort,Sort,Сортування
+cards.sort.level,Level,Рівень
+cards.sort.new,New,Нові
+cards.sort.rarity,Rarity,Рідкість
+cards.title,Cards,Картки
+cards.unequip,Unequip,Зняти
+cards.unequipped,Card unequipped,Картку знято
+cards.upgrade,Upgrade,Покращити
+cards.upgraded,Card upgraded,Картку покращено
+cards.where_to_get,Where to get:,Де отримати:
+common.back,Back,Назад
+common.cancel,Cancel,Скасувати
+common.close,Close,Закрити
+common.coins_short,coins,монет
+common.free,Free,Безкоштовно
+common.gems_short,gems,самоцвітів
+common.ok,OK,Гаразд
+debug.cleared,cleared,відбито
+debug.enemies,Enemies,Вороги
+debug.paused,paused,пауза
+debug.projectiles,Projectiles,Снаряди
+debug.speed,Sim speed,Швидкість
+debug.title,Debug,Налагодження
+enemy.boss_troll,Troll Warden,Троль-охоронець
+enemy.grunt,Grunt,Гоблін
+enemy.runner,Runner,Бігун
+enemy.shaman,Shaman,Шаман
+enemy.tank,Tank,Танк
+magica.active,Researching,Досліджується
+magica.active_hint,Research continues while the app is closed.,"Дослідження триває, навіть коли гру закрито."
+magica.ads_soon,Rewarded speed-ups arrive with M6,Прискорення за рекламу з’явиться в M6
+magica.already_done,Already researched,Уже досліджено
+magica.ancient_memory,Ancient Memory,Прадавня пам’ять
+magica.ancient_memory_desc,The forest remembers its first archer.,Ліс пам’ятає свого першого лучника.
+magica.ancient_memory_effect,Start each run with a free Archer Tower,Починати кожен забіг із безкоштовною вежею лучника
+magica.auto_restart,Auto-Restart,Автоперезапуск
+magica.auto_restart_desc,The forest regrows the moment a run ends.,Ліс відростає щойно забіг завершується.
+magica.auto_restart_effect,Auto-start the next run after the summary,Автоматично починати наступний забіг після підсумків
+magica.branch.knowledge,Knowledge,Знання
+magica.branch.time,Time,Час
+magica.branch.wealth,Wealth,Багатство
+magica.cancel,Cancel,Скасувати
+magica.cancel_body,50 % of the coins and gems are refunded.,Повертається 50 % монет і самоцвітів.
+magica.cancel_confirm,Cancel research,Скасувати дослідження
+magica.cancel_title,Cancel research?,Скасувати дослідження?
+magica.cancelled,"Research cancelled, 50 % refunded","Дослідження скасовано, повернено 50 %"
+magica.cannot_start,Cannot start this research,Не вдалося почати дослідження
+magica.claim,Claim,Забрати
+magica.claim_first,Claim the finished research first,Спершу заберіть завершене дослідження
+magica.claim_hint,Tap Claim to activate its effect.,"Натисніть «Забрати», щоб активувати ефект."
+magica.claimed,Research complete: %s,Дослідження завершено: %s
+magica.complete,Complete!,Готово!
+magica.complete_title,Research complete!,Дослідження завершено!
+magica.cost,Cost:,Вартість:
+magica.currency,currency,валюта
+magica.deep_roots,Deep Roots,Глибоке коріння
+magica.deep_roots_desc,Room for one more card in the loadout.,Місце ще для однієї картки в наборі.
+magica.deep_roots_effect,+1 card slot,+1 слот для картки
+magica.done,Done,Готово
+magica.duration,Duration:,Тривалість:
+magica.effect,Effect:,Ефект:
+magica.flow_of_ages,Flow of Ages,Плин віків
+magica.flow_of_ages_desc,A fourth pace for the battle clock.,Четвертий темп для бойового годинника.
+magica.flow_of_ages_effect,Battle speed option +0.25x,Варіант швидкості бою +0.25x
+magica.fourth_branch,Fourth Branch,Четверта гілка
+magica.fourth_branch_desc,One more canopy for a guardian.,Ще одна крона для вартового.
+magica.fourth_branch_effect,Unit slot 3,Третій слот для вартового
+magica.golden_sap_1,Golden Sap I,Золотий сік I
+magica.golden_sap_1_desc,"Sweet sap, heavier purse.",Солодкий сік — важчий гаманець.
+magica.golden_sap_1_effect,+10 % coins from waves,+10 % монет за хвилі
+magica.golden_sap_2,Golden Sap II,Золотий сік II
+magica.golden_sap_2_desc,The sap runs in richer veins.,Сік тече багатшими жилами.
+magica.golden_sap_2_effect,+10 % coins from waves,+10 % монет за хвилі
+magica.golden_sap_3,Golden Sap III,Золотий сік III
+magica.golden_sap_3_desc,A season of gold.,Сезон золота.
+magica.golden_sap_3_effect,+10 % coins from waves,+10 % монет за хвилі
+magica.idle,No active research,Немає активного дослідження
+magica.idle_hint,One research at a time. Completed nodes apply immediately.,Лише одне дослідження водночас. Завершені вузли діють одразу.
+magica.keep,Keep researching,Продовжити дослідження
+magica.locked,Locked,Заблоковано
+magica.merchant_favor,Merchant's Favor,Ласка торговця
+magica.merchant_favor_desc,Old debts become old discounts.,Старі борги стають старими знижками.
+magica.merchant_favor_effect,"Shop prices -5 %, in-run upgrades -5 %","Ціни в магазині -5 %, покращення в забігу -5 %"
+magica.need_prereq,Complete the prerequisite nodes first,Спершу завершіть попередні вузли
+magica.night_harvest,Night Harvest,Нічний врожай
+magica.night_harvest_desc,The forest works while you sleep.,"Ліс працює, поки ви спите."
+magica.night_harvest_effect,+100 % offline income,+100 % доходу поза грою
+magica.not_enough,Not enough %s,Недостатньо: %s
+magica.nothing_to_claim,Nothing to claim,Немає чого забирати
+magica.one_at_a_time,Only one research at a time,Лише одне дослідження водночас
+magica.pick,Pick a node to begin,"Оберіть вузол, щоб почати"
+magica.quickened_roots_1,Quickened Roots I,Пришвидшене коріння I
+magica.quickened_roots_1_desc,The forest learns to think faster.,Ліс учиться думати швидше.
+magica.quickened_roots_1_effect,+10 % research speed,+10 % швидкості досліджень
+magica.quickened_roots_2,Quickened Roots II,Пришвидшене коріння II
+magica.quickened_roots_2_desc,Older roots remember older seasons.,Старше коріння пам’ятає давніші сезони.
+magica.quickened_roots_2_effect,+10 % research speed,+10 % швидкості досліджень
+magica.quickened_roots_3,Quickened Roots III,Пришвидшене коріння III
+magica.quickened_roots_3_desc,Time bends around the canopy.,Час гнеться навколо крони.
+magica.quickened_roots_3_effect,+10 % research speed,+10 % швидкості досліджень
+magica.requires,Requires:,Потрібно:
+magica.researching,Researching,Досліджується
+magica.second_wind,Second Wind,Друге дихання
+magica.second_wind_desc,"Once per run, the Tree refuses to fall.",Раз за забіг Дерево відмовляється падати.
+magica.second_wind_effect,Once per run: survive a lethal hit at 15 % HP,Раз за забіг: вижити після смертельного удару з 15 % здоров’я
+magica.speed_up,Speed up (AD),Прискорити (AD)
+magica.start,Start,Почати
+magica.started,Research started,Дослідження розпочато
+magica.title,Magica,Магіка
+menu.badge,!,!
+menu.battle,Battle,Бій
+menu.claim,Claim,Забрати
+menu.coming_soon,Coming soon,Незабаром
+menu.daily_missions,Daily Missions,Щоденні завдання
+menu.daily_progress,%d / %d Complete,%d / %d виконано
+menu.magica_claim,Research complete: %s,Дослідження завершено: %s
+menu.magica_idle,No active research,Немає активного дослідження
+menu.magica_researching,Researching:,Досліджується:
+menu.nav.cards,Cards,Картки
+menu.nav.home,Home,Головна
+menu.nav.missions,Missions,Завдання
+menu.nav.shop,Shop,Магазин
+menu.nav.workshop,Workshop,Майстерня
+menu.offline_claimed,+%d coins from the forest,+%d монет із лісу
+menu.open,Open,Відкрити
+menu.settings,Settings,Налаштування
+menu.shop_soon,Shop arrives with M6,Магазин з’явиться в M6
+menu.unlocked,Unlocked: %s,Відкрито: %s
+menu.version,Version,Версія
+menu.view,View,Переглянути
+menu.welcome_body,You were away for %s. The forest gathered %d coins while you were gone.,Вас не було %s. Ліс зібрав %d монет за цей час.
+menu.welcome_capped,Offline income is capped by your Offline Cap upgrade.,Дохід поза грою обмежено покращенням «Ліміт офлайну».
+menu.welcome_title,Welcome back,З поверненням
+mission.d_clean,Clear a run without leaking,Завершити забіг без проривів
+mission.d_clean_desc,Clear a run without leaking,Завершити забіг без проривів
+mission.d_crits,Deal {n} critical hits,Завдати {n} критичних ударів
+mission.d_crits_desc,Deal {n} critical hits,Завдати {n} критичних ударів
+mission.d_kills,Kill {n} enemies,Убити {n} ворогів
+mission.d_kills_desc,Kill {n} enemies,Убити {n} ворогів
+mission.d_reach,Reach wave {n},Дійти до хвилі {n}
+mission.d_reach_desc,Reach wave {n},Дійти до хвилі {n}
+mission.d_towers,Build {n} towers in one run,Збудувати {n} веж за один забіг
+mission.d_towers_desc,Build {n} towers in one run,Збудувати {n} веж за один забіг
+mission.d_waves,Clear {n} waves,Відбити {n} хвиль
+mission.d_waves_desc,Clear {n} waves,Відбити {n} хвиль
+mission.title_format,%s,%s
+mission.w_ads,Watch {n} rewarded ads,Подивитися {n} рекламних роликів
+mission.w_ads_desc,Watch {n} rewarded ads,Подивитися {n} рекламних роликів
+mission.w_cards,Equip {n} cards at once,Спорядити {n} карток одночасно
+mission.w_cards_desc,Equip {n} cards at once,Спорядити {n} карток одночасно
+mission.w_clean,Clear {n} runs without leaking,Завершити {n} забігів без проривів
+mission.w_clean_desc,Clear {n} runs without leaking,Завершити {n} забігів без проривів
+mission.w_kills,Kill {n} enemies,Убити {n} ворогів
+mission.w_kills_desc,Kill {n} enemies,Убити {n} ворогів
+mission.w_reach,Reach wave {n},Дійти до хвилі {n}
+mission.w_reach_desc,Reach wave {n},Дійти до хвилі {n}
+mission.w_towers,Build {n} towers in one run,Збудувати {n} веж за один забіг
+mission.w_towers_desc,Build {n} towers in one run,Збудувати {n} веж за один забіг
+mission.w_waves,Clear {n} waves,Відбити {n} хвиль
+mission.w_waves_desc,Clear {n} waves,Відбити {n} хвиль
+missions.bonus,"All complete: %s, %s","Усі виконано: %s, %s"
+missions.bonus_card_pack," , +1 card pack"," , +1 набір карток"
+missions.bonus_claimed,Completion bonus claimed,Бонус за виконання отримано
+missions.claim,Claim,Забрати
+missions.claim_all,Claim all,Забрати все
+missions.claim_all_toast,Claimed %d missions,Отримано завдань: %d
+missions.claimed,Claimed,Отримано
+missions.claimed_toast,Mission claimed,Завдання отримано
+missions.daily,Daily,Щоденні
+missions.in_progress,In progress,У процесі
+missions.not_complete,Mission is not complete,Завдання не виконано
+missions.reset_note,Daily missions reset at 04:00 local time; weekly missions reset Monday 04:00.,Щоденні завдання оновлюються о 04:00 за місцевим часом; щотижневі — у понеділок о 04:00.
+missions.resets_in,Resets in,Оновлення через
+missions.title,Missions,Завдання
+missions.weekly,Weekly,Щотижневі
+onboarding.avatar,Avatar,Аватар
+onboarding.avatar_alt,Avatar %d,Аватар %d
+onboarding.change_later,You can change this later in Settings.,Це можна змінити пізніше в налаштуваннях.
+onboarding.continue,Continue,Далі
+onboarding.error.chars,"Use letters, digits or underscores only","Лише літери, цифри або підкреслення"
+onboarding.error.empty,Enter a nickname,Введіть нікнейм
+onboarding.error.long,At most 16 characters,Щонайбільше 16 символів
+onboarding.error.short,At least 3 characters,Щонайменше 3 символи
+onboarding.language_subtitle,You can change it later in Settings.,Це можна змінити пізніше в налаштуваннях.
+onboarding.language_title,Choose your language,Оберіть мову
+onboarding.nickname,Nickname,Нікнейм
+onboarding.nickname_hint,"3–16 letters, digits or underscores","3–16 літер, цифр або підкреслень"
+onboarding.play,Play,Грати
+onboarding.profile_title,Create your profile,Створіть профіль
+onboarding.step,Step %d of 2,Крок %d з 2
+onboarding.title,Welcome to the forest,Вітаємо в лісі
+plural.coins.few,coins,монети
+plural.coins.many,coins,монет
+plural.coins.one,coin,монета
+plural.coins.other,coins,монет
+plural.enemies.few,enemies,вороги
+plural.enemies.many,enemies,ворогів
+plural.enemies.one,enemy,ворог
+plural.enemies.other,enemies,ворогів
+plural.gems.few,gems,самоцвіти
+plural.gems.many,gems,самоцвітів
+plural.gems.one,gem,самоцвіт
+plural.gems.other,gems,самоцвітів
+plural.kills.few,kills,вбивства
+plural.kills.many,kills,вбивств
+plural.kills.one,kill,вбивство
+plural.kills.other,kills,вбивств
+plural.minutes.few,minutes,хвилини
+plural.minutes.many,minutes,хвилин
+plural.minutes.one,minute,хвилина
+plural.minutes.other,minutes,хвилин
+plural.waves.few,waves,хвилі
+plural.waves.many,waves,хвиль
+plural.waves.one,wave,хвиля
+plural.waves.other,waves,хвиль
+settings.about,About,Про гру
+settings.account,Account,Обліковий запис
+settings.audio,Audio,Звук
+settings.copied,Copied to clipboard,Скопійовано
+settings.copy,Copy,Копіювати
+settings.damage_numbers,Damage numbers,Числа шкоди
+settings.fps,FPS counter (debug),Лічильник FPS (налагодження)
+settings.game,Game,Гра
+settings.haptics,Haptics,Вібрація
+settings.language,Language,Мова
+settings.language.en,English,English
+settings.language.uk,Українська,Українська
+settings.legal,Legal,Правова інформація
+settings.music,Music,Музика
+settings.nickname,Nickname,Нікнейм
+settings.off,Off,Вимк.
+settings.on,On,Увімк.
+settings.player_id,Player ID,ID гравця
+settings.privacy,Privacy policy,Політика конфіденційності
+settings.privacy_body,Privacy policy placeholder. The final document is published before release.,Чернетка політики конфіденційності. Остаточний документ буде опубліковано перед випуском.
+settings.pseudo_locale,Pseudo-locale (debug),Псевдолокалізація (налагодження)
+settings.reset_body,"All progress, cards and research will be deleted. This cannot be undone.","Увесь прогрес, картки й дослідження буде видалено. Це неможливо скасувати."
+settings.reset_confirm,Reset,Скинути
+settings.reset_profile,Reset profile (debug),Скинути профіль (налагодження)
+settings.reset_title,Reset profile?,Скинути профіль?
+settings.sfx,Sound effects,Звукові ефекти
+settings.shake,Screen shake,Тремтіння екрана
+settings.terms,Terms of use,Умови використання
+settings.terms_body,Terms of use placeholder. The final document is published before release.,Чернетка умов використання. Остаточний документ буде опубліковано перед випуском.
+settings.text_scale,Text size,Розмір тексту
+settings.text_scale.100,100 %,100 %
+settings.text_scale.115,115 %,115 %
+settings.text_scale.130,130 %,130 %
+settings.title,Settings,Налаштування
+settings.ui,Interface sounds,Звуки інтерфейсу
+settings.version,Version %s,Версія %s
+stat.all_damage,All damage,Уся шкода
+stat.armor,Armor,Броня
+stat.attack_speed,Attack speed,Швидкість атаки
+stat.cash_from_kills,Cash from kills,Готівка за вбивства
+stat.cash_gain,Cash from kills,Готівка за вбивства
+stat.coin_gain,Coins,Монети
+stat.coins,Coins,Монети
+stat.crit_chance,Crit chance,Шанс крита
+stat.crit_damage,Crit damage,Сила крита
+stat.enemies_per_wave,Enemies per wave,Ворогів за хвилю
+stat.gem_chance,Gem chance on wave clear,Шанс самоцвіту за хвилю
+stat.gem_chance_on_wave_clear,Gem chance on wave clear,Шанс самоцвіту за хвилю
+stat.leak_damage_reduction,Leak damage reduction,Менша шкода від проривів
+stat.tower_damage,Tower damage,Шкода веж
+stat.tower_range,Tower range,Дальність веж
+stat.tree_damage,All damage,Уся шкода
+stat.tree_max_hp,Tree max HP,Макс. здоров’я Дерева
+stat.tree_regen,Tree regen,Регенерація Дерева
+stat.unit_damage,Unit damage,Шкода вартових
+stat.unit_slot_bonus,Unit slots,Слоти вартових
+stat.unit_slots,Unit slots,Слоти вартових
+status.slow_druid,Druid slow,Уповільнення друїда
+status.slow_frost,Frost slow,Морозне уповільнення
+summary.ads_soon,Rewarded ads arrive in M6. Continue is unaffected.,Реклама за винагороду з’явиться в M6. Це не заважає продовжити.
+summary.already_claimed,Rewards were already granted for this run.,Нагороди за цей забіг уже нараховано.
+summary.best_wave,Best wave,Найкраща хвиля
+summary.cash_lost,Cash is lost when the run ends,Готівка зникає після завершення забігу
+summary.coins,Coins,Монети
+summary.continue,Continue,Далі
+summary.debug_fake,(debug fake),(налагоджувальна імітація)
+summary.double_coins,Double coins (AD),Подвоїти монети (реклама)
+summary.doubled,Coins doubled,Монети подвоєно
+summary.gems,Gems,Самоцвіти
+summary.kills,Kills,Убивства
+summary.leaks,Leaks,Прориви
+summary.new_best,NEW BEST,НОВИЙ РЕКОРД
+summary.time,Time,Час
+summary.title,Run over,Забіг завершено
+summary.wave,Wave,Хвиля
+summary.waves,Waves,Хвилі
+summary.xp,XP,Досвід
+tower.archer,Archer Tower,Вежа лучника
+tower.archer.desc,Fast single-target arrows. Level 5: Double Shot.,Швидкі поодинокі стріли. Рівень 5: подвійний постріл.
+tower.cannon,Cannon,Гармата
+tower.cannon.desc,Slow splash damage. Level 5: Shrapnel.,Повільна шкода по площі. Рівень 5: шрапнель.
+tower.frost,Frost Spire,Морозний шпиль
+tower.frost.desc,Splash slow. Level 5: Deep Chill.,Уповільнення по площі. Рівень 5: глибокий холод.
+tower.totem,Totem,Тотем
+tower.totem.desc,No attack. Buffs nearby towers and the Tree. Level 5: Rooted Gift.,Не атакує. Підсилює сусідні вежі й Дерево. Рівень 5: дар коріння.
+tree_upgrade.attack_speed,Attack Speed,Швидкість атаки
+tree_upgrade.attack_speed_desc,Shots per second,Пострілів за секунду
+tree_upgrade.crit_chance,Crit Chance,Шанс крита
+tree_upgrade.crit_chance_desc,Chance to hit critically (cap 60 %),Шанс критичного влучання (межа 60 %)
+tree_upgrade.crit_damage,Crit Damage,Сила крита
+tree_upgrade.crit_damage_desc,Critical hit multiplier,Множник критичного влучання
+tree_upgrade.damage,Damage,Шкода
+tree_upgrade.damage_desc,Tree and guardian damage,Шкода Дерева й вартових
+tree_upgrade.range,Range,Дальність
+tree_upgrade.range_desc,Tree attack range,Дальність атаки Дерева
+tree_upgrade.regen,Regen,Регенерація
+tree_upgrade.regen_desc,Tree health per second,Здоров’я Дерева за секунду
+unit.archer,Archer,Лучник
+unit.archer.desc,Fast single-target guardian.,Швидкий вартовий з поодинокими стрілами.
+unit.druid,Druid,Друїд
+unit.druid.desc,"Low damage, applies a slow.","Мала шкода, накладає уповільнення."
+unit.mage,Mage,Маг
+unit.mage.desc,Slow splash caster.,Повільний заклинача площової шкоди.
+unlock.battle,Battle,Бій
+unlock.card_slot_1,Card slot 1,Слот картки 1
+unlock.card_slot_2,Card slot 2,Слот картки 2
+unlock.card_slot_3,Card slot 3,Слот картки 3
+unlock.card_slot_4,Card slot 4,Слот картки 4
+unlock.cards,Cards,Картки
+unlock.leaderboard,Leaderboard,Рейтинг
+unlock.magica,Magica,Магіка
+unlock.missions,Missions,Завдання
+unlock.prestige,Prestige,Престиж
+unlock.settings,Settings,Налаштування
+unlock.shop,Shop,Магазин
+unlock.speed_1_5,Speed 1.5x,Швидкість 1.5x
+unlock.speed_2,Speed 2x,Швидкість 2x
+unlock.tournament,Tournament,Турнір
+unlock.tower_specialization,Tower specialization,Спеціалізація веж
+unlock.unit_slot_2,Unit slot 2,Слот вартового 2
+unlock.unit_slot_3,Unit slot 3,Слот вартового 3
+unlock.unit_slot_4,Unit slot 4,Слот вартового 4
+unlock.workshop,Workshop,Майстерня
+workshop.ad_reward_bonus,Ad Reward Bonus,Бонус за рекламу
+workshop.ad_reward_bonus_desc,Ad Reward Bonus,Бонус за рекламу
+workshop.attack_speed,Attack Speed,Швидкість атаки
+workshop.attack_speed_desc,Attack Speed,Швидкість атаки
+workshop.buy,Buy,Купити
+workshop.card_drop_chance,Card Drop Chance,Шанс випадіння карток
+workshop.card_drop_chance_desc,Card Drop Chance,Шанс випадіння карток
+workshop.cash_gain,Cash Gain,Прибуток готівки
+workshop.cash_gain_desc,Cash Gain,Прибуток готівки
+workshop.category.attack,Attack,Атака
+workshop.category.defense,Defense,Захист
+workshop.category.environment,Environment,Довкілля
+workshop.category.utility,Utility,Корисне
+workshop.coin_gain,Coin Gain,Прибуток монет
+workshop.coin_gain_desc,Coin Gain,Прибуток монет
+workshop.crit_chance,Crit Chance,Шанс крита
+workshop.crit_chance_desc,Crit Chance,Шанс крита
+workshop.crit_damage,Crit Damage,Сила крита
+workshop.crit_damage_desc,Crit Damage,Сила крита
+workshop.damage_reduction,Damage Reduction,Зменшення шкоди
+workshop.damage_reduction_desc,Damage Reduction,Зменшення шкоди
+workshop.free_daily_gems,Free Daily Gems,Щоденні самоцвіти
+workshop.free_daily_gems_desc,Free Daily Gems,Щоденні самоцвіти
+workshop.hint,Permanent upgrades. Coins are never spent inside a battle.,Постійні покращення. Монети не витрачаються в бою.
+workshop.in_run_discount,In Run Discount,Знижка в забігу
+workshop.in_run_discount_desc,In Run Discount,Знижка в забігу
+workshop.leak_damage_reduction,Leak Damage Reduction,Менша шкода від проривів
+workshop.leak_damage_reduction_desc,Leak Damage Reduction,Менша шкода від проривів
+workshop.level_short,Lv,Рів.
+workshop.magica_speed,Magica Speed,Швидкість Магіки
+workshop.magica_speed_desc,Magica Speed,Швидкість Магіки
+workshop.max_level,Max level,Максимальний рівень
+workshop.mission_reward_bonus,Mission Reward Bonus,Бонус за завдання
+workshop.mission_reward_bonus_desc,Mission Reward Bonus,Бонус за завдання
+workshop.need_more,Need %d more coins,Потрібно ще %d монет
+workshop.offline_cap_minutes,Offline Cap Minutes,Ліміт офлайну (хв)
+workshop.offline_cap_minutes_desc,Offline Cap Minutes,Ліміт офлайну (хв)
+workshop.offline_coin_rate,Offline Coin Rate,Монети поза грою
+workshop.offline_coin_rate_desc,Offline Coin Rate,Монети поза грою
+workshop.start_shield,Start Shield,Початковий щит
+workshop.start_shield_desc,Start Shield,Початковий щит
+workshop.starting_cash,Starting Cash,Початкова готівка
+workshop.starting_cash_desc,Starting Cash,Початкова готівка
+workshop.title,Workshop,Майстерня
+workshop.tower_damage,Tower Damage,Шкода веж
+workshop.tower_damage_desc,Tower Damage,Шкода веж
+workshop.tree_damage,Tree Damage,Шкода Дерева
+workshop.tree_damage_desc,Tree Damage,Шкода Дерева
+workshop.tree_max_hp,Tree Max Hp,Макс. здоров’я Дерева
+workshop.tree_max_hp_desc,Tree Max Hp,Макс. здоров’я Дерева
+workshop.tree_regen,Tree Regen,Регенерація Дерева
+workshop.tree_regen_desc,Tree Regen,Регенерація Дерева
+workshop.unit_damage,Unit Damage,Шкода вартових
+workshop.unit_damage_desc,Unit Damage,Шкода вартових
+workshop.wave_clear_bonus,Wave Clear Bonus,Бонус за хвилю
+workshop.wave_clear_bonus_desc,Wave Clear Bonus,Бонус за хвилю
+workshop.xp_gain,Xp Gain,Прибуток досвіду
+workshop.xp_gain_desc,Xp Gain,Прибуток досвіду
