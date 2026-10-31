@@ -3,10 +3,10 @@
 Single source of truth for "where are we". Updated at the end of every session.
 Keep it under 70 lines — it is read at the start of every session.
 
-**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M3 done, tagged
+**Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M3 + M3.1 balance done
 **Branch:** `main` · **Godot:** `C:\Tools\godot-4.7.2\Godot_v4.7.2-stable_win64.exe` (4.7.2)
-**Verification (M3, green):** check_project exit 0 · tests 22/22 · smoke 17/17 scenes ·
-battle_smoke PASS (52 checks) · balance_probe reports waves 1-5 (see deviations)
+**Verification (M3.1, green):** check_project exit 0 · tests 22/22 · smoke 17/17 scenes ·
+battle_smoke PASS (52 checks) · balance_probe 18 runs (median 9, range 9–11, peak 11)
 **Toolchain gaps (M6):** Android SDK/adb; LDPlayer `E:\LDPlayer\LDPlayer14`; SDK `C:\Android\Sdk`
 
 ## Milestones
@@ -16,7 +16,7 @@ battle_smoke PASS (52 checks) · balance_probe reports waves 1-5 (see deviations
 | M0 | Foundation | done | `v0.1.0-m0` |
 | M1 | Battle vertical slice | done | `v0.2.0-m1` |
 | M2 | Combat depth | done | `v0.3.0-m2` |
-| M3 | Run economy, upgrades, speed | done (balance acceptance unmet) | `v0.4.0-m3` |
+| M3 | Run economy, upgrades, speed | done (M3.1 balance pass) | `v0.4.1-m3` |
 | M4 | Meta progression and persistence | next | `v0.5.0-m4` |
 | M5 | Shell, UX, localization, audio | not started | `v0.6.0-m5` |
 | M6 | Android, ads, billing, telemetry | not started | `v0.7.0-m6` |
@@ -53,13 +53,27 @@ battle_smoke PASS (52 checks) · balance_probe reports waves 1-5 (see deviations
   locks, pause freeze, 2x delta, abandon rewards, ledger idempotency, overlay).
 - Previews: `docs/preview/m3_battle.png`, `m3_upgrade_panel.png`, `m3_pause.png`.
 
+## M3.1 balance pass (done, tagged `v0.4.1-m3`)
+
+- Starting cash **50 → 120** (spec §4.10 updated; ADR-020) so wave 1 can afford
+  the 60-cash archer; `WaveTable` default + generated `.tres` + tests updated.
+- Tower coverage: archer 300→**400**, cannon 280→**370**, frost 260→**340**
+  range (ADR-021). Probe damage share moved from ~50 % towers to ~87 %.
+- Wave pressure: HP `1.16^w`→`1.11^w`, counts `6+1.2w`→`5+0.8w`, boss group
+  `x1.6`→`x1.20`, spawn `0.72/0.35`→`1.00/0.45` s. Clear bonus `20+5w`→`60+14w`,
+  kill cash `1.09^w`→`1.12^w`.
+- `tools/balance_probe.gd`: seeds (`RunState.seed`), 4 openings, damage share by
+  source, per-wave peak enemies, exit 0 when the floor (7) is met.
+- Gate result: 18 runs (3 openings × 6 seeds) — `fill` 11,11,10,10,10,10;
+  `four` 9×6; `two` 9×6. Median 9, min 9, max 11, peak 11 concurrent, all end in
+  tree defeat on waves 10–12. Full table in `BALANCE.md`.
+- `M3.md` still says wave 15+; the M3.1 brief supersedes it with the 8–14 gate.
+
 ## Deviations / open items
 
-- **Balance acceptance NOT met:** `docs/milestones/M3.md` wants a skilled run at
-  wave 15+. `tools/balance_probe.gd` (greedy auto-play, 8x, prep skips) dies on
-  wave 5 for three opening policies (best: 4 cleared). Wave 10 boss has ~11k HP
-  under the spec's 1.16 HP scaling while the available cash buys ~150 DPS; the M2
-  wave table needs an M8 balance pass. Recorded in `BALANCE.md`; not faked.
+- Spec §4.5/§4.8 numbers are no longer the launch values (ranges, HP/counts,
+  boss multiplier, cash pacing). Data is the launch source of truth; ADR-021
+  records the deviation. §4.10 starting cash was fixed explicitly by the brief.
 - Speed levels 3/10 are unreachable until M4 player levels; debug unlock covers QA.
 - "Double coins" always fakes success in debug builds; release shows ad-unavailable
   until `AdsService` lands in M6.

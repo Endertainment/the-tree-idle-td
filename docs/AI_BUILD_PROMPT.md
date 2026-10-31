@@ -253,7 +253,7 @@ Run rewards (all granted once, server-validated later):
 
 ### 4.10 In-run economy and the upgrade panel
 
-- Earn cash from kills and wave clears; starting cash 50.
+- Earn cash from kills and wave clears; starting cash 120 (M3.1: must cover the 60-cash Archer so wave 1 is playable; ADR-020).
 - The bottom "Upgrade" button opens a bottom sheet with three tabs: **Tree**, **Units**, **Towers** (towers tab lists built towers; tapping one opens its sheet).
 - Tree tab rows: Damage, Attack Speed, Crit Chance, Crit Damage, Range, Regen, each with current level, next-value preview (`+8 % → 12.4`), cost, and a buy button that is disabled with a reason when unaffordable.
 - **Hold-to-buy**: long-press repeats purchases at 8/s while affordable. Must not double-spend (transaction function returns a typed result).

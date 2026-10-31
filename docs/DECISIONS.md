@@ -315,7 +315,7 @@ silently contributes no bonus, so the data test asserts the six shipped ids.
 
 ## ADR-019 — M3 balance gate recorded as unmet (M3 deviation)
 
-**Status:** accepted as a known deviation (M3), follow-up M8
+**Status:** accepted (M3), **superseded by ADR-021 (M3.1)**
 
 **Context:** `docs/milestones/M3.md` accepts "a skilled manual run reaches wave
 15+". The spec's own wave scaling (1.16 HP per wave, 6+1.2w enemies, 1800 HP boss
@@ -331,3 +331,55 @@ M2.1 balance pass). No balance data was altered to make the number look green.
 **Consequences:** the M3 tag marks the implemented feature scope, not a verified
 wave-15 run. Any claim of wave 15+ must wait for a rebalanced wave table and a
 human/recorded playtest.
+
+## ADR-020 — Starting cash is 120, not the spec's 50 (M3.1)
+
+**Status:** accepted (M3.1); spec §4.10 updated
+
+**Context:** spec §4.10 said "starting cash 50" while §4.5 prices the cheapest
+tower (Archer) at 60. A zero-meta player could not build before the first kills,
+so wave 1 leaked by design and the run entered a death spiral. The M3.1 brief
+explicitly allows fixing the data and the spec value.
+
+**Decision:** `WaveTable.starting_cash = 120` (two archers or one archer plus a
+unit/upgrade). The value is authored in `data/waves/wave_table_m2.tres` and the
+`WaveTable` defaults; `docs/AI_BUILD_PROMPT.md` §4.10 now says 120 with this ADR
+reference. `balance_probe.gd` and the unit tests assert it.
+
+**Consequences:** wave 1 is playable and the opening choice is real (two cheap
+towers vs one tower plus an upgrade). The number is data, so a later pass can
+retune it without touching code. The M3.1 probe distribution (median 9, range
+9-11) is measured with 120.
+
+## ADR-021 — M3.1 balance pass: ranges, wave pressure and cash pacing (M3.1)
+
+**Status:** accepted (M3.1)
+
+**Context:** ADR-019 recorded that spec-conformant numbers cleared only 4 waves
+(median) and died on wave 5. Root causes measured with the probe: (1) starting
+cash below the cheapest tower, (2) 300 px tower range covering only a short arc of
+the 859 px lanes, (3) `1.16^(w-1)` HP with 6+1.2w enemies and a x1.6 boss making
+wave 10 ~11k HP against ~70 DPS, (4) kill cash `1.09^(w-1)` and a 20+5w clear
+bonus too small for the 1.55 upgrade growth.
+
+**Decision:** tune data only (no gameplay code):
+- tower ranges: archer 300→400, cannon 280→370, frost spire 260→340 (spec §4.5
+  values remain the design target; data is the launch source of truth);
+- wave HP growth 1.16→1.11, counts 6+1.2w→5+0.8w, boss group x1.6→x1.20, spawn
+  interval 0.72/0.35→1.00/0.45 s;
+- economy: starting cash 120 (ADR-020), clear bonus 20+5w→60+14w, kill cash
+  multiplier 1.09→1.12;
+- probe heuristics: `fill`/`four`/`two` openings spend on the cheapest tower
+  upgrade after the opening (only the `tree` opening buys Tree tracks), and the
+  probe now reports damage share, per-wave peak enemies, seeds and exit status.
+
+**Measured result:** 18 runs (3 openings × 6 seeds) with the final data: `fill`
+11,11,10,10,10,10; `four` 9×6; `two` 9×6. Overall median 9, min 9, max 11, peak
+11 concurrent enemies, all runs end in defeat (waves 10–12) and exit 0. Before the
+pass the same probe cleared 4 waves and died on 5. Full table in `BALANCE.md`.
+
+**Consequences:** a zero-meta run now lands in the spec's 8–12 window and earns
+coins for M4; the game is no longer a wave-5 wall. This deliberately deviates from
+spec §4.5/§4.8 numbers, so the spec tables are not rewritten beyond the explicitly
+requested §4.10 starting-cash fix; `BALANCE.md` mirrors the launch data. If a
+later design pass wants the spec numbers back, only the `.tres` files change.

@@ -3,6 +3,29 @@
 All notable changes are recorded per milestone. The project follows semantic
 versioning for tags; unreleased work stays under `[Unreleased]`.
 
+## [0.4.1-m3] — 2026-10-31
+
+### Changed (M3.1 balance pass)
+
+- Starting cash **50 → 120** in `WaveTable`/`wave_table_m2.tres` and spec §4.10
+  (ADR-020), so wave 1 can afford the 60-cash Archer.
+- Tower coverage: Archer range 300→400, Cannon 280→370, Frost Spire 260→340
+  (ADR-021). `tests/test_battle.gd` asserts the new ranges.
+- Wave pressure: HP growth 1.16→1.11, counts `6+1.2w`→`5+0.8w`, boss group
+  x1.6→x1.20, spawn interval `0.72/0.35`→`1.00/0.45` s. Wave clear bonus
+  `20+5w`→`60+14w`, kill cash multiplier `1.09^w`→`1.12^w`.
+- `tools/balance_probe.gd` now accepts a policy + run seed, reports damage share
+  by source and per-wave peak enemies, isolates RunState/GameState/SaveService
+  and exits 0 when the floor gate (7 cleared waves) is met.
+- `tests/test_battle.gd` wave/tower assertions updated to the M3.1 data.
+
+### Verification
+
+- `balance_probe`: 18 runs (3 openings × 6 seeds), median 9 cleared waves, range
+  9–11, peak 11 concurrent enemies, all runs end in defeat on waves 10–12.
+  Before the pass: all runs cleared 4 and died on wave 5.
+- `check_project` OK, 22/22 unit tests, 17/17 scene smoke, 52-check battle smoke.
+
 ## [0.4.0-m3] — 2026-10-31
 
 ### Added
