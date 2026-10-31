@@ -6,11 +6,13 @@
 
 ## 0. HOW TO USE THIS DOCUMENT
 
-This document is the single source of truth for building the game. It is written to be pasted into an AI coding agent (Claude Code, Cursor, Codex, DeepSeek, ChatGPT, Copilot Chat, etc.).
+This document is the single source of truth for building the game. It is written for an AI coding agent (DeepSeek Harness, Claude Code, Cursor, Codex, ChatGPT, Copilot Chat) that works **inside this repository**.
+
+**Do not read this whole file into the chat every session.** It is a reference, not a prompt. Read `AGENTS.md`, then `docs/PROGRESS.md`, then `docs/milestones/M<N>.md` — the brief lists the exact sections of this document you need. Locate a section by heading (`grep -n "^### 4.6"`), then `read` with an offset around that line. Two to four sections per session is the right budget.
 
 Rules of engagement:
 
-1. **Read the entire document before writing a single line of code.** Do not start with UI, do not start with monetization. Start with Milestone 0 (section 15).
+1. **Start with Milestone 0 (section 15).** Do not start with UI, do not start with monetization.
 2. **Work milestone by milestone.** Each milestone has a goal, a task list and acceptance criteria. Do not jump ahead, do not partially implement a later milestone "because it was easy".
 3. **This is not a prototype.** The output must be a production-shaped, well-structured Godot project that a solo developer can keep editing for a year. Every file you create must be readable, typed, documented, and data-driven.
 4. **Never invent APIs.** If you are unsure about a Godot 4.x API or a plugin API, check the documentation or wrap it in an adapter with a stub. A wrong API call is worse than a documented TODO.
@@ -23,6 +25,9 @@ Repository state you are starting from (verify it):
 - `scenes/main_menu.tscn` is a throwaway stub (ColorRect + a TextureRect with `menu_bg.jpg`). Replace it, do not extend it.
 - `assets/art/ui/bg/menu_bg.jpg` exists and may be reused as the menu background.
 - `docs/reference/ui_main_menu.png` and `docs/reference/ui_battle.png` are the approved visual references for layout and mood.
+- `AGENTS.md` — the working protocol for this repository (read it first: context rules, session loop, verification, commits).
+- `docs/PROGRESS.md` — the current milestone, status table and handoff block. Update it at the end of every session.
+- `docs/milestones/M0.md` … `M8.md` — one brief per session-sized chunk of work, each listing the exact spec sections to read.
 - `docs/AI_BUILD_PROMPT.md` is this file.
 - The repository is initialized with git and pushed to GitHub.
 
@@ -1409,6 +1414,18 @@ Deliver:
 - Godot API uncertainty → check the docs for the exact version; if you cannot, write an adapter with a clear `# VERIFY:` comment and a stub, and tell the human.
 - Plugin uncertainty → do not guess imports; isolate behind an interface and provide the integration checklist.
 - Balance uncertainty → implement the spec numbers, add a tunable resource, and note it in `docs/BALANCE.md`.
+
+### 17.6 Session protocol inside an agent harness (DeepSeek Harness, Claude Code, Cursor)
+
+Long autonomous sessions fail in a predictable way: the agent forgets a constraint, re-reads files, and starts "refactoring" finished code. Prevent it structurally:
+
+1. **One session = one milestone brief.** Open a fresh session per milestone (`docs/milestones/M<N>.md`). Do not chain milestones in one conversation.
+2. **The spec stays on disk.** Never paste this document into the chat; read only the sections the brief lists, via `grep` + `read` with an offset.
+3. **Persistent state lives in files**, not in the conversation: `docs/PROGRESS.md` (status + handoff), `docs/DECISIONS.md`, `CHANGELOG.md`, git history.
+4. **The session ends with a handoff, not with a summary.** If the milestone is not finished, write the handoff block (`state`, `last green commit`, `files in flight`, `next command`) and start a new session from it.
+5. **A red check blocks progress.** `tools/check_project.ps1` and `tests/run_tests.gd` run after every batch; "it should work" is not a report.
+6. **Delegate noise.** Wide exploration (finding usages, auditing files, reading plugin docs) goes to a subagent whose context is disposable; only the 10-line result comes back.
+7. **Budget:** the full spec is ~24k tokens; one brief plus its sections is ~6–10k. If a session needs more than four spec sections, the brief is wrong — split the milestone.
 
 ---
 

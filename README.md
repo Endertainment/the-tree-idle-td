@@ -24,6 +24,16 @@ Supporting material:
 | `docs/reference/ui_battle.png` | approved battle/HUD reference |
 | `docs/AI_BUILD_PROMPT.md` | design + technical spec + milestones |
 
+## Working with an AI agent
+
+The spec is big on purpose (~24k tokens). Do not paste it into a chat and do not let an agent read it whole every time.
+
+1. `AGENTS.md` — the protocol: read order, context rules, session loop, verification, commits.
+2. `docs/PROGRESS.md` — where we are; read first in every session, updated at the end.
+3. `docs/milestones/M0.md` … `M8.md` — one brief per session, listing the exact spec sections to read.
+
+Boot prompt for a fresh session lives at the end of `AGENTS.md`. One session = one milestone; a red check blocks progress; unfinished work ends with a handoff block, not with a longer chat.
+
 ## Planned structure
 
 ```
