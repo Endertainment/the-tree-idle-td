@@ -102,7 +102,7 @@ cadence); boss waves are 10/20/30 (`boss_troll` + support, boss group x1.6 HP,
 
 ## Performance (M2 probe, `tools/perf_probe.gd`)
 
-Desktop RTX 3050 laptop, vsync off, 5 s sample: **1907.2 FPS** with 120 enemies +
+Desktop RTX 3050 laptop, vsync off, 5 s sample: **1945.9 FPS** with 120 enemies +
 8 towers + 4 units (120 enemies peak). 532 draw calls peak at 1080x1920.
 Known gap: the M2 brief targets < 120 draw calls; placeholder art uses a texture
 per walk frame so sprites cannot batch — atlas pass deferred to M5/M8. LDPlayer

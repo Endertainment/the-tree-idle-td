@@ -1,13 +1,13 @@
-## BattleController — owns one battle run: arena, entities, economy and run flow.
+## BattleController — owns one battle run: arena, economy, waves and run flow.
 ##
-## M2 split: HUD binding lives in BattleHudController, the three bottom sheets in
-## BuildSheet / TowerSheet / UnitSlots. This script keeps state and flow only:
-## spawning (pooled enemies), wave progression, cash transactions, tower/unit
-## build+upgrade+sell, aura ticking, damage application and run end.
+## M2 split: HUD binding lives in BattleHudController, sheets in BuildSheet /
+## TowerSheet / UnitSlots, the enemy pool in EnemyManager, projectile + hit
+## resolution in CombatSystem and screenshot staging in BattlePreview. This script
+## keeps state and flow only: cash transactions, build/upgrade/sell, aura ticking,
+## boss tracking and run end.
 ##
-## All damage still goes through DamageResolver; all numbers come from resources.
-## Scene collaborators are addressed through small public APIs, never node paths
-## like `get_node("../../")`.
+## All damage goes through DamageResolver; all numbers come from resources. Scene
+## collaborators are addressed through public APIs, never `get_node("../../")`.
 class_name BattleController
 extends Node2D
 
@@ -21,9 +21,7 @@ signal boss_removed
 
 const COLLAPSE_SECONDS := 1.2
 const AURA_INTERVAL := 0.1
-const STARTING_PROJECTILES := 16
 const FX_DEATH_TEXTURE := preload("res://assets/art/battle/fx/fx_death.png")
-const FX_HIT_TEXTURE := preload("res://assets/art/battle/fx/fx_hit.png")
 
 @export var map_data: MapData
 @export var wave_table: WaveTable
@@ -55,9 +53,7 @@ const FX_HIT_TEXTURE := preload("res://assets/art/battle/fx/fx_hit.png")
 @onready var _hud: BattleHUD = $BattleHUD
 @onready var _hud_controller: Node = $BattleHudController
 
-var _lane_north: Path2D
-var _lane_south: Path2D
-var _pedestals: Array[Pedestal] = []
+var _arena: BattleArena
 var _enemy_lookup: Dictionary = {}
 var _tower_lookup: Dictionary = {}
 var _unit_lookup: Dictionary = {}
@@ -65,16 +61,13 @@ var _run_rng: RandomNumberGenerator
 var _wave_manager: WaveManager
 var _spawner: Spawner
 var _aura_system: AuraSystem
+var _enemy_manager: EnemyManager
+var _combat: CombatSystem
 var _target_index: SpatialHash
-var _projectile_pool: Array[Projectile] = []
-var _active_enemies: Array[Enemy] = []
-var _enemy_pool: Array[Enemy] = []
 var _towers: Array[Tower] = []
 var _units: Array[Unit] = []
 var _unit_slots: Array[UnitSlot] = []
 var _active_boss: Enemy
-var _next_enemy_uid: int = 1
-var _spawned_total: int = 0
 var _kills: int = 0
 var _leaks: int = 0
 var _cleared_waves: int = 0
@@ -93,9 +86,16 @@ func _ready() -> void:
 
 	_target_index = SpatialHash.new(160.0)
 	_aura_system = AuraSystem.new()
-	_build_arena()
+	_arena = BattleArena.new()
+	_arena.build(
+		map_data,
+		_background,
+		_lanes_root,
+		_pedestals_root,
+		pedestal_scene,
+		_on_pedestal_pressed
+	)
 	_build_tree()
-	_build_projectile_pool()
 	_build_systems()
 	_hud_controller.call(&"setup", self, _hud)
 	EventBus.run_started.emit()
@@ -108,7 +108,7 @@ func _physics_process(delta: float) -> void:
 	var dt := _clock.scaled(delta)
 	if dt <= 0.0:
 		return
-	_target_index.rebuild(_active_enemies)
+	_target_index.rebuild(_enemy_manager.get_active())
 	_elapsed += dt
 	_wave_manager.tick(dt)
 	_aura_timer += dt
@@ -177,7 +177,7 @@ func get_elapsed() -> float:
 
 
 func get_spawned_count() -> int:
-	return _spawned_total
+	return _enemy_manager.get_spawned_total() if _enemy_manager != null else 0
 
 
 func get_cleared_waves() -> int:
@@ -193,13 +193,11 @@ func get_unit_count() -> int:
 
 
 func get_pedestal_count() -> int:
-	return _pedestals.size()
+	return _arena.pedestals.size()
 
 
 func get_pedestal(index: int) -> Pedestal:
-	if index < 0 or index >= _pedestals.size():
-		return null
-	return _pedestals[index]
+	return _arena.get_pedestal(index)
 
 
 func get_towers() -> Array[Tower]:
@@ -223,7 +221,7 @@ func get_enemy_data(enemy_id: StringName) -> EnemyData:
 
 
 func get_active_enemy_count() -> int:
-	return _active_enemies.size()
+	return _enemy_manager.get_active_count() if _enemy_manager != null else 0
 
 
 func get_active_boss() -> Enemy:
@@ -234,7 +232,9 @@ func get_active_boss() -> Enemy:
 
 func get_slowed_enemy_count() -> int:
 	var count := 0
-	for enemy in _active_enemies:
+	if _enemy_manager == null:
+		return count
+	for enemy in _enemy_manager.get_active():
 		if is_instance_valid(enemy) and enemy.is_alive() and enemy.is_slowed():
 			count += 1
 	return count
@@ -378,7 +378,7 @@ func register_unit_slots(slots: Array[UnitSlot]) -> void:
 	_unit_slots = slots
 
 
-## Debug/tooling helper: unlocks every canopy slot (perf probe, preview capture).
+## Tooling helper: unlocks every canopy slot (perf probe, preview capture).
 ## Never called by gameplay flow; workshop/level gates stay enforced for players.
 func debug_unlock_unit_slots() -> void:
 	for slot in _unit_slots:
@@ -418,95 +418,36 @@ func debug_start_wave(wave_number: int) -> void:
 
 ## Spawns one enemy outside the wave schedule (performance probe).
 func debug_spawn_enemy(enemy_id: StringName, lane_id: StringName = &"north") -> void:
-	_on_spawn_requested(enemy_id, lane_id, 1.0, 1.0, 1.0, 1.0)
-
-
-## Builds a showcase board for the preview screenshot (tools only).
-func stage_preview() -> void:
-	if _finished:
+	var data := _enemy_lookup.get(enemy_id, null) as EnemyData
+	if data == null:
 		return
-	add_cash(5000)
-	var showcase: Array[StringName] = [&"tower_archer", &"cannon", &"frost_spire", &"totem"]
-	for index in showcase.size():
-		if index < _pedestals.size():
-			build_tower(_pedestals[index], showcase[index])
-	if not _towers.is_empty():
-		for _level in 4:
-			upgrade_tower(_towers[0])
-	var slots := get_unit_slots()
-	if not slots.is_empty():
-		place_unit(slots[0], &"unit_archer")
-	debug_start_wave(10)
+	_enemy_manager.spawn(data, lane_id, 1.0, 1.0, 1.0)
+
+
+## Builds the preview board for the screenshot tool (see BattlePreview).
+func stage_preview() -> void:
+	BattlePreview.stage(self)
 
 
 ## Stages combat and opens one bottom sheet, for HUD preview screenshots.
 func stage_sheet_preview(sheet: String) -> void:
-	stage_preview()
-	match sheet:
-		"tower":
-			if not _towers.is_empty():
-				_hud_controller.call(&"debug_open_tower_sheet", _towers[0])
-		"build":
-			if _pedestals.size() > 7:
-				_hud_controller.call(&"debug_open_build_sheet", _pedestals[7])
-		"unit":
-			var slots := get_unit_slots()
-			if not slots.is_empty():
-				_hud_controller.call(&"debug_open_unit_sheet", slots[0])
-		"unit_place":
-			debug_unlock_unit_slots()
-			var all_slots := get_unit_slots()
-			if all_slots.size() > 1:
-				_hud_controller.call(&"debug_open_unit_sheet", all_slots[1])
+	BattlePreview.stage_sheet(self, sheet)
+
+
+## Tooling-only wrappers used by BattlePreview (capture_scene calls these).
+func debug_open_tower_sheet(tower: Tower) -> void:
+	_hud_controller.call(&"debug_open_tower_sheet", tower)
+
+
+func debug_open_build_sheet(pedestal: Pedestal) -> void:
+	_hud_controller.call(&"debug_open_build_sheet", pedestal)
+
+
+func debug_open_unit_sheet(slot: UnitSlot) -> void:
+	_hud_controller.call(&"debug_open_unit_sheet", slot)
 
 
 # --- arena construction ----------------------------------------------------------
-
-
-func _build_arena() -> void:
-	_background.texture = map_data.background
-	_background.position = map_data.arena_size * 0.5
-	_lane_north = _create_lane(&"LaneNorth", map_data.lane_north_points)
-	_lane_south = _create_lane(&"LaneSouth", map_data.lane_south_points)
-	_create_pedestals()
-
-
-func _create_lane(lane_name: StringName, points: PackedVector2Array) -> Path2D:
-	var lane := Path2D.new()
-	lane.name = lane_name
-	lane.curve = CurveBuilder.build(points)
-	_lanes_root.add_child(lane)
-	_add_lane_visual(String(lane_name), lane.curve)
-	return lane
-
-
-## Draws the authored road under the tree and pedestals. Path2D itself only
-## renders in the editor, so the playable lane needs an explicit Line2D.
-func _add_lane_visual(lane_name: String, curve: Curve2D) -> void:
-	var road := Line2D.new()
-	road.name = lane_name + "Road"
-	road.width = 84.0
-	road.default_color = Color(0.42, 0.32, 0.20, 0.85)
-	road.joint_mode = Line2D.LINE_JOINT_ROUND
-	road.begin_cap_mode = Line2D.LINE_CAP_ROUND
-	road.end_cap_mode = Line2D.LINE_CAP_ROUND
-	road.antialiased = true
-	road.z_index = -5
-	var length := curve.get_baked_length()
-	var steps := maxi(int(length / 24.0), 2)
-	for i in steps + 1:
-		road.add_point(curve.sample_baked(length * float(i) / float(steps), true))
-	_lanes_root.add_child(road)
-
-
-func _create_pedestals() -> void:
-	for i in map_data.pedestal_positions.size():
-		var pedestal := pedestal_scene.instantiate() as Pedestal
-		_pedestals_root.add_child(pedestal)
-		pedestal.position = map_data.pedestal_positions[i]
-		pedestal.setup(i)
-		pedestal.pressed.connect(_on_pedestal_pressed)
-		_pedestals.append(pedestal)
 
 
 func _build_tree() -> void:
@@ -514,11 +455,6 @@ func _build_tree() -> void:
 	_tree.defeated.connect(_on_tree_defeated)
 	_tree.hp_changed.connect(_on_tree_hp_changed)
 	_tree.shot_requested.connect(_on_shot_requested)
-
-
-func _build_projectile_pool() -> void:
-	for _index in STARTING_PROJECTILES:
-		_create_projectile()
 
 
 func _build_systems() -> void:
@@ -531,6 +467,29 @@ func _build_systems() -> void:
 	for data in unit_resources:
 		if data != null:
 			_unit_lookup[data.id] = data
+
+	_enemy_manager = EnemyManager.new()
+	_enemy_manager.name = "EnemyManager"
+	add_child(_enemy_manager)
+	_enemy_manager.setup(
+		_enemies_root,
+		enemy_scene,
+		_clock,
+		_target_index,
+		_run_rng,
+		_arena.lane_north,
+		_arena.lane_south
+	)
+	_enemy_manager.enemy_died.connect(_on_enemy_died)
+	_enemy_manager.enemy_leaked.connect(_on_enemy_leaked)
+	_enemy_manager.enemy_hit.connect(_on_enemy_hit_taken)
+	_enemy_manager.enemy_hp_changed.connect(_on_enemy_hp_changed)
+	_enemy_manager.boss_spawned.connect(_on_boss_spawned)
+
+	_combat = CombatSystem.new()
+	_combat.name = "CombatSystem"
+	add_child(_combat)
+	_combat.setup(_projectiles_root, projectile_scene, _clock, _run_rng, _target_index, _fx)
 
 	_spawner = Spawner.new()
 	_spawner.name = "Spawner"
@@ -547,7 +506,7 @@ func _build_systems() -> void:
 	_wave_manager.table_finished.connect(_on_table_finished)
 
 
-# --- spawning and combat ---------------------------------------------------------
+# --- spawning and combat callbacks ------------------------------------------------
 
 
 func _on_spawn_requested(
@@ -562,45 +521,14 @@ func _on_spawn_requested(
 	if data == null:
 		push_error("BattleController: unknown enemy id '%s'" % enemy_id)
 		return
-	var lane := _lane_north if lane_id == &"north" else _lane_south
-	var enemy := _acquire_enemy()
-	var lateral := _run_rng.randf_range(-14.0, 14.0)
-	enemy.setup(
+	_enemy_manager.spawn(
 		data,
-		lane,
+		lane_id,
 		hp_multiplier * group_hp_multiplier,
 		speed_multiplier,
-		cash_multiplier,
-		lateral,
-		_clock,
-		_next_enemy_uid
+		cash_multiplier
 	)
-	_next_enemy_uid += 1
-	_active_enemies.append(enemy)
-	_spawned_total += 1
 	_wave_manager.on_enemy_spawned()
-	if data.is_boss:
-		_active_boss = enemy
-		boss_spawned.emit(enemy)
-
-
-func _acquire_enemy() -> Enemy:
-	for enemy in _enemy_pool:
-		if is_instance_valid(enemy) and enemy.is_pooled():
-			return enemy
-	var created := enemy_scene.instantiate() as Enemy
-	_enemies_root.add_child(created)
-	created.died.connect(_on_enemy_died)
-	created.leaked.connect(_on_enemy_leaked)
-	created.hit_taken.connect(_on_enemy_hit_taken)
-	created.hp_changed.connect(_on_enemy_hp_changed.bind(created))
-	_enemy_pool.append(created)
-	return created
-
-
-func _retire_enemy(enemy: Enemy) -> void:
-	_active_enemies.erase(enemy)
-	enemy.release()
 
 
 func _on_enemy_died(enemy: Enemy) -> void:
@@ -610,18 +538,16 @@ func _on_enemy_died(enemy: Enemy) -> void:
 	if enemy.data != null and enemy.data.is_boss:
 		_active_boss = null
 		boss_removed.emit()
-	_retire_enemy(enemy)
 	_wave_manager.on_enemy_removed()
 
 
 func _on_enemy_leaked(enemy: Enemy) -> void:
 	_leaks += 1
 	_tree.receive_leak(enemy.leak_damage_pct)
-	_fx.play(enemy.global_position, FX_HIT_TEXTURE, 1.0, 0.3)
+	_fx.play(enemy.global_position, CombatSystem.FX_HIT_TEXTURE, 1.0, 0.3)
 	if enemy.data != null and enemy.data.is_boss:
 		_active_boss = null
 		boss_removed.emit()
-	_retire_enemy(enemy)
 	_wave_manager.on_enemy_removed()
 
 
@@ -633,10 +559,19 @@ func _on_enemy_hit_taken(enemy: Enemy, amount: float, is_crit: bool, source_id: 
 	_damage_numbers.show_number(enemy.global_position + offset, amount, is_crit)
 
 
-func _on_enemy_hp_changed(current_hp: float, max_hp: float, enemy: Enemy) -> void:
+func _on_enemy_hp_changed(enemy: Enemy, current_hp: float, max_hp: float) -> void:
 	if enemy != _active_boss:
 		return
 	boss_hp_changed.emit(current_hp, max_hp)
+
+
+func _on_boss_spawned(enemy: Enemy) -> void:
+	_active_boss = enemy
+	boss_spawned.emit(enemy)
+
+
+func _on_shot_requested(origin: Vector2, target: Enemy, shot: Dictionary) -> void:
+	_combat.fire(origin, target, shot)
 
 
 func _play_death_fx(enemy: Enemy) -> void:
@@ -646,104 +581,8 @@ func _play_death_fx(enemy: Enemy) -> void:
 	_fx.play(enemy.global_position + Vector2(0.0, -20.0), FX_DEATH_TEXTURE, scale, 0.35)
 
 
-func _on_shot_requested(origin: Vector2, target: Enemy, shot: Dictionary) -> void:
-	_fire_projectile(origin, target, shot)
-
-
-func _fire_projectile(origin: Vector2, target: Enemy, shot: Dictionary) -> void:
-	if target == null or not is_instance_valid(target) or not target.is_alive():
-		return
-	var projectile := _get_projectile()
-	projectile.launch(origin, target, shot, _clock)
-
-
-func _get_projectile() -> Projectile:
-	for projectile in _projectile_pool:
-		if not projectile.active:
-			return projectile
-	return _create_projectile()
-
-
-func _create_projectile() -> Projectile:
-	var projectile := projectile_scene.instantiate() as Projectile
-	_projectiles_root.add_child(projectile)
-	projectile.hit_landed.connect(_on_projectile_hit_landed)
-	_projectile_pool.append(projectile)
-	return projectile
-
-
-func _on_projectile_hit_landed(
-	_projectile: Projectile,
-	target: Enemy,
-	shot: Dictionary,
-	impact_position: Vector2
-) -> void:
-	_apply_hit(target, shot, impact_position)
-
-
-## Resolves the primary hit, splash falloff and status through one code path.
-## DamageResolver owns every number; this method only feeds it target stats.
-func _apply_hit(primary: Enemy, shot: Dictionary, impact_position: Vector2) -> void:
-	if primary == null or not is_instance_valid(primary) or not primary.is_alive():
-		return
-	var armor := primary.armor
-	var target_multiplier := primary.data.damage_taken_multiplier if primary.data != null else 1.0
-	var result := DamageResolver.resolve(
-		float(shot.get("damage", 0.0)),
-		float(shot.get("crit_chance", 0.0)),
-		float(shot.get("crit_multiplier", 2.0)),
-		_run_rng,
-		armor,
-		1.0,
-		1.0,
-		false,
-		target_multiplier
-	)
-	primary.apply_damage(float(result["amount"]), bool(result["is_crit"]), shot.get("source_id", &""))
-	_apply_status(primary, shot)
-
-	var splash_radius := float(shot.get("splash_radius", 0.0))
-	if splash_radius > 0.0:
-		var min_ratio := float(shot.get("splash_min_ratio", 0.35))
-		var candidates := _target_index.query_radius(impact_position, splash_radius)
-		for enemy in candidates:
-			if enemy == primary or not is_instance_valid(enemy) or not enemy.is_alive():
-				continue
-			var distance := impact_position.distance_to(enemy.global_position)
-			var falloff := DamageResolver.splash_falloff(distance, splash_radius, min_ratio)
-			var splash_armor := enemy.armor
-			var splash_target_multiplier := enemy.data.damage_taken_multiplier if enemy.data != null else 1.0
-			var splash_result := DamageResolver.resolve(
-				float(shot.get("damage", 0.0)),
-				float(shot.get("crit_chance", 0.0)),
-				float(shot.get("crit_multiplier", 2.0)),
-				_run_rng,
-				splash_armor,
-				1.0,
-				falloff,
-				false,
-				splash_target_multiplier
-			)
-			enemy.apply_damage(
-				float(splash_result["amount"]),
-				bool(splash_result["is_crit"]),
-				shot.get("source_id", &"")
-			)
-			_apply_status(enemy, shot)
-		_fx.play(impact_position, FX_HIT_TEXTURE, splash_radius / 60.0, 0.25)
-	else:
-		_fx.play(impact_position, FX_HIT_TEXTURE, 0.45, 0.18)
-
-
-func _apply_status(enemy: Enemy, shot: Dictionary) -> void:
-	var slow_pct := float(shot.get("slow_pct", 0.0))
-	if slow_pct <= 0.0:
-		return
-	enemy.apply_slow(slow_pct, float(shot.get("slow_duration", 0.0)))
-
-
 func _refresh_auras() -> void:
-	_aura_system.apply(_active_enemies, _towers, _tree)
+	_aura_system.apply(_enemy_manager.get_active(), _towers, _tree)
 
 
 # --- interaction callbacks --------------------------------------------------------
@@ -758,7 +597,7 @@ func _on_tower_pressed(tower: Tower) -> void:
 
 
 func _pedestal_for_tower(tower: Tower) -> Pedestal:
-	for pedestal in _pedestals:
+	for pedestal in _arena.pedestals:
 		if pedestal.tower == tower:
 			return pedestal
 	return null

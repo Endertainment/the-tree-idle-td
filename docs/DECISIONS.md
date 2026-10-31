@@ -211,7 +211,7 @@ instead of crashing content loads.
 **Context:** `docs/milestones/M2.md` targets < 120 draw calls at 120 enemies.
 Placeholder enemy art is one texture per walk frame (6-8 files per enemy) and each
 enemy also draws a shadow and an HP bar, so the measured peak is 532 draw calls
-while FPS is far above the 55 floor (1907.2 FPS on desktop, vsync off).
+while FPS is far above the 55 floor (1945.9 FPS on desktop, vsync off).
 
 **Decision:** ship M2 with measured numbers recorded; do not hide entities to game
 the metric. Batch/atlas work belongs with the art pipeline (one atlas per screen

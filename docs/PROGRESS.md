@@ -6,7 +6,7 @@ Keep it under 60 lines — it is read at the start of every session.
 **Spec:** 1.0 (`docs/AI_BUILD_PROMPT.md`) · **Milestone:** M3 (M2 done, tagged)
 **Branch:** `main` · **Godot:** `C:\Tools\godot-4.7.2\Godot_v4.7.2-stable_win64.exe` (4.7.2)
 **Verification (M2, green):** check_project exit 0 · tests 15/15 · smoke 17/17 scenes ·
-battle_smoke PASS (22 checks) · validate_layout OK · perf probe PASS (1907.2 FPS desktop)
+battle_smoke PASS (22 checks) · validate_layout OK · perf probe PASS (1945.9 FPS desktop)
 **Toolchain gaps (M6):** Android SDK/adb; LDPlayer `E:\LDPlayer\LDPlayer14`; SDK `C:\Android\Sdk`
 
 ## Milestones
@@ -35,8 +35,8 @@ battle_smoke PASS (22 checks) · validate_layout OK · perf probe PASS (1907.2 F
   spatial-hash targeting, pooled damage labels (cap 25), pooled FX, Totem aura.
 - Waves: 30 authored waves (`wave_table_m2.tres`), swarm 5/15/25, boss 10/20/30, all 5 enemies.
 - Split `battle_controller.gd` into state/flow + `battle_hud_controller`, `build_sheet`,
-  `tower_sheet`, `unit_slots`; HUD never mutates run state.
-- Perf: **1907.2 FPS** (RTX 3050, vsync off) at 120 enemies + 8 towers + 4 units; 532 draw calls.
+  `tower_sheet`, `unit_slots`; enemy pool, hit resolution and arena construction live in `enemy_manager.gd`, `combat_system.gd`, `battle_arena.gd` (HUD never mutates run state).
+- Perf: **1945.9 FPS** (RTX 3050, vsync off) at 120 enemies + 8 towers + 4 units; 532 draw calls.
 
 ## Deviations / open items
 
@@ -52,11 +52,3 @@ battle_smoke PASS (22 checks) · validate_layout OK · perf probe PASS (1907.2 F
 2. `BattleClock` speed 1x/1.5x/2x segmented control (1x button is a placeholder today).
 3. Pause menu (resume/restart/abandon) + full `RunSummary` reward bundle (coins, gems, XP, best).
 
-## Handoff
-
-```text
-State: M2 tagged v0.3.0-m2, all M2 checks green
-Files in flight: none
-Next command: pwsh -File tools/check_project.ps1
-Open questions: none for M3
-```

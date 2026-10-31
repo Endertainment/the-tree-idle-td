@@ -36,8 +36,9 @@ versioning for tags; unreleased work stays under `[Unreleased]`.
 
 ### Changed
 
-- `battle_controller.gd` (state/flow) split into `battle_hud_controller.gd`,
-  `build_sheet.gd`, `tower_sheet.gd` and `unit_slots.gd`; the HUD is still
+- `battle_controller.gd` (state/flow) split into `battle_hud_controller.gd`, `build_sheet.gd`,
+  `tower_sheet.gd` and `unit_slots.gd`; enemy pooling, hit resolution and arena construction
+  live in `enemy_manager.gd`, `combat_system.gd` and `battle_arena.gd`. The HUD stays
   presentation-only and sheets pause `BattleClock`.
 - Projectiles and the Tree now pass a `shot` dictionary (damage, splash, slow,
   source id) so one controller path resolves primary hits and splash.
