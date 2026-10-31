@@ -24,6 +24,7 @@ signal boss_removed
 const COLLAPSE_SECONDS := 1.2
 const AURA_INTERVAL := 0.1
 const FX_DEATH_TEXTURE := preload("res://assets/art/battle/fx/fx_death.png")
+const RUN_UPGRADE_SOURCE := &"run_tree_upgrades"
 
 @export var map_data: MapData
 @export var wave_table: WaveTable
@@ -93,9 +94,10 @@ func _ready() -> void:
 	var run_seed := _fresh_seed()
 	RunState.reset(run_seed)
 	_run_rng = RngService.new_run_rng(run_seed)
-	_wallet = RunWallet.new(wave_table.starting_cash)
+	_wallet = RunWallet.new(_starting_cash())
 	_upgrades = TreeUpgrades.new()
 	_upgrades.setup(_resolve_upgrade_tracks())
+	_apply_run_modifiers()
 	_sync_cash()
 
 	_target_index = SpatialHash.new(160.0)
@@ -119,6 +121,11 @@ func _ready() -> void:
 		_debug_overlay.setup(self)
 	EventBus.run_started.emit()
 	_wave_manager.start()
+
+
+func _exit_tree() -> void:
+	# Run-scoped sources must not leak into the menu or the next run.
+	ModifierService.remove_source(RUN_UPGRADE_SOURCE)
 
 
 func _physics_process(delta: float) -> void:
@@ -322,6 +329,30 @@ func add_cash(amount: int, reason: StringName = &"grant") -> void:
 	_sync_cash()
 
 
+## Starting cash after the workshop "Starting Cash" track.
+func _starting_cash() -> int:
+	var base := float(wave_table.starting_cash)
+	return maxi(int(round(ModifierService.get_stat(&"starting_cash", base))), 1)
+
+
+## In-run price after the "In-Run Discount" track (no-op at level 0).
+func _price(base_cost: int) -> int:
+	var discount := clampf(ModifierService.get_stat(&"in_run_discount", 0.0), 0.0, 0.8)
+	return maxi(1, int(round(float(base_cost) * (1.0 - discount))))
+
+
+## Cash reward after the "Cash Gain" track (refunds are not scaled).
+func _cash_reward(base_amount: int) -> int:
+	var gain := maxf(ModifierService.get_stat(&"cash_gain", 1.0), 0.0)
+	return int(round(float(base_amount) * gain))
+
+
+## Wave-clear cash: table bonus + "Wave Clear Bonus" track, then Cash Gain.
+func _wave_clear_cash(wave: int) -> int:
+	var flat := int(round(ModifierService.get_stat(&"wave_clear_bonus", 0.0)))
+	return _cash_reward(wave_table.clear_bonus(wave) + flat)
+
+
 ## Spends cash atomically and returns the typed result. The only spend path.
 func try_spend_cash(amount: int, reason: StringName) -> SpendResult:
 	var result := _wallet.try_spend(amount, reason)
@@ -343,7 +374,7 @@ func build_tower(pedestal: Pedestal, tower_id: StringName) -> bool:
 	if _finished or pedestal == null or not pedestal.is_buildable():
 		return false
 	var data := _tower_lookup.get(tower_id, null) as TowerData
-	if data == null or not try_spend_cash(data.build_cost, &"build_tower").is_ok():
+	if data == null or not try_spend_cash(_price(data.build_cost), &"build_tower").is_ok():
 		return false
 	var tower := tower_scene.instantiate() as Tower
 	_towers_root.add_child(tower)
@@ -361,7 +392,7 @@ func build_tower(pedestal: Pedestal, tower_id: StringName) -> bool:
 func upgrade_tower(tower: Tower) -> bool:
 	if _finished or tower == null or not is_instance_valid(tower) or not tower.can_upgrade():
 		return false
-	var cost := tower.upgrade_cost()
+	var cost := _price(tower.upgrade_cost())
 	if not try_spend_cash(cost, &"upgrade_tower").is_ok():
 		return false
 	if not tower.upgrade():
@@ -396,7 +427,8 @@ func build_options() -> Array[Dictionary]:
 			continue
 		options.append({
 			"data": data,
-			"affordable": _wallet.can_afford(data.build_cost),
+			"affordable": _wallet.can_afford(_price(data.build_cost)),
+			"cost": _price(data.build_cost),
 		})
 	return options
 
@@ -406,7 +438,7 @@ func place_unit(slot: UnitSlot, unit_id: StringName) -> bool:
 	if _finished or slot == null or not slot.is_unlocked() or not slot.is_empty():
 		return false
 	var data := _unit_lookup.get(unit_id, null) as UnitData
-	if data == null or not try_spend_cash(data.placement_cost, &"place_unit").is_ok():
+	if data == null or not try_spend_cash(_price(data.placement_cost), &"place_unit").is_ok():
 		return false
 	var unit := unit_scene.instantiate() as Unit
 	_units_root.add_child(unit)
@@ -422,7 +454,7 @@ func place_unit(slot: UnitSlot, unit_id: StringName) -> bool:
 func upgrade_unit(unit: Unit) -> bool:
 	if _finished or unit == null or not is_instance_valid(unit) or not unit.can_upgrade():
 		return false
-	var cost := unit.upgrade_cost()
+	var cost := _price(unit.upgrade_cost())
 	if not try_spend_cash(cost, &"upgrade_unit").is_ok():
 		return false
 	if not unit.upgrade():
@@ -440,7 +472,8 @@ func unit_options() -> Array[Dictionary]:
 			continue
 		options.append({
 			"data": data,
-			"affordable": _wallet.can_afford(data.placement_cost),
+			"affordable": _wallet.can_afford(_price(data.placement_cost)),
+			"cost": _price(data.placement_cost),
 		})
 	return options
 
@@ -473,11 +506,11 @@ func try_buy_tree_upgrade(track_id: StringName) -> SpendResult:
 	var check := _upgrades.can_buy(track_id, _wallet)
 	if not check.is_ok():
 		return check
-	var result := try_spend_cash(check.amount, &"tree_upgrade")
+	var result := try_spend_cash(_price(check.amount), &"tree_upgrade")
 	if not result.is_ok():
 		return result
 	_upgrades.record_purchase(track_id)
-	_tree.apply_stat_bonuses(_upgrades.get_bonuses())
+	_apply_run_modifiers()
 	_tree.play_level_up()
 	_refresh_upgrade_panel()
 	return result
@@ -490,7 +523,7 @@ func try_buy_unit_upgrade(row_id: StringName) -> SpendResult:
 		return SpendResult.failure(SpendResult.Code.INVALID_AMOUNT, "battle.unknown_upgrade", 0, get_cash())
 	if not unit.can_upgrade():
 		return SpendResult.failure(SpendResult.Code.MAX_LEVEL, "battle.max_level", 0, get_cash())
-	var cost := unit.upgrade_cost()
+	var cost := _price(unit.upgrade_cost())
 	var result := try_spend_cash(cost, &"upgrade_unit")
 	if not result.is_ok():
 		return result
@@ -528,10 +561,10 @@ func has_affordable_upgrade() -> bool:
 		if _upgrades.can_buy(track.id, _wallet).is_ok():
 			return true
 	for unit in _units:
-		if unit.can_upgrade() and _wallet.can_afford(unit.upgrade_cost()):
+		if unit.can_upgrade() and _wallet.can_afford(_price(unit.upgrade_cost())):
 			return true
 	for tower in _towers:
-		if tower.can_upgrade() and _wallet.can_afford(tower.upgrade_cost()):
+		if tower.can_upgrade() and _wallet.can_afford(_price(tower.upgrade_cost())):
 			return true
 	return false
 
@@ -551,6 +584,7 @@ func tree_upgrade_rows() -> Array[Dictionary]:
 		var level := _upgrades.get_level(track.id)
 		var maxed := _upgrades.is_maxed(track.id)
 		var check := _upgrades.can_buy(track.id, _wallet)
+		var price := _price(check.amount)
 		rows.append({
 			"id": track.id,
 			"kind": &"tree",
@@ -561,10 +595,10 @@ func tree_upgrade_rows() -> Array[Dictionary]:
 			"current_text": track.format_value(track.value_at(level)),
 			"next_text": track.format_value(track.next_value(level)),
 			"delta_text": "+%s" % track.format_value(track.delta_at(level)),
-			"cost": check.amount,
-			"cost_text": str(check.amount),
+			"cost": price,
+			"cost_text": str(price),
 			"maxed": maxed,
-			"affordable": check.is_ok(),
+			"affordable": not maxed and _wallet.can_afford(price),
 			"reason": _row_reason(check),
 			"hold": true,
 		})
@@ -577,7 +611,7 @@ func unit_upgrade_rows() -> Array[Dictionary]:
 		if unit == null or not is_instance_valid(unit) or unit.data == null:
 			continue
 		var maxed := not unit.can_upgrade()
-		var cost := unit.upgrade_cost()
+		var cost := _price(unit.upgrade_cost())
 		var affordable := not maxed and _wallet.can_afford(cost)
 		rows.append({
 			"id": _unit_row_id(unit),
@@ -626,7 +660,7 @@ func tower_upgrade_rows() -> Array[Dictionary]:
 			"current_text": _format_damage(tower.damage_at(tower.level)),
 			"next_text": _format_damage(tower.damage_at(tower.level + 1)),
 			"delta_text": "",
-			"cost": tower.upgrade_cost(),
+			"cost": _price(tower.upgrade_cost()),
 			"cost_text": "",
 			"maxed": not tower.can_upgrade(),
 			"affordable": true,
@@ -671,17 +705,43 @@ func _resolve_upgrade_tracks() -> Array[UpgradeTrack]:
 	return TreeUpgrades.load_tracks()
 
 
+## Publishes the in-run Tree tracks as one ModifierService source. Meta sources
+## (workshop/cards) are registered elsewhere; the entities only read the
+## aggregated value, so no stat is calculated in two places.
+func _apply_run_modifiers() -> void:
+	var bonuses := _upgrades.get_bonuses()
+	var source: Dictionary = {}
+	for key: Variant in bonuses.keys():
+		var value := float(bonuses[key])
+		if value <= 0.0:
+			continue
+		match String(key):
+			"damage":
+				source["tree_damage"] = {"mul": value}
+			"attack_speed":
+				source["attack_speed"] = {"mul": value}
+			"crit_chance":
+				source["crit_chance"] = {"add": value}
+			"crit_damage":
+				source["crit_damage"] = {"add": value}
+			"range":
+				source["tree_range"] = {"mul": value}
+			"regen":
+				source["tree_regen"] = {"add": value}
+	ModifierService.add_source(RUN_UPGRADE_SOURCE, source)
+
+
 # --- speed, pause and run control ------------------------------------------------
 
 
-## True when the player may select `speed` (level gates; debug unlock overrides).
+## True when the player may select `speed` (UnlockService gates; debug grants are
+## persisted separately and only accepted in debug builds).
 func can_use_speed(speed: float) -> bool:
 	if speed <= 1.0:
 		return true
-	var level := int(GameState.player.get("level", 1))
 	if speed >= 2.0:
-		return GameState.is_unlocked(&"speed_2") or level >= 10
-	return GameState.is_unlocked(&"speed_1_5") or level >= 3
+		return UnlockService.is_unlocked(&"speed_2")
+	return UnlockService.is_unlocked(&"speed_1_5")
 
 
 ## Changes the battle simulation speed. Returns false when the speed is locked.
@@ -696,14 +756,14 @@ func get_sim_speed() -> float:
 	return _clock.get_speed()
 
 
-## Debug-only feature unlock (settings popup button, debug builds only).
+## Debug-only feature unlock (pause settings, debug builds only).
 func debug_unlock_speed(unlock_id: StringName) -> bool:
 	if not App.is_debug_build():
 		return false
-	GameState.unlock(unlock_id)
-	SaveService.save(GameState.to_dict())
-	_hud_controller.call(&"refresh_speed_control")
-	return true
+	var granted := UnlockService.grant_debug_unlock(unlock_id)
+	if granted:
+		_hud_controller.call(&"refresh_speed_control")
+	return granted
 
 
 ## Freezes/resumes the battle simulation without pausing the SceneTree, so HUD
@@ -909,7 +969,7 @@ func _on_spawn_requested(
 
 func _on_enemy_died(enemy: Enemy) -> void:
 	_kills += 1
-	add_cash(enemy.cash_value())
+	add_cash(_cash_reward(enemy.cash_value()), &"kill")
 	_play_death_fx(enemy)
 	if enemy.data != null and enemy.data.is_boss:
 		_active_boss = null
@@ -988,12 +1048,12 @@ func _on_wave_started(wave: int) -> void:
 
 func _on_wave_cleared(wave: int) -> void:
 	_cleared_waves = wave
-	add_cash(wave_table.clear_bonus(wave))
+	add_cash(_wave_clear_cash(wave), &"wave_clear")
 	EventBus.wave_cleared.emit(wave)
 
 
 func _on_prep_skipped(bonus: int) -> void:
-	add_cash(bonus)
+	add_cash(_cash_reward(bonus), &"skip_bonus")
 
 
 func _on_table_finished() -> void:

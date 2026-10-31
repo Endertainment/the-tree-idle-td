@@ -38,13 +38,14 @@ func _ready() -> void:
 	_settings_button.pressed.connect(_on_settings_pressed)
 	_view_button.pressed.connect(_on_missions_pressed)
 	_nav_home.pressed.connect(_on_home_pressed)
-	_nav_workshop.pressed.connect(_on_locked_tab)
+	_nav_workshop.pressed.connect(_on_workshop_pressed)
 	_nav_cards.pressed.connect(_on_locked_tab)
 	_nav_missions.pressed.connect(_on_locked_tab)
 	_nav_shop.pressed.connect(_on_locked_tab)
 
 	EventBus.currency_changed.connect(_on_currency_changed)
 	_toast.visible = false
+	_show_pending_unlocks()
 
 
 func _exit_tree() -> void:
@@ -88,6 +89,21 @@ func _on_missions_pressed() -> void:
 func _on_home_pressed() -> void:
 	# Already on Home; keep the active tab inert.
 	pass
+
+
+func _on_workshop_pressed() -> void:
+	SceneRouter.goto(&"workshop")
+
+
+## Shows one combined toast for features unlocked by the last level-up(s).
+func _show_pending_unlocks() -> void:
+	var pending := UnlockService.take_pending_unlocks()
+	if pending.is_empty():
+		return
+	var names: PackedStringArray = []
+	for unlock_id: StringName in pending:
+		names.append(UnlockService.display_name(unlock_id))
+	_show_toast(LocaleService.t("menu.unlocked", "Unlocked: %s") % ", ".join(names))
 
 
 func _on_locked_tab() -> void:

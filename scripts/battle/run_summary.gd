@@ -54,15 +54,15 @@ func setup(
 ) -> void:
 	_waves = maxi(waves_cleared, 0)
 	_run_id = run_id if not run_id.is_empty() else "run_%d_%d" % [_waves, Time.get_ticks_msec()]
-	_best_before = int(GameState.player.get("best_wave", 0))
+	_best_before = GameState.get_best_wave()
 	_is_new_best = _waves > _best_before
 	_bundle = RewardBundle.for_run(_waves, boss_waves, _is_new_best)
+	_scale_bundle()
 	if not _applied:
 		_applied = true
 		_apply_rewards()
-		if _is_new_best:
-			GameState.player["best_wave"] = _waves
-		SaveService.save(GameState.to_dict())
+		GameState.record_run_end(_waves, kills, elapsed_seconds)
+		SaveService.flush()
 
 	_wave_label.text = "%s %d" % [LocaleService.t("summary.wave", "Wave"), _waves]
 	_new_best.visible = _is_new_best
@@ -94,6 +94,21 @@ func _apply_rewards() -> void:
 	GameState.grant_bundle(_bundle, &"run_end")
 
 
+## Workshop "Coin Gain" / "XP Gain" apply to the run payout only.
+func _scale_bundle() -> void:
+	if _bundle == null:
+		return
+	_bundle.coins = _scaled(_bundle.coins, &"coin_gain")
+	_bundle.xp = _scaled(_bundle.xp, &"xp_gain")
+
+
+## Applies a permanent gain multiplier and rounds to a whole reward.
+func _scaled(amount: int, stat: StringName) -> int:
+	if amount <= 0:
+		return 0
+	return maxi(1, int(round(float(amount) * maxf(ModifierService.get_stat(stat, 1.0), 0.0))))
+
+
 func _animate_reward(label: Label, prefix: String, amount: int) -> void:
 	label.text = "%s +%d" % [prefix, amount]
 	var tween := create_tween()
@@ -119,7 +134,7 @@ func _on_double_pressed() -> void:
 		_ad_note.text = LocaleService.t("summary.already_claimed", "Rewards were already granted for this run.")
 		return
 	GameState.grant_bundle(RewardBundle.coins_only(_bundle.coins), &"run_double")
-	SaveService.save(GameState.to_dict())
+	SaveService.flush()
 	var debug_fake := bool(result.get("debug_fake", false))
 	_ad_note.text = LocaleService.t("summary.doubled", "Coins doubled")
 	if debug_fake:

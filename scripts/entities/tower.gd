@@ -98,11 +98,12 @@ func interval_at(target_level: int) -> float:
 	if data == null or data.levels == null or data.attack_interval <= 0.0:
 		return 0.0
 	var scaled := data.levels.interval_at(data.attack_interval, target_level)
-	return maxf(scaled / (1.0 + _external_speed), data.levels.min_interval)
+	var haste := maxf(ModifierService.get_stat(&"attack_speed", 1.0), 0.01)
+	return maxf(scaled / (1.0 + _external_speed) / haste, data.levels.min_interval)
 
 
 func effective_damage() -> float:
-	return damage_at(level) * (1.0 + _external_damage)
+	return ModifierService.get_stat(&"tower_damage", damage_at(level)) * (1.0 + _external_damage)
 
 
 func effective_range() -> float:
@@ -181,8 +182,8 @@ func _find_target() -> Enemy:
 func _build_shots() -> Array[Dictionary]:
 	var shot := {
 		"damage": effective_damage(),
-		"crit_chance": data.crit_chance,
-		"crit_multiplier": data.crit_multiplier,
+		"crit_chance": clampf(ModifierService.get_stat(&"crit_chance", data.crit_chance), 0.0, 0.6),
+		"crit_multiplier": ModifierService.get_stat(&"crit_damage", data.crit_multiplier),
 		"projectile_speed": data.projectile_speed,
 		"texture": data.projectile_texture,
 		"splash_radius": data.splash_radius,

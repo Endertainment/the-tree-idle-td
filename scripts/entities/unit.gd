@@ -87,7 +87,7 @@ func interval_at(target_level: int) -> float:
 
 
 func effective_damage() -> float:
-	return damage_at(level)
+	return ModifierService.get_stat(&"unit_damage", damage_at(level))
 
 
 func effective_range() -> float:
@@ -95,7 +95,10 @@ func effective_range() -> float:
 
 
 func effective_interval() -> float:
-	return interval_at(level)
+	var haste := maxf(ModifierService.get_stat(&"attack_speed", 1.0), 0.01)
+	if data == null or data.levels == null:
+		return 0.0
+	return maxf(interval_at(level) / haste, data.levels.min_interval)
 
 
 func _physics_process(delta: float) -> void:
@@ -125,8 +128,8 @@ func _find_target() -> Enemy:
 func _build_shots() -> Array[Dictionary]:
 	var shot := {
 		"damage": effective_damage(),
-		"crit_chance": data.crit_chance,
-		"crit_multiplier": data.crit_multiplier,
+		"crit_chance": clampf(ModifierService.get_stat(&"crit_chance", data.crit_chance), 0.0, 0.6),
+		"crit_multiplier": ModifierService.get_stat(&"crit_damage", data.crit_multiplier),
 		"projectile_speed": data.projectile_speed,
 		"texture": data.projectile_texture,
 		"splash_radius": data.splash_radius,

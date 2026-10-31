@@ -2,8 +2,9 @@
 ##
 ## The Tree targets the enemy furthest along a lane through the shared spatial
 ## hash (no scene-tree scans) and asks BattleController to fire a pooled homing
-## projectile. Totem auras can buff its damage and attack speed. Leak damage also
-## goes through DamageResolver, so no HP formula lives here.
+## projectile. Meta and in-run bonuses are read from ModifierService only: the
+## workshop, cards and Tree tracks are registered there as sources (ADR-022), so
+## no stat formula is duplicated between systems.
 class_name TreeEntity
 extends Node2D
 
@@ -13,10 +14,13 @@ signal shot_requested(origin: Vector2, target: Enemy, shot: Dictionary)
 
 const LEVELUP_TEXTURE := preload("res://assets/art/battle/fx/fx_levelup.png")
 const LEVELUP_SECONDS := 0.45
+const CRIT_CAP := 0.6
 
 var data: TreeData
 var max_hp: float = 0.0
 var hp: float = 0.0
+## Absorbs damage before HP; granted by the workshop "Shield at Run Start" track.
+var shield: float = 0.0
 
 var _clock: BattleClock
 var _rng: RandomNumberGenerator
@@ -25,8 +29,6 @@ var _cooldown: float = 0.0
 var _defeated: bool = false
 var _external_damage: float = 0.0
 var _external_speed: float = 0.0
-## Aggregated Tree upgrade bonuses keyed by stat id (see TreeUpgrades).
-var _bonuses: Dictionary = {}
 
 @onready var _sprite: Sprite2D = $Sprite
 
@@ -42,8 +44,9 @@ func setup(
 	_clock = clock
 	_rng = rng
 	_target_index = target_index
-	max_hp = data.max_hp
+	max_hp = maxf(ModifierService.get_stat(&"tree_max_hp", data.max_hp), 1.0)
 	hp = max_hp
+	shield = maxf(ModifierService.get_stat(&"start_shield", 0.0), 0.0)
 	hp_changed.emit(hp, max_hp)
 
 
@@ -58,10 +61,18 @@ func hp_ratio() -> float:
 
 
 ## Applies a leak as a percentage of max HP, resolved through DamageResolver.
+## Both permanent reduction tracks (generic + leak-specific) are applied here.
 func receive_leak(damage_pct: float) -> void:
 	if _defeated:
 		return
-	var result := DamageResolver.resolve(max_hp * damage_pct / 100.0, 0.0, 1.0, _rng, 0.0)
+	var reduction := clampf(
+		ModifierService.get_stat(&"damage_reduction", 0.0)
+		+ ModifierService.get_stat(&"leak_damage_reduction", 0.0),
+		0.0,
+		0.9
+	)
+	var effective_pct := damage_pct * (1.0 - reduction)
+	var result := DamageResolver.resolve(max_hp * effective_pct / 100.0, 0.0, 1.0, _rng, 0.0)
 	apply_damage(float(result["amount"]), bool(result["is_crit"]), &"leak")
 
 
@@ -69,7 +80,12 @@ func receive_leak(damage_pct: float) -> void:
 func apply_damage(amount: float, is_crit: bool, source_id: StringName) -> void:
 	if _defeated:
 		return
-	hp = maxf(hp - maxf(amount, 0.0), 0.0)
+	var incoming := maxf(amount, 0.0)
+	if shield > 0.0:
+		var absorbed := minf(shield, incoming)
+		shield -= absorbed
+		incoming -= absorbed
+	hp = maxf(hp - incoming, 0.0)
 	var is_kill := hp <= 0.0
 	EventBus.damage_dealt.emit(source_id, 0, amount, is_crit, is_kill)
 	hp_changed.emit(hp, max_hp)
@@ -82,48 +98,39 @@ func apply_damage(amount: float, is_crit: bool, source_id: StringName) -> void:
 func effective_damage() -> float:
 	if data == null:
 		return 0.0
-	return data.damage * (1.0 + _external_damage + bonus(&"damage"))
+	return ModifierService.get_stat(&"tree_damage", data.damage) * (1.0 + _external_damage)
 
 
 func effective_interval() -> float:
 	if data == null:
 		return 0.0
-	return maxf(data.attack_interval / (1.0 + _external_speed + bonus(&"attack_speed")), 0.1)
+	var haste := maxf(ModifierService.get_stat(&"attack_speed", 1.0), 0.01)
+	return maxf(data.attack_interval / haste / (1.0 + _external_speed), 0.1)
 
 
 func effective_range() -> float:
 	if data == null:
 		return 0.0
-	return data.range * (1.0 + bonus(&"range"))
+	return ModifierService.get_stat(&"tree_range", data.range)
 
 
-## Crit chance after upgrades, capped at 60 % (data cap lives on the track).
+## Crit chance after all modifiers, capped at 60 %.
 func effective_crit_chance() -> float:
 	if data == null:
 		return 0.0
-	return clampf(data.crit_chance + bonus(&"crit_chance"), 0.0, 0.6)
+	return clampf(ModifierService.get_stat(&"crit_chance", data.crit_chance), 0.0, CRIT_CAP)
 
 
-## Crit multiplier after upgrades (additive percentage points of multiplier).
+## Crit multiplier after all modifiers.
 func effective_crit_multiplier() -> float:
 	if data == null:
 		return 2.0
-	return data.crit_multiplier + bonus(&"crit_damage")
+	return ModifierService.get_stat(&"crit_damage", data.crit_multiplier)
 
 
-## Fraction of max HP regenerated per second from the Regen track.
+## Fraction of max HP regenerated per second.
 func regen_per_second() -> float:
-		return bonus(&"regen")
-
-
-## Returns one aggregated upgrade bonus by stat id (0 when not upgraded).
-func bonus(stat_id: StringName) -> float:
-	return float(_bonuses.get(String(stat_id), 0.0))
-
-
-## Replaces the aggregated Tree upgrade bonuses (called by BattleController).
-func apply_stat_bonuses(bonuses: Dictionary) -> void:
-	_bonuses = bonuses.duplicate()
+	return maxf(ModifierService.get_stat(&"tree_regen", 0.0), 0.0)
 
 
 ## Level-up feedback: a gold flash and an expanding ring (spec 4.10).

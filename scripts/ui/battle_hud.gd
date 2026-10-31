@@ -572,12 +572,14 @@ func _on_speed_pressed(speed: float) -> void:
 		speed_requested.emit(speed)
 		return
 	_pending_unlock_id = &"speed_2" if speed >= 2.0 else &"speed_1_5"
-	var level := 10 if speed >= 2.0 else 3
+	var required := UnlockService.level_required(_pending_unlock_id)
+	if required <= 0:
+		required = 10 if speed >= 2.0 else 3
 	var title := "%s %s" % [_t("battle.speed", "Speed"), _format_speed(speed)]
 	var body := _t(
 		"battle.speed_locked_body",
-		"Unlocks at player level %d. The real unlock flow arrives in M4/M6."
-	) % level
+		"Reach player level %d to unlock this speed."
+	) % required
 	var debug := App.is_debug_build()
 	_lock_modal.open(
 		title,

@@ -152,4 +152,17 @@ static func tree_dps(
 	var interval := maxf(base_interval / (1.0 + float(bonuses.get("attack_speed", 0.0))), 0.01)
 	var crit := clampf(base_crit_chance + float(bonuses.get("crit_chance", 0.0)), 0.0, 0.6)
 	var crit_multiplier := base_crit_multiplier + float(bonuses.get("crit_damage", 0.0))
+	return tree_dps_from_stats(damage, interval, crit, crit_multiplier)
+
+
+## DPS from already-aggregated stats (used by tests that read ModifierService).
+static func tree_dps_from_stats(
+	damage: float,
+	interval: float,
+	crit_chance: float,
+	crit_multiplier: float
+) -> float:
+	if interval <= 0.0:
+		return 0.0
+	var crit := clampf(crit_chance, 0.0, 0.6)
 	return damage * (1.0 + crit * (crit_multiplier - 1.0)) / interval
