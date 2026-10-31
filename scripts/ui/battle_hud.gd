@@ -88,6 +88,7 @@ var _unlocked_speeds: Dictionary = {}
 
 
 func _ready() -> void:
+	_apply_safe_area()
 	_countdown_box.visible = false
 	_banner.visible = false
 	_build_sheet.visible = false
@@ -769,6 +770,18 @@ func _t(key: String, fallback: String = "") -> String:
 	return LocaleService.t(key, fallback)
 
 
+## Pushes the top bar below the display cutout (Android punch-hole cameras).
+func _apply_safe_area() -> void:
+	var inset := DisplayCutout.top_inset()
+	if inset <= 0.0:
+		return
+	var top_bar := get_node_or_null("TopBar") as Control
+	if top_bar == null:
+		return
+	top_bar.offset_top += inset
+	top_bar.offset_bottom += inset
+
+
 func _on_build_row_pressed(tower_id: StringName) -> void:
 	build_requested.emit(tower_id)
 
@@ -807,3 +820,4 @@ func _on_scrim_gui_input(event: InputEvent) -> void:
 	var mouse_event := event as InputEventMouseButton
 	if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
 		dismiss_requested.emit()
+

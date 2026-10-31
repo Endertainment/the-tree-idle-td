@@ -47,7 +47,7 @@ grow_vertical = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 26
 theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 26
+theme_override_constants/margin_bottom = 22
 
 [node name="Layout" type="VBoxContainer" parent="SafeArea"]
 layout_mode = 2

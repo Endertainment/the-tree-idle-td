@@ -29,8 +29,11 @@ func setup(slot_index: int) -> void:
 	index = slot_index
 
 
+## A selected pedestal is still buildable: `select()` only opens the build sheet,
+## it does not occupy the slot. Treating SELECTED as non-buildable made every
+## build attempt from the UI fail silently.
 func is_buildable() -> bool:
-	return state == State.EMPTY
+	return state == State.EMPTY or state == State.SELECTED
 
 
 func is_occupied() -> bool:

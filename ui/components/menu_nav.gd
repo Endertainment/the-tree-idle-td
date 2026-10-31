@@ -33,9 +33,35 @@ var _row: HBoxContainer
 func _ready() -> void:
 	theme_type_variation = &"NavBar"
 	custom_minimum_size = Vector2(0, 220)
+	_pin_to_bottom()
 	_build()
 	setup(_active)
 	_connect_services()
+
+
+## Screens have different amounts of content, so the shared nav used to sit at a
+## different height on every tab. An expanding spacer above it keeps it glued to
+## the bottom edge of the layout, and the cutout inset keeps it off the gesture bar.
+func _pin_to_bottom() -> void:
+	var parent := get_parent()
+	if parent is VBoxContainer:
+		var spacer := Control.new()
+		spacer.name = "NavSpacer"
+		spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		parent.add_child(spacer)
+		parent.move_child(spacer, get_index())
+
+	var node: Node = parent
+	while node != null and not (node is MarginContainer):
+		node = node.get_parent()
+	if node is MarginContainer:
+		var margin := node as MarginContainer
+		var inset := DisplayCutout.top_inset()
+		if inset > 0.0:
+			margin.add_theme_constant_override(
+				"margin_top", margin.get_theme_constant("margin_top") + int(round(inset))
+			)
 
 
 func _exit_tree() -> void:
@@ -174,3 +200,4 @@ func _on_pressed(tab: StringName) -> void:
 			SceneRouter.goto(&"missions")
 		&"shop":
 			SceneRouter.goto(&"shop")
+
