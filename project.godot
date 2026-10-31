@@ -24,6 +24,7 @@ SceneRouter="*res://scripts/autoload/scene_router.gd"
 SettingsService="*res://scripts/autoload/settings_service.gd"
 LocaleService="*res://scripts/autoload/locale_service.gd"
 AudioService="*res://scripts/autoload/audio_service.gd"
+ToastService="*res://scripts/autoload/toast_service.gd"
 SaveService="*res://scripts/autoload/save_service.gd"
 GameState="*res://scripts/autoload/game_state.gd"
 WalletService="*res://scripts/economy/wallet_service.gd"
@@ -38,6 +39,9 @@ MagicaService="*res://scripts/economy/magica_service.gd"
 CardService="*res://scripts/economy/card_service.gd"
 MissionService="*res://scripts/economy/mission_service.gd"
 OfflineService="*res://scripts/economy/offline_service.gd"
+LeaderboardService="*res://scripts/platform/leaderboard_service.gd"
+AdsService="*res://scripts/platform/ads_service.gd"
+IapService="*res://scripts/platform/iap_service.gd"
 
 [display]
 

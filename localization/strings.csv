@@ -245,7 +245,6 @@ magica.title,Magica,Магіка
 menu.badge,!,!
 menu.battle,Battle,Бій
 menu.claim,Claim,Забрати
-menu.coming_soon,Coming soon,Незабаром
 menu.daily_missions,Daily Missions,Щоденні завдання
 menu.daily_progress,%d / %d Complete,%d / %d виконано
 menu.magica_claim,Research complete: %s,Дослідження завершено: %s
@@ -259,9 +258,7 @@ menu.nav.workshop,Workshop,Майстерня
 menu.offline_claimed,+%s coins from the forest,+%s монет із лісу
 menu.open,Open,Відкрити
 menu.settings,Settings,Налаштування
-menu.shop_soon,Shop arrives with M6,Магазин з’явиться в M6
 menu.unlocked,Unlocked: %s,Відкрито: %s
-menu.version,Version,Версія
 menu.view,View,Переглянути
 menu.welcome_body,You were away for %s. The forest gathered %d coins while you were gone.,Вас не було %s. Ліс зібрав %d монет за цей час.
 menu.welcome_capped,Offline income is capped by your Offline Cap upgrade.,Дохід поза грою обмежено покращенням «Ліміт офлайну».
@@ -529,3 +526,83 @@ workshop.wave_clear_bonus,Wave Clear Bonus,Бонус за хвилю
 workshop.wave_clear_bonus_desc,Wave Clear Bonus,Бонус за хвилю
 workshop.xp_gain,Xp Gain,Прибуток досвіду
 workshop.xp_gain_desc,Xp Gain,Прибуток досвіду
+menu.best_wave,Best Wave,Найкраща хвиля
+menu.player_level,Player Level,Рівень гравця
+menu.xp_progress,%d / %d XP,%d / %d XP
+menu.nickname_fallback,Tree Warden,Лісовий вартовий
+menu.speed_trial_offer,Speed Trial  +1.5x,Швидкісний забіг  +1.5x
+menu.speed_trial_hint,Watch an ad for a 24 h speed boost,Подивіться рекламу, щоб отримати прискорення на 24 год
+menu.ads_soon,Ads arrive with M6,Реклама з’явиться в M6
+menu.buy_coins,Buy coins,Купити монети
+menu.buy_gems,Buy gems,Купити самоцвіти
+menu.open_profile,Player profile,Профіль гравця
+menu.prepare,Prepare for battle,Готуйтеся до бою
+shop.title,Shop,Магазин
+shop.tab.gems,Gems,Самоцвіти
+shop.tab.coins,Coins,Монети
+shop.tab.special,Special,Особливі
+shop.product.gems_100,100 Gems,100 самоцвітів
+shop.contents.gems_100,100 gems for card packs and speed unlocks.,100 самоцвітів для наборів карток і прискорень.
+shop.product.gems_550,550 Gems,550 самоцвітів
+shop.contents.gems_550,"550 gems, including a 10 % bonus.","550 самоцвітів, зокрема бонус 10 %."
+shop.product.gems_1200,1 200 Gems,1 200 самоцвітів
+shop.contents.gems_1200,"1 200 gems, including a 20 % bonus.","1 200 самоцвітів, зокрема бонус 20 %."
+shop.product.coins_5000,5 000 Coins,5 000 монет
+shop.contents.coins_5000,5 000 coins for workshop and Magica upgrades.,5 000 монет для покращень майстерні й Magica.
+shop.product.starter_pack,Starter Pack,Стартовий набір
+shop.contents.starter_pack,"300 gems, 2 500 coins and 1 epic card.","300 самоцвітів, 2 500 монет і 1 епічна картка."
+shop.product.no_ads,No Ads,Без реклами
+shop.contents.no_ads,Removes forced ads. Rewarded ads stay optional.,Прибирає примусову рекламу. Реклама за винагороду лишається добровільною.
+shop.product.speed_pack,Speed Pack,Набір швидкості
+shop.contents.speed_pack,Permanent 1.5x and 2x speed unlocks.,Постійне відкриття швидкості 1.5x і 2x.
+shop.bonus_percent,+%d %%,+%d %%
+shop.best_value,Best value,Найкраща ціна
+shop.price_unavailable,—,—
+shop.owned,Owned,Придбано
+shop.store_unavailable,Store unavailable,Магазин недоступний
+shop.store_unavailable_note,In-app purchases arrive with M6. Prices and the buy button stay disabled in this build.,Покупки з’являться в M6. Ціни й кнопка купівлі вимкнені в цій збірці.
+shop.restore,Restore purchases,Відновити покупки
+shop.restore_none,No purchases to restore.,Немає покупок для відновлення.
+shop.restore_done,Restored %d purchases.,Відновлено покупок: %d.
+shop.purchase_failed,Purchase unavailable: the store is not connected yet.,Покупка недоступна: магазин ще не підключено.
+shop.debug_simulate,Debug: simulate purchase,Налагодження: імітувати покупку
+shop.debug_granted,Debug purchase granted: %s,Налагоджену покупку видано: %s
+shop.debug_owned,Already owned.,Уже придбано.
+leaderboard.title,Leaderboard,Таблиця лідерів
+leaderboard.tab.weekly,Weekly,Тижнева
+leaderboard.tab.all_time,All-time,За весь час
+leaderboard.tab.tournament,Tournament,Турнір
+leaderboard.refresh,Refresh,Оновити
+leaderboard.loading,Loading…,Завантаження…
+leaderboard.offline,Offline · showing cached results,Офлайн · показано збережені результати
+leaderboard.updated,Updated %s,Оновлено %s
+leaderboard.never,Never,Ніколи
+leaderboard.empty,No runs yet. Play your first battle to enter the leaderboard.,Ще немає забігів. Зіграйте перший бій, щоб потрапити до таблиці.
+leaderboard.wave,Best wave,Найкраща хвиля
+leaderboard.you,You,Ви
+leaderboard.own_rank,Your rank,Ваше місце
+leaderboard.cohort,Cohort %s,Когорта %s
+leaderboard.ends,Ends in %s,Завершиться через %s
+leaderboard.reward_tiers,Reward tiers,Нагороди
+leaderboard.reward.top1,Top 1 %,Топ 1 %
+leaderboard.reward.top10,Top 10 %,Топ 10 %
+leaderboard.reward.top25,Top 25 %,Топ 25 %
+leaderboard.reward.top50,Top 50 %,Топ 50 %
+leaderboard.reward.participation,Participation,Участь
+leaderboard.eligible,You are in this cohort,Ви в цій когорті
+leaderboard.not_eligible,Reach player level %d to join,Досягніть рівня гравця %d, щоб приєднатися
+leaderboard.tournament_note,The tournament groups 50 players. Rewards follow the final percentile.,Турнір об’єднує 50 гравців. Нагороди залежать від підсумкового відсотка.
+leaderboard.refresh_failed,Could not refresh. Showing cached results.,Не вдалося оновити. Показано збережені результати.
+profile.title,Profile,Профіль
+profile.nickname_hint,Change your nickname in Settings.,Змініть нікнейм у налаштуваннях.
+profile.open_settings,Open settings,Відкрити налаштування
+profile.level,Player level %d,Рівень гравця %d
+profile.xp,%d / %d XP,%d / %d XP
+profile.stats,Lifetime stats,Статистика за весь час
+profile.runs,Runs,Забіги
+profile.kills,Kills,Вбивства
+profile.playtime,Playtime,Час у грі
+profile.coins_earned,Coins earned,Зароблено монет
+profile.leaderboard,Leaderboard,Таблиця лідерів
+profile.max_level,Max level,Максимальний рівень
+leaderboard.updated_toast,Leaderboard refreshed,Таблицю лідерів оновлено

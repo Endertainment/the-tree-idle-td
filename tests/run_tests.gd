@@ -11,6 +11,7 @@ const TestEconomy := preload("res://tests/test_economy.gd")
 const TestMeta := preload("res://tests/test_meta.gd")
 const TestM4b := preload("res://tests/test_m4b.gd")
 const TestM5a := preload("res://tests/test_m5a.gd")
+const TestM5b := preload("res://tests/test_m5b.gd")
 
 
 func _initialize() -> void:
@@ -21,6 +22,7 @@ func _initialize() -> void:
 	var meta: RefCounted = TestMeta.new()
 	var m4b: RefCounted = TestM4b.new()
 	var m5a: RefCounted = TestM5a.new()
+	var m5b: RefCounted = TestM5b.new()
 	var cases: Array[Dictionary] = [
 		{"name": "art manifest paths exist", "callable": Callable(core, "test_manifest_paths")},
 		{"name": "SaveService round-trip", "callable": Callable(core, "test_save_roundtrip")},
@@ -69,6 +71,10 @@ func _initialize() -> void:
 		{"name": "settings persistence", "callable": Callable(m5a, "test_settings_persistence")},
 		{"name": "nickname validation and uuid", "callable": Callable(m5a, "test_nickname_validation")},
 		{"name": "audio bus volume mapping", "callable": Callable(m5a, "test_audio_bus_volume_mapping")},
+		{"name": "shop product catalog integrity", "callable": Callable(m5b, "test_shop_catalog_integrity")},
+		{"name": "leaderboard sorting and own rank", "callable": Callable(m5b, "test_leaderboard_sorting_and_own_rank")},
+		{"name": "profile stats aggregation", "callable": Callable(m5b, "test_profile_stats_aggregation")},
+		{"name": "toast queue", "callable": Callable(m5b, "test_toast_queue")},
 	]
 
 	var failures := 0
