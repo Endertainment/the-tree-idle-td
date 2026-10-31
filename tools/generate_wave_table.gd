@@ -1,4 +1,4 @@
-## Wave table generator — writes the authored 30-wave M2 table.
+## Wave table generator — writes the authored 30-wave M3.1 table.
 ##
 ## Run: godot --headless --path . --script res://tools/generate_wave_table.gd
 ##
@@ -16,8 +16,20 @@ const ENEMY_SHAMAN := &"shaman"
 const ENEMY_BOSS := &"boss_troll"
 
 const MAX_WAVES := 30
-const BOSS_BONUS_HP := 1.6
+const BOSS_BONUS_HP := 1.20
 const BOSS_COINS := 50
+## M3.1 balance pass (docs/BALANCE.md + ADR-020): starting cash above the
+## 60-cash archer, a gentler HP curve, a slower spawn cadence and a larger clear
+## bonus so a zero-meta run reaches waves 8-14.
+const HP_GROWTH := 1.11
+const COUNT_BASE := 5
+const COUNT_PER_WAVE := 0.80
+const SPAWN_INTERVAL_BASE := 1.00
+const SPAWN_INTERVAL_STEP := 0.010
+const SPAWN_INTERVAL_FLOOR := 0.50
+const STARTING_CASH := 120
+const CLEAR_BONUS_BASE := 60
+const CLEAR_BONUS_PER_WAVE := 14
 
 
 func _initialize() -> void:
@@ -25,9 +37,9 @@ func _initialize() -> void:
 	table.boss_every = 10
 	table.swarm_every = 5
 	table.prep_time = 6.0
-	table.starting_cash = 50
-	table.clear_bonus_base = 20
-	table.clear_bonus_per_wave = 5
+	table.starting_cash = STARTING_CASH
+	table.clear_bonus_base = CLEAR_BONUS_BASE
+	table.clear_bonus_per_wave = CLEAR_BONUS_PER_WAVE
 	table.skip_bonus_base = 10
 	table.skip_bonus_per_wave = 2
 	table.skip_bonus_cap = 120
@@ -52,15 +64,17 @@ func _initialize() -> void:
 func _build_wave(wave_number: int) -> WaveDefinition:
 	var wave := WaveDefinition.new()
 	wave.index = wave_number
-	wave.hp_multiplier = pow(1.16, float(wave_number - 1))
+	wave.hp_multiplier = pow(HP_GROWTH, float(wave_number - 1))
 	wave.speed_multiplier = minf(1.0 + 0.01 * float(wave_number - 1), 1.40)
-	wave.cash_multiplier = pow(1.09, float(wave_number - 1))
+	wave.cash_multiplier = pow(1.12, float(wave_number - 1))
 	wave.is_boss = wave_number % 10 == 0
 	wave.reward_bonus = BOSS_COINS if wave.is_boss else 0
 
-	var total := mini(6 + int(floor(1.2 * float(wave_number))), 40)
+	var total := mini(COUNT_BASE + int(floor(COUNT_PER_WAVE * float(wave_number))), 40)
 	var swarm := wave_number % 5 == 0 and not wave.is_boss
-	var interval := maxf(0.72 - 0.012 * float(wave_number), 0.35)
+	var interval := maxf(
+		SPAWN_INTERVAL_BASE - SPAWN_INTERVAL_STEP * float(wave_number), SPAWN_INTERVAL_FLOOR
+	)
 	var groups: Array[SpawnGroup] = []
 
 	if wave.is_boss:

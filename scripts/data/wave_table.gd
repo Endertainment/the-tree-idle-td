@@ -9,10 +9,11 @@ extends Resource
 @export var boss_every: int = 10
 @export var swarm_every: int = 5
 @export var prep_time: float = 6.0
-@export var starting_cash: int = 50
+## M3.1: start above the cheapest tower (60) so wave 1 can be built for.
+@export var starting_cash: int = 120
 ## Cash granted when a wave is cleared: base + per_wave * wave.
-@export var clear_bonus_base: int = 20
-@export var clear_bonus_per_wave: int = 5
+@export var clear_bonus_base: int = 30
+@export var clear_bonus_per_wave: int = 8
 ## Cash granted for skipping the prep break: min(base + per_wave * wave, cap).
 @export var skip_bonus_base: int = 10
 @export var skip_bonus_per_wave: int = 2

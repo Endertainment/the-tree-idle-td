@@ -296,14 +296,20 @@ func test_tower_and_unit_data() -> bool:
 	if archer.build_cost != 60 or absf(archer.damage - 14.0) > 0.001 or absf(archer.attack_interval - 0.9) > 0.001:
 		print("  archer base stats do not match spec 4.5")
 		return false
-	if absf(archer.range - 300.0) > 0.001 or archer.levels.upgrade_cost(archer.build_cost, 1) != 48:
+	if absf(archer.range - 400.0) > 0.001 or archer.levels.upgrade_cost(archer.build_cost, 1) != 48:
 		print("  archer range/level-2 cost wrong")
 		return false
 	if cannon.build_cost != 110 or absf(cannon.damage - 45.0) > 0.001 or absf(cannon.splash_radius - 70.0) > 0.001:
 		print("  cannon base stats do not match spec 4.5")
 		return false
+	if absf(cannon.range - 370.0) > 0.001:
+		print("  cannon range should be 370 (M3.1 coverage), got %.0f" % cannon.range)
+		return false
 	if frost.build_cost != 90 or absf(frost.damage - 6.0) > 0.001 or frost.status_on_hit == null:
 		print("  frost spire base stats do not match spec 4.5")
+		return false
+	if absf(frost.range - 340.0) > 0.001:
+		print("  frost range should be 340 (M3.1 coverage), got %.0f" % frost.range)
 		return false
 	if absf(frost.status_on_hit.slow_pct - 0.35) > 0.001 or absf(frost.status_on_hit.duration - 1.5) > 0.001:
 		print("  frost slow should be 35%% for 1.5 s")
@@ -382,7 +388,7 @@ func test_wave_table_integrity() -> bool:
 		if wave.groups.is_empty():
 			print("  wave %d has no spawn groups" % number)
 			return false
-		var expected_hp := pow(1.16, float(i))
+		var expected_hp := pow(1.11, float(i))
 		if absf(wave.hp_multiplier - expected_hp) > 0.001:
 			print("  wave %d hp multiplier %f != %f" % [number, wave.hp_multiplier, expected_hp])
 			return false
@@ -390,7 +396,7 @@ func test_wave_table_integrity() -> bool:
 		if absf(wave.speed_multiplier - expected_speed) > 0.001:
 			print("  wave %d speed multiplier wrong" % number)
 			return false
-		var expected_cash := pow(1.09, float(i))
+		var expected_cash := pow(1.12, float(i))
 		if absf(wave.cash_multiplier - expected_cash) > 0.001:
 			print("  wave %d cash multiplier wrong" % number)
 			return false
@@ -399,7 +405,7 @@ func test_wave_table_integrity() -> bool:
 			return false
 		previous_hp = wave.hp_multiplier
 
-		var expected_total := mini(6 + int(floor(1.2 * float(number))), 40)
+		var expected_total := mini(5 + int(floor(0.8 * float(number))), 40)
 		if wave.total_count() != expected_total:
 			print("  wave %d count %d != %d" % [number, wave.total_count(), expected_total])
 			return false
@@ -420,8 +426,8 @@ func test_wave_table_integrity() -> bool:
 				if group.count != 1:
 					print("  wave %d spawns %d bosses" % [number, group.count])
 					return false
-				if absf(group.hp_multiplier - 1.6) > 0.001:
-					print("  wave %d boss hp multiplier %f != 1.6" % [number, group.hp_multiplier])
+				if absf(group.hp_multiplier - 1.20) > 0.001:
+					print("  wave %d boss hp multiplier %f != 1.20" % [number, group.hp_multiplier])
 					return false
 
 		if BOSS_WAVES.has(number):
@@ -444,10 +450,18 @@ func test_wave_table_integrity() -> bool:
 		return false
 	for number in SWARM_WAVES:
 		var swarm := table.get_wave(number)
-		if swarm.groups.size() < 4:
+		if swarm.groups.size() < 3:
 			print("  wave %d should be a multi-group swarm (%d groups)" % [number, swarm.groups.size()])
 			return false
-	print("  30 waves, 1.16x hp / speed / cash curves, bosses at 10/20/30 (x1.6), swarms at 5/15/25")
+	if table.starting_cash != 120:
+		print("  starting cash should be 120 (M3.1), got %d" % table.starting_cash)
+		return false
+	if table.clear_bonus_base != 60 or table.clear_bonus_per_wave != 14:
+		print("  clear bonus should be 60 + 14*wave, got %d + %d*wave" % [
+			table.clear_bonus_base, table.clear_bonus_per_wave
+		])
+		return false
+	print("  30 waves, 1.11x hp / 1.12x cash, counts 5+0.8w, bosses x1.20, start 120 cash")
 	return true
 
 
