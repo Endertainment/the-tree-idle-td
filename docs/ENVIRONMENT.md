@@ -7,8 +7,8 @@ Checked: 2026-10-31 on the developer machine.
 | Godot | ✅ installed | `C:\Tools\godot-4.7.2\Godot_v4.7.2-stable_win64.exe` (4.7.2.stable.official) | everything |
 | Godot CLI config | ✅ done | `tools/godot_path.txt`, honouring `$env:GODOT_BIN` | headless checks |
 | `check_project.ps1` | ✅ done | `tools/check_project.ps1` — green on the current scaffold | gate for every batch |
-| Export templates | ⚠️ mismatch | only `4.7.2.stable.mono` present, project is a standard (non-.NET) build | Android export (M6) |
-| JDK | ⚠️ too old | Eclipse Adoptium **JDK 8**; Godot 4.x Android export needs **JDK 17** | Android export (M6) |
+| Export templates | ✅ installed | `%APPDATA%\Godot\export_templates\4.7.2.stable` (android_debug/release present) | Android export (M6) |
+| JDK | ✅ installed | `C:\Tools\jdk-17` (Temurin 17.0.20.1) — set `JAVA_HOME` to it for Android export | Android export (M6) |
 | Android SDK | ❌ missing | no `ANDROID_HOME`, no `sdkmanager` | Android export (M6) |
 | `adb` | ❌ missing | not on PATH | install/debug on LDPlayer (M6) |
 | LDPlayer | ❓ unknown | not in `C:\LDPlayer`, `D:\LDPlayer`, Program Files | test device (M6) |
