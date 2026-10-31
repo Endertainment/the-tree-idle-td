@@ -26,6 +26,15 @@ func _run() -> void:
 	if game_state != null:
 		game_state.set("player", {"level": 12, "xp": 0, "best_wave": 0})
 		game_state.set("wallet", {"coins": 0, "gems": 150, "stones": 0})
+		var wallet_service := root.get_node_or_null("WalletService")
+		var workshop_service := root.get_node_or_null("WorkshopService")
+		var unlock_service := root.get_node_or_null("UnlockService")
+		if wallet_service != null:
+			wallet_service.call(&"reset")
+		if workshop_service != null:
+			workshop_service.call(&"reset")
+		if unlock_service != null:
+			unlock_service.call(&"refresh")
 
 	var packed := load(BATTLE_SCENE) as PackedScene
 	if packed == null:

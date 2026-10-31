@@ -1,4 +1,4 @@
-## M3 battle smoke test — loads the real battle scene and drives the run economy.
+## M4a battle smoke test — loads the real battle scene and drives the run economy.
 ##
 ## Run: godot --headless --path . --script res://tools/battle_smoke.gd
 ## Proves: 8 pedestals + 4 unit slots, tower/unit build & upgrade costs, 70 % sell
@@ -27,18 +27,35 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	print("== M3 battle smoke (%.0fs real at %.0fx) ==" % [SIM_SECONDS, SIM_SPEED])
+	print("== M4a battle smoke (%.0fs real at %.0fx) ==" % [SIM_SECONDS, SIM_SPEED])
 	var game_state := root.get_node_or_null("GameState")
 	var save_service := root.get_node_or_null("SaveService")
+	var wallet_service := root.get_node_or_null("WalletService")
+	var workshop_service := root.get_node_or_null("WorkshopService")
+	var unlock_service := root.get_node_or_null("UnlockService")
+	var modifier_service := root.get_node_or_null("ModifierService")
 	var original_state: Dictionary = {}
 	if game_state != null:
 		original_state = game_state.call(&"to_dict")
 		game_state.set("player", {
 			"id": "", "nickname": "", "avatar_id": "avatar_01", "level": 1,
-			"xp": 0, "best_wave": 0, "next_wave_uses": 0,
+			"xp": 0, "created_at": 0, "provider": "", "provider_uid": "",
+			"best_wave": 0, "next_wave_uses": 0,
 		})
 		game_state.set("wallet", {"coins": 0, "gems": 0, "stones": 0})
 		game_state.set("unlocks", {})
+		game_state.set("stats", {
+			"best_wave": 0, "runs_played": 0, "total_kills": 0,
+			"total_playtime": 0, "weekly_max_wave": 0, "week_id": "",
+		})
+	if modifier_service != null:
+		modifier_service.call(&"clear")
+	if wallet_service != null:
+		wallet_service.call(&"reset")
+	if workshop_service != null:
+		workshop_service.call(&"reset")
+	if unlock_service != null:
+		unlock_service.call(&"refresh")
 	if save_service != null:
 		save_service.set("save_path", _temp_save)
 		save_service.set("backup_path", _temp_backup)
@@ -57,7 +74,6 @@ func _run() -> void:
 		return
 	root.add_child(battle)
 	await process_frame
-
 	var clock: Variant = battle.call(&"get_clock")
 	if clock == null:
 		_fail("battle has no BattleClock")
@@ -67,6 +83,7 @@ func _run() -> void:
 	var pedestals: int = int(battle.call(&"get_pedestal_count"))
 	_check(pedestals == 8, "8 pedestals spawned (%d)" % pedestals)
 	_check(battle.call(&"get_tree_entity") != null, "tree entity present")
+	_check(int(battle.call(&"get_cash")) == 120, "starting cash 120 with no meta bonus (got %d)" % int(battle.call(&"get_cash")))
 
 	var slots: Array = battle.call(&"get_unit_slots")
 	_check(slots.size() == 4, "4 unit slots created (%d)" % slots.size())
@@ -284,5 +301,14 @@ func _finish(game_state: Node, save_service: Node, original_state: Dictionary) -
 		save_service.call(&"clear")
 	if game_state != null and not original_state.is_empty():
 		game_state.call(&"from_dict", original_state)
+		var wallet_service := root.get_node_or_null("WalletService")
+		var workshop_service := root.get_node_or_null("WorkshopService")
+		var unlock_service := root.get_node_or_null("UnlockService")
+		if wallet_service != null:
+			wallet_service.call(&"reset")
+		if workshop_service != null:
+			workshop_service.call(&"init_service", original_state.get("workshop", {}))
+		if unlock_service != null:
+			unlock_service.call(&"refresh")
 	print("== %s ==" % ("PASS" if _failures == 0 else "FAIL (%d)" % _failures))
 	quit(0 if _failures == 0 else 1)

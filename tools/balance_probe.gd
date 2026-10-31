@@ -131,6 +131,15 @@ func _run() -> void:
 		save_service.call(&"clear")
 	if game_state != null and not original.is_empty():
 		game_state.call(&"from_dict", original)
+		var wallet_service := game_state.get_node_or_null("/root/WalletService")
+		var workshop_service := game_state.get_node_or_null("/root/WorkshopService")
+		var unlock_service := game_state.get_node_or_null("/root/UnlockService")
+		if wallet_service != null:
+			wallet_service.call(&"reset")
+		if workshop_service != null:
+			workshop_service.call(&"init_service", original.get("workshop", {}))
+		if unlock_service != null:
+			unlock_service.call(&"refresh")
 	quit(0 if cleared >= 7 else 1)
 
 
@@ -143,6 +152,15 @@ func _reset_profile(game_state: Node, run_state: Node) -> void:
 		game_state.set("wallet", {"coins": 0, "gems": 0, "stones": 0})
 		game_state.set("unlocks", {})
 		game_state.get("reward_ledger").call(&"from_array", [])
+		var wallet_service := game_state.get_node_or_null("/root/WalletService")
+		var workshop_service := game_state.get_node_or_null("/root/WorkshopService")
+		var unlock_service := game_state.get_node_or_null("/root/UnlockService")
+		if wallet_service != null:
+			wallet_service.call(&"reset")
+		if workshop_service != null:
+			workshop_service.call(&"reset")
+		if unlock_service != null:
+			unlock_service.call(&"refresh")
 	if run_state != null:
 		run_state.set("seed", _seed)
 
