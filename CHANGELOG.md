@@ -3,6 +3,54 @@
 All notable changes are recorded per milestone. The project follows semantic
 versioning for tags; unreleased work stays under `[Unreleased]`.
 
+## [0.4.0-m3] — 2026-10-31
+
+### Added
+
+- `UpgradeTrack` resource + 6 data tracks in `data/tree/upgrades/` (damage,
+  attack speed, crit chance, crit damage, range, regen) and `TreeUpgrades`, which
+  loads the directory, aggregates bonuses, prices levels with `CostCurve` and
+  exposes the shared `tree_dps()` formula. `TreeEntity` now applies the bonuses
+  (crit cap 60 %, range, regen heal over time) and plays a gold flash + ring on
+  purchase.
+- `RunWallet` + `SpendResult`: one mutation point for run cash with a typed
+  result (OK / insufficient / max level / invalid) and a 50-entry transaction
+  log. Build, unit placement, tower/unit upgrade and sell paths go through it;
+  `RunState.cash` is a read-only mirror.
+- Generated upgrade panel (`UpgradePanel` + `UpgradeRow`): Tree / Units / Towers
+  tabs, icon + level + current → next green preview + cost + disabled reason,
+  hold-to-buy at 8/s (`HoldToBuy`, stops on the first failed spend), affordability
+  notification dot/pulse, unit in-place upgrades and tower rows that open the
+  tower sheet.
+- Speed control 1x/1.5x/2x in the battle top bar with locked segments, a lock
+  popup and a debug-only unlock (`GameState.unlocks`, level 3/10 gates). The speed
+  is a `BattleClock` delta multiplier only; HUD tweens and audio stay real-time.
+- Pause overlay with Resume / Restart (confirm) / Abandon (confirm) / Settings
+  placeholder and live stats. It freezes the clock, spawning and timers while the
+  HUD stays responsive. Abandon uses the same cleared-wave rewards as defeat.
+- Next-wave accidental-tap guard (`TapGuard`, first 3 skips need a 250 ms hold).
+- `RunSummary` v2: best wave + NEW BEST, cash-lost note, coins `sum(8+2w)` plus
+  50 per boss wave, gems `floor(w/5)` + 5 on a new best, XP `10w`, count-up rows,
+  and a "Double coins" button backed by `RewardedAdStub` (debug fake grant).
+  Rewards are a single `RewardBundle` granted once per run id (`RewardLedger`).
+- F3 debug overlay (fps, enemies, projectiles, cash, sim speed, wave, kills) in
+  debug builds, and `tools/balance_probe.gd` for the wave-15 balance gate.
+- Verification: 22 unit tests (wallet, 5 s hold-to-buy over-buy guard, track
+  curves, DPS delta, bundle idempotency, speed maths, tap guard), a 52-check
+  battle smoke, and M3 previews in `docs/preview/m3_*.png`.
+
+### Changed
+
+- `GameState` gains `unlocks`, `reward_ledger`, `wallet_log`, `grant_bundle()`,
+  `claim_run_reward()` and the skip counter; the save payload carries them with
+  safe defaults (no schema bump needed).
+- `RunRewards.compute()` accepts boss-wave and new-best bonuses; `RunSummary`
+  uses it through `RewardBundle`.
+- Battle HUD top bar is two rows (wave/timer/pause/cash, then speed/gems) and the
+  boss bar/countdown/banner moved down to make room.
+- `SceneRouter.reload()` added for the pause-menu restart.
+- `tools/battle_smoke.gd` now isolates save/GameState state and covers M3.
+
 ## [0.3.0-m2] — 2026-10-31
 
 ### Added

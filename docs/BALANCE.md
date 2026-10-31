@@ -1,6 +1,6 @@
 # BALANCE — launch values, mirrored from data resources
 
-**Tuned on:** 2026-10-31 (M2)
+**Tuned on:** 2026-10-31 (M3)
 **Source of truth:** the `.tres` files under `res://data/`; this document mirrors
 them for review. When a number changes, change the resource and this table in the
 same commit.
@@ -94,6 +94,47 @@ cadence); boss waves are 10/20/30 (`boss_troll` + support, boss group x1.6 HP,
 - Run rewards (M3 UI): coins `sum(8 + 2*wave)`, gems `floor(cleared/5)`, XP
   `10*cleared`; boss waves carry +50 coins in wave data for the reward bundle.
 - Run cash is lost; coins, gems, XP and best wave persist.
+
+## M3 in-run Tree upgrades (`data/tree/upgrades/*.tres`)
+
+| Track | Effect / level | Cost base | Growth | Cap | Max |
+|---|---|---|---|---|---|
+| Damage | +8 % | 40 | 1.35 | — | 30 |
+| Attack Speed | +6 % | 50 | 1.40 | — | 30 |
+| Crit Chance | +2 pp | 60 | 1.45 | 60 % | 30 |
+| Crit Damage | +15 % (multiplier pp) | 60 | 1.45 | — | 30 |
+| Range | +3 % | 40 | 1.30 | — | 30 |
+| Regen | +0.3 % max HP/s | 80 | 1.40 | — | 30 |
+
+Cost of the next level = `CostCurve.cost_at(base, growth, level + 1)`
+(`base * growth^level`, rounded). Effects are additive; crit chance clamps at
+60 %. Expected tree DPS = `damage*(1+c)*(1+crit*(crit_mult-1)) / interval`, with
+crit chance capped and crit damage added to the 2.0x multiplier. The DPS test
+asserts +1 damage level = +8.0 % DPS.
+
+Transaction rules (M3): every spend goes through `RunWallet.try_spend()` and
+returns `SpendResult`; `RunWallet.add()` rejects amounts ≤ 0. Hold-to-buy repeats
+at 8/s and stops on the first failed result, so it can never overspend or go
+negative (unit test simulates 5 s). Sell refund stays 70 % of invested (verified).
+
+## Balance gate (M3, NOT met)
+
+M3 acceptance: "a skilled manual run reaches wave 15+ with M3 numbers". Not
+verified by a human; the automated proxy `tools/balance_probe.gd` (8x simulation,
+prep skips for bonus cash, greedy buying) was run with three openings:
+
+| Policy | Towers built | Cleared waves | Died on |
+|---|---|---|---|
+| 2 archers → L5, unit, upgrades | 2 + 1 unit | 4 | wave 5 |
+| 4 archers → L4, then fill | 3 | 3 | wave 4 |
+| 8 archers, then upgrades | 5 | 4 | wave 5 |
+
+Root cause: with spec base stats (tree 12 dmg / 1.1 s, archer 60 cash) the run
+income buys roughly 50-70 DPS by wave 4, while waves 1-5 already contain ~3.7k HP
+of enemies and towers only cover the final ~600 px of each lane. Wave 10's boss
+is ~11k HP under `1.16^(w-1)` scaling. The wave table is spec-conformant; the spec
+itself targets wave 8-12 for a fresh player, so the tuning pass belongs to M8
+(or an M2.1 rebalance). Do not treat wave 15+ as verified until that pass lands.
 
 ## Layout (`data/maps/forest_clearing.tres`)
 

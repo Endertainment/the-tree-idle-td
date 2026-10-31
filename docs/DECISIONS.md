@@ -238,3 +238,96 @@ placeholder for M3. The old 540-line `BattleController` is split into state/flow
 upgrades, speed control, pause menu and the reward bundle. Sheets pause the battle
 clock (ADR-005 still applies).
 
+
+## ADR-015 — RunWallet + SpendResult as the only in-run cash mutation point (M3)
+
+**Status:** accepted (M3)
+
+**Context:** M2 wrote `RunState.cash` from `add_cash()`/`spend_cash()` and read the
+autoload directly from build options. Spec 4.10 requires hold-to-buy that cannot
+double-spend and a disabled reason, which a bare bool cannot express.
+
+**Decision:** `RunWallet` (RefCounted) owns the balance, exposes `add()` /
+`try_spend()` and returns a typed `SpendResult` (OK / INSUFFICIENT_FUNDS /
+MAX_LEVEL / INVALID_AMOUNT + reason key). `BattleController` mirrors the balance
+into `RunState.cash` inside one `_sync_cash()` method; nothing else writes cash.
+Hold-to-buy drives `HoldToBuy.tick(delta, attempt)` and stops on the first failed
+result, so a press can never buy past the balance.
+
+**Consequences:** all purchase paths share one guard and tests can assert failure
+codes; a future WalletService can replace the mirror without touching UI code.
+`RunState.cash` remains for read-only consumers.
+
+## ADR-016 — RewardBundle + RewardLedger grant run rewards once (M3)
+
+**Status:** accepted (M3)
+
+**Context:** spec 6.1 wants every reward source to be a `RewardBundle`, and a
+summary can be re-shown after a reload/retry without paying twice. WalletService
+does not exist until M4.
+
+**Decision:** `RewardBundle` is the only reward payload (`coins/gems/stones/cash/
+xp/cards`) and has a pure `apply_to(wallet, player)` with an amount > 0 guard.
+`RewardLedger` claims run ids (last 50) and `GameState.claim_run_reward()` gates
+the grant; `RunSummary` builds one bundle for the run and a coins-only bundle for
+the rewarded double. `GameState.grant_bundle()` is the temporary meta-wallet
+mutation point and logs the last 50 grants for support.
+
+**Consequences:** mission/ad/IAP rewards can reuse the same path, and replaying a
+summary never double-pays (verified by the battle smoke). M4 moves the mutation
+point to WalletService and keeps the bundle/ledger shape.
+
+## ADR-017 — Speed is a BattleClock delta multiplier, unlocks are data flags (M3)
+
+**Status:** accepted (M3)
+
+**Context:** spec 4.11 requires 1x/1.5x/2x with locked segments, and forbids
+`Engine.time_scale` because UI tweens and audio pitch must stay real-time. Player
+levels that grant 1.5x/2x are an M4 system.
+
+**Decision:** `BattleClock.scaled(delta)` multiplies every battle system's delta,
+so speed never touches the SceneTree clock or audio. Unlocks live in
+`GameState.unlocks` (`speed_1_5`, `speed_2`) with level-3/10 fallbacks; locked
+segments open a popup whose debug-build confirm button grants the flag via
+`BattleController.debug_unlock_speed()`. Pause uses the same clock so spawning and
+wave timers freeze while the HUD keeps processing (`PROCESS_MODE_ALWAYS`).
+
+**Consequences:** speed cannot desync waves (battle smoke measures 2x elapsed and
+monotonic waves), and QA can exercise both speeds before M4 levels exist. The
+debug unlock is compiled out of behaviour in release builds.
+
+## ADR-018 — Upgrade tracks are discovered from a directory (M3)
+
+**Status:** accepted (M3)
+
+**Context:** spec 4.10 requires the Tree upgrade panel to be generated from
+`res://data/tree/upgrades/*.tres` so a new stat is a data-only change.
+
+**Decision:** `TreeUpgrades.load_tracks()` scans the directory, sorts by the
+resource's `order` then id, and `TreeEntity` reads aggregated bonuses by stat id
+(`damage`, `attack_speed`, `crit_chance`, `crit_damage`, `range`, `regen`). Adding
+a track is a `.tres` plus (if it is a brand-new stat) one read in `TreeEntity`;
+the panel, costs and previews need no code. An optional `upgrade_tracks` export
+on `BattleController` overrides the scan for tests/tools.
+
+**Consequences:** content can add rows without UI edits; a typo in a stat id
+silently contributes no bonus, so the data test asserts the six shipped ids.
+
+## ADR-019 — M3 balance gate recorded as unmet (M3 deviation)
+
+**Status:** accepted as a known deviation (M3), follow-up M8
+
+**Context:** `docs/milestones/M3.md` accepts "a skilled manual run reaches wave
+15+". The spec's own wave scaling (1.16 HP per wave, 6+1.2w enemies, 1800 HP boss
+at wave 10) and base economy (starting cash 50, archer 60) leave roughly 50-70 DPS
+by wave 4. Human play was not possible in this session; the automated probe dies
+on wave 5 with three different openings (4, 3, 4 cleared waves).
+
+**Decision:** do not fake the acceptance. Ship the M3 feature set, record the
+measured probe numbers in `BALANCE.md` and the deviation in `PROGRESS.md`, and
+schedule the wave/economy rebalance as an M8 task (or the first task of a short
+M2.1 balance pass). No balance data was altered to make the number look green.
+
+**Consequences:** the M3 tag marks the implemented feature scope, not a verified
+wave-15 run. Any claim of wave 15+ must wait for a rebalanced wave table and a
+human/recorded playtest.

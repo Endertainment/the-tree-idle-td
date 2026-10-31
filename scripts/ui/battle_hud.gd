@@ -588,7 +588,8 @@ func _on_speed_pressed(speed: float) -> void:
 
 
 func _on_lock_confirmed() -> void:
-	if _pending_unlock_id.is_empty():
+	if _pending_unlock_id.is_empty() or not App.is_debug_build():
+		_pending_unlock_id = &""
 		return
 	var unlock_id := _pending_unlock_id
 	_pending_unlock_id = &""
