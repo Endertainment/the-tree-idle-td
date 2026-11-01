@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ShopCatalog" format=3]
+[gd_resource type="Resource" script_class="ShopCatalog" format=3 uid="uid://bjq52hkbyeyq0"]
 
-[ext_resource type="Script" path="res://scripts/platform/shop_catalog.gd" id="1_jwhcl"]
+[ext_resource type="Script" uid="uid://b5x5d8hpm72qe" path="res://scripts/platform/shop_catalog.gd" id="1_jwhcl"]
 
 [resource]
 script = ExtResource("1_jwhcl")
@@ -47,7 +47,7 @@ products = Array[Dictionary]([{
 "best_value": false,
 "bonus_percent": 0,
 "bundle": {
-"coins": 5000
+"coins": 500000
 },
 "consumable": true,
 "contents_key": "shop.contents.coins_5000",

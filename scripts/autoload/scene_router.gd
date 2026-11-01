@@ -23,8 +23,8 @@ const SCENES: Dictionary = {
 	&"battle": "res://scenes/battle/battle.tscn",
 }
 
-const FADE_OUT_SECONDS := 0.15
-const FADE_IN_SECONDS := 0.15
+const FADE_OUT_SECONDS := 0.07
+const FADE_IN_SECONDS := 0.07
 
 var _overlay: CanvasLayer
 var _fade: ColorRect

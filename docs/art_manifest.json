@@ -392,6 +392,19 @@
     ]
   },
   {
+    "path": "battle/hud/top_bar_battle_9p.png",
+    "w": 96,
+    "h": 96,
+    "color": "#0F3D1E",
+    "mode": "9p",
+    "margins": [
+      24,
+      24,
+      24,
+      24
+    ]
+  },
+  {
     "path": "battle/hud/tower_card_normal.png",
     "w": 96,
     "h": 96,
@@ -2123,6 +2136,20 @@
       24,
       24
     ]
+  },
+  {
+    "path": "ui/menu/xp_bar_bg.png",
+    "w": 400,
+    "h": 32,
+    "color": "#0F3D1E",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/menu/xp_bar_fill.png",
+    "w": 400,
+    "h": 32,
+    "color": "#7BD93A",
+    "mode": "plain"
   },
   {
     "path": "ui/nav/nav_bg_9p.png",

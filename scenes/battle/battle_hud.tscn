@@ -28,7 +28,7 @@ offset_top = 24.0
 offset_right = -24.0
 offset_bottom = 312.0
 grow_horizontal = 2
-theme_type_variation = &"TopBar"
+theme_type_variation = &"BattleTopBar"
 
 [node name="VBox" type="VBoxContainer" parent="TopBar"]
 layout_mode = 2

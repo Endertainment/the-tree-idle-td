@@ -1,20 +1,19 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://ch0qbt6h3b2qe"]
 
-[ext_resource type="Script" path="res://ui/components/currency_pill.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_coin.png" id="2_coin"]
+[ext_resource type="Script" uid="uid://ry1vrexyht6a" path="res://ui/components/currency_pill.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bxihc3647fwf1" path="res://assets/art/ui/icons/icon_coin.png" id="2_coin"]
 
-[node name="CurrencyPill" type="PanelContainer"]
+[node name="CurrencyPill" type="PanelContainer" unique_id=423181866]
 custom_minimum_size = Vector2(300, 96)
 theme_type_variation = &"CurrencyPill"
 script = ExtResource("1_script")
 icon_texture = ExtResource("2_coin")
 
-[node name="Row" type="HBoxContainer" parent="."]
+[node name="Row" type="HBoxContainer" parent="." unique_id=440128345]
 layout_mode = 2
 theme_override_constants/separation = 12
-alignment = 1
 
-[node name="Icon" type="TextureRect" parent="Row"]
+[node name="Icon" type="TextureRect" parent="Row" unique_id=1733387239]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
@@ -22,9 +21,8 @@ texture = ExtResource("2_coin")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Amount" type="Label" parent="Row"]
+[node name="Amount" type="Label" parent="Row" unique_id=467068680]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = ""
 vertical_alignment = 1

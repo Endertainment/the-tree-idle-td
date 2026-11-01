@@ -133,6 +133,8 @@ add(f"{MENU}/stat_row_9p.png", 96, 64, PANEL, "9p", [20, 16, 20, 16])
 add(f"{MENU}/battle_button_normal.png", 820, 300, GREEN_LIGHT, "9p", [60, 60, 60, 60])
 add(f"{MENU}/battle_button_pressed.png", 820, 300, GREEN_MID, "9p", [60, 60, 60, 60])
 add(f"{MENU}/speed_trial_9p.png", 660, 150, BLUE, "9p", [40, 40, 40, 40])
+add(f"{MENU}/xp_bar_bg.png", 400, 32, PANEL_DARK)
+add(f"{MENU}/xp_bar_fill.png", 400, 32, GREEN_LIGHT)
 add(f"{MENU}/daily_card_9p.png", 96, 96, PANEL, "9p")
 
 # ---------------------------------------------------------------- battle: world
@@ -178,6 +180,7 @@ H = f"{B}/hud"
 add(f"{H}/wave_banner_9p.png", 96, 64, PANEL_DARK, "9p", [20, 16, 20, 16])
 add(f"{H}/boss_hp_frame_9p.png", 96, 48, PANEL_DARK, "9p", [20, 12, 20, 12])
 add(f"{H}/boss_hp_fill.png", 900, 36, DANGER, "9p", [0, 12, 0, 12])
+add(f"{H}/top_bar_battle_9p.png", 96, 96, PANEL_DARK, "9p", [24, 24, 24, 24])
 add(f"{H}/tree_hp_frame_9p.png", 96, 96, PANEL_DARK, "9p", [28, 28, 28, 28])
 add(f"{H}/tree_hp_fill.png", 480, 40, GREEN_LIGHT, "9p", [0, 14, 0, 14])
 add(f"{H}/tree_hp_fill_low.png", 480, 40, DANGER, "9p", [0, 14, 0, 14])
@@ -239,3 +242,5 @@ with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
     fh.write("\n")
 
 print(f"wrote {len(entries)} entries to {os.path.relpath(OUT, ROOT)}")
+
+

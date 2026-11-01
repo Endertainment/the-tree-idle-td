@@ -16,6 +16,9 @@ const ART_NAV := "res://assets/art/ui/nav/"
 const ART_SHOP := "res://assets/art/meta/shop/"
 const ART_BOARD := "res://assets/art/meta/leaderboard/"
 
+const FONT_DISPLAY := "res://assets/fonts/Alegreya-ExtraBold.ttf"
+const FONT_BODY := "res://assets/fonts/Alegreya-Bold.ttf"
+
 const COLOR_TEXT := Color(0.96, 0.94, 0.85, 1.0)
 const COLOR_TEXT_MUTED := Color(0.72, 0.78, 0.68, 1.0)
 const COLOR_TEXT_DISABLED := Color(0.55, 0.58, 0.52, 1.0)
@@ -26,6 +29,7 @@ func _initialize() -> void:
 	var theme := Theme.new()
 	theme.default_font_size = 40
 
+	_build_fonts(theme)
 	_build_labels(theme)
 	_build_buttons(theme)
 	_build_panels(theme)
@@ -38,6 +42,22 @@ func _initialize() -> void:
 		return
 	print("[theme] saved ", THEME_PATH)
 	quit(0)
+
+
+func _build_fonts(theme: Theme) -> void:
+	# Display face for headlines and buttons, body face for everything else.
+	# Both files are optional: the theme still builds if the artist replaces them.
+	var display := load(FONT_DISPLAY) as FontFile
+	var body := load(FONT_BODY) as FontFile
+	if body != null:
+		theme.default_font = body
+		theme.set_font("font", &"Label", body)
+		theme.set_font("font", &"Button", body)
+	if display != null:
+		theme.set_font("font", &"Display", display)
+		theme.set_font("font", &"Title", display)
+		theme.set_font("font", &"BattleButton", display)
+		theme.set_font("font", &"PrimaryButton", display)
 
 
 func _build_labels(theme: Theme) -> void:
@@ -164,11 +184,24 @@ func _build_panels(theme: Theme) -> void:
 	theme.set_type_variation(&"CurrencyPill", &"PanelContainer")
 	_apply_panel_skin(theme, &"CurrencyPill", ART_MENU + "currency_pill_9p.png", 20, 16, 16)
 
+	# The menu top bar art is 890x149 with thick leaf ornaments on both sides:
+	# the 9-slice corners are large, and the content margins keep labels and
+	# pills inside the frame on every screen that reuses this variation.
 	theme.set_type_variation(&"TopBar", &"PanelContainer")
-	_apply_panel_skin(theme, &"TopBar", ART_MENU + "top_bar_9p.png", 24, 24, 20)
+	theme.set_stylebox("panel", &"TopBar",
+		_texture_style(ART_MENU + "top_bar_9p.png", 64, 52, 64, 52, 72, 18))
+
+	# Battle draws its own top bar: same frame language, no leaves, tighter
+	# padding, different art so the two can evolve independently.
+	theme.set_type_variation(&"BattleTopBar", &"PanelContainer")
+	theme.set_stylebox("panel", &"BattleTopBar",
+		_texture_style("res://assets/art/battle/hud/top_bar_battle_9p.png", 24, 24, 24, 24, 28, 16))
 
 	theme.set_type_variation(&"DailyCard", &"PanelContainer")
 	_apply_panel_skin(theme, &"DailyCard", ART_MENU + "daily_card_9p.png", 24, 24, 20)
+	
+	theme.set_type_variation(&"BattlePanel", &"PanelContainer")
+	_apply_panel_skin(theme, &"BattlePanel", ART_MENU + "battle_card_9p.png", 24, 24, 20)
 
 	theme.set_type_variation(&"NavBar", &"PanelContainer")
 	_apply_panel_skin(theme, &"NavBar", ART_NAV + "nav_bg_9p.png", 24, 24, 16)
@@ -199,6 +232,16 @@ func _build_progress(theme: Theme) -> void:
 	theme.set_stylebox("fill", &"ProgressBar", fill)
 	theme.set_font_size("font_size", &"ProgressBar", 24)
 	theme.set_color("font_color", &"ProgressBar", COLOR_TEXT)
+
+	# Rounded XP bar: the caps are half the texture height, so the ends stay
+	# perfectly round at any width. Keep the control height equal to the art
+	# height (32 px) or the caps squash.
+	theme.set_type_variation(&"XpBar", &"ProgressBar")
+	theme.set_stylebox("background", &"XpBar",
+		_texture_style(ART_MENU + "xp_bar_bg.png", 16, 16, 16, 16, 0, 0))
+	theme.set_stylebox("fill", &"XpBar",
+		_texture_style(ART_MENU + "xp_bar_fill.png", 16, 16, 16, 16, 0, 0))
+	theme.set_font_size("font_size", &"XpBar", 20)
 
 func _apply_button_skin(
 	theme: Theme,
