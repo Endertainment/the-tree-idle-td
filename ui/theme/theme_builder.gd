@@ -15,6 +15,7 @@ const ART_MENU := "res://assets/art/ui/menu/"
 const ART_NAV := "res://assets/art/ui/nav/"
 const ART_SHOP := "res://assets/art/meta/shop/"
 const ART_BOARD := "res://assets/art/meta/leaderboard/"
+const ART_CARDS := "res://assets/art/meta/cards/"
 
 const FONT_DISPLAY := "res://assets/fonts/Alegreya-ExtraBold.ttf"
 const FONT_BODY := "res://assets/fonts/Alegreya-Bold.ttf"
@@ -131,24 +132,44 @@ func _build_buttons(theme: Theme) -> void:
 		ART_MENU + "battle_button_normal.png",
 		ART_MENU + "battle_button_pressed.png",
 		ART_BUTTONS + "button_green_disabled.png", 48, 40)
-	theme.set_font_size("font_size", &"BattleButton", 56)
+	theme.set_font_size("font_size", &"BattleButton", 68)
+	theme.set_constant("h_separation", &"BattleButton", 6)
 	theme.set_constant("icon_max_width", &"BattleButton", 96)
 
 	theme.set_type_variation(&"NavButton", &"Button")
 	_apply_button_skin(theme, &"NavButton",
-		ART_BUTTONS + "button_ghost_normal.png",
-		ART_BUTTONS + "button_ghost_pressed.png",
-		ART_BUTTONS + "button_ghost_normal.png", 40, 36)
-	theme.set_font_size("font_size", &"NavButton", 28)
+		ART_BUTTONS + "tab_normal.png",
+		ART_BUTTONS + "tab_normal.png",
+		ART_BUTTONS + "tab_normal.png", 32, 24)
+	theme.set_font_size("font_size", &"NavButton", 24)
 	theme.set_constant("icon_max_width", &"NavButton", 56)
 
 	theme.set_type_variation(&"NavButtonActive", &"Button")
 	_apply_button_skin(theme, &"NavButtonActive",
-		ART_BUTTONS + "button_green_normal.png",
-		ART_BUTTONS + "button_green_pressed.png",
-		ART_BUTTONS + "button_green_disabled.png", 40, 36)
-	theme.set_font_size("font_size", &"NavButtonActive", 28)
+		ART_BUTTONS + "tab_selected.png",
+		ART_BUTTONS + "tab_selected.png",
+		ART_BUTTONS + "tab_selected.png", 32, 24)
+	theme.set_font_size("font_size", &"NavButtonActive", 24)
 	theme.set_constant("icon_max_width", &"NavButtonActive", 56)
+
+	# Card loadout slots. Empty and locked have their own art; a filled slot uses
+	# the rarity frame so the card never looks like a generic button.
+	theme.set_type_variation(&"CardSlotEmpty", &"Button")
+	_apply_button_skin(theme, &"CardSlotEmpty",
+		ART_CARDS + "card_slot_empty.png", ART_CARDS + "card_slot_empty.png",
+		ART_CARDS + "card_slot_empty.png", 28, 28)
+	theme.set_type_variation(&"CardSlotLocked", &"Button")
+	_apply_button_skin(theme, &"CardSlotLocked",
+		ART_CARDS + "card_slot_locked.png", ART_CARDS + "card_slot_locked.png",
+		ART_CARDS + "card_slot_locked.png", 28, 28)
+	for rarity: String in ["common", "rare", "epic", "legendary"]:
+		var variation := StringName("CardFrame" + rarity.capitalize())
+		theme.set_type_variation(variation, &"Button")
+		_apply_button_skin(theme, variation,
+			ART_CARDS + "card_frame_%s.png" % rarity,
+			ART_CARDS + "card_frame_%s.png" % rarity,
+			ART_CARDS + "card_frame_%s.png" % rarity, 28, 28)
+		theme.set_font_size("font_size", variation, 26)
 
 	# Main-menu stats card (tap target that opens the profile screen).
 	theme.set_type_variation(&"StatsCard", &"Button")
@@ -165,6 +186,7 @@ func _build_buttons(theme: Theme) -> void:
 		ART_MENU + "speed_trial_9p.png",
 		ART_MENU + "speed_trial_9p.png", 40, 26)
 	theme.set_font_size("font_size", &"SpeedTrial", 42)
+	theme.set_constant("h_separation", &"SpeedTrial", 10)
 	theme.set_constant("icon_max_width", &"SpeedTrial", 56)
 
 
@@ -189,7 +211,7 @@ func _build_panels(theme: Theme) -> void:
 	# pills inside the frame on every screen that reuses this variation.
 	theme.set_type_variation(&"TopBar", &"PanelContainer")
 	theme.set_stylebox("panel", &"TopBar",
-		_texture_style(ART_MENU + "top_bar_9p.png", 64, 52, 64, 52, 72, 18))
+		_texture_style(ART_MENU + "top_bar_9p.png", 64, 52, 64, 52, 72, 30))
 
 	# Battle draws its own top bar: same frame language, no leaves, tighter
 	# padding, different art so the two can evolve independently.
@@ -198,7 +220,8 @@ func _build_panels(theme: Theme) -> void:
 		_texture_style("res://assets/art/battle/hud/top_bar_battle_9p.png", 24, 24, 24, 24, 28, 16))
 
 	theme.set_type_variation(&"DailyCard", &"PanelContainer")
-	_apply_panel_skin(theme, &"DailyCard", ART_MENU + "daily_card_9p.png", 24, 24, 20)
+	theme.set_stylebox("panel", &"DailyCard",
+		_texture_style(ART_MENU + "daily_card_9p.png", 24, 24, 24, 24, 56, 22))
 	
 	theme.set_type_variation(&"BattlePanel", &"PanelContainer")
 	_apply_panel_skin(theme, &"BattlePanel", ART_MENU + "battle_card_9p.png", 24, 24, 20)
@@ -223,19 +246,17 @@ func _build_panels(theme: Theme) -> void:
 		_texture_style(ART_COMMON + "panel_9p_dark.png", 24, 24, 24, 24, 20, 16))
 
 
-## XP and progress bars share the green fill; the shop/leaderboard do not need a
-## second fill colour yet, so one stylebox keeps the theme honest.
+## Every progress bar is a pill: 32 px art with 16 px caps, so the ends stay
+## round at any width. Same mechanism as the XP bar, one implementation.
 func _build_progress(theme: Theme) -> void:
-	var background := _texture_style(ART_COMMON + "progress_bg.png", 12, 8, 12, 8, 6, 4)
-	var fill := _texture_style(ART_COMMON + "progress_fill_green.png", 12, 8, 12, 8, 6, 4)
+	var background := _texture_style(ART_COMMON + "bar_bg.png", 16, 16, 16, 16, 0, 0)
+	var fill := _texture_style(ART_COMMON + "bar_fill_green.png", 16, 16, 16, 16, 0, 0)
 	theme.set_stylebox("background", &"ProgressBar", background)
 	theme.set_stylebox("fill", &"ProgressBar", fill)
-	theme.set_font_size("font_size", &"ProgressBar", 24)
+	theme.set_font_size("font_size", &"ProgressBar", 22)
 	theme.set_color("font_color", &"ProgressBar", COLOR_TEXT)
 
-	# Rounded XP bar: the caps are half the texture height, so the ends stay
-	# perfectly round at any width. Keep the control height equal to the art
-	# height (32 px) or the caps squash.
+	# The XP bar keeps its own art (same 9-slice rules) so it can diverge.
 	theme.set_type_variation(&"XpBar", &"ProgressBar")
 	theme.set_stylebox("background", &"XpBar",
 		_texture_style(ART_MENU + "xp_bar_bg.png", 16, 16, 16, 16, 0, 0))
@@ -257,6 +278,10 @@ func _apply_button_skin(
 	hover.modulate_color = Color(1.08, 1.08, 1.08, 1.0)
 	var pressed := _texture_style(pressed_path, margin_h, margin_v, margin_h, margin_v, 32, 12)
 	pressed.modulate_color = Color(0.94, 0.94, 0.94, 1.0)
+	# The pressed art sinks a few pixels; move the label and icon with it so the
+	# whole button reads as physically pressed, not just its background.
+	pressed.content_margin_top += 6.0
+	pressed.content_margin_bottom -= 6.0
 	var disabled := _texture_style(disabled_path, margin_h, margin_v, margin_h, margin_v, 32, 12)
 	disabled.modulate_color = Color(0.72, 0.72, 0.72, 1.0)
 

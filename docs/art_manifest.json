@@ -856,6 +856,19 @@
     ]
   },
   {
+    "path": "meta/cards/card_slot_locked.png",
+    "w": 300,
+    "h": 420,
+    "color": "#4A5A48",
+    "mode": "9p",
+    "margins": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
     "path": "meta/common/modal_9p.png",
     "w": 96,
     "h": 96,
@@ -1443,6 +1456,41 @@
     "w": 40,
     "h": 40,
     "color": "#E0433C",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/common/bar_bg.png",
+    "w": 400,
+    "h": 32,
+    "color": "#0F3D1E",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/common/bar_fill_blue.png",
+    "w": 400,
+    "h": 32,
+    "color": "#3FA9F5",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/common/bar_fill_green.png",
+    "w": 400,
+    "h": 32,
+    "color": "#7BD93A",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/common/bar_fill_red.png",
+    "w": 400,
+    "h": 32,
+    "color": "#E0433C",
+    "mode": "plain"
+  },
+  {
+    "path": "ui/common/bar_fill_yellow.png",
+    "w": 400,
+    "h": 32,
+    "color": "#F2C230",
     "mode": "plain"
   },
   {

@@ -17,11 +17,25 @@ static func apply(root: Control) -> void:
 	var window_size := DisplayServer.window_get_size()
 	if window_size.x <= 0 or window_size.y <= 0:
 		return
-	var safe := DisplayServer.get_display_safe_area()
-	var left := maxi(safe.position.x, 0)
-	var top := maxi(safe.position.y, 0)
-	var right := maxi(window_size.x - safe.end.x, 0)
-	var bottom := maxi(window_size.y - safe.end.y, 0)
+	# `get_display_safe_area()` is in *screen* coordinates. On a multi-monitor
+	# setup the window can start at x=1920, which used to turn the left inset
+	# into 1920 px and push the whole screen off-canvas. Compare against the
+	# window rectangle instead of the screen origin.
+	var window_rect := Rect2i(DisplayServer.window_get_position(), window_size)
+	var safe := DisplayServer.get_display_safe_area().intersection(window_rect)
+	if safe.size.x <= 0 or safe.size.y <= 0:
+		return
+	var left := maxi(safe.position.x - window_rect.position.x, 0)
+	var top := maxi(safe.position.y - window_rect.position.y, 0)
+	var right := maxi(window_rect.end.x - safe.end.x, 0)
+	var bottom := maxi(window_rect.end.y - safe.end.y, 0)
+	# A sane cutout is a fraction of the screen; anything larger is a bad reading.
+	var max_h := int(window_size.x * 0.25)
+	var max_v := int(window_size.y * 0.25)
+	left = mini(left, max_h)
+	right = mini(right, max_h)
+	top = mini(top, max_v)
+	bottom = mini(bottom, max_v)
 	if left == 0 and top == 0 and right == 0 and bottom == 0:
 		return
 	var viewport_size := root.get_viewport_rect().size

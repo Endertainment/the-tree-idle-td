@@ -9,6 +9,9 @@ extends Control
 const AVATAR_DIR := "res://assets/art/ui/menu/"
 const AVATAR_FALLBACK := "avatar_01"
 
+const PLUS_NORMAL := preload("res://assets/art/ui/buttons/button_plus_normal.png")
+const PLUS_PRESSED := preload("res://assets/art/ui/buttons/button_plus_pressed.png")
+
 @onready var _coins: CurrencyPill = %CoinsPill
 @onready var _gems: CurrencyPill = %GemsPill
 @onready var _coin_plus: Button = %CoinPlus
@@ -46,6 +49,9 @@ func _ready() -> void:
 
 	_battle_button.pressed.connect(_on_battle_pressed)
 	_settings_button.pressed.connect(_on_settings_pressed)
+	for plus in [_coin_plus, _gem_plus]:
+		plus.button_down.connect(_on_plus_down.bind(plus))
+		plus.button_up.connect(_on_plus_up.bind(plus))
 	_coin_plus.pressed.connect(_on_buy_pressed.bind(&"coins"))
 	_gem_plus.pressed.connect(_on_buy_pressed.bind(&"gems"))
 	_stats_card.pressed.connect(_on_profile_pressed)
@@ -169,6 +175,14 @@ func _locale_node_name(node: MagicaNode) -> String:
 
 func _on_battle_pressed() -> void:
 	SceneRouter.goto(&"battle")
+
+
+func _on_plus_down(button: Button) -> void:
+	button.icon = PLUS_PRESSED
+
+
+func _on_plus_up(button: Button) -> void:
+	button.icon = PLUS_NORMAL
 
 
 func _on_settings_pressed() -> void:

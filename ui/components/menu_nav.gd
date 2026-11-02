@@ -24,6 +24,7 @@ const LABELS: Dictionary = {
 }
 
 var _buttons: Dictionary = {}
+var _icons: Dictionary = {}
 var _dots: Dictionary = {}
 var _labels: Dictionary = {}
 var _active: StringName = &""
@@ -33,7 +34,7 @@ var _row: HBoxContainer
 func _ready() -> void:
 	theme_type_variation = &"NavBar"
 	custom_minimum_size = Vector2(0, 220)
-	_pin_to_bottom()
+	_pin_to_bottom.call_deferred()
 	_build()
 	setup(_active)
 	_connect_services()
@@ -45,12 +46,24 @@ func _ready() -> void:
 func _pin_to_bottom() -> void:
 	var parent := get_parent()
 	if parent is VBoxContainer:
-		var spacer := Control.new()
-		spacer.name = "NavSpacer"
-		spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		parent.add_child(spacer)
-		parent.move_child(spacer, get_index())
+		# Only add a spacer when nothing else already expands: screens with a
+		# ScrollContainer would otherwise split the free space with it and clip
+		# their own content.
+		var has_expander := false
+		for sibling in parent.get_children():
+			if sibling == self:
+				continue
+			var control := sibling as Control
+			if control != null and (control.size_flags_vertical & Control.SIZE_EXPAND) != 0:
+				has_expander = true
+				break
+		if not has_expander:
+			var spacer := Control.new()
+			spacer.name = "NavSpacer"
+			spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			parent.add_child(spacer)
+			parent.move_child(spacer, get_index())
 
 	var node: Node = parent
 	while node != null and not (node is MarginContainer):
@@ -141,6 +154,8 @@ func _create_button(tab: StringName) -> Button:
 	button.focus_mode = Control.FOCUS_NONE
 	button.theme_type_variation = &"NavButton"
 	button.pressed.connect(_on_pressed.bind(tab))
+	button.button_down.connect(_on_tab_down.bind(tab))
+	button.button_up.connect(_on_tab_up.bind(tab))
 
 	var content := VBoxContainer.new()
 	content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -183,7 +198,20 @@ func _create_button(tab: StringName) -> Button:
 	_dots[tab] = dot
 
 	_buttons[tab] = button
+	_icons[tab] = icon
 	return button
+
+
+func _on_tab_down(tab: StringName) -> void:
+	var node: TextureRect = _icons.get(tab, null)
+	if node != null:
+		node.texture = load(ICONS[tab].replace("_normal", "_pressed")) as Texture2D
+
+
+func _on_tab_up(tab: StringName) -> void:
+	var node: TextureRect = _icons.get(tab, null)
+	if node != null:
+		node.texture = load(ICONS[tab]) as Texture2D
 
 
 func _on_pressed(tab: StringName) -> void:
@@ -200,4 +228,6 @@ func _on_pressed(tab: StringName) -> void:
 			SceneRouter.goto(&"missions")
 		&"shop":
 			SceneRouter.goto(&"shop")
+
+
 

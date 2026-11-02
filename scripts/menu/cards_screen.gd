@@ -180,13 +180,16 @@ func _refresh_slots() -> void:
 	var unlocked := _slot_count()
 	for slot in CardCollection.MAX_SLOTS:
 		var button := _slot_buttons[slot]
+		# Reset the previous skin first: without this an emptied slot kept the
+		# card frame (and its texture) after unequipping.
+		_clear_slot_skin(button)
+		button.modulate = Color.WHITE
 		if slot >= unlocked:
 			button.text = "%s\n%s" % [
 				LocaleService.t("cards.locked_slot", "Locked"),
 				_slot_requirement(slot),
 			]
-			button.theme_type_variation = &"SecondaryButton"
-			button.modulate = Color(0.58, 0.62, 0.56, 1.0)
+			button.theme_type_variation = &"CardSlotLocked"
 			continue
 		var card_id := collection.slot_card(slot)
 		if card_id == &"":
@@ -195,8 +198,7 @@ func _refresh_slots() -> void:
 				LocaleService.t("cards.slot", "Slot"),
 				slot + 1,
 			]
-			button.theme_type_variation = &"PrimaryButton"
-			button.modulate = Color(1, 1, 1, 0.72)
+			button.theme_type_variation = &"CardSlotEmpty"
 			continue
 		var card := collection.get_card(card_id)
 		button.text = "%s\n%s %d" % [
@@ -204,9 +206,13 @@ func _refresh_slots() -> void:
 			LocaleService.t("workshop.level_short", "Lv"),
 			collection.level_of(card_id),
 		]
-		button.theme_type_variation = &"GoldButton"
-		button.modulate = card.rarity_color()
+		button.theme_type_variation = &"CardFrame%s" % String(card.rarity).capitalize()
 		_apply_rarity_frame(button, card)
+
+
+func _clear_slot_skin(button: Button) -> void:
+	for state in ["normal", "hover", "pressed", "disabled"]:
+		button.remove_theme_stylebox_override(state)
 
 
 func _slot_requirement(slot: int) -> String:
@@ -297,12 +303,13 @@ func _card_tile(card: CardData, collection: CardCollection) -> Button:
 			LocaleService.t("workshop.level_short", "Lv"),
 			collection.level_of(card.id),
 		]
-		button.theme_type_variation = &"GoldButton" if card.rarity == &"legendary" else &"PrimaryButton"
-		button.modulate = card.rarity_color()
+		button.theme_type_variation = &"CardFrame%s" % String(card.rarity).capitalize()
+		button.modulate = Color.WHITE
+		_apply_rarity_frame(button, card)
 	else:
 		button.text = "%s\n%s" % [_card_name(card), LocaleService.t("cards.not_owned", "Not owned")]
-		button.theme_type_variation = &"SecondaryButton"
-		button.modulate = Color(0.58, 0.62, 0.56, 1.0)
+		button.theme_type_variation = &"CardFrame%s" % String(card.rarity).capitalize()
+		button.modulate = Color(0.55, 0.58, 0.52, 1.0)
 		_apply_rarity_frame(button, card)
 	button.pressed.connect(_select_card.bind(card.id))
 	return button

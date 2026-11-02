@@ -27,6 +27,13 @@ var _sync_status_label: Label
 
 
 func _ready() -> void:
+	if SceneRouter.has_overlay():
+		# Opened from the battle pause menu: keep the battlefield visible behind
+		# the panel instead of covering it with the menu wallpaper.
+		var bg := get_node_or_null("Background") as Control
+		var dim := get_node_or_null("Dim") as Control
+		if bg: bg.visible = false
+		if dim: dim.color = Color(0, 0, 0, 0.72)
 	_localize()
 	_back_button.pressed.connect(_on_back_pressed)
 	LocaleService.language_changed.connect(_on_language_changed)
@@ -58,6 +65,13 @@ func _localize() -> void:
 
 
 func _on_language_changed(_code: String) -> void:
+	if SceneRouter.has_overlay():
+		# Opened from the battle pause menu: keep the battlefield visible behind
+		# the panel instead of covering it with the menu wallpaper.
+		var bg := get_node_or_null("Background") as Control
+		var dim := get_node_or_null("Dim") as Control
+		if bg: bg.visible = false
+		if dim: dim.color = Color(0, 0, 0, 0.72)
 	_localize()
 	_rebuild()
 
@@ -438,3 +452,4 @@ func _build_fps_label() -> void:
 
 func _show_toast(message: String) -> void:
 	ToastService.show_toast(message)
+

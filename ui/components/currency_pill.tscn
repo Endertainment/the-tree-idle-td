@@ -15,7 +15,7 @@ theme_override_constants/separation = 12
 
 [node name="Icon" type="TextureRect" parent="Row" unique_id=1733387239]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(56, 56)
+custom_minimum_size = Vector2(70, 56)
 layout_mode = 2
 texture = ExtResource("2_coin")
 expand_mode = 1

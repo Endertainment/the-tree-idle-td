@@ -1,8 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://dcp28xq3ei8ff"]
+[gd_scene format=3 uid="uid://dcp28xq3ei8ff"]
 
 [ext_resource type="Script" uid="uid://kyjlupsb5oyq" path="res://scripts/menu/main_menu.gd" id="1_menu"]
-[ext_resource type="Shader" path="res://ui/shaders/circle_mask.gdshader" id="20_mask"]
-
 [ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="2_nav"]
 [ext_resource type="PackedScene" path="res://ui/components/primary_button.tscn" id="3_button"]
 [ext_resource type="PackedScene" uid="uid://ch0qbt6h3b2qe" path="res://ui/components/currency_pill.tscn" id="4_pill"]
@@ -20,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://c2vpx56wpm6yi" path="res://assets/art/ui/menu/avatar_01.png" id="17_avatar"]
 [ext_resource type="Texture2D" uid="uid://lu5kn2gph6oi" path="res://assets/art/ui/icons/icon_speed.png" id="18_speed"]
 [ext_resource type="Texture2D" uid="uid://dn1qremfjoccd" path="res://assets/art/ui/common/divider.png" id="19_divider"]
+[ext_resource type="Shader" uid="uid://ckkknfsbcl8bo" path="res://ui/shaders/circle_mask.gdshader" id="20_mask"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_avatar"]
 shader = ExtResource("20_mask")
@@ -149,7 +148,7 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 14
 
 [node name="LogoArea" type="Control" parent="SafeArea/Layout/Scroll/Content" unique_id=1106766112]
-custom_minimum_size = Vector2(0, 320)
+custom_minimum_size = Vector2(0, 268)
 layout_mode = 2
 
 [node name="Logo" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/LogoArea" unique_id=682220666]
@@ -160,9 +159,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -350.0
-offset_top = -150.0
+offset_top = -160.0
 offset_right = 350.0
-offset_bottom = 90.0
+offset_bottom = 192.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -171,6 +170,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="Titles" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/LogoArea" unique_id=1395500003]
+visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -195,6 +195,7 @@ horizontal_alignment = 1
 
 [node name="SubtitleLabel" type="Label" parent="SafeArea/Layout/Scroll/Content/LogoArea/Titles" unique_id=1045718892]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_type_variation = &"Title"
 theme_override_colors/font_color = Color(0.96, 0.94, 0.85, 1)
@@ -204,7 +205,7 @@ horizontal_alignment = 1
 
 [node name="StatsCard" type="Button" parent="SafeArea/Layout/Scroll/Content" unique_id=1210703774]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 232)
+custom_minimum_size = Vector2(0, 222)
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"StatsCard"
@@ -228,7 +229,7 @@ mouse_filter = 2
 theme_override_constants/separation = 16
 
 [node name="BestIcon" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row" unique_id=1658422280]
-custom_minimum_size = Vector2(100, 100)
+custom_minimum_size = Vector2(130, 120)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
@@ -355,33 +356,33 @@ theme_type_variation = &"BattlePanel"
 
 [node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/BattlePanel" unique_id=25107501]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 24
 
 [node name="PrepareLabel" type="Label" parent="SafeArea/Layout/Scroll/Content/BattlePanel/Box" unique_id=2086904498]
 layout_mode = 2
 theme_type_variation = &"Body"
+theme_override_font_sizes/font_size = 53
 text = "menu.prepare"
 horizontal_alignment = 1
 
 [node name="BattleButton" parent="SafeArea/Layout/Scroll/Content/BattlePanel/Box" unique_id=1591024110 instance=ExtResource("3_button")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 200)
+custom_minimum_size = Vector2(700, 190)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 theme_type_variation = &"BattleButton"
 text = "menu.battle"
 icon_texture = ExtResource("10_sword")
 
 [node name="SpeedTrial" type="Button" parent="SafeArea/Layout/Scroll/Content/BattlePanel/Box" unique_id=1388243063]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 104)
+custom_minimum_size = Vector2(640, 110)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 focus_mode = 0
 theme_type_variation = &"SpeedTrial"
 text = "menu.speed_trial_offer"
 icon = ExtResource("18_speed")
-alignment = 0
 
 [node name="AdBadge" type="Label" parent="SafeArea/Layout/Scroll/Content/BattlePanel/Box/SpeedTrial" unique_id=1785276526]
 layout_mode = 1
@@ -412,7 +413,7 @@ layout_mode = 2
 theme_override_constants/separation = 18
 
 [node name="Icon" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/DailyCard/Row" unique_id=165556602]
-custom_minimum_size = Vector2(74, 74)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
@@ -456,7 +457,7 @@ layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="Icon" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/MagicaCard/Row" unique_id=297077375]
-custom_minimum_size = Vector2(64, 64)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2

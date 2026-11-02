@@ -64,6 +64,11 @@ add("ui/common/divider.png", 400, 6, BG)
 add("ui/common/badge_dot.png", 40, 40, DANGER)
 add("ui/common/scrollbar_track.png", 16, 64, PANEL_DARK, "9p", [0, 8, 0, 8])
 add("ui/common/scrollbar_grab.png", 16, 64, GREEN_LIGHT, "9p", [0, 8, 0, 8])
+add("ui/common/bar_bg.png", 400, 32, PANEL_DARK)
+add("ui/common/bar_fill_green.png", 400, 32, GREEN_LIGHT)
+add("ui/common/bar_fill_yellow.png", 400, 32, GOLD)
+add("ui/common/bar_fill_blue.png", 400, 32, BLUE)
+add("ui/common/bar_fill_red.png", 400, 32, DANGER)
 add("ui/common/slider_track.png", 400, 32, PANEL_DARK, "9p", [0, 12, 0, 12])
 add("ui/common/slider_fill.png", 400, 32, GREEN_LIGHT, "9p", [0, 12, 0, 12])
 add("ui/common/slider_knob.png", 64, 64, GOLD)
@@ -210,6 +215,7 @@ add(f"{M}/magica/branch_bg_9p.png", 96, 96, PANEL_DARK, "9p")
 add(f"{M}/magica/timer_pill_9p.png", 96, 48, PANEL_DARK, "9p", [16, 12, 16, 12])
 for rarity, color in [("common", "#8FA88A"), ("rare", BLUE), ("epic", "#B06BFF"), ("legendary", GOLD)]:
     add(f"{M}/cards/card_frame_{rarity}.png", 300, 420, color, "9p", [28, 28, 28, 28])
+add(f"{M}/cards/card_slot_locked.png", 300, 420, MUTED, "9p", [28, 28, 28, 28])
 add(f"{M}/cards/card_back.png", 300, 420, PANEL_DARK, "9p", [28, 28, 28, 28])
 add(f"{M}/cards/card_slot_empty.png", 300, 420, MUTED, "9p", [28, 28, 28, 28])
 add(f"{M}/cards/card_art_placeholder.png", 256, 256, BG)
@@ -242,5 +248,6 @@ with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
     fh.write("\n")
 
 print(f"wrote {len(entries)} entries to {os.path.relpath(OUT, ROOT)}")
+
 
 
