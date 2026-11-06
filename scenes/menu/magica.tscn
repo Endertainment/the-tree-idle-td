@@ -58,7 +58,7 @@ layout_mode = 2
 theme_override_constants/separation = 14
 
 [node name="Header" type="PanelContainer" parent="SafeArea/Layout"]
-custom_minimum_size = Vector2(0, 132)
+custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 

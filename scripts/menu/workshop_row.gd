@@ -80,7 +80,7 @@ func shake() -> void:
 
 func _build() -> void:
 	_built = true
-	theme_type_variation = &"ListRow"
+	theme_type_variation = &"PanelWorkshopListRow"
 	custom_minimum_size = Vector2(0.0, ROW_HEIGHT)
 
 	var layout := HBoxContainer.new()

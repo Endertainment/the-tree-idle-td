@@ -1,13 +1,12 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene format=3 uid="uid://bmrsc6hn7c45k"]
 
-[ext_resource type="Script" path="res://scripts/menu/workshop_screen.gd" id="1_screen"]
-[ext_resource type="PackedScene" path="res://ui/components/currency_pill.tscn" id="2_pill"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="3_bg"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_coin.png" id="4_coin"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_hammer.png" id="5_hammer"]
+[ext_resource type="Script" uid="uid://deuq2lpre85cr" path="res://scripts/menu/workshop_screen.gd" id="1_screen"]
+[ext_resource type="PackedScene" uid="uid://ch0qbt6h3b2qe" path="res://ui/components/currency_pill.tscn" id="2_pill"]
+[ext_resource type="Texture2D" uid="uid://c2dr28p163ot2" path="res://assets/art/ui/menu/bg/menu_bg.png" id="3_bg"]
+[ext_resource type="Texture2D" uid="uid://dk07m7mebtlpk" path="res://assets/art/ui/icons/icon_hammer.png" id="5_hammer"]
 [ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="6_nav"]
 
-[node name="Workshop" type="Control"]
+[node name="Workshop" type="Control" unique_id=1636219873]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_screen")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1387052849]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,7 +27,7 @@ texture = ExtResource("3_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Dim" type="ColorRect" parent="."]
+[node name="Dim" type="ColorRect" parent="." unique_id=1968689618]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,7 +37,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.32)
 
-[node name="SafeArea" type="MarginContainer" parent="."]
+[node name="SafeArea" type="MarginContainer" parent="." unique_id=1397904872]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -50,20 +49,20 @@ theme_override_constants/margin_top = 26
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 22
 
-[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+[node name="Layout" type="VBoxContainer" parent="SafeArea" unique_id=1057157327]
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="Header" type="PanelContainer" parent="SafeArea/Layout"]
-custom_minimum_size = Vector2(0, 132)
+[node name="Header" type="PanelContainer" parent="SafeArea/Layout" unique_id=1039797262]
+custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header"]
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header" unique_id=1870282502]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=906765520]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 96)
 layout_mode = 2
@@ -71,43 +70,48 @@ size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
 text = "common.back"
 
-[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row"]
-custom_minimum_size = Vector2(72, 72)
+[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row" unique_id=657897146]
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("5_hammer")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row"]
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row" unique_id=2078281234]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Title"
 text = "workshop.title"
 
-[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row"]
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row" unique_id=1299056890]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="CoinsPill" parent="SafeArea/Layout/Header/Row" instance=ExtResource("2_pill")]
+[node name="CoinsPill" parent="SafeArea/Layout/Header/Row" unique_id=388974897 instance=ExtResource("2_pill")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 92)
 layout_mode = 2
 size_flags_vertical = 4
-icon_texture = ExtResource("4_coin")
 
-[node name="Tabs" type="PanelContainer" parent="SafeArea/Layout"]
-custom_minimum_size = Vector2(0, 120)
+[node name="Tabs" type="PanelContainer" parent="SafeArea/Layout" unique_id=204530527]
+custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
-theme_type_variation = &"PanelDark"
+theme_type_variation = &"PanelCardsFilterBar"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Tabs"]
+[node name="MarginContainer" type="MarginContainer" parent="SafeArea/Layout/Tabs" unique_id=374124874]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 1
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Tabs/MarginContainer" unique_id=1731409960]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="AttackTab" type="Button" parent="SafeArea/Layout/Tabs/Row"]
+[node name="AttackTab" type="Button" parent="SafeArea/Layout/Tabs/MarginContainer/Row" unique_id=2121980390]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
@@ -115,7 +119,7 @@ size_flags_horizontal = 3
 theme_type_variation = &"GoldButton"
 text = "workshop.category.attack"
 
-[node name="DefenseTab" type="Button" parent="SafeArea/Layout/Tabs/Row"]
+[node name="DefenseTab" type="Button" parent="SafeArea/Layout/Tabs/MarginContainer/Row" unique_id=989561363]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
@@ -123,7 +127,7 @@ size_flags_horizontal = 3
 theme_type_variation = &"SecondaryButton"
 text = "workshop.category.defense"
 
-[node name="UtilityTab" type="Button" parent="SafeArea/Layout/Tabs/Row"]
+[node name="UtilityTab" type="Button" parent="SafeArea/Layout/Tabs/MarginContainer/Row" unique_id=971319762]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
@@ -131,7 +135,7 @@ size_flags_horizontal = 3
 theme_type_variation = &"SecondaryButton"
 text = "workshop.category.utility"
 
-[node name="EnvironmentTab" type="Button" parent="SafeArea/Layout/Tabs/Row"]
+[node name="EnvironmentTab" type="Button" parent="SafeArea/Layout/Tabs/MarginContainer/Row" unique_id=1967255286]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
@@ -139,39 +143,37 @@ size_flags_horizontal = 3
 theme_type_variation = &"SecondaryButton"
 text = "workshop.category.environment"
 
-[node name="HintLabel" type="Label" parent="SafeArea/Layout"]
+[node name="HintLabel" type="Label" parent="SafeArea/Layout" unique_id=157309679]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
 text = "workshop.hint"
 horizontal_alignment = 1
 
-[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout"]
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout" unique_id=2112147716]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Rows" type="VBoxContainer" parent="SafeArea/Layout/Scroll"]
+[node name="Rows" type="VBoxContainer" parent="SafeArea/Layout/Scroll" unique_id=843930156]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="Toast" type="PanelContainer" parent="SafeArea/Layout"]
+[node name="Toast" type="PanelContainer" parent="SafeArea/Layout" unique_id=993894855]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 84)
 layout_mode = 2
 theme_type_variation = &"Chip"
 
-[node name="ToastLabel" type="Label" parent="SafeArea/Layout/Toast"]
+[node name="ToastLabel" type="Label" parent="SafeArea/Layout/Toast" unique_id=1676302223]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MenuNav" parent="SafeArea/Layout" instance=ExtResource("6_nav")]
+[node name="MenuNav" parent="SafeArea/Layout" unique_id=926970519 instance=ExtResource("6_nav")]
 unique_name_in_owner = true
-layout_mode = 2

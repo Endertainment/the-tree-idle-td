@@ -51,13 +51,20 @@ theme_override_constants/margin_bottom = 22
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Header" type="HBoxContainer" parent="SafeArea/Layout"]
+[node name="Header" type="PanelContainer" parent="SafeArea/Layout"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+theme_type_variation = &"TopBar"
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header"]
 layout_mode = 2
 theme_override_constants/separation = 20
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
 
-[node name="BackButton" type="Button" parent="SafeArea/Layout/Header"]
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 104)
 layout_mode = 2
@@ -65,7 +72,7 @@ size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
 text = "common.back"
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header"]
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

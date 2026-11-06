@@ -65,18 +65,6 @@ func _pin_to_bottom() -> void:
 			parent.add_child(spacer)
 			parent.move_child(spacer, get_index())
 
-	var node: Node = parent
-	while node != null and not (node is MarginContainer):
-		node = node.get_parent()
-	if node is MarginContainer:
-		var margin := node as MarginContainer
-		var inset := DisplayCutout.top_inset()
-		if inset > 0.0:
-			margin.add_theme_constant_override(
-				"margin_top", margin.get_theme_constant("margin_top") + int(round(inset))
-			)
-
-
 func _exit_tree() -> void:
 	if MissionService.missions_changed.is_connected(_refresh_notifications):
 		MissionService.missions_changed.disconnect(_refresh_notifications)
@@ -228,6 +216,3 @@ func _on_pressed(tab: StringName) -> void:
 			SceneRouter.goto(&"missions")
 		&"shop":
 			SceneRouter.goto(&"shop")
-
-
-

@@ -23,12 +23,15 @@ static func apply(root: Control) -> void:
 	# window rectangle instead of the screen origin.
 	var window_rect := Rect2i(DisplayServer.window_get_position(), window_size)
 	var safe := DisplayServer.get_display_safe_area().intersection(window_rect)
-	if safe.size.x <= 0 or safe.size.y <= 0:
-		return
-	var left := maxi(safe.position.x - window_rect.position.x, 0)
-	var top := maxi(safe.position.y - window_rect.position.y, 0)
-	var right := maxi(window_rect.end.x - safe.end.x, 0)
-	var bottom := maxi(window_rect.end.y - safe.end.y, 0)
+	var left := 0
+	var top := 0
+	var right := 0
+	var bottom := 0
+	if safe.size.x > 0 and safe.size.y > 0:
+		left = maxi(safe.position.x - window_rect.position.x, 0)
+		top = maxi(safe.position.y - window_rect.position.y, 0)
+		right = maxi(window_rect.end.x - safe.end.x, 0)
+		bottom = maxi(window_rect.end.y - safe.end.y, 0)
 	# A sane cutout is a fraction of the screen; anything larger is a bad reading.
 	var max_h := int(window_size.x * 0.25)
 	var max_v := int(window_size.y * 0.25)
@@ -36,7 +39,10 @@ static func apply(root: Control) -> void:
 	right = mini(right, max_h)
 	top = mini(top, max_v)
 	bottom = mini(bottom, max_v)
-	if left == 0 and top == 0 and right == 0 and bottom == 0:
+	# The camera hole is reported by the engine and must be respected by every
+	# screen, including those without a bottom navigation bar.
+	var cutout := DisplayCutout.top_inset()
+	if left == 0 and top == 0 and right == 0 and bottom == 0 and cutout <= 0.0:
 		return
 	var viewport_size := root.get_viewport_rect().size
 	var scale_x := viewport_size.x / float(window_size.x)
@@ -48,7 +54,8 @@ static func apply(root: Control) -> void:
 			"margin_left", margin.get_theme_constant("margin_left") + int(round(left * scale_x))
 		)
 		margin.add_theme_constant_override(
-			"margin_top", margin.get_theme_constant("margin_top") + int(round(top * scale_y))
+			"margin_top",
+			margin.get_theme_constant("margin_top") + int(round(top * scale_y)) + int(round(cutout))
 		)
 		margin.add_theme_constant_override(
 			"margin_right", margin.get_theme_constant("margin_right") + int(round(right * scale_x))
@@ -58,6 +65,6 @@ static func apply(root: Control) -> void:
 		)
 		return
 	root.offset_left += left * scale_x
-	root.offset_top += top * scale_y
+	root.offset_top += top * scale_y + cutout
 	root.offset_right -= right * scale_x
 	root.offset_bottom -= bottom * scale_y

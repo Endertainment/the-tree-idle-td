@@ -138,7 +138,7 @@ func _build_slots() -> void:
 	for slot in CardCollection.MAX_SLOTS:
 		var button := Button.new()
 		button.name = "Slot%d" % slot
-		button.custom_minimum_size = Vector2(0, 170)
+		button.custom_minimum_size = Vector2(0, 245)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.focus_mode = Control.FOCUS_NONE
 		button.add_theme_font_size_override("font_size", 16)
@@ -287,11 +287,11 @@ func _rebuild_grid() -> void:
 func _card_tile(card: CardData, collection: CardCollection) -> Button:
 	var button := Button.new()
 	button.name = "Card_%s" % card.id
-	button.custom_minimum_size = Vector2(0, 230)
+	button.custom_minimum_size = Vector2(0, 280)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.focus_mode = Control.FOCUS_NONE
-	button.icon = card.art
-	button.expand_icon = true
+	#button.icon = card.art
+	#button.expand_icon = true
 	button.add_theme_font_size_override("font_size", 22)
 	button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

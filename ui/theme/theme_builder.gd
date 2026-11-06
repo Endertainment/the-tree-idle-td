@@ -121,18 +121,18 @@ func _build_buttons(theme: Theme) -> void:
 		ART_BUTTONS + "button_ghost_normal.png", 40, 36)
 
 	theme.set_type_variation(&"IconButton", &"Button")
-	_apply_button_skin(theme, &"IconButton",
+	_apply_round_button_skin(theme, &"IconButton",
 		ART_BUTTONS + "button_icon_round_normal.png",
 		ART_BUTTONS + "button_icon_round_pressed.png",
 		ART_BUTTONS + "button_icon_round_normal.png", 24, 24)
 	theme.set_constant("icon_max_width", &"IconButton", 72)
 
 	theme.set_type_variation(&"BattleButton", &"Button")
-	_apply_button_skin(theme, &"BattleButton",
+	_apply_battle_button_skin(theme, &"BattleButton",
 		ART_MENU + "battle_button_normal.png",
 		ART_MENU + "battle_button_pressed.png",
 		ART_BUTTONS + "button_green_disabled.png", 48, 40)
-	theme.set_font_size("font_size", &"BattleButton", 68)
+	theme.set_font_size("font_size", &"BattleButton", 80)
 	theme.set_constant("h_separation", &"BattleButton", 6)
 	theme.set_constant("icon_max_width", &"BattleButton", 96)
 
@@ -155,17 +155,17 @@ func _build_buttons(theme: Theme) -> void:
 	# Card loadout slots. Empty and locked have their own art; a filled slot uses
 	# the rarity frame so the card never looks like a generic button.
 	theme.set_type_variation(&"CardSlotEmpty", &"Button")
-	_apply_button_skin(theme, &"CardSlotEmpty",
+	_apply_card_button_skin(theme, &"CardSlotEmpty",
 		ART_CARDS + "card_slot_empty.png", ART_CARDS + "card_slot_empty.png",
 		ART_CARDS + "card_slot_empty.png", 28, 28)
 	theme.set_type_variation(&"CardSlotLocked", &"Button")
-	_apply_button_skin(theme, &"CardSlotLocked",
+	_apply_card_button_skin(theme, &"CardSlotLocked",
 		ART_CARDS + "card_slot_locked.png", ART_CARDS + "card_slot_locked.png",
 		ART_CARDS + "card_slot_locked.png", 28, 28)
 	for rarity: String in ["common", "rare", "epic", "legendary"]:
 		var variation := StringName("CardFrame" + rarity.capitalize())
 		theme.set_type_variation(variation, &"Button")
-		_apply_button_skin(theme, variation,
+		_apply_card_button_skin(theme, variation,
 			ART_CARDS + "card_frame_%s.png" % rarity,
 			ART_CARDS + "card_frame_%s.png" % rarity,
 			ART_CARDS + "card_frame_%s.png" % rarity, 28, 28)
@@ -183,7 +183,7 @@ func _build_buttons(theme: Theme) -> void:
 	theme.set_type_variation(&"SpeedTrial", &"Button")
 	_apply_button_skin(theme, &"SpeedTrial",
 		ART_MENU + "speed_trial_9p.png",
-		ART_MENU + "speed_trial_9p.png",
+		ART_MENU + "speed_trial_9p_pressed.png",
 		ART_MENU + "speed_trial_9p.png", 40, 26)
 	theme.set_font_size("font_size", &"SpeedTrial", 42)
 	theme.set_constant("h_separation", &"SpeedTrial", 10)
@@ -195,7 +195,7 @@ func _build_panels(theme: Theme) -> void:
 	_apply_panel_skin(theme, &"PanelGreen", ART_COMMON + "panel_9p_green.png", 24, 24, 24)
 
 	theme.set_type_variation(&"PanelDark", &"PanelContainer")
-	_apply_panel_skin(theme, &"PanelDark", ART_COMMON + "panel_9p_dark.png", 24, 24, 24)
+	_apply_panel_skin(theme, &"PanelDark", ART_COMMON + "panel_9p_dark.png", 100, 100, 24)
 
 	theme.set_type_variation(&"ListRow", &"PanelContainer")
 	_apply_panel_skin(theme, &"ListRow", ART_COMMON + "row_9p_green.png", 20, 18, 20)
@@ -205,13 +205,27 @@ func _build_panels(theme: Theme) -> void:
 
 	theme.set_type_variation(&"CurrencyPill", &"PanelContainer")
 	_apply_panel_skin(theme, &"CurrencyPill", ART_MENU + "currency_pill_9p.png", 20, 16, 16)
+	
+	theme.set_type_variation(&"PanelMenuWelcome", &"PanelContainer")
+	_apply_panel_skin(theme, &"PanelMenuWelcome", ART_COMMON + "panel_9p_menu_welcome.png", 160, 160, 20)
+
+	# Workshop panels
+	theme.set_type_variation(&"PanelWorkshopListRow", &"PanelContainer")
+	_apply_panel_skin(theme, &"PanelWorkshopListRow", ART_COMMON + "row_9p_workshop_listrow.png", 20, 18, 20)
+
+	# Cards screen panels
+	theme.set_type_variation(&"PanelCardsLoadout", &"PanelContainer")
+	_apply_panel_skin(theme, &"PanelCardsLoadout", ART_COMMON + "panel_9p_cards_loadout.png", 80, 80, 24)
+
+	theme.set_type_variation(&"PanelCardsFilterBar", &"PanelContainer")
+	_apply_panel_skin(theme, &"PanelCardsFilterBar", ART_COMMON + "panel_9p_cards_filterbar.png", 80, 80, 24)
 
 	# The menu top bar art is 890x149 with thick leaf ornaments on both sides:
 	# the 9-slice corners are large, and the content margins keep labels and
 	# pills inside the frame on every screen that reuses this variation.
 	theme.set_type_variation(&"TopBar", &"PanelContainer")
 	theme.set_stylebox("panel", &"TopBar",
-		_texture_style(ART_MENU + "top_bar_9p.png", 64, 52, 64, 52, 72, 30))
+		_texture_style_for_topbar(ART_MENU + "top_bar_9p.png", 64, 52, 64, 52, 72, 20, 45))
 
 	# Battle draws its own top bar: same frame language, no leaves, tighter
 	# padding, different art so the two can evolve independently.
@@ -280,9 +294,93 @@ func _apply_button_skin(
 	pressed.modulate_color = Color(0.94, 0.94, 0.94, 1.0)
 	# The pressed art sinks a few pixels; move the label and icon with it so the
 	# whole button reads as physically pressed, not just its background.
-	pressed.content_margin_top += 6.0
-	pressed.content_margin_bottom -= 6.0
+	pressed.content_margin_top += 5.0
+	pressed.content_margin_bottom -= 5.0
 	var disabled := _texture_style(disabled_path, margin_h, margin_v, margin_h, margin_v, 32, 12)
+	disabled.modulate_color = Color(0.72, 0.72, 0.72, 1.0)
+
+	theme.set_stylebox("normal", type_name, normal)
+	theme.set_stylebox("hover", type_name, hover)
+	theme.set_stylebox("pressed", type_name, pressed)
+	theme.set_stylebox("disabled", type_name, disabled)
+	theme.set_stylebox("focus", type_name, _focus_style(4, 16))
+
+func _apply_card_button_skin(
+	theme: Theme,
+	type_name: StringName,
+	normal_path: String,
+	pressed_path: String,
+	disabled_path: String,
+	margin_h: int,
+	margin_v: int
+) -> void:
+	var normal := _texture_style(normal_path, margin_h, margin_v, margin_h, margin_v, 32, 12)
+	normal.content_margin_bottom = 242.0/2
+	var hover := _texture_style(normal_path, margin_h, margin_v, margin_h, margin_v, 32, 12)
+	hover.modulate_color = Color(1.08, 1.08, 1.08, 1.0)
+	hover.content_margin_bottom = 242.0/2
+	var pressed := _texture_style(pressed_path, margin_h, margin_v, margin_h, margin_v, 32, 12)
+	pressed.content_margin_bottom = 242.0/2
+	pressed.modulate_color = Color(0.94, 0.94, 0.94, 1.0)
+	# The pressed art sinks a few pixels; move the label and icon with it so the
+	# whole button reads as physically pressed, not just its background.
+	var disabled := _texture_style(disabled_path, margin_h, margin_v, margin_h, margin_v, 32, 12)
+	disabled.modulate_color = Color(0.72, 0.72, 0.72, 1.0)
+	disabled.content_margin_bottom = 242.0/2
+
+	theme.set_stylebox("normal", type_name, normal)
+	theme.set_stylebox("hover", type_name, hover)
+	theme.set_stylebox("pressed", type_name, pressed)
+	theme.set_stylebox("disabled", type_name, disabled)
+	theme.set_stylebox("focus", type_name, _focus_style(4, 16))
+
+func _apply_battle_button_skin(
+	theme: Theme,
+	type_name: StringName,
+	normal_path: String,
+	pressed_path: String,
+	disabled_path: String,
+	margin_h: int,
+	margin_v: int
+) -> void:
+	var normal := _texture_style(normal_path, margin_h, margin_v, margin_h, margin_v, 180, 12)
+	var hover := _texture_style(normal_path, margin_h, margin_v, margin_h, margin_v, 180, 12)
+	hover.modulate_color = Color(1.08, 1.08, 1.08, 1.0)
+	var pressed := _texture_style(pressed_path, margin_h, margin_v, margin_h, margin_v, 180, 12)
+	pressed.modulate_color = Color(0.94, 0.94, 0.94, 1.0)
+	# The pressed art sinks a few pixels; move the label and icon with it so the
+	# whole button reads as physically pressed, not just its background.
+	pressed.content_margin_top += 5.0
+	pressed.content_margin_bottom -= 5.0
+	var disabled := _texture_style(disabled_path, margin_h, margin_v, margin_h, margin_v, 180, 12)
+	disabled.modulate_color = Color(0.72, 0.72, 0.72, 1.0)
+
+	theme.set_stylebox("normal", type_name, normal)
+	theme.set_stylebox("hover", type_name, hover)
+	theme.set_stylebox("pressed", type_name, pressed)
+	theme.set_stylebox("disabled", type_name, disabled)
+	theme.set_stylebox("focus", type_name, _focus_style(4, 16))
+
+
+func _apply_round_button_skin(
+	theme: Theme,
+	type_name: StringName,
+	normal_path: String,
+	pressed_path: String,
+	disabled_path: String,
+	margin_h: int,
+	margin_v: int
+) -> void:
+	var normal := _texture_style(normal_path, margin_h, margin_v, margin_h, margin_v, 18, 12)
+	var hover := _texture_style(normal_path, margin_h, margin_v, margin_h, margin_v, 18, 12)
+	hover.modulate_color = Color(1.08, 1.08, 1.08, 1.0)
+	var pressed := _texture_style(pressed_path, margin_h, margin_v, margin_h, margin_v, 18, 12)
+	pressed.modulate_color = Color(0.94, 0.94, 0.94, 1.0)
+	# The pressed art sinks a few pixels; move the label and icon with it so the
+	# whole button reads as physically pressed, not just its background.
+	pressed.content_margin_top += 5.0
+	pressed.content_margin_bottom -= 5.0
+	var disabled := _texture_style(disabled_path, margin_h, margin_v, margin_h, margin_v, 18, 12)
 	disabled.modulate_color = Color(0.72, 0.72, 0.72, 1.0)
 
 	theme.set_stylebox("normal", type_name, normal)
@@ -325,6 +423,27 @@ func _texture_style(
 	box.content_margin_bottom = float(content_v)
 	return box
 
+func _texture_style_for_topbar(
+	texture_path: String,
+	left: int,
+	top: int,
+	right: int,
+	bottom: int,
+	content_h: int,
+	content_v_top: int,
+	content_v_bottom: int
+) -> StyleBoxTexture:
+	var box := StyleBoxTexture.new()
+	box.texture = load(texture_path) as Texture2D
+	box.texture_margin_left = float(left)
+	box.texture_margin_top = float(top)
+	box.texture_margin_right = float(right)
+	box.texture_margin_bottom = float(bottom)
+	box.content_margin_left = float(content_h)
+	box.content_margin_right = float(content_h)
+	box.content_margin_top = float(content_v_top)
+	box.content_margin_bottom = float(content_v_bottom)
+	return box
 
 func _focus_style(border_width: int, corner_radius: int) -> StyleBoxFlat:
 	var box := StyleBoxFlat.new()

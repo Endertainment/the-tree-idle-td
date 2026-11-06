@@ -6,7 +6,7 @@
 class_name OnboardingScreen
 extends Control
 
-const AVATAR_COUNT := 6
+const AVATAR_COUNT := 14
 const MIN_NICKNAME := 3
 const MAX_NICKNAME := 16
 const AVATAR_PATH := "res://assets/art/ui/menu/avatar_%02d.png"

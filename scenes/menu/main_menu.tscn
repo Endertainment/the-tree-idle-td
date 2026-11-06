@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="2_nav"]
 [ext_resource type="PackedScene" path="res://ui/components/primary_button.tscn" id="3_button"]
 [ext_resource type="PackedScene" uid="uid://ch0qbt6h3b2qe" path="res://ui/components/currency_pill.tscn" id="4_pill"]
-[ext_resource type="PackedScene" path="res://ui/components/modal.tscn" id="5_modal"]
+[ext_resource type="PackedScene" uid="uid://o2r7c44t1fi3" path="res://ui/components/modal.tscn" id="5_modal"]
 [ext_resource type="Texture2D" uid="uid://c2dr28p163ot2" path="res://assets/art/ui/menu/bg/menu_bg.png" id="6_bg"]
 [ext_resource type="Texture2D" uid="uid://bd1g4rlwe4r8q" path="res://assets/art/ui/icons/icon_gem.png" id="8_gem"]
 [ext_resource type="Texture2D" uid="uid://cdpqeub5gmxkh" path="res://assets/art/ui/icons/icon_settings.png" id="9_settings"]
@@ -81,9 +81,7 @@ theme_type_variation = &"TopBar"
 [node name="MarginContainer" type="MarginContainer" parent="SafeArea/Layout/TopBar" unique_id=1547693767]
 layout_mode = 2
 theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
 
 [node name="Row" type="HBoxContainer" parent="SafeArea/Layout/TopBar/MarginContainer" unique_id=1129173628]
 layout_mode = 2
@@ -159,7 +157,7 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -350.0
-offset_top = -160.0
+offset_top = -137.0
 offset_right = 350.0
 offset_bottom = 192.0
 grow_horizontal = 2
@@ -205,7 +203,7 @@ horizontal_alignment = 1
 
 [node name="StatsCard" type="Button" parent="SafeArea/Layout/Scroll/Content" unique_id=1210703774]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 222)
+custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"StatsCard"
@@ -264,7 +262,6 @@ size_flags_vertical = 4
 mouse_filter = 2
 texture = ExtResource("19_divider")
 expand_mode = 1
-stretch_mode = 5
 
 [node name="AvatarFrame" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/StatsCard/Content/Row" unique_id=1248788803]
 custom_minimum_size = Vector2(120, 120)
@@ -356,12 +353,12 @@ theme_type_variation = &"BattlePanel"
 
 [node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/BattlePanel" unique_id=25107501]
 layout_mode = 2
-theme_override_constants/separation = 24
+theme_override_constants/separation = 20
 
 [node name="PrepareLabel" type="Label" parent="SafeArea/Layout/Scroll/Content/BattlePanel/Box" unique_id=2086904498]
 layout_mode = 2
 theme_type_variation = &"Body"
-theme_override_font_sizes/font_size = 53
+theme_override_font_sizes/font_size = 60
 text = "menu.prepare"
 horizontal_alignment = 1
 
@@ -376,7 +373,7 @@ icon_texture = ExtResource("10_sword")
 
 [node name="SpeedTrial" type="Button" parent="SafeArea/Layout/Scroll/Content/BattlePanel/Box" unique_id=1388243063]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(640, 110)
+custom_minimum_size = Vector2(500, 110)
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
@@ -385,6 +382,7 @@ text = "menu.speed_trial_offer"
 icon = ExtResource("18_speed")
 
 [node name="AdBadge" type="Label" parent="SafeArea/Layout/Scroll/Content/BattlePanel/Box/SpeedTrial" unique_id=1785276526]
+visible = false
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -497,7 +495,7 @@ vertical_alignment = 1
 
 [node name="MagicaButton" type="Button" parent="SafeArea/Layout/Scroll/Content/MagicaCard/Row" unique_id=1277593917]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(190, 84)
+custom_minimum_size = Vector2(210, 92)
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
@@ -515,4 +513,5 @@ unique_name_in_owner = true
 
 [node name="WelcomeModal" parent="." unique_id=154573371 instance=ExtResource("5_modal")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
