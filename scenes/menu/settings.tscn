@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://eketgt57724o"]
 
-[ext_resource type="Script" path="res://scripts/menu/settings_screen.gd" id="1_settings"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="2_bg"]
-[ext_resource type="PackedScene" path="res://ui/components/modal.tscn" id="3_modal"]
+[ext_resource type="Script" uid="uid://biloaya8veci8" path="res://scripts/menu/settings_screen.gd" id="1_settings"]
+[ext_resource type="Texture2D" uid="uid://c2dr28p163ot2" path="res://assets/art/ui/menu/bg/menu_bg.png" id="2_bg"]
+[ext_resource type="PackedScene" uid="uid://o2r7c44t1fi3" path="res://ui/components/modal.tscn" id="3_modal"]
 
-[node name="Settings" type="Control"]
+[node name="Settings" type="Control" unique_id=977991630]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,7 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_settings")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=183183598]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,7 +25,7 @@ texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Dim" type="ColorRect" parent="."]
+[node name="Dim" type="ColorRect" parent="." unique_id=919974284]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,36 +35,35 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.42)
 
-[node name="SafeArea" type="MarginContainer" parent="."]
+[node name="SafeArea" type="MarginContainer" parent="." unique_id=1588064698]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 26
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 22
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 
-[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+[node name="Layout" type="VBoxContainer" parent="SafeArea" unique_id=933437817]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 16
 
-[node name="Header" type="PanelContainer" parent="SafeArea/Layout"]
+[node name="Header" type="PanelContainer" parent="SafeArea/Layout" unique_id=1232423340]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 130)
+custom_minimum_size = Vector2(0, 148)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header"]
-layout_mode = 2
-theme_override_constants/separation = 20
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header" unique_id=144858427]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
+theme_override_constants/separation = 20
 
-[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=591136188]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 104)
 layout_mode = 2
@@ -72,117 +71,116 @@ size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
 text = "common.back"
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row"]
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row" unique_id=1914734512]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
 theme_type_variation = &"Title"
 text = "settings.title"
 vertical_alignment = 1
 
-[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout"]
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout" unique_id=1111848477]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/Scroll"]
+[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/Scroll" unique_id=452930338]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 24
 
-[node name="AudioSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+[node name="AudioSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content" unique_id=1017134851]
 layout_mode = 2
 theme_type_variation = &"PanelGreen"
 
-[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AudioSection"]
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AudioSection" unique_id=1920034123]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/AudioSection/Box"]
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/AudioSection/Box" unique_id=1266775924]
 layout_mode = 2
 theme_type_variation = &"Title"
 text = "settings.audio"
 
-[node name="AudioRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AudioSection/Box"]
+[node name="AudioRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AudioSection/Box" unique_id=251380479]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="GameSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+[node name="GameSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content" unique_id=1508764971]
 layout_mode = 2
 theme_type_variation = &"PanelGreen"
 
-[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/GameSection"]
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/GameSection" unique_id=1753484051]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/GameSection/Box"]
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/GameSection/Box" unique_id=1085420210]
 layout_mode = 2
 theme_type_variation = &"Title"
 text = "settings.game"
 
-[node name="GameRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/GameSection/Box"]
+[node name="GameRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/GameSection/Box" unique_id=873391310]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="AccountSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+[node name="AccountSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content" unique_id=343864422]
 layout_mode = 2
 theme_type_variation = &"PanelGreen"
 
-[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AccountSection"]
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AccountSection" unique_id=2032691523]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/AccountSection/Box"]
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/AccountSection/Box" unique_id=701729205]
 layout_mode = 2
 theme_type_variation = &"Title"
 text = "settings.account"
 
-[node name="AccountRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AccountSection/Box"]
+[node name="AccountRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AccountSection/Box" unique_id=173736644]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LegalSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+[node name="LegalSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content" unique_id=902693497]
 layout_mode = 2
 theme_type_variation = &"PanelGreen"
 
-[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/LegalSection"]
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/LegalSection" unique_id=1522839086]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/LegalSection/Box"]
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/LegalSection/Box" unique_id=2131189668]
 layout_mode = 2
 theme_type_variation = &"Title"
 text = "settings.legal"
 
-[node name="LegalRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/LegalSection/Box"]
+[node name="LegalRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/LegalSection/Box" unique_id=779339355]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="AboutSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+[node name="AboutSection" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content" unique_id=369389809]
 layout_mode = 2
 theme_type_variation = &"PanelGreen"
 
-[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AboutSection"]
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AboutSection" unique_id=173775364]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/AboutSection/Box"]
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Content/AboutSection/Box" unique_id=1380485114]
 layout_mode = 2
 theme_type_variation = &"Title"
 text = "settings.about"
 
-[node name="AboutRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AboutSection/Box"]
+[node name="AboutRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/AboutSection/Box" unique_id=1259445109]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Toast" type="PanelContainer" parent="."]
+[node name="Toast" type="PanelContainer" parent="." unique_id=2032446039]
 unique_name_in_owner = true
 visible = false
 modulate = Color(1, 1, 1, 0)
@@ -200,15 +198,17 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_type_variation = &"Chip"
 
-[node name="ToastLabel" type="Label" parent="Toast"]
+[node name="ToastLabel" type="Label" parent="Toast" unique_id=2015724464]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LegalModal" parent="." instance=ExtResource("3_modal")]
+[node name="LegalModal" parent="." unique_id=1055253106 instance=ExtResource("3_modal")]
 unique_name_in_owner = true
+layout_mode = 1
 
-[node name="ResetModal" parent="." instance=ExtResource("3_modal")]
+[node name="ResetModal" parent="." unique_id=567222779 instance=ExtResource("3_modal")]
 unique_name_in_owner = true
+layout_mode = 1

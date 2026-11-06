@@ -5,9 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://iu3ivf26tldu" path="res://assets/art/ui/icons/icon_shop.png" id="3_shop"]
 [ext_resource type="Texture2D" uid="uid://bd1g4rlwe4r8q" path="res://assets/art/ui/icons/icon_gem.png" id="5_gem"]
 [ext_resource type="Texture2D" uid="uid://ds6pudxr6anfk" path="res://assets/art/ui/icons/icon_info.png" id="6_info"]
-[ext_resource type="PackedScene" path="res://ui/components/currency_pill.tscn" id="7_pill"]
+[ext_resource type="PackedScene" uid="uid://ch0qbt6h3b2qe" path="res://ui/components/currency_pill.tscn" id="7_pill"]
 [ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="8_nav"]
-[ext_resource type="PackedScene" path="res://ui/components/modal.tscn" id="9_modal"]
+[ext_resource type="PackedScene" uid="uid://o2r7c44t1fi3" path="res://ui/components/modal.tscn" id="9_modal"]
 
 [node name="Shop" type="Control" unique_id=1424943146]
 layout_mode = 3
@@ -47,17 +47,17 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 26
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 22
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 
 [node name="Layout" type="VBoxContainer" parent="SafeArea" unique_id=1954370286]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 16
 
 [node name="Header" type="PanelContainer" parent="SafeArea/Layout" unique_id=2064314318]
-custom_minimum_size = Vector2(0, 130)
+custom_minimum_size = Vector2(0, 148)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 

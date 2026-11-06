@@ -1,14 +1,14 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene format=3 uid="uid://bs1l0hylssgie"]
 
-[ext_resource type="Script" path="res://scripts/menu/profile_screen.gd" id="1_screen"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="2_bg"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/menu/profile_frame.png" id="3_frame"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/menu/avatar_01.png" id="4_avatar"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_settings.png" id="5_settings"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_trophy.png" id="6_trophy"]
+[ext_resource type="Script" uid="uid://dh8uyuw1lyrdi" path="res://scripts/menu/profile_screen.gd" id="1_screen"]
+[ext_resource type="Texture2D" uid="uid://c2dr28p163ot2" path="res://assets/art/ui/menu/bg/menu_bg.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://5tc6jeg61s1l" path="res://assets/art/ui/menu/profile_frame.png" id="3_frame"]
+[ext_resource type="Texture2D" uid="uid://c2vpx56wpm6yi" path="res://assets/art/ui/menu/avatar_01.png" id="4_avatar"]
+[ext_resource type="Texture2D" uid="uid://cdpqeub5gmxkh" path="res://assets/art/ui/icons/icon_settings.png" id="5_settings"]
+[ext_resource type="Texture2D" uid="uid://dq3p2n1dt5mr3" path="res://assets/art/ui/icons/icon_trophy.png" id="6_trophy"]
 [ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="7_nav"]
 
-[node name="Profile" type="Control"]
+[node name="Profile" type="Control" unique_id=1824006521]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,7 +17,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_screen")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1563619568]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +29,7 @@ texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Dim" type="ColorRect" parent="."]
+[node name="Dim" type="ColorRect" parent="." unique_id=1729915117]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,32 +39,32 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.36)
 
-[node name="SafeArea" type="MarginContainer" parent="."]
+[node name="SafeArea" type="MarginContainer" parent="." unique_id=2049771445]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 26
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 22
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 
-[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+[node name="Layout" type="VBoxContainer" parent="SafeArea" unique_id=59618132]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 16
 
-[node name="Header" type="PanelContainer" parent="SafeArea/Layout"]
-custom_minimum_size = Vector2(0, 130)
+[node name="Header" type="PanelContainer" parent="SafeArea/Layout" unique_id=1794618409]
+custom_minimum_size = Vector2(0, 148)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header"]
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header" unique_id=1982771022]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=277794786]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 90)
 layout_mode = 2
@@ -73,7 +73,7 @@ focus_mode = 0
 theme_type_variation = &"SecondaryButton"
 text = "common.back"
 
-[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row"]
+[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row" unique_id=781991972]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_vertical = 4
@@ -82,19 +82,18 @@ texture = ExtResource("6_trophy")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row"]
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row" unique_id=1422240546]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Title"
 text = "profile.title"
 
-[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row"]
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row" unique_id=1014324925]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="SettingsButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+[node name="SettingsButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=68423390]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
@@ -104,25 +103,25 @@ theme_type_variation = &"IconButton"
 icon = ExtResource("5_settings")
 expand_icon = true
 
-[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout"]
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout" unique_id=844589337]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/Scroll"]
+[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/Scroll" unique_id=1315277991]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="Identity" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+[node name="Identity" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content" unique_id=1945436121]
 layout_mode = 2
 theme_type_variation = &"DailyCard"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content/Identity"]
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content/Identity" unique_id=1612606465]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="AvatarFrame" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/Identity/Row"]
+[node name="AvatarFrame" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/Identity/Row" unique_id=981882779]
 custom_minimum_size = Vector2(190, 190)
 layout_mode = 2
 size_flags_vertical = 4
@@ -131,7 +130,7 @@ texture = ExtResource("3_frame")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Avatar" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/Identity/Row/AvatarFrame"]
+[node name="Avatar" type="TextureRect" parent="SafeArea/Layout/Scroll/Content/Identity/Row/AvatarFrame" unique_id=1448953113]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -150,48 +149,44 @@ texture = ExtResource("4_avatar")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/Identity/Row"]
+[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/Identity/Row" unique_id=748806287]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="Nickname" type="Label" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info"]
+[node name="Nickname" type="Label" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info" unique_id=1878108388]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
 theme_override_font_sizes/font_size = 48
-text = ""
 text_overrun_behavior = 3
 
-[node name="ChangeHint" type="Label" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info"]
+[node name="ChangeHint" type="Label" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info" unique_id=771915788]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
 text = "profile.nickname_hint"
 autowrap_mode = 3
 
-[node name="IdRow" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info"]
+[node name="IdRow" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info" unique_id=754684586]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="IdCaption" type="Label" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info/IdRow"]
+[node name="IdCaption" type="Label" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info/IdRow" unique_id=277735521]
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Caption"
 text = "settings.player_id"
 
-[node name="PlayerId" type="Label" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info/IdRow"]
+[node name="PlayerId" type="Label" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info/IdRow" unique_id=764768431]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
 theme_type_variation = &"Caption"
 theme_override_font_sizes/font_size = 20
-text = ""
 text_overrun_behavior = 3
 
-[node name="CopyButton" type="Button" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info/IdRow"]
+[node name="CopyButton" type="Button" parent="SafeArea/Layout/Scroll/Content/Identity/Row/Info/IdRow" unique_id=1704249191]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 70)
 layout_mode = 2
@@ -200,72 +195,68 @@ focus_mode = 0
 theme_type_variation = &"SecondaryButton"
 text = "settings.copy"
 
-[node name="LevelPanel" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+[node name="LevelPanel" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content" unique_id=132546202]
 custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
 theme_type_variation = &"PanelGreen"
 
-[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/LevelPanel"]
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/LevelPanel" unique_id=399782478]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="LevelHeader" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content/LevelPanel/Box"]
+[node name="LevelHeader" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content/LevelPanel/Box" unique_id=759778729]
 layout_mode = 2
 
-[node name="LevelLabel" type="Label" parent="SafeArea/Layout/Scroll/Content/LevelPanel/Box/LevelHeader"]
+[node name="LevelLabel" type="Label" parent="SafeArea/Layout/Scroll/Content/LevelPanel/Box/LevelHeader" unique_id=751000593]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Body"
 theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
-text = ""
 
-[node name="XpLabel" type="Label" parent="SafeArea/Layout/Scroll/Content/LevelPanel/Box/LevelHeader"]
+[node name="XpLabel" type="Label" parent="SafeArea/Layout/Scroll/Content/LevelPanel/Box/LevelHeader" unique_id=1288450129]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Caption"
 theme_override_font_sizes/font_size = 24
-text = ""
 horizontal_alignment = 2
 
-[node name="XpBar" type="ProgressBar" parent="SafeArea/Layout/Scroll/Content/LevelPanel/Box"]
+[node name="XpBar" type="ProgressBar" parent="SafeArea/Layout/Scroll/Content/LevelPanel/Box" unique_id=290813683]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 34)
 layout_mode = 2
 mouse_filter = 2
 max_value = 120.0
-value = 0.0
 show_percentage = false
 
-[node name="StatsPanel" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+[node name="StatsPanel" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content" unique_id=1572022676]
 layout_mode = 2
 theme_type_variation = &"PanelGreen"
 
-[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/StatsPanel"]
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/StatsPanel" unique_id=610176813]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="StatsTitle" type="Label" parent="SafeArea/Layout/Scroll/Content/StatsPanel/Box"]
+[node name="StatsTitle" type="Label" parent="SafeArea/Layout/Scroll/Content/StatsPanel/Box" unique_id=373023819]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
 theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
 text = "profile.stats"
 
-[node name="StatsGrid" type="GridContainer" parent="SafeArea/Layout/Scroll/Content/StatsPanel/Box"]
+[node name="StatsGrid" type="GridContainer" parent="SafeArea/Layout/Scroll/Content/StatsPanel/Box" unique_id=1261937431]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="Actions" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content"]
+[node name="Actions" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Content" unique_id=525101664]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LeaderboardButton" type="Button" parent="SafeArea/Layout/Scroll/Content/Actions"]
+[node name="LeaderboardButton" type="Button" parent="SafeArea/Layout/Scroll/Content/Actions" unique_id=328726887]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
@@ -274,7 +265,7 @@ focus_mode = 0
 theme_type_variation = &"GoldButton"
 text = "profile.leaderboard"
 
-[node name="SettingsLinkButton" type="Button" parent="SafeArea/Layout/Scroll/Content/Actions"]
+[node name="SettingsLinkButton" type="Button" parent="SafeArea/Layout/Scroll/Content/Actions" unique_id=795339627]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
@@ -283,6 +274,5 @@ focus_mode = 0
 theme_type_variation = &"SecondaryButton"
 text = "profile.open_settings"
 
-[node name="NavBar" parent="SafeArea/Layout" instance=ExtResource("7_nav")]
+[node name="NavBar" parent="SafeArea/Layout" unique_id=708841277 instance=ExtResource("7_nav")]
 unique_name_in_owner = true
-layout_mode = 2

@@ -225,7 +225,7 @@ func _build_panels(theme: Theme) -> void:
 	# pills inside the frame on every screen that reuses this variation.
 	theme.set_type_variation(&"TopBar", &"PanelContainer")
 	theme.set_stylebox("panel", &"TopBar",
-		_texture_style_for_topbar(ART_MENU + "top_bar_9p.png", 64, 52, 64, 52, 72, 20, 45))
+		_texture_style_for_topbar(ART_MENU + "top_bar_9p.png", 64, 52, 64, 52, 24, 8, 8))
 
 	# Battle draws its own top bar: same frame language, no leaves, tighter
 	# padding, different art so the two can evolve independently.

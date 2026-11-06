@@ -1,12 +1,11 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3 uid="uid://0ys838nvtlrn"]
 
-[ext_resource type="Script" path="res://scripts/menu/missions_screen.gd" id="1_screen"]
+[ext_resource type="Script" uid="uid://citst7jfbm4kf" path="res://scripts/menu/missions_screen.gd" id="1_screen"]
 [ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="2_nav"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="3_bg"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_calendar.png" id="4_calendar"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_trophy.png" id="5_trophy"]
+[ext_resource type="Texture2D" uid="uid://c2dr28p163ot2" path="res://assets/art/ui/menu/bg/menu_bg.png" id="3_bg"]
+[ext_resource type="Texture2D" uid="uid://mc3v2hl512sb" path="res://assets/art/ui/icons/icon_calendar.png" id="4_calendar"]
 
-[node name="Missions" type="Control"]
+[node name="Missions" type="Control" unique_id=89348258]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_screen")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=315783112]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,7 +26,7 @@ texture = ExtResource("3_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Dim" type="ColorRect" parent="."]
+[node name="Dim" type="ColorRect" parent="." unique_id=1019056165]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,32 +36,32 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.32)
 
-[node name="SafeArea" type="MarginContainer" parent="."]
+[node name="SafeArea" type="MarginContainer" parent="." unique_id=1959329089]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 26
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 22
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 
-[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+[node name="Layout" type="VBoxContainer" parent="SafeArea" unique_id=1244567794]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 16
 
-[node name="Header" type="PanelContainer" parent="SafeArea/Layout"]
-custom_minimum_size = Vector2(0, 130)
+[node name="Header" type="PanelContainer" parent="SafeArea/Layout" unique_id=665982406]
+custom_minimum_size = Vector2(0, 148)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header"]
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header" unique_id=1209484620]
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=1683373710]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 90)
 layout_mode = 2
@@ -70,7 +69,7 @@ size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
 text = "common.back"
 
-[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row"]
+[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row" unique_id=645998161]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_vertical = 4
@@ -78,19 +77,18 @@ texture = ExtResource("4_calendar")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row"]
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row" unique_id=1488446959]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Title"
 text = "missions.title"
 
-[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row"]
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row" unique_id=421516594]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="ClaimAllButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+[node name="ClaimAllButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=998631912]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(240, 90)
@@ -99,95 +97,87 @@ size_flags_vertical = 4
 theme_type_variation = &"GoldButton"
 text = "missions.claim_all"
 
-[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout"]
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout" unique_id=568918647]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Sections" type="VBoxContainer" parent="SafeArea/Layout/Scroll"]
+[node name="Sections" type="VBoxContainer" parent="SafeArea/Layout/Scroll" unique_id=2058182359]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="DailyHeader" type="PanelContainer" parent="SafeArea/Layout/Scroll/Sections"]
+[node name="DailyHeader" type="PanelContainer" parent="SafeArea/Layout/Scroll/Sections" unique_id=881275650]
 custom_minimum_size = Vector2(0, 92)
 layout_mode = 2
 theme_type_variation = &"PanelGreen"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Sections/DailyHeader"]
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Sections/DailyHeader" unique_id=240494354]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Sections/DailyHeader/Row"]
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Sections/DailyHeader/Row" unique_id=1226332476]
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Body"
 text = "missions.daily"
 
-[node name="Spacer" type="Control" parent="SafeArea/Layout/Scroll/Sections/DailyHeader/Row"]
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Scroll/Sections/DailyHeader/Row" unique_id=487022767]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="DailyCountdown" type="Label" parent="SafeArea/Layout/Scroll/Sections/DailyHeader/Row"]
+[node name="DailyCountdown" type="Label" parent="SafeArea/Layout/Scroll/Sections/DailyHeader/Row" unique_id=2008549353]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Caption"
-text = ""
 
-[node name="DailyRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Sections"]
+[node name="DailyRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Sections" unique_id=182482614]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="DailyBonusLabel" type="Label" parent="SafeArea/Layout/Scroll/Sections"]
+[node name="DailyBonusLabel" type="Label" parent="SafeArea/Layout/Scroll/Sections" unique_id=1265486136]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = ""
 horizontal_alignment = 1
 
-[node name="WeeklyHeader" type="PanelContainer" parent="SafeArea/Layout/Scroll/Sections"]
+[node name="WeeklyHeader" type="PanelContainer" parent="SafeArea/Layout/Scroll/Sections" unique_id=1593054857]
 custom_minimum_size = Vector2(0, 92)
 layout_mode = 2
 theme_type_variation = &"PanelGreen"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader"]
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader" unique_id=440364807]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader/Row"]
+[node name="Title" type="Label" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader/Row" unique_id=1737822847]
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Body"
 text = "missions.weekly"
 
-[node name="Spacer" type="Control" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader/Row"]
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader/Row" unique_id=761959763]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="WeeklyCountdown" type="Label" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader/Row"]
+[node name="WeeklyCountdown" type="Label" parent="SafeArea/Layout/Scroll/Sections/WeeklyHeader/Row" unique_id=1410796132]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Caption"
-text = ""
 
-[node name="WeeklyRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Sections"]
+[node name="WeeklyRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Sections" unique_id=890409138]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="WeeklyBonusLabel" type="Label" parent="SafeArea/Layout/Scroll/Sections"]
+[node name="WeeklyBonusLabel" type="Label" parent="SafeArea/Layout/Scroll/Sections" unique_id=241391663]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = ""
 horizontal_alignment = 1
 
-[node name="ResetNote" type="Label" parent="SafeArea/Layout/Scroll/Sections"]
+[node name="ResetNote" type="Label" parent="SafeArea/Layout/Scroll/Sections" unique_id=660491373]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
@@ -195,20 +185,19 @@ text = "missions.reset_note"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Toast" type="PanelContainer" parent="SafeArea/Layout"]
+[node name="Toast" type="PanelContainer" parent="SafeArea/Layout" unique_id=948825525]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 76)
 layout_mode = 2
 theme_type_variation = &"Chip"
 
-[node name="ToastLabel" type="Label" parent="SafeArea/Layout/Toast"]
+[node name="ToastLabel" type="Label" parent="SafeArea/Layout/Toast" unique_id=396732531]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MenuNav" parent="SafeArea/Layout" instance=ExtResource("2_nav")]
+[node name="MenuNav" parent="SafeArea/Layout" unique_id=391312680 instance=ExtResource("2_nav")]
 unique_name_in_owner = true
-layout_mode = 2

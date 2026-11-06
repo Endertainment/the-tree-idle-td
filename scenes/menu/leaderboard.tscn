@@ -1,12 +1,12 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3 uid="uid://b5j30indgot02"]
 
-[ext_resource type="Script" path="res://scripts/menu/leaderboard_screen.gd" id="1_screen"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/menu/bg/menu_bg.png" id="2_bg"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/icons/icon_trophy.png" id="3_trophy"]
-[ext_resource type="Texture2D" path="res://assets/art/ui/menu/profile_frame.png" id="4_frame"]
+[ext_resource type="Script" uid="uid://vmmka2wfp47v" path="res://scripts/menu/leaderboard_screen.gd" id="1_screen"]
+[ext_resource type="Texture2D" uid="uid://c2dr28p163ot2" path="res://assets/art/ui/menu/bg/menu_bg.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://dq3p2n1dt5mr3" path="res://assets/art/ui/icons/icon_trophy.png" id="3_trophy"]
+[ext_resource type="Texture2D" uid="uid://5tc6jeg61s1l" path="res://assets/art/ui/menu/profile_frame.png" id="4_frame"]
 [ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="5_nav"]
 
-[node name="Leaderboard" type="Control"]
+[node name="Leaderboard" type="Control" unique_id=1622251128]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_screen")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=583755312]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,7 +27,7 @@ texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Dim" type="ColorRect" parent="."]
+[node name="Dim" type="ColorRect" parent="." unique_id=794542452]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,32 +37,32 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.36)
 
-[node name="SafeArea" type="MarginContainer" parent="."]
+[node name="SafeArea" type="MarginContainer" parent="." unique_id=1365894826]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 26
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 22
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 
-[node name="Layout" type="VBoxContainer" parent="SafeArea"]
+[node name="Layout" type="VBoxContainer" parent="SafeArea" unique_id=2090838670]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 16
 
-[node name="Header" type="PanelContainer" parent="SafeArea/Layout"]
-custom_minimum_size = Vector2(0, 130)
+[node name="Header" type="PanelContainer" parent="SafeArea/Layout" unique_id=1647197979]
+custom_minimum_size = Vector2(0, 148)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header"]
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header" unique_id=1784278447]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=38134767]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 90)
 layout_mode = 2
@@ -71,7 +71,7 @@ focus_mode = 0
 theme_type_variation = &"SecondaryButton"
 text = "common.back"
 
-[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row"]
+[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row" unique_id=1784492355]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_vertical = 4
@@ -80,19 +80,18 @@ texture = ExtResource("3_trophy")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row"]
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row" unique_id=1905095912]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Title"
 text = "leaderboard.title"
 
-[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row"]
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row" unique_id=1446223018]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="RefreshButton" type="Button" parent="SafeArea/Layout/Header/Row"]
+[node name="RefreshButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=1355104495]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 90)
 layout_mode = 2
@@ -101,64 +100,58 @@ focus_mode = 0
 theme_type_variation = &"GoldButton"
 text = "leaderboard.refresh"
 
-[node name="Tabs" type="HBoxContainer" parent="SafeArea/Layout"]
+[node name="Tabs" type="HBoxContainer" parent="SafeArea/Layout" unique_id=1601378795]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="OfflineBanner" type="PanelContainer" parent="SafeArea/Layout"]
+[node name="OfflineBanner" type="PanelContainer" parent="SafeArea/Layout" unique_id=2128006288]
 custom_minimum_size = Vector2(0, 78)
 layout_mode = 2
 theme_type_variation = &"Chip"
 
-[node name="OfflineLabel" type="Label" parent="SafeArea/Layout/OfflineBanner"]
+[node name="OfflineLabel" type="Label" parent="SafeArea/Layout/OfflineBanner" unique_id=102117139]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Caption"
-text = ""
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="TournamentPanel" type="PanelContainer" parent="SafeArea/Layout"]
+[node name="TournamentPanel" type="PanelContainer" parent="SafeArea/Layout" unique_id=851554888]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
 theme_type_variation = &"PanelGreen"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/TournamentPanel"]
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/TournamentPanel" unique_id=1379584153]
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/TournamentPanel/Row"]
+[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/TournamentPanel/Row" unique_id=1210601748]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="CohortLabel" type="Label" parent="SafeArea/Layout/TournamentPanel/Row/Info"]
+[node name="CohortLabel" type="Label" parent="SafeArea/Layout/TournamentPanel/Row/Info" unique_id=1302131100]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
-text = ""
 
-[node name="TournamentDetail" type="Label" parent="SafeArea/Layout/TournamentPanel/Row/Info"]
+[node name="TournamentDetail" type="Label" parent="SafeArea/Layout/TournamentPanel/Row/Info" unique_id=198872413]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
-text = ""
 autowrap_mode = 3
 
-[node name="EligibilityLabel" type="Label" parent="SafeArea/Layout/TournamentPanel/Row"]
+[node name="EligibilityLabel" type="Label" parent="SafeArea/Layout/TournamentPanel/Row" unique_id=608839894]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Caption"
-text = ""
 horizontal_alignment = 2
 
-[node name="LoadingLabel" type="Label" parent="SafeArea/Layout"]
+[node name="LoadingLabel" type="Label" parent="SafeArea/Layout" unique_id=1435276810]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 60)
@@ -168,44 +161,44 @@ text = "leaderboard.loading"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout"]
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Layout" unique_id=1076052751]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/Scroll"]
+[node name="Content" type="VBoxContainer" parent="SafeArea/Layout/Scroll" unique_id=119251069]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="RewardPanel" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content"]
+[node name="RewardPanel" type="PanelContainer" parent="SafeArea/Layout/Scroll/Content" unique_id=725206696]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_type_variation = &"PanelGreen"
 
-[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/RewardPanel"]
+[node name="Box" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/RewardPanel" unique_id=1297342559]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="RewardTitle" type="Label" parent="SafeArea/Layout/Scroll/Content/RewardPanel/Box"]
+[node name="RewardTitle" type="Label" parent="SafeArea/Layout/Scroll/Content/RewardPanel/Box" unique_id=1077333778]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
 theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
 text = "leaderboard.reward_tiers"
 
-[node name="TierRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/RewardPanel/Box"]
+[node name="TierRows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content/RewardPanel/Box" unique_id=1071127296]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="Rows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content"]
+[node name="Rows" type="VBoxContainer" parent="SafeArea/Layout/Scroll/Content" unique_id=1171213233]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="EmptyLabel" type="Label" parent="SafeArea/Layout/Scroll/Content"]
+[node name="EmptyLabel" type="Label" parent="SafeArea/Layout/Scroll/Content" unique_id=1173193190]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 160)
@@ -217,27 +210,26 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="OwnPanel" type="PanelContainer" parent="SafeArea/Layout"]
+[node name="OwnPanel" type="PanelContainer" parent="SafeArea/Layout" unique_id=454153958]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 118)
 layout_mode = 2
 theme_type_variation = &"PlayerRow"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/OwnPanel"]
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/OwnPanel" unique_id=371181529]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="OwnRank" type="Label" parent="SafeArea/Layout/OwnPanel/Row"]
+[node name="OwnRank" type="Label" parent="SafeArea/Layout/OwnPanel/Row" unique_id=1561318355]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(76, 0)
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Body"
 theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
 text = "#"
 horizontal_alignment = 1
 
-[node name="OwnAvatar" type="TextureRect" parent="SafeArea/Layout/OwnPanel/Row"]
+[node name="OwnAvatar" type="TextureRect" parent="SafeArea/Layout/OwnPanel/Row" unique_id=642867311]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(62, 62)
 layout_mode = 2
@@ -247,35 +239,33 @@ texture = ExtResource("4_frame")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/OwnPanel/Row"]
+[node name="Info" type="VBoxContainer" parent="SafeArea/Layout/OwnPanel/Row" unique_id=117426597]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="OwnCaption" type="Label" parent="SafeArea/Layout/OwnPanel/Row/Info"]
+[node name="OwnCaption" type="Label" parent="SafeArea/Layout/OwnPanel/Row/Info" unique_id=1407492211]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Caption"
 text = "leaderboard.own_rank"
 
-[node name="OwnNickname" type="Label" parent="SafeArea/Layout/OwnPanel/Row/Info"]
+[node name="OwnNickname" type="Label" parent="SafeArea/Layout/OwnPanel/Row/Info" unique_id=121201747]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Body"
 text = "leaderboard.you"
 text_overrun_behavior = 3
 
-[node name="OwnWave" type="Label" parent="SafeArea/Layout/OwnPanel/Row"]
+[node name="OwnWave" type="Label" parent="SafeArea/Layout/OwnPanel/Row" unique_id=874273071]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 0)
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"Body"
 theme_override_colors/font_color = Color(1, 0.78, 0.24, 1)
 text = "0"
 horizontal_alignment = 2
 
-[node name="NavBar" parent="SafeArea/Layout" instance=ExtResource("5_nav")]
+[node name="NavBar" parent="SafeArea/Layout" unique_id=254077929 instance=ExtResource("5_nav")]
 unique_name_in_owner = true
-layout_mode = 2
