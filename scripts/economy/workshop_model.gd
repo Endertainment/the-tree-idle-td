@@ -17,21 +17,13 @@ var _levels: Dictionary = {}
 ## Loads every WorkshopTrack in `dir_path`, ordered by category then order/id.
 static func load_tracks(dir_path: String = DEFAULT_DIR) -> Array[WorkshopTrack]:
 	var tracks: Array[WorkshopTrack] = []
-	var dir := DirAccess.open(dir_path)
-	if dir == null:
-		push_error("WorkshopModel: cannot open '%s'" % dir_path)
+	var files := ResourceDir.list(dir_path)
+	if files.is_empty():
+		push_error("No resources found in %s (exported builds use .remap)" % dir_path)
 		return tracks
-	var files: Array[String] = []
-	dir.list_dir_begin()
-	var file := dir.get_next()
-	while not file.is_empty():
-		if not dir.current_is_dir() and (file.ends_with(".tres") or file.ends_with(".res")):
-			files.append(file)
-		file = dir.get_next()
-	dir.list_dir_end()
 	files.sort()
 	for resource_file in files:
-		var resource: Resource = load(dir_path + resource_file)
+		var resource: Resource = load(resource_file)
 		if resource is WorkshopTrack:
 			tracks.append(resource as WorkshopTrack)
 		else:
