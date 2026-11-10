@@ -60,8 +60,10 @@ theme_type_variation = &"TopBar"
 
 [node name="MarginContainer" type="MarginContainer" parent="SafeArea/Layout/Header" unique_id=1667181939]
 layout_mode = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_right = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 30
 
 [node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header/MarginContainer" unique_id=1870282502]
 layout_mode = 2
@@ -101,7 +103,7 @@ layout_mode = 2
 size_flags_vertical = 4
 
 [node name="Tabs" type="PanelContainer" parent="SafeArea/Layout" unique_id=204530527]
-custom_minimum_size = Vector2(0, 180)
+custom_minimum_size = Vector2(0, 140)
 layout_mode = 2
 theme_type_variation = &"PanelCardsFilterBar"
 

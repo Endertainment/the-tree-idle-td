@@ -57,21 +57,27 @@ custom_minimum_size = Vector2(0, 148)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header" unique_id=144858427]
+[node name="MarginContainer" type="MarginContainer" parent="SafeArea/Layout/Header" unique_id=929832760]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 20
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header/MarginContainer" unique_id=144858427]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=591136188]
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=591136188]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 104)
+custom_minimum_size = Vector2(160, 96)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
 text = "common.back"
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row" unique_id=1914734512]
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=1914734512]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -207,8 +213,10 @@ vertical_alignment = 1
 
 [node name="LegalModal" parent="." unique_id=1055253106 instance=ExtResource("3_modal")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 
 [node name="ResetModal" parent="." unique_id=567222779 instance=ExtResource("3_modal")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1

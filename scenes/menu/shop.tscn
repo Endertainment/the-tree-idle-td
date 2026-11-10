@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bd1g4rlwe4r8q" path="res://assets/art/ui/icons/icon_gem.png" id="5_gem"]
 [ext_resource type="Texture2D" uid="uid://ds6pudxr6anfk" path="res://assets/art/ui/icons/icon_info.png" id="6_info"]
 [ext_resource type="PackedScene" uid="uid://ch0qbt6h3b2qe" path="res://ui/components/currency_pill.tscn" id="7_pill"]
-[ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="8_nav"]
+[ext_resource type="PackedScene" uid="uid://bjtxbmsqufyxi" path="res://ui/components/menu_nav.tscn" id="8_nav"]
 [ext_resource type="PackedScene" uid="uid://o2r7c44t1fi3" path="res://ui/components/modal.tscn" id="9_modal"]
 
 [node name="Shop" type="Control" unique_id=1424943146]
@@ -61,21 +61,27 @@ custom_minimum_size = Vector2(0, 148)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header" unique_id=1937983517]
+[node name="MarginContainer" type="MarginContainer" parent="SafeArea/Layout/Header" unique_id=1312886474]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 20
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header/MarginContainer" unique_id=1937983517]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=788542619]
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=788542619]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 90)
+custom_minimum_size = Vector2(160, 96)
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
 theme_type_variation = &"SecondaryButton"
 text = "common.back"
 
-[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row" unique_id=975854433]
-custom_minimum_size = Vector2(64, 64)
+[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=975854433]
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
@@ -83,24 +89,24 @@ texture = ExtResource("3_shop")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row" unique_id=288033960]
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=288033960]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
 text = "shop.title"
 
-[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row" unique_id=1260160930]
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=1260160930]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="CoinsPill" parent="SafeArea/Layout/Header/Row" unique_id=1594998074 instance=ExtResource("7_pill")]
+[node name="CoinsPill" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=1594998074 instance=ExtResource("7_pill")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 88)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="GemsPill" parent="SafeArea/Layout/Header/Row" unique_id=1401066007 instance=ExtResource("7_pill")]
+[node name="GemsPill" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=1401066007 instance=ExtResource("7_pill")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(220, 88)
 layout_mode = 2
@@ -181,7 +187,9 @@ text = "shop.debug_simulate"
 
 [node name="NavBar" parent="SafeArea/Layout" unique_id=942187239 instance=ExtResource("8_nav")]
 unique_name_in_owner = true
+layout_mode = 2
 
 [node name="PurchaseConfirm" parent="." unique_id=2147258087 instance=ExtResource("9_modal")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1

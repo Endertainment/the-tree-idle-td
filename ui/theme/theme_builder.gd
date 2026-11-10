@@ -252,8 +252,8 @@ func _build_panels(theme: Theme) -> void:
 	theme.set_type_variation(&"LeaderRow", &"PanelContainer")
 	_apply_panel_skin(theme, &"LeaderRow", ART_BOARD + "row_9p.png", 16, 12, 14)
 
-	theme.set_type_variation(&"PlayerRow", &"PanelContainer")
-	_apply_panel_skin(theme, &"PlayerRow", ART_COMMON + "panel_9p_green.png", 24, 24, 18)
+	theme.set_type_variation(&"PlayerRow", &"PanelContainer") 
+	_apply_panel_skin(theme, &"PlayerRow", ART_COMMON + "panel_9p_green.png", 100, 100, 18)
 
 	# Every plain PanelContainer should look like a dark card by default.
 	theme.set_stylebox("panel", &"PanelContainer",

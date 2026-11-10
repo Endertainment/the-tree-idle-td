@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bqvnw2addayk3" path="res://scripts/menu/magica_screen.gd" id="1_screen"]
 [ext_resource type="PackedScene" uid="uid://ch0qbt6h3b2qe" path="res://ui/components/currency_pill.tscn" id="2_pill"]
-[ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="3_nav"]
+[ext_resource type="PackedScene" uid="uid://bjtxbmsqufyxi" path="res://ui/components/menu_nav.tscn" id="3_nav"]
 [ext_resource type="Script" uid="uid://3t0vyek2s35l" path="res://scripts/menu/radial_timer.gd" id="4_timer"]
 [ext_resource type="PackedScene" uid="uid://o2r7c44t1fi3" path="res://ui/components/modal.tscn" id="5_modal"]
 [ext_resource type="Texture2D" uid="uid://c2dr28p163ot2" path="res://assets/art/ui/menu/bg/menu_bg.png" id="6_bg"]
@@ -61,44 +61,51 @@ custom_minimum_size = Vector2(0, 148)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header" unique_id=1550305100]
+[node name="MarginContainer" type="MarginContainer" parent="SafeArea/Layout/Header" unique_id=1512604158]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 30
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header/MarginContainer" unique_id=1550305100]
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=1551654093]
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=1551654093]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 92)
+custom_minimum_size = Vector2(160, 96)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
 text = "common.back"
 
-[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row" unique_id=165617011]
-custom_minimum_size = Vector2(64, 64)
+[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=165617011]
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("7_magic")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row" unique_id=1565418458]
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=1565418458]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
 text = "magica.title"
 
-[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row" unique_id=1272850611]
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=1272850611]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="CoinsPill" parent="SafeArea/Layout/Header/Row" unique_id=1410480277 instance=ExtResource("2_pill")]
+[node name="CoinsPill" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=1410480277 instance=ExtResource("2_pill")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 88)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="GemsPill" parent="SafeArea/Layout/Header/Row" unique_id=1123810599 instance=ExtResource("2_pill")]
+[node name="GemsPill" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=1123810599 instance=ExtResource("2_pill")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 88)
 layout_mode = 2
@@ -266,6 +273,7 @@ vertical_alignment = 1
 
 [node name="MenuNav" parent="SafeArea/Layout" unique_id=731633822 instance=ExtResource("3_nav")]
 unique_name_in_owner = true
+layout_mode = 2
 
 [node name="NodeModal" parent="." unique_id=1900021083 instance=ExtResource("5_modal")]
 unique_name_in_owner = true

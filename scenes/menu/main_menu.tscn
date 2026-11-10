@@ -80,8 +80,9 @@ theme_type_variation = &"TopBar"
 
 [node name="MarginContainer" type="MarginContainer" parent="SafeArea/Layout/TopBar" unique_id=1547693767]
 layout_mode = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_right = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 20
 
 [node name="Row" type="HBoxContainer" parent="SafeArea/Layout/TopBar/MarginContainer" unique_id=1129173628]
 layout_mode = 2

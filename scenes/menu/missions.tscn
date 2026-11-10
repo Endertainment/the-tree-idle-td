@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://0ys838nvtlrn"]
 
 [ext_resource type="Script" uid="uid://citst7jfbm4kf" path="res://scripts/menu/missions_screen.gd" id="1_screen"]
-[ext_resource type="PackedScene" path="res://ui/components/menu_nav.tscn" id="2_nav"]
+[ext_resource type="PackedScene" uid="uid://bjtxbmsqufyxi" path="res://ui/components/menu_nav.tscn" id="2_nav"]
 [ext_resource type="Texture2D" uid="uid://c2dr28p163ot2" path="res://assets/art/ui/menu/bg/menu_bg.png" id="3_bg"]
 [ext_resource type="Texture2D" uid="uid://mc3v2hl512sb" path="res://assets/art/ui/icons/icon_calendar.png" id="4_calendar"]
 
@@ -57,38 +57,44 @@ custom_minimum_size = Vector2(0, 148)
 layout_mode = 2
 theme_type_variation = &"TopBar"
 
-[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header" unique_id=1209484620]
+[node name="MarginContainer" type="MarginContainer" parent="SafeArea/Layout/Header" unique_id=837524170]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 20
+
+[node name="Row" type="HBoxContainer" parent="SafeArea/Layout/Header/MarginContainer" unique_id=1209484620]
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=1683373710]
+[node name="BackButton" type="Button" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=1683373710]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 90)
+custom_minimum_size = Vector2(160, 94)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"SecondaryButton"
 text = "common.back"
 
-[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/Row" unique_id=645998161]
-custom_minimum_size = Vector2(64, 64)
+[node name="TitleIcon" type="TextureRect" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=645998161]
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("4_calendar")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/Row" unique_id=1488446959]
+[node name="TitleLabel" type="Label" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=1488446959]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
 text = "missions.title"
 
-[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/Row" unique_id=421516594]
+[node name="Spacer" type="Control" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=421516594]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="ClaimAllButton" type="Button" parent="SafeArea/Layout/Header/Row" unique_id=998631912]
+[node name="ClaimAllButton" type="Button" parent="SafeArea/Layout/Header/MarginContainer/Row" unique_id=998631912]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(240, 90)
@@ -201,3 +207,4 @@ vertical_alignment = 1
 
 [node name="MenuNav" parent="SafeArea/Layout" unique_id=391312680 instance=ExtResource("2_nav")]
 unique_name_in_owner = true
+layout_mode = 2

@@ -128,7 +128,7 @@ func _refresh_notifications() -> void:
 func _build() -> void:
 	_row = HBoxContainer.new()
 	_row.name = "Row"
-	_row.add_theme_constant_override("separation", 8)
+	_row.add_theme_constant_override("separation", 0)
 	add_child(_row)
 	for tab: StringName in TABS:
 		_row.add_child(_create_button(tab))

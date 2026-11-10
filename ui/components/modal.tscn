@@ -42,7 +42,7 @@ layout_mode = 2
 theme_override_constants/margin_left = 54
 theme_override_constants/margin_top = 18
 theme_override_constants/margin_right = 36
-theme_override_constants/margin_bottom = 44
+theme_override_constants/margin_bottom = 32
 
 [node name="Layout" type="VBoxContainer" parent="Center/Panel/MarginContainer" unique_id=1632564422]
 layout_mode = 2
@@ -61,6 +61,10 @@ layout_mode = 2
 theme_type_variation = &"Body"
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="Control" type="Control" parent="Center/Panel/MarginContainer/Layout" unique_id=2044786992]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Buttons" type="HBoxContainer" parent="Center/Panel/MarginContainer/Layout" unique_id=336425529]
 layout_mode = 2

@@ -1,9 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://bjtxbmsqufyxi"]
 
-[ext_resource type="Script" path="res://ui/components/menu_nav.gd" id="1_nav"]
+[ext_resource type="Script" uid="uid://cywsvcx2wuihp" path="res://ui/components/menu_nav.gd" id="1_nav"]
 
-[node name="MenuNav" type="PanelContainer"]
+[node name="MenuNav" type="PanelContainer" unique_id=2005645158]
 custom_minimum_size = Vector2(0, 220)
-layout_mode = 2
 theme_type_variation = &"NavBar"
 script = ExtResource("1_nav")
