@@ -27,6 +27,29 @@ scenes, zero ERROR/WARNING** · battle_smoke **PASS** · balance_probe median **
 | M7 | Backend (FastAPI + Neon), live features | done (Neon/Docker runtime unverified) | `v0.8.0-m7` |
 | M8 | Balance, polish, release readiness | done (tagged; launch gaps listed below) | `v1.0.0-m8` |
 
+## Enemy roster port (2026-11-11, no tag)
+
+- 6 enemies from the 20.10.2026 build are now in the project — the full table,
+  the conversion rules and the attack model live in `docs/ENEMY_ROSTER.md`.
+- Spawning: `raider` (8+), `thrower` (9+), `wyvern` (12+), `mage` (16+),
+  `ram` (20+), `trebuchet` (24+). Each specialist is carved out of the grunt or
+  runner pool (a tank for the ram), so the per-wave count is untouched, at least
+  two mass units stay in every wave, and the diff against `HEAD` starts at wave 8.
+- **Ranged attack implemented**: an enemy inside `attack_range` stops, fires every
+  `attack_interval` for `attack_damage_pct` of the Tree's max HP, and never leaks.
+  The controller owns the projectile pool, the battle-clock-scaled flight and the
+  damage, which reuses `TreeEntity.receive_leak` so the meta reduction and the
+  `tree_hurt` SFX apply once.
+- Towers, units and the 5 launch enemies are untouched.
+- Verification: import/parse clean · tests **76/76** · smoke **25/25 scenes** ·
+  battle_smoke **PASS** · `ranged_probe` **PASS** (shot fired, landed, Tree HP
+  dropped) · `simulate_run --profile=mid --runs=3` median **9** (HEAD baseline
+  **8**) · `balance_probe two seed=1` **5** (HEAD baseline **5**).
+- Both balance gates also miss at `HEAD` (probe 5 < 7; mid 9 vs target 25–35),
+  and the mid profile scores like `new`, which points at the simulator's meta
+  setup being inert in this environment. Treat the numbers as an A/B, not a
+  pass — worth a separate session.
+
 ## M5a delivered (first half of M5, no tag)
 
 - **Localization**: `localization/strings.csv` (`keys,en,uk`, **530 keys**, real

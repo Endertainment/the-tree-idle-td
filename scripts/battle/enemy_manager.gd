@@ -13,6 +13,8 @@ signal enemy_leaked(enemy: Enemy)
 signal enemy_hit(enemy: Enemy, amount: float, is_crit: bool, source_id: StringName)
 signal enemy_hp_changed(enemy: Enemy, current_hp: float, max_hp: float)
 signal boss_spawned(enemy: Enemy)
+## A ranged enemy fired; the controller owns the projectile and the Tree damage.
+signal enemy_shot(enemy: Enemy)
 
 var _root: Node2D
 var _scene: PackedScene
@@ -99,6 +101,7 @@ func _acquire() -> Enemy:
 	created.leaked.connect(_on_leaked)
 	created.hit_taken.connect(_on_hit)
 	created.hp_changed.connect(_on_hp_changed.bind(created))
+	created.ranged_shot.connect(_on_ranged_shot)
 	_pool.append(created)
 	return created
 
@@ -124,3 +127,7 @@ func _on_hit(enemy: Enemy, amount: float, is_crit: bool, source_id: StringName) 
 
 func _on_hp_changed(current_hp: float, max_hp: float, enemy: Enemy) -> void:
 	enemy_hp_changed.emit(enemy, current_hp, max_hp)
+
+
+func _on_ranged_shot(enemy: Enemy) -> void:
+	enemy_shot.emit(enemy)

@@ -258,19 +258,12 @@ interval = 0.92
 
 [sub_resource type="Resource" id="Resource_1ixef"]
 script = ExtResource("3_atyet")
-lane = &"south"
-count = 1
-interval = 0.92
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_8apfd"]
-script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 3
 interval = 0.7360000000000001
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_77isr"]
+[sub_resource type="Resource" id="Resource_8apfd"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -278,19 +271,26 @@ count = 2
 interval = 0.7360000000000001
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_nxink"]
+[sub_resource type="Resource" id="Resource_77isr"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 2
 interval = 1.288
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_87gsq"]
+[sub_resource type="Resource" id="Resource_nxink"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 1
 interval = 1.288
 start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_87gsq"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 1.0120000000000002
+start_delay = 0.9
 
 [sub_resource type="Resource" id="Resource_xqoax"]
 script = ExtResource("2_rgxf5")
@@ -302,24 +302,17 @@ cash_multiplier = 2.210681407406081
 
 [sub_resource type="Resource" id="Resource_fn8m3"]
 script = ExtResource("3_atyet")
-count = 3
+count = 2
 interval = 0.91
 
 [sub_resource type="Resource" id="Resource_72h3k"]
-script = ExtResource("3_atyet")
-lane = &"south"
-count = 1
-interval = 0.91
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_6t3g1"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 3
 interval = 0.7280000000000001
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_sjvqf"]
+[sub_resource type="Resource" id="Resource_6t3g1"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -327,56 +320,70 @@ count = 2
 interval = 0.7280000000000001
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_rvmwp"]
+[sub_resource type="Resource" id="Resource_sjvqf"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 2
 interval = 1.274
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_fv0h5"]
+[sub_resource type="Resource" id="Resource_rvmwp"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 1
 interval = 1.274
 start_delay = 0.7
 
+[sub_resource type="Resource" id="Resource_fv0h5"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 1.0010000000000001
+start_delay = 0.9
+
 [sub_resource type="Resource" id="Resource_271hq"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 1.092
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_g00gk"]
 script = ExtResource("2_rgxf5")
 index = 9
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_fn8m3"), SubResource("Resource_72h3k"), SubResource("Resource_6t3g1"), SubResource("Resource_sjvqf"), SubResource("Resource_rvmwp"), SubResource("Resource_fv0h5")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_fn8m3"), SubResource("Resource_72h3k"), SubResource("Resource_6t3g1"), SubResource("Resource_sjvqf"), SubResource("Resource_rvmwp"), SubResource("Resource_fv0h5"), SubResource("Resource_271hq")])
 hp_multiplier = 3.123942226080451
 speed_multiplier = 1.08
 cash_multiplier = 2.475963176294811
 
-[sub_resource type="Resource" id="Resource_g00gk"]
+[sub_resource type="Resource" id="Resource_7bft2"]
 script = ExtResource("3_atyet")
 enemy_id = &"boss_troll"
 count = 1
 interval = 1.0
 hp_multiplier = 1.2
 
-[sub_resource type="Resource" id="Resource_7bft2"]
+[sub_resource type="Resource" id="Resource_wjte5"]
 script = ExtResource("3_atyet")
 count = 2
 interval = 0.9
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_wjte5"]
+[sub_resource type="Resource" id="Resource_hh2n3"]
 script = ExtResource("3_atyet")
 lane = &"south"
 count = 1
 interval = 0.9
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_hh2n3"]
+[sub_resource type="Resource" id="Resource_vi4j2"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 4
 interval = 0.7200000000000001
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_vi4j2"]
+[sub_resource type="Resource" id="Resource_5dhqw"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -384,92 +391,99 @@ count = 3
 interval = 0.7200000000000001
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_5dhqw"]
+[sub_resource type="Resource" id="Resource_fe7lh"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 2
 interval = 1.26
 start_delay = 0.6
 
-[sub_resource type="Resource" id="Resource_fe7lh"]
+[sub_resource type="Resource" id="Resource_4xv1u"]
 script = ExtResource("2_rgxf5")
 index = 10
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_g00gk"), SubResource("Resource_7bft2"), SubResource("Resource_wjte5"), SubResource("Resource_hh2n3"), SubResource("Resource_vi4j2"), SubResource("Resource_5dhqw")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_7bft2"), SubResource("Resource_wjte5"), SubResource("Resource_hh2n3"), SubResource("Resource_vi4j2"), SubResource("Resource_5dhqw"), SubResource("Resource_fe7lh")])
 hp_multiplier = 6.757915836010771
 speed_multiplier = 1.09
 cash_multiplier = 2.7730787574501883
 is_boss = true
 reward_bonus = 50
 
-[sub_resource type="Resource" id="Resource_4xv1u"]
-script = ExtResource("3_atyet")
-count = 3
-interval = 0.89
-
 [sub_resource type="Resource" id="Resource_ju4if"]
 script = ExtResource("3_atyet")
-lane = &"south"
 count = 2
 interval = 0.89
-start_delay = 0.15
 
 [sub_resource type="Resource" id="Resource_hxj3n"]
 script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 3
-interval = 0.7120000000000001
-start_delay = 0.2
+lane = &"south"
+count = 1
+interval = 0.89
+start_delay = 0.15
 
 [sub_resource type="Resource" id="Resource_fpgoq"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
+count = 3
+interval = 0.7120000000000001
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_7vxk4"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
 lane = &"south"
 count = 2
 interval = 0.7120000000000001
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_7vxk4"]
+[sub_resource type="Resource" id="Resource_innbf"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 2
 interval = 1.246
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_innbf"]
+[sub_resource type="Resource" id="Resource_y701j"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 1
 interval = 1.246
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_y701j"]
+[sub_resource type="Resource" id="Resource_3bl1a"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.9790000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_g5rh7"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 1.068
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_iybjq"]
 script = ExtResource("2_rgxf5")
 index = 11
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_4xv1u"), SubResource("Resource_ju4if"), SubResource("Resource_hxj3n"), SubResource("Resource_fpgoq"), SubResource("Resource_7vxk4"), SubResource("Resource_innbf")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_ju4if"), SubResource("Resource_hxj3n"), SubResource("Resource_fpgoq"), SubResource("Resource_7vxk4"), SubResource("Resource_innbf"), SubResource("Resource_y701j"), SubResource("Resource_3bl1a"), SubResource("Resource_g5rh7")])
 hp_multiplier = 7.163390786171418
 speed_multiplier = 1.1
 cash_multiplier = 3.105848208344211
 
-[sub_resource type="Resource" id="Resource_3bl1a"]
+[sub_resource type="Resource" id="Resource_1tw8i"]
 script = ExtResource("3_atyet")
-count = 3
+count = 2
 interval = 0.88
 
-[sub_resource type="Resource" id="Resource_g5rh7"]
-script = ExtResource("3_atyet")
-lane = &"south"
-count = 1
-interval = 0.88
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_iybjq"]
+[sub_resource type="Resource" id="Resource_tin41"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
-count = 4
+count = 3
 interval = 0.7040000000000001
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_1tw8i"]
+[sub_resource type="Resource" id="Resource_ghnfs"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -477,14 +491,14 @@ count = 2
 interval = 0.7040000000000001
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_tin41"]
+[sub_resource type="Resource" id="Resource_0plat"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 2
 interval = 1.232
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_ghnfs"]
+[sub_resource type="Resource" id="Resource_uixls"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
@@ -492,41 +506,55 @@ count = 1
 interval = 1.232
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_0plat"]
+[sub_resource type="Resource" id="Resource_fgdxa"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 1
 interval = 1.232
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_uixls"]
+[sub_resource type="Resource" id="Resource_dcjyr"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.9680000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_wdx72"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.792
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_odndb"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 1.056
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_uvbxp"]
 script = ExtResource("2_rgxf5")
 index = 12
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_3bl1a"), SubResource("Resource_g5rh7"), SubResource("Resource_iybjq"), SubResource("Resource_1tw8i"), SubResource("Resource_tin41"), SubResource("Resource_ghnfs"), SubResource("Resource_0plat")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_1tw8i"), SubResource("Resource_tin41"), SubResource("Resource_ghnfs"), SubResource("Resource_0plat"), SubResource("Resource_uixls"), SubResource("Resource_fgdxa"), SubResource("Resource_dcjyr"), SubResource("Resource_wdx72"), SubResource("Resource_odndb")])
 hp_multiplier = 7.593194233341705
 speed_multiplier = 1.11
 cash_multiplier = 3.478549993345517
 
-[sub_resource type="Resource" id="Resource_fgdxa"]
+[sub_resource type="Resource" id="Resource_4dqwt"]
 script = ExtResource("3_atyet")
-count = 3
-interval = 0.87
-
-[sub_resource type="Resource" id="Resource_dcjyr"]
-script = ExtResource("3_atyet")
-lane = &"south"
 count = 2
 interval = 0.87
-start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_wdx72"]
+[sub_resource type="Resource" id="Resource_fs00u"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 4
 interval = 0.6960000000000001
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_odndb"]
+[sub_resource type="Resource" id="Resource_0erno"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -534,14 +562,14 @@ count = 2
 interval = 0.6960000000000001
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_uvbxp"]
+[sub_resource type="Resource" id="Resource_f10ww"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 2
 interval = 1.218
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_4dqwt"]
+[sub_resource type="Resource" id="Resource_qewxi"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
@@ -549,200 +577,172 @@ count = 1
 interval = 1.218
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_fs00u"]
+[sub_resource type="Resource" id="Resource_lv1g2"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 1
 interval = 1.218
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_0erno"]
+[sub_resource type="Resource" id="Resource_igw3e"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.9570000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_anmp8"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.783
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_cd6vp"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 1.044
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_higt7"]
 script = ExtResource("2_rgxf5")
 index = 13
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_fgdxa"), SubResource("Resource_dcjyr"), SubResource("Resource_wdx72"), SubResource("Resource_odndb"), SubResource("Resource_uvbxp"), SubResource("Resource_4dqwt"), SubResource("Resource_fs00u")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_4dqwt"), SubResource("Resource_fs00u"), SubResource("Resource_0erno"), SubResource("Resource_f10ww"), SubResource("Resource_qewxi"), SubResource("Resource_lv1g2"), SubResource("Resource_igw3e"), SubResource("Resource_anmp8"), SubResource("Resource_cd6vp")])
 hp_multiplier = 8.048785887342207
 speed_multiplier = 1.12
 cash_multiplier = 3.895975992546979
 
-[sub_resource type="Resource" id="Resource_f10ww"]
+[sub_resource type="Resource" id="Resource_qw45d"]
 script = ExtResource("3_atyet")
-count = 3
-interval = 0.86
-
-[sub_resource type="Resource" id="Resource_qewxi"]
-script = ExtResource("3_atyet")
-lane = &"south"
 count = 2
 interval = 0.86
-start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_lv1g2"]
+[sub_resource type="Resource" id="Resource_nos6d"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 4
 interval = 0.6880000000000001
 start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_igw3e"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 3
-interval = 0.6880000000000001
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_anmp8"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 2
-interval = 1.204
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_cd6vp"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 1
-interval = 1.204
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_higt7"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 1
-interval = 1.204
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_qw45d"]
-script = ExtResource("2_rgxf5")
-index = 14
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_f10ww"), SubResource("Resource_qewxi"), SubResource("Resource_lv1g2"), SubResource("Resource_igw3e"), SubResource("Resource_anmp8"), SubResource("Resource_cd6vp"), SubResource("Resource_higt7")])
-hp_multiplier = 8.53171304058274
-speed_multiplier = 1.13
-cash_multiplier = 4.363493111652617
-
-[sub_resource type="Resource" id="Resource_nos6d"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 8
-interval = 0.42
 
 [sub_resource type="Resource" id="Resource_njmm6"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
+count = 3
+interval = 0.6880000000000001
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_vbs1b"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 2
+interval = 1.204
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_6uidg"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 1
+interval = 1.204
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_on715"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 1
+interval = 1.204
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_ch3si"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.9460000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_ehx1j"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.774
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_rct1f"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 1.032
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_0jvw4"]
+script = ExtResource("2_rgxf5")
+index = 14
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_qw45d"), SubResource("Resource_nos6d"), SubResource("Resource_njmm6"), SubResource("Resource_vbs1b"), SubResource("Resource_6uidg"), SubResource("Resource_on715"), SubResource("Resource_ch3si"), SubResource("Resource_ehx1j"), SubResource("Resource_rct1f")])
+hp_multiplier = 8.53171304058274
+speed_multiplier = 1.13
+cash_multiplier = 4.363493111652617
+
+[sub_resource type="Resource" id="Resource_4uooa"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 8
+interval = 0.42
+
+[sub_resource type="Resource" id="Resource_57apf"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
 interval = 0.42
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_vbs1b"]
+[sub_resource type="Resource" id="Resource_a3tlc"]
 script = ExtResource("3_atyet")
 count = 3
 interval = 0.5
 start_delay = 0.25
 
-[sub_resource type="Resource" id="Resource_6uidg"]
+[sub_resource type="Resource" id="Resource_8mu3o"]
 script = ExtResource("3_atyet")
 lane = &"south"
 count = 1
 interval = 0.5
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_on715"]
+[sub_resource type="Resource" id="Resource_g2hhv"]
 script = ExtResource("2_rgxf5")
 index = 15
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_nos6d"), SubResource("Resource_njmm6"), SubResource("Resource_vbs1b"), SubResource("Resource_6uidg")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_4uooa"), SubResource("Resource_57apf"), SubResource("Resource_a3tlc"), SubResource("Resource_8mu3o")])
 hp_multiplier = 9.043615823017705
 speed_multiplier = 1.1400000000000001
 cash_multiplier = 4.887112285050931
 
-[sub_resource type="Resource" id="Resource_ch3si"]
-script = ExtResource("3_atyet")
-count = 3
-interval = 0.84
-
-[sub_resource type="Resource" id="Resource_ehx1j"]
-script = ExtResource("3_atyet")
-lane = &"south"
-count = 2
-interval = 0.84
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_rct1f"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 4
-interval = 0.672
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_0jvw4"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 3
-interval = 0.672
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_4uooa"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 2
-interval = 1.176
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_57apf"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 1
-interval = 1.176
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_a3tlc"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 2
-interval = 1.176
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_8mu3o"]
-script = ExtResource("2_rgxf5")
-index = 16
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_ch3si"), SubResource("Resource_ehx1j"), SubResource("Resource_rct1f"), SubResource("Resource_0jvw4"), SubResource("Resource_4uooa"), SubResource("Resource_57apf"), SubResource("Resource_a3tlc")])
-hp_multiplier = 9.58623277239877
-speed_multiplier = 1.15
-cash_multiplier = 5.473565759257043
-
-[sub_resource type="Resource" id="Resource_g2hhv"]
-script = ExtResource("3_atyet")
-count = 3
-interval = 0.83
-
 [sub_resource type="Resource" id="Resource_aga6s"]
 script = ExtResource("3_atyet")
-lane = &"south"
 count = 2
-interval = 0.83
-start_delay = 0.15
+interval = 0.84
 
 [sub_resource type="Resource" id="Resource_te85q"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
-interval = 0.664
+count = 4
+interval = 0.672
 start_delay = 0.2
 
 [sub_resource type="Resource" id="Resource_hum4g"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
-count = 3
-interval = 0.664
+count = 2
+interval = 0.672
 start_delay = 0.35
 
 [sub_resource type="Resource" id="Resource_5a7sv"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 2
-interval = 1.162
+interval = 1.176
 start_delay = 0.4
 
 [sub_resource type="Resource" id="Resource_6d068"]
@@ -750,43 +750,142 @@ script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
 count = 1
-interval = 1.162
+interval = 1.176
 start_delay = 0.55
 
 [sub_resource type="Resource" id="Resource_tejn8"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
-interval = 1.162
+interval = 1.176
 start_delay = 0.7
 
 [sub_resource type="Resource" id="Resource_075w2"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.924
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_ggomh"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.756
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_8w64e"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 1.008
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_vrp4n"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.344
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_i30xs"]
+script = ExtResource("2_rgxf5")
+index = 16
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_aga6s"), SubResource("Resource_te85q"), SubResource("Resource_hum4g"), SubResource("Resource_5a7sv"), SubResource("Resource_6d068"), SubResource("Resource_tejn8"), SubResource("Resource_075w2"), SubResource("Resource_ggomh"), SubResource("Resource_8w64e"), SubResource("Resource_vrp4n")])
+hp_multiplier = 9.58623277239877
+speed_multiplier = 1.15
+cash_multiplier = 5.473565759257043
+
+[sub_resource type="Resource" id="Resource_uygdt"]
+script = ExtResource("3_atyet")
+count = 2
+interval = 0.83
+
+[sub_resource type="Resource" id="Resource_to4sr"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 4
+interval = 0.664
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_t73ia"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 3
+interval = 0.664
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_wjuq0"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 2
+interval = 1.162
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_ji02g"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 1
+interval = 1.162
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_rxvrn"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 2
+interval = 1.162
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_2w02v"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.913
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_d7mft"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.747
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_52klp"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.9959999999999999
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_c7tdj"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.328
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_r5cmr"]
 script = ExtResource("2_rgxf5")
 index = 17
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_g2hhv"), SubResource("Resource_aga6s"), SubResource("Resource_te85q"), SubResource("Resource_hum4g"), SubResource("Resource_5a7sv"), SubResource("Resource_6d068"), SubResource("Resource_tejn8")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_uygdt"), SubResource("Resource_to4sr"), SubResource("Resource_t73ia"), SubResource("Resource_wjuq0"), SubResource("Resource_ji02g"), SubResource("Resource_rxvrn"), SubResource("Resource_2w02v"), SubResource("Resource_d7mft"), SubResource("Resource_52klp"), SubResource("Resource_c7tdj")])
 hp_multiplier = 10.161406738742693
 speed_multiplier = 1.16
 cash_multiplier = 6.130393650367889
 
-[sub_resource type="Resource" id="Resource_ggomh"]
+[sub_resource type="Resource" id="Resource_7odj7"]
 script = ExtResource("3_atyet")
-count = 4
-interval = 0.8200000000000001
-
-[sub_resource type="Resource" id="Resource_8w64e"]
-script = ExtResource("3_atyet")
-lane = &"south"
 count = 2
 interval = 0.8200000000000001
-start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_vrp4n"]
+[sub_resource type="Resource" id="Resource_l5dsk"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 interval = 0.6560000000000001
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_i30xs"]
+[sub_resource type="Resource" id="Resource_i3jb2"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -794,14 +893,14 @@ count = 3
 interval = 0.6560000000000001
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_uygdt"]
+[sub_resource type="Resource" id="Resource_5cmgm"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 2
 interval = 1.148
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_to4sr"]
+[sub_resource type="Resource" id="Resource_6ot86"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
@@ -809,173 +908,73 @@ count = 1
 interval = 1.148
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_t73ia"]
+[sub_resource type="Resource" id="Resource_3erhi"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 1.148
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_wjuq0"]
+[sub_resource type="Resource" id="Resource_axubb"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.9020000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_ivagk"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.7380000000000001
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_m7sg4"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.984
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_erqht"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.3120000000000003
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_026ph"]
 script = ExtResource("2_rgxf5")
 index = 18
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_ggomh"), SubResource("Resource_8w64e"), SubResource("Resource_vrp4n"), SubResource("Resource_i30xs"), SubResource("Resource_uygdt"), SubResource("Resource_to4sr"), SubResource("Resource_t73ia")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_7odj7"), SubResource("Resource_l5dsk"), SubResource("Resource_i3jb2"), SubResource("Resource_5cmgm"), SubResource("Resource_6ot86"), SubResource("Resource_3erhi"), SubResource("Resource_axubb"), SubResource("Resource_ivagk"), SubResource("Resource_m7sg4"), SubResource("Resource_erqht")])
 hp_multiplier = 10.771091143067256
 speed_multiplier = 1.17
 cash_multiplier = 6.866040888412036
 
-[sub_resource type="Resource" id="Resource_ji02g"]
-script = ExtResource("3_atyet")
-count = 4
-interval = 0.81
-
-[sub_resource type="Resource" id="Resource_rxvrn"]
-script = ExtResource("3_atyet")
-lane = &"south"
-count = 2
-interval = 0.81
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_2w02v"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-interval = 0.6480000000000001
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_d7mft"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 3
-interval = 0.6480000000000001
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_52klp"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 3
-interval = 1.134
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_c7tdj"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 1
-interval = 1.134
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_r5cmr"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 2
-interval = 1.134
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_7odj7"]
-script = ExtResource("2_rgxf5")
-index = 19
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_ji02g"), SubResource("Resource_rxvrn"), SubResource("Resource_2w02v"), SubResource("Resource_d7mft"), SubResource("Resource_52klp"), SubResource("Resource_c7tdj"), SubResource("Resource_r5cmr")])
-hp_multiplier = 11.417356611651291
-speed_multiplier = 1.18
-cash_multiplier = 7.6899657950214815
-
-[sub_resource type="Resource" id="Resource_l5dsk"]
-script = ExtResource("3_atyet")
-enemy_id = &"boss_troll"
-count = 1
-interval = 1.0
-hp_multiplier = 1.2
-
-[sub_resource type="Resource" id="Resource_i3jb2"]
-script = ExtResource("3_atyet")
-count = 3
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_5cmgm"]
-script = ExtResource("3_atyet")
-lane = &"south"
-count = 1
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_6ot86"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 7
-interval = 0.6400000000000001
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_3erhi"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 4
-interval = 0.6400000000000001
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_axubb"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 3
-interval = 1.1199999999999999
-start_delay = 0.6
-
-[sub_resource type="Resource" id="Resource_ivagk"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 1
-interval = 1.1199999999999999
-start_delay = 0.75
-
-[sub_resource type="Resource" id="Resource_m7sg4"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 1
-interval = 1.1199999999999999
-start_delay = 0.8
-
-[sub_resource type="Resource" id="Resource_erqht"]
-script = ExtResource("2_rgxf5")
-index = 20
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_l5dsk"), SubResource("Resource_i3jb2"), SubResource("Resource_5cmgm"), SubResource("Resource_6ot86"), SubResource("Resource_3erhi"), SubResource("Resource_axubb"), SubResource("Resource_ivagk"), SubResource("Resource_m7sg4")])
-hp_multiplier = 12.10239800835037
-speed_multiplier = 1.19
-cash_multiplier = 8.61276169042406
-is_boss = true
-reward_bonus = 50
-
-[sub_resource type="Resource" id="Resource_026ph"]
-script = ExtResource("3_atyet")
-count = 4
-interval = 0.79
-
 [sub_resource type="Resource" id="Resource_7fe8k"]
 script = ExtResource("3_atyet")
-lane = &"south"
 count = 2
-interval = 0.79
-start_delay = 0.15
+interval = 0.81
 
 [sub_resource type="Resource" id="Resource_fadcx"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
-interval = 0.6320000000000001
+interval = 0.6480000000000001
 start_delay = 0.2
 
 [sub_resource type="Resource" id="Resource_5if8c"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
-count = 4
-interval = 0.6320000000000001
+count = 3
+interval = 0.6480000000000001
 start_delay = 0.35
 
 [sub_resource type="Resource" id="Resource_bkw0p"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 3
-interval = 1.1059999999999999
+interval = 1.134
 start_delay = 0.4
 
 [sub_resource type="Resource" id="Resource_e0uoa"]
@@ -983,43 +982,220 @@ script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
 count = 1
-interval = 1.1059999999999999
+interval = 1.134
 start_delay = 0.55
 
 [sub_resource type="Resource" id="Resource_6q7gl"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
-interval = 1.1059999999999999
+interval = 1.134
 start_delay = 0.7
 
 [sub_resource type="Resource" id="Resource_up5ca"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.8910000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_u4ilp"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.7290000000000001
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_vxp6j"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.972
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_smrog"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.2960000000000003
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_1a0q0"]
+script = ExtResource("2_rgxf5")
+index = 19
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_7fe8k"), SubResource("Resource_fadcx"), SubResource("Resource_5if8c"), SubResource("Resource_bkw0p"), SubResource("Resource_e0uoa"), SubResource("Resource_6q7gl"), SubResource("Resource_up5ca"), SubResource("Resource_u4ilp"), SubResource("Resource_vxp6j"), SubResource("Resource_smrog")])
+hp_multiplier = 11.417356611651291
+speed_multiplier = 1.18
+cash_multiplier = 7.6899657950214815
+
+[sub_resource type="Resource" id="Resource_l8b6v"]
+script = ExtResource("3_atyet")
+enemy_id = &"boss_troll"
+count = 1
+interval = 1.0
+hp_multiplier = 1.2
+
+[sub_resource type="Resource" id="Resource_pw77m"]
+script = ExtResource("3_atyet")
+count = 3
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_y2lt1"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 1
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_rm2dn"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 7
+interval = 0.6400000000000001
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_a3i0f"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 4
+interval = 0.6400000000000001
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_13i43"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 3
+interval = 1.1199999999999999
+start_delay = 0.6
+
+[sub_resource type="Resource" id="Resource_1jryy"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 1
+interval = 1.1199999999999999
+start_delay = 0.75
+
+[sub_resource type="Resource" id="Resource_yn2vm"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 1
+interval = 1.1199999999999999
+start_delay = 0.8
+
+[sub_resource type="Resource" id="Resource_dq6al"]
+script = ExtResource("2_rgxf5")
+index = 20
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_l8b6v"), SubResource("Resource_pw77m"), SubResource("Resource_y2lt1"), SubResource("Resource_rm2dn"), SubResource("Resource_a3i0f"), SubResource("Resource_13i43"), SubResource("Resource_1jryy"), SubResource("Resource_yn2vm")])
+hp_multiplier = 12.10239800835037
+speed_multiplier = 1.19
+cash_multiplier = 8.61276169042406
+is_boss = true
+reward_bonus = 50
+
+[sub_resource type="Resource" id="Resource_pflye"]
+script = ExtResource("3_atyet")
+count = 2
+interval = 0.79
+
+[sub_resource type="Resource" id="Resource_ka7bf"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+interval = 0.6320000000000001
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_5bvol"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 4
+interval = 0.6320000000000001
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_pnaxu"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 2
+interval = 1.1059999999999999
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_b4ttq"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 1
+interval = 1.1059999999999999
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_135id"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 2
+interval = 1.1059999999999999
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_kvfkh"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.8690000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_eot5x"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.7110000000000001
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_ots8k"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.948
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_r0lif"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.2640000000000002
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_gpxcj"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.4220000000000002
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_g4nmp"]
 script = ExtResource("2_rgxf5")
 index = 21
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_026ph"), SubResource("Resource_7fe8k"), SubResource("Resource_fadcx"), SubResource("Resource_5if8c"), SubResource("Resource_bkw0p"), SubResource("Resource_e0uoa"), SubResource("Resource_6q7gl")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_pflye"), SubResource("Resource_ka7bf"), SubResource("Resource_5bvol"), SubResource("Resource_pnaxu"), SubResource("Resource_b4ttq"), SubResource("Resource_135id"), SubResource("Resource_kvfkh"), SubResource("Resource_eot5x"), SubResource("Resource_ots8k"), SubResource("Resource_r0lif"), SubResource("Resource_gpxcj")])
 hp_multiplier = 12.828541888851392
 speed_multiplier = 1.2
 cash_multiplier = 9.646293093274947
 
-[sub_resource type="Resource" id="Resource_u4ilp"]
+[sub_resource type="Resource" id="Resource_x0shx"]
 script = ExtResource("3_atyet")
-count = 4
+count = 2
 interval = 0.78
 
-[sub_resource type="Resource" id="Resource_vxp6j"]
+[sub_resource type="Resource" id="Resource_msyes"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 3
+count = 1
 interval = 0.78
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_smrog"]
+[sub_resource type="Resource" id="Resource_pj7id"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 interval = 0.6240000000000001
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_1a0q0"]
+[sub_resource type="Resource" id="Resource_a6fvi"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -1027,14 +1203,14 @@ count = 4
 interval = 0.6240000000000001
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_l8b6v"]
+[sub_resource type="Resource" id="Resource_sy3e0"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
-count = 3
+count = 2
 interval = 1.0919999999999999
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_pw77m"]
+[sub_resource type="Resource" id="Resource_imfdj"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
@@ -1042,41 +1218,76 @@ count = 1
 interval = 1.0919999999999999
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_y2lt1"]
+[sub_resource type="Resource" id="Resource_g55xh"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 1.0919999999999999
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_rm2dn"]
+[sub_resource type="Resource" id="Resource_0611h"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.8580000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_hbgki"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.7020000000000001
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_sanhf"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.9359999999999999
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_k2lf2"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.2480000000000002
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_6durx"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.4040000000000001
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_2804v"]
 script = ExtResource("2_rgxf5")
 index = 22
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_u4ilp"), SubResource("Resource_vxp6j"), SubResource("Resource_smrog"), SubResource("Resource_1a0q0"), SubResource("Resource_l8b6v"), SubResource("Resource_pw77m"), SubResource("Resource_y2lt1")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_x0shx"), SubResource("Resource_msyes"), SubResource("Resource_pj7id"), SubResource("Resource_a6fvi"), SubResource("Resource_sy3e0"), SubResource("Resource_imfdj"), SubResource("Resource_g55xh"), SubResource("Resource_0611h"), SubResource("Resource_hbgki"), SubResource("Resource_sanhf"), SubResource("Resource_k2lf2"), SubResource("Resource_6durx")])
 hp_multiplier = 13.598254402182478
 speed_multiplier = 1.21
 cash_multiplier = 10.803848264467941
 
-[sub_resource type="Resource" id="Resource_a3i0f"]
+[sub_resource type="Resource" id="Resource_3hpn6"]
 script = ExtResource("3_atyet")
-count = 4
+count = 2
 interval = 0.77
 
-[sub_resource type="Resource" id="Resource_13i43"]
+[sub_resource type="Resource" id="Resource_5wjir"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 3
+count = 1
 interval = 0.77
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_1jryy"]
+[sub_resource type="Resource" id="Resource_weqan"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 6
 interval = 0.6160000000000001
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_yn2vm"]
+[sub_resource type="Resource" id="Resource_f16w6"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -1084,14 +1295,14 @@ count = 4
 interval = 0.6160000000000001
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_dq6al"]
+[sub_resource type="Resource" id="Resource_rk6vs"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
-count = 3
+count = 2
 interval = 1.0779999999999998
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_pflye"]
+[sub_resource type="Resource" id="Resource_yo6wc"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
@@ -1099,40 +1310,76 @@ count = 1
 interval = 1.0779999999999998
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_ka7bf"]
+[sub_resource type="Resource" id="Resource_wjrpw"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 1.0779999999999998
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_5bvol"]
+[sub_resource type="Resource" id="Resource_eccas"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.8470000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_wh07s"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.6930000000000001
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_5tq2c"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.9239999999999999
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_0fvne"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.2320000000000002
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_p10o6"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.3860000000000001
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_teboc"]
 script = ExtResource("2_rgxf5")
 index = 23
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_a3i0f"), SubResource("Resource_13i43"), SubResource("Resource_1jryy"), SubResource("Resource_yn2vm"), SubResource("Resource_dq6al"), SubResource("Resource_pflye"), SubResource("Resource_ka7bf")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_3hpn6"), SubResource("Resource_5wjir"), SubResource("Resource_weqan"), SubResource("Resource_f16w6"), SubResource("Resource_rk6vs"), SubResource("Resource_yo6wc"), SubResource("Resource_wjrpw"), SubResource("Resource_eccas"), SubResource("Resource_wh07s"), SubResource("Resource_5tq2c"), SubResource("Resource_0fvne"), SubResource("Resource_p10o6")])
 hp_multiplier = 14.414149666313428
 speed_multiplier = 1.22
 cash_multiplier = 12.100310056204096
 
-[sub_resource type="Resource" id="Resource_pnaxu"]
+[sub_resource type="Resource" id="Resource_brahn"]
 script = ExtResource("3_atyet")
+count = 2
 interval = 0.76
 
-[sub_resource type="Resource" id="Resource_b4ttq"]
+[sub_resource type="Resource" id="Resource_vwroo"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 3
+count = 1
 interval = 0.76
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_135id"]
+[sub_resource type="Resource" id="Resource_o31q0"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 6
 interval = 0.6080000000000001
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_kvfkh"]
+[sub_resource type="Resource" id="Resource_skyjs"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -1140,14 +1387,14 @@ count = 4
 interval = 0.6080000000000001
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_eot5x"]
+[sub_resource type="Resource" id="Resource_ayahp"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
-count = 3
+count = 2
 interval = 1.0639999999999998
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_ots8k"]
+[sub_resource type="Resource" id="Resource_xv5ea"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
@@ -1155,28 +1402,70 @@ count = 1
 interval = 1.0639999999999998
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_r0lif"]
+[sub_resource type="Resource" id="Resource_511sh"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 1.0639999999999998
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_gpxcj"]
+[sub_resource type="Resource" id="Resource_eoyr1"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.8360000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_14akn"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.684
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_d0lw2"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.9119999999999999
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_ffqyf"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.2160000000000002
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_gamrb"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.368
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_l0r03"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.52
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_d4pwn"]
 script = ExtResource("2_rgxf5")
 index = 24
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_pnaxu"), SubResource("Resource_b4ttq"), SubResource("Resource_135id"), SubResource("Resource_kvfkh"), SubResource("Resource_eot5x"), SubResource("Resource_ots8k"), SubResource("Resource_r0lif")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_brahn"), SubResource("Resource_vwroo"), SubResource("Resource_o31q0"), SubResource("Resource_skyjs"), SubResource("Resource_ayahp"), SubResource("Resource_xv5ea"), SubResource("Resource_511sh"), SubResource("Resource_eoyr1"), SubResource("Resource_14akn"), SubResource("Resource_d0lw2"), SubResource("Resource_ffqyf"), SubResource("Resource_gamrb"), SubResource("Resource_l0r03")])
 hp_multiplier = 15.278998646292235
 speed_multiplier = 1.23
 cash_multiplier = 13.552347262948587
 
-[sub_resource type="Resource" id="Resource_g4nmp"]
+[sub_resource type="Resource" id="Resource_3882c"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 11
 interval = 0.42
 
-[sub_resource type="Resource" id="Resource_x0shx"]
+[sub_resource type="Resource" id="Resource_lasnf"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -1184,47 +1473,40 @@ count = 9
 interval = 0.42
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_msyes"]
+[sub_resource type="Resource" id="Resource_2e284"]
 script = ExtResource("3_atyet")
 count = 3
 interval = 0.5
 start_delay = 0.25
 
-[sub_resource type="Resource" id="Resource_pj7id"]
+[sub_resource type="Resource" id="Resource_lxsxg"]
 script = ExtResource("3_atyet")
 lane = &"south"
 count = 2
 interval = 0.5
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_a6fvi"]
+[sub_resource type="Resource" id="Resource_wuko6"]
 script = ExtResource("2_rgxf5")
 index = 25
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_g4nmp"), SubResource("Resource_x0shx"), SubResource("Resource_msyes"), SubResource("Resource_pj7id")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_3882c"), SubResource("Resource_lasnf"), SubResource("Resource_2e284"), SubResource("Resource_lxsxg")])
 hp_multiplier = 16.195738565069767
 speed_multiplier = 1.24
 cash_multiplier = 15.178628934502418
 
-[sub_resource type="Resource" id="Resource_sy3e0"]
+[sub_resource type="Resource" id="Resource_er8xx"]
 script = ExtResource("3_atyet")
-count = 4
+count = 2
 interval = 0.74
 
-[sub_resource type="Resource" id="Resource_imfdj"]
-script = ExtResource("3_atyet")
-lane = &"south"
-count = 3
-interval = 0.74
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_g55xh"]
+[sub_resource type="Resource" id="Resource_5bg8m"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 7
 interval = 0.592
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_0611h"]
+[sub_resource type="Resource" id="Resource_0auw7"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -1232,55 +1514,98 @@ count = 4
 interval = 0.592
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_hbgki"]
+[sub_resource type="Resource" id="Resource_eebec"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 3
 interval = 1.036
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_sanhf"]
+[sub_resource type="Resource" id="Resource_yddp8"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
-count = 2
+count = 1
 interval = 1.036
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_k2lf2"]
+[sub_resource type="Resource" id="Resource_0ksqs"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 1.036
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_6durx"]
+[sub_resource type="Resource" id="Resource_dmn7t"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.8140000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_dxkyy"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.666
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_62gr0"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.888
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_8voci"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.184
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_f4xv8"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.332
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_f0546"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.48
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_vayqu"]
 script = ExtResource("2_rgxf5")
 index = 26
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_sy3e0"), SubResource("Resource_imfdj"), SubResource("Resource_g55xh"), SubResource("Resource_0611h"), SubResource("Resource_hbgki"), SubResource("Resource_sanhf"), SubResource("Resource_k2lf2")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_er8xx"), SubResource("Resource_5bg8m"), SubResource("Resource_0auw7"), SubResource("Resource_eebec"), SubResource("Resource_yddp8"), SubResource("Resource_0ksqs"), SubResource("Resource_dmn7t"), SubResource("Resource_dxkyy"), SubResource("Resource_62gr0"), SubResource("Resource_8voci"), SubResource("Resource_f4xv8"), SubResource("Resource_f0546")])
 hp_multiplier = 17.167482878973953
 speed_multiplier = 1.25
 cash_multiplier = 17.00006440664271
 
-[sub_resource type="Resource" id="Resource_2804v"]
+[sub_resource type="Resource" id="Resource_tu7tx"]
 script = ExtResource("3_atyet")
+count = 2
 interval = 0.73
 
-[sub_resource type="Resource" id="Resource_3hpn6"]
+[sub_resource type="Resource" id="Resource_31w83"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 3
+count = 1
 interval = 0.73
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_5wjir"]
+[sub_resource type="Resource" id="Resource_y1yqa"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 7
 interval = 0.584
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_weqan"]
+[sub_resource type="Resource" id="Resource_a4wds"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -1288,55 +1613,98 @@ count = 4
 interval = 0.584
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_f16w6"]
+[sub_resource type="Resource" id="Resource_2dyic"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 3
 interval = 1.022
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_rk6vs"]
+[sub_resource type="Resource" id="Resource_1rc64"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
-count = 2
+count = 1
 interval = 1.022
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_yo6wc"]
+[sub_resource type="Resource" id="Resource_167c2"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 1.022
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_wjrpw"]
+[sub_resource type="Resource" id="Resource_4g7ce"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.803
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_vy5qk"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.657
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_epl7s"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.876
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_d2w11"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.168
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_wcwtt"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.314
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_7g2rg"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.46
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_ey5wn"]
 script = ExtResource("2_rgxf5")
 index = 27
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_2804v"), SubResource("Resource_3hpn6"), SubResource("Resource_5wjir"), SubResource("Resource_weqan"), SubResource("Resource_f16w6"), SubResource("Resource_rk6vs"), SubResource("Resource_yo6wc")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_tu7tx"), SubResource("Resource_31w83"), SubResource("Resource_y1yqa"), SubResource("Resource_a4wds"), SubResource("Resource_2dyic"), SubResource("Resource_1rc64"), SubResource("Resource_167c2"), SubResource("Resource_4g7ce"), SubResource("Resource_vy5qk"), SubResource("Resource_epl7s"), SubResource("Resource_d2w11"), SubResource("Resource_wcwtt"), SubResource("Resource_7g2rg")])
 hp_multiplier = 18.19753185171239
 speed_multiplier = 1.26
 cash_multiplier = 19.040072135439836
 
-[sub_resource type="Resource" id="Resource_eccas"]
+[sub_resource type="Resource" id="Resource_1lwtg"]
 script = ExtResource("3_atyet")
+count = 3
 interval = 0.72
 
-[sub_resource type="Resource" id="Resource_wh07s"]
+[sub_resource type="Resource" id="Resource_oor2f"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 4
+count = 1
 interval = 0.72
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_5tq2c"]
+[sub_resource type="Resource" id="Resource_ume6y"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 7
 interval = 0.576
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_0fvne"]
+[sub_resource type="Resource" id="Resource_ixm44"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -1344,84 +1712,127 @@ count = 4
 interval = 0.576
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_p10o6"]
+[sub_resource type="Resource" id="Resource_g5l2s"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 3
 interval = 1.008
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_teboc"]
+[sub_resource type="Resource" id="Resource_6063n"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
-count = 2
+count = 1
 interval = 1.008
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_brahn"]
+[sub_resource type="Resource" id="Resource_cajly"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 1.008
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_vwroo"]
+[sub_resource type="Resource" id="Resource_0q5by"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.792
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_jp03d"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.648
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_tovc1"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.864
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_82itd"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.152
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_m7yw1"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.296
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_ke7ax"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.44
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_kagu1"]
 script = ExtResource("2_rgxf5")
 index = 28
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_eccas"), SubResource("Resource_wh07s"), SubResource("Resource_5tq2c"), SubResource("Resource_0fvne"), SubResource("Resource_p10o6"), SubResource("Resource_teboc"), SubResource("Resource_brahn")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_1lwtg"), SubResource("Resource_oor2f"), SubResource("Resource_ume6y"), SubResource("Resource_ixm44"), SubResource("Resource_g5l2s"), SubResource("Resource_6063n"), SubResource("Resource_cajly"), SubResource("Resource_0q5by"), SubResource("Resource_jp03d"), SubResource("Resource_tovc1"), SubResource("Resource_82itd"), SubResource("Resource_m7yw1"), SubResource("Resource_ke7ax")])
 hp_multiplier = 19.289383762815138
 speed_multiplier = 1.27
 cash_multiplier = 21.32488079169262
 
-[sub_resource type="Resource" id="Resource_o31q0"]
+[sub_resource type="Resource" id="Resource_4y8ct"]
 script = ExtResource("3_atyet")
+count = 2
 interval = 0.71
 
-[sub_resource type="Resource" id="Resource_skyjs"]
+[sub_resource type="Resource" id="Resource_iyfwc"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 3
+count = 1
 interval = 0.71
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_ayahp"]
+[sub_resource type="Resource" id="Resource_ub24y"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 7
 interval = 0.568
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_xv5ea"]
+[sub_resource type="Resource" id="Resource_jaktv"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
 interval = 0.568
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_511sh"]
+[sub_resource type="Resource" id="Resource_dkt7o"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 3
 interval = 0.9939999999999999
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_eoyr1"]
+[sub_resource type="Resource" id="Resource_vgrhy"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
-count = 2
+count = 1
 interval = 0.9939999999999999
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_14akn"]
+[sub_resource type="Resource" id="Resource_bd0p4"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 0.9939999999999999
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_d0lw2"]
+[sub_resource type="Resource" id="Resource_06wk5"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 lane = &"south"
@@ -1429,41 +1840,83 @@ count = 1
 interval = 0.9939999999999999
 start_delay = 0.85
 
-[sub_resource type="Resource" id="Resource_ffqyf"]
+[sub_resource type="Resource" id="Resource_gdcj3"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.781
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_3pjrr"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.639
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_3rljc"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.852
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_0j7fa"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.136
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_ds3gc"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.278
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_8mrw6"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.42
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_4sbq7"]
 script = ExtResource("2_rgxf5")
 index = 29
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_o31q0"), SubResource("Resource_skyjs"), SubResource("Resource_ayahp"), SubResource("Resource_xv5ea"), SubResource("Resource_511sh"), SubResource("Resource_eoyr1"), SubResource("Resource_14akn"), SubResource("Resource_d0lw2")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_4y8ct"), SubResource("Resource_iyfwc"), SubResource("Resource_ub24y"), SubResource("Resource_jaktv"), SubResource("Resource_dkt7o"), SubResource("Resource_vgrhy"), SubResource("Resource_bd0p4"), SubResource("Resource_06wk5"), SubResource("Resource_gdcj3"), SubResource("Resource_3pjrr"), SubResource("Resource_3rljc"), SubResource("Resource_0j7fa"), SubResource("Resource_ds3gc"), SubResource("Resource_8mrw6")])
 hp_multiplier = 20.446746788584047
 speed_multiplier = 1.28
 cash_multiplier = 23.883866486695734
 
-[sub_resource type="Resource" id="Resource_gamrb"]
+[sub_resource type="Resource" id="Resource_q1e6y"]
 script = ExtResource("3_atyet")
 enemy_id = &"boss_troll"
 count = 1
 interval = 1.0
 hp_multiplier = 1.2
 
-[sub_resource type="Resource" id="Resource_l0r03"]
+[sub_resource type="Resource" id="Resource_frim0"]
 script = ExtResource("3_atyet")
 interval = 0.7
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_d4pwn"]
+[sub_resource type="Resource" id="Resource_4eaj5"]
 script = ExtResource("3_atyet")
 lane = &"south"
 count = 3
 interval = 0.7
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_3882c"]
+[sub_resource type="Resource" id="Resource_g8db1"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 9
 interval = 0.5599999999999999
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_lasnf"]
+[sub_resource type="Resource" id="Resource_s84ei"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -1471,14 +1924,14 @@ count = 6
 interval = 0.5599999999999999
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_2e284"]
+[sub_resource type="Resource" id="Resource_xcpbj"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 3
 interval = 0.9799999999999999
 start_delay = 0.6
 
-[sub_resource type="Resource" id="Resource_lxsxg"]
+[sub_resource type="Resource" id="Resource_fg0nn"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
@@ -1486,71 +1939,72 @@ count = 1
 interval = 0.9799999999999999
 start_delay = 0.75
 
-[sub_resource type="Resource" id="Resource_wuko6"]
+[sub_resource type="Resource" id="Resource_q4ftk"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 1
 interval = 0.9799999999999999
 start_delay = 0.8
 
-[sub_resource type="Resource" id="Resource_er8xx"]
+[sub_resource type="Resource" id="Resource_ikupf"]
 script = ExtResource("2_rgxf5")
 index = 30
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_gamrb"), SubResource("Resource_l0r03"), SubResource("Resource_d4pwn"), SubResource("Resource_3882c"), SubResource("Resource_lasnf"), SubResource("Resource_2e284"), SubResource("Resource_lxsxg"), SubResource("Resource_wuko6")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_q1e6y"), SubResource("Resource_frim0"), SubResource("Resource_4eaj5"), SubResource("Resource_g8db1"), SubResource("Resource_s84ei"), SubResource("Resource_xcpbj"), SubResource("Resource_fg0nn"), SubResource("Resource_q4ftk")])
 hp_multiplier = 21.67355159589909
 speed_multiplier = 1.29
 cash_multiplier = 26.749930465099226
 is_boss = true
 reward_bonus = 50
 
-[sub_resource type="Resource" id="Resource_5bg8m"]
+[sub_resource type="Resource" id="Resource_vy1bd"]
 script = ExtResource("3_atyet")
+count = 3
 interval = 0.69
 
-[sub_resource type="Resource" id="Resource_0auw7"]
+[sub_resource type="Resource" id="Resource_p20ne"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 4
+count = 1
 interval = 0.69
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_eebec"]
+[sub_resource type="Resource" id="Resource_shxm8"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 7
 interval = 0.5519999999999999
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_yddp8"]
+[sub_resource type="Resource" id="Resource_7w32y"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
 interval = 0.5519999999999999
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_0ksqs"]
+[sub_resource type="Resource" id="Resource_lfl0y"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 3
 interval = 0.9659999999999999
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_dmn7t"]
+[sub_resource type="Resource" id="Resource_ecd4d"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
-count = 2
+count = 1
 interval = 0.9659999999999999
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_dxkyy"]
+[sub_resource type="Resource" id="Resource_gxvek"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 0.9659999999999999
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_62gr0"]
+[sub_resource type="Resource" id="Resource_mexdm"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 lane = &"south"
@@ -1558,62 +2012,105 @@ count = 1
 interval = 0.9659999999999999
 start_delay = 0.85
 
-[sub_resource type="Resource" id="Resource_8voci"]
+[sub_resource type="Resource" id="Resource_dfb4c"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.759
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_0cyfr"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.621
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_krssq"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.828
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_rkfr4"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.1039999999999999
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_88m56"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.242
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_btlkh"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.38
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_ocph0"]
 script = ExtResource("2_rgxf5")
 index = 31
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_5bg8m"), SubResource("Resource_0auw7"), SubResource("Resource_eebec"), SubResource("Resource_yddp8"), SubResource("Resource_0ksqs"), SubResource("Resource_dmn7t"), SubResource("Resource_dxkyy"), SubResource("Resource_62gr0")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_vy1bd"), SubResource("Resource_p20ne"), SubResource("Resource_shxm8"), SubResource("Resource_7w32y"), SubResource("Resource_lfl0y"), SubResource("Resource_ecd4d"), SubResource("Resource_gxvek"), SubResource("Resource_mexdm"), SubResource("Resource_dfb4c"), SubResource("Resource_0cyfr"), SubResource("Resource_krssq"), SubResource("Resource_rkfr4"), SubResource("Resource_88m56"), SubResource("Resource_btlkh")])
 hp_multiplier = 22.973964691653038
 speed_multiplier = 1.3
 cash_multiplier = 29.959922120911134
 
-[sub_resource type="Resource" id="Resource_f4xv8"]
+[sub_resource type="Resource" id="Resource_8ngqr"]
 script = ExtResource("3_atyet")
+count = 3
 interval = 0.6799999999999999
 
-[sub_resource type="Resource" id="Resource_f0546"]
+[sub_resource type="Resource" id="Resource_ciyri"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 4
+count = 1
 interval = 0.6799999999999999
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_vayqu"]
+[sub_resource type="Resource" id="Resource_k4c1p"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 8
 interval = 0.5439999999999999
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_tu7tx"]
+[sub_resource type="Resource" id="Resource_r2dbr"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
 interval = 0.5439999999999999
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_31w83"]
+[sub_resource type="Resource" id="Resource_5lf70"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 3
 interval = 0.9519999999999998
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_y1yqa"]
+[sub_resource type="Resource" id="Resource_o0pba"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
-count = 2
+count = 1
 interval = 0.9519999999999998
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_a4wds"]
+[sub_resource type="Resource" id="Resource_b2n30"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 0.9519999999999998
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_2dyic"]
+[sub_resource type="Resource" id="Resource_yabfc"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 lane = &"south"
@@ -1621,47 +2118,90 @@ count = 1
 interval = 0.9519999999999998
 start_delay = 0.85
 
-[sub_resource type="Resource" id="Resource_1rc64"]
+[sub_resource type="Resource" id="Resource_04h7b"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.748
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_i2kxh"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.612
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_euxnc"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.816
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_rgr3c"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.0879999999999999
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_3erm6"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.224
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_rjlaf"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.3599999999999999
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_8vgjh"]
 script = ExtResource("2_rgxf5")
 index = 32
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_f4xv8"), SubResource("Resource_f0546"), SubResource("Resource_vayqu"), SubResource("Resource_tu7tx"), SubResource("Resource_31w83"), SubResource("Resource_y1yqa"), SubResource("Resource_a4wds"), SubResource("Resource_2dyic")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_8ngqr"), SubResource("Resource_ciyri"), SubResource("Resource_k4c1p"), SubResource("Resource_r2dbr"), SubResource("Resource_5lf70"), SubResource("Resource_o0pba"), SubResource("Resource_b2n30"), SubResource("Resource_yabfc"), SubResource("Resource_04h7b"), SubResource("Resource_i2kxh"), SubResource("Resource_euxnc"), SubResource("Resource_rgr3c"), SubResource("Resource_3erm6"), SubResource("Resource_rjlaf")])
 hp_multiplier = 24.352402573152226
 speed_multiplier = 1.31
 cash_multiplier = 33.55511277542047
 
-[sub_resource type="Resource" id="Resource_167c2"]
+[sub_resource type="Resource" id="Resource_r8wrj"]
 script = ExtResource("3_atyet")
+count = 3
 interval = 0.6699999999999999
 
-[sub_resource type="Resource" id="Resource_4g7ce"]
+[sub_resource type="Resource" id="Resource_by7h8"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 4
+count = 1
 interval = 0.6699999999999999
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_vy5qk"]
+[sub_resource type="Resource" id="Resource_i3xf2"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 8
 interval = 0.5359999999999999
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_epl7s"]
+[sub_resource type="Resource" id="Resource_ibt1m"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
 interval = 0.5359999999999999
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_d2w11"]
+[sub_resource type="Resource" id="Resource_g8o44"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
-count = 4
+count = 3
 interval = 0.9379999999999998
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_wcwtt"]
+[sub_resource type="Resource" id="Resource_n8vvc"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
@@ -1669,14 +2209,14 @@ count = 2
 interval = 0.9379999999999998
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_7g2rg"]
+[sub_resource type="Resource" id="Resource_jy5ar"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 0.9379999999999998
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_ey5wn"]
+[sub_resource type="Resource" id="Resource_4euj8"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 lane = &"south"
@@ -1684,48 +2224,90 @@ count = 1
 interval = 0.9379999999999998
 start_delay = 0.85
 
-[sub_resource type="Resource" id="Resource_1lwtg"]
+[sub_resource type="Resource" id="Resource_bdhpu"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.737
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_ic4st"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.603
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_f0nib"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.8039999999999999
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_egokx"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.0719999999999998
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_rfel7"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.206
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_hl6hi"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.3399999999999999
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_x4xst"]
 script = ExtResource("2_rgxf5")
 index = 33
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_167c2"), SubResource("Resource_4g7ce"), SubResource("Resource_vy5qk"), SubResource("Resource_epl7s"), SubResource("Resource_d2w11"), SubResource("Resource_wcwtt"), SubResource("Resource_7g2rg"), SubResource("Resource_ey5wn")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_r8wrj"), SubResource("Resource_by7h8"), SubResource("Resource_i3xf2"), SubResource("Resource_ibt1m"), SubResource("Resource_g8o44"), SubResource("Resource_n8vvc"), SubResource("Resource_jy5ar"), SubResource("Resource_4euj8"), SubResource("Resource_bdhpu"), SubResource("Resource_ic4st"), SubResource("Resource_f0nib"), SubResource("Resource_egokx"), SubResource("Resource_rfel7"), SubResource("Resource_hl6hi")])
 hp_multiplier = 25.813546727541354
 speed_multiplier = 1.32
 cash_multiplier = 37.581726308470934
 
-[sub_resource type="Resource" id="Resource_oor2f"]
+[sub_resource type="Resource" id="Resource_nyd67"]
 script = ExtResource("3_atyet")
-count = 6
+count = 3
 interval = 0.6599999999999999
 
-[sub_resource type="Resource" id="Resource_ume6y"]
+[sub_resource type="Resource" id="Resource_ka4vb"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 4
+count = 2
 interval = 0.6599999999999999
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_ixm44"]
+[sub_resource type="Resource" id="Resource_idv42"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 8
 interval = 0.5279999999999999
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_g5l2s"]
+[sub_resource type="Resource" id="Resource_nfewi"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
 interval = 0.5279999999999999
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_6063n"]
+[sub_resource type="Resource" id="Resource_qwvyp"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
-count = 4
+count = 3
 interval = 0.9239999999999998
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_cajly"]
+[sub_resource type="Resource" id="Resource_233q0"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
@@ -1733,14 +2315,14 @@ count = 2
 interval = 0.9239999999999998
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_0q5by"]
+[sub_resource type="Resource" id="Resource_aq10g"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 0.9239999999999998
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_jp03d"]
+[sub_resource type="Resource" id="Resource_ylt3p"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 lane = &"south"
@@ -1748,21 +2330,63 @@ count = 1
 interval = 0.9239999999999998
 start_delay = 0.85
 
-[sub_resource type="Resource" id="Resource_tovc1"]
+[sub_resource type="Resource" id="Resource_jltdh"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.726
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_vh3rv"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.594
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_ken84"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.7919999999999999
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_abm88"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.0559999999999998
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_c51k2"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.188
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_lsgmb"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.3199999999999998
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_u5j68"]
 script = ExtResource("2_rgxf5")
 index = 34
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_oor2f"), SubResource("Resource_ume6y"), SubResource("Resource_ixm44"), SubResource("Resource_g5l2s"), SubResource("Resource_6063n"), SubResource("Resource_cajly"), SubResource("Resource_0q5by"), SubResource("Resource_jp03d")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_nyd67"), SubResource("Resource_ka4vb"), SubResource("Resource_idv42"), SubResource("Resource_nfewi"), SubResource("Resource_qwvyp"), SubResource("Resource_233q0"), SubResource("Resource_aq10g"), SubResource("Resource_ylt3p"), SubResource("Resource_jltdh"), SubResource("Resource_vh3rv"), SubResource("Resource_ken84"), SubResource("Resource_abm88"), SubResource("Resource_c51k2"), SubResource("Resource_lsgmb")])
 hp_multiplier = 27.362359531193835
 speed_multiplier = 1.33
 cash_multiplier = 42.09153346548745
 
-[sub_resource type="Resource" id="Resource_82itd"]
+[sub_resource type="Resource" id="Resource_iinxd"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 15
 interval = 0.42
 
-[sub_resource type="Resource" id="Resource_m7yw1"]
+[sub_resource type="Resource" id="Resource_tnlm2"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -1770,47 +2394,47 @@ count = 11
 interval = 0.42
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_ke7ax"]
+[sub_resource type="Resource" id="Resource_adl4c"]
 script = ExtResource("3_atyet")
 count = 4
 interval = 0.5
 start_delay = 0.25
 
-[sub_resource type="Resource" id="Resource_kagu1"]
+[sub_resource type="Resource" id="Resource_rj372"]
 script = ExtResource("3_atyet")
 lane = &"south"
 count = 3
 interval = 0.5
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_4y8ct"]
+[sub_resource type="Resource" id="Resource_yv160"]
 script = ExtResource("2_rgxf5")
 index = 35
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_82itd"), SubResource("Resource_m7yw1"), SubResource("Resource_ke7ax"), SubResource("Resource_kagu1")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_iinxd"), SubResource("Resource_tnlm2"), SubResource("Resource_adl4c"), SubResource("Resource_rj372")])
 hp_multiplier = 29.00410110306547
 speed_multiplier = 1.34
 cash_multiplier = 47.14251748134595
 
-[sub_resource type="Resource" id="Resource_iyfwc"]
+[sub_resource type="Resource" id="Resource_83qqg"]
 script = ExtResource("3_atyet")
-count = 6
+count = 3
 interval = 0.64
 
-[sub_resource type="Resource" id="Resource_ub24y"]
+[sub_resource type="Resource" id="Resource_kvwe3"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 4
+count = 2
 interval = 0.64
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_jaktv"]
+[sub_resource type="Resource" id="Resource_x2fuw"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 8
 interval = 0.512
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_dkt7o"]
+[sub_resource type="Resource" id="Resource_o33cl"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -1818,14 +2442,14 @@ count = 6
 interval = 0.512
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_vgrhy"]
+[sub_resource type="Resource" id="Resource_05ire"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
-count = 4
+count = 3
 interval = 0.8959999999999999
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_bd0p4"]
+[sub_resource type="Resource" id="Resource_cxkd3"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
@@ -1833,14 +2457,14 @@ count = 2
 interval = 0.8959999999999999
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_06wk5"]
+[sub_resource type="Resource" id="Resource_irf27"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 2
 interval = 0.8959999999999999
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_gdcj3"]
+[sub_resource type="Resource" id="Resource_2dece"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 lane = &"south"
@@ -1848,1194 +2472,568 @@ count = 1
 interval = 0.8959999999999999
 start_delay = 0.85
 
-[sub_resource type="Resource" id="Resource_3pjrr"]
+[sub_resource type="Resource" id="Resource_nf73q"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.7040000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_drxd5"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.5760000000000001
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_m1ctb"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.768
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_hnhcy"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 1.024
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_0pgh6"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.1520000000000001
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_t7v33"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.28
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_wjlnf"]
 script = ExtResource("2_rgxf5")
 index = 36
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_iyfwc"), SubResource("Resource_ub24y"), SubResource("Resource_jaktv"), SubResource("Resource_dkt7o"), SubResource("Resource_vgrhy"), SubResource("Resource_bd0p4"), SubResource("Resource_06wk5"), SubResource("Resource_gdcj3")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_83qqg"), SubResource("Resource_kvwe3"), SubResource("Resource_x2fuw"), SubResource("Resource_o33cl"), SubResource("Resource_05ire"), SubResource("Resource_cxkd3"), SubResource("Resource_irf27"), SubResource("Resource_2dece"), SubResource("Resource_nf73q"), SubResource("Resource_drxd5"), SubResource("Resource_m1ctb"), SubResource("Resource_hnhcy"), SubResource("Resource_0pgh6"), SubResource("Resource_t7v33")])
 hp_multiplier = 30.7443471692494
 speed_multiplier = 1.35
 cash_multiplier = 52.799619579107464
 
-[sub_resource type="Resource" id="Resource_3rljc"]
+[sub_resource type="Resource" id="Resource_oowp8"]
 script = ExtResource("3_atyet")
-count = 7
+count = 4
 interval = 0.63
 
-[sub_resource type="Resource" id="Resource_0j7fa"]
+[sub_resource type="Resource" id="Resource_ua6l2"]
 script = ExtResource("3_atyet")
 lane = &"south"
-count = 4
+count = 2
 interval = 0.63
 start_delay = 0.15
 
-[sub_resource type="Resource" id="Resource_ds3gc"]
+[sub_resource type="Resource" id="Resource_kj0b5"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 8
 interval = 0.504
 start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_8mrw6"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 6
-interval = 0.504
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_4sbq7"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.8819999999999999
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_q1e6y"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 2
-interval = 0.8819999999999999
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_frim0"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 2
-interval = 0.8819999999999999
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_4eaj5"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.8819999999999999
-start_delay = 0.85
-
-[sub_resource type="Resource" id="Resource_g8db1"]
-script = ExtResource("2_rgxf5")
-index = 37
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_3rljc"), SubResource("Resource_0j7fa"), SubResource("Resource_ds3gc"), SubResource("Resource_8mrw6"), SubResource("Resource_4sbq7"), SubResource("Resource_q1e6y"), SubResource("Resource_frim0"), SubResource("Resource_4eaj5")])
-hp_multiplier = 32.589007999404366
-speed_multiplier = 1.3599999999999999
-cash_multiplier = 59.13557392860036
-
-[sub_resource type="Resource" id="Resource_s84ei"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.62
-
-[sub_resource type="Resource" id="Resource_xcpbj"]
-script = ExtResource("3_atyet")
-lane = &"south"
-count = 4
-interval = 0.62
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_fg0nn"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 9
-interval = 0.496
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_q4ftk"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 6
-interval = 0.496
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_ikupf"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.868
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_vy1bd"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 2
-interval = 0.868
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_p20ne"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 2
-interval = 0.868
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_shxm8"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.868
-start_delay = 0.85
-
-[sub_resource type="Resource" id="Resource_7w32y"]
-script = ExtResource("2_rgxf5")
-index = 38
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_s84ei"), SubResource("Resource_xcpbj"), SubResource("Resource_fg0nn"), SubResource("Resource_q4ftk"), SubResource("Resource_ikupf"), SubResource("Resource_vy1bd"), SubResource("Resource_p20ne"), SubResource("Resource_shxm8")])
-hp_multiplier = 34.54434847936863
-speed_multiplier = 1.37
-cash_multiplier = 66.23184280003241
-
-[sub_resource type="Resource" id="Resource_lfl0y"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.61
-
-[sub_resource type="Resource" id="Resource_ecd4d"]
-script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.61
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_gxvek"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 9
-interval = 0.488
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_mexdm"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 6
-interval = 0.488
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_dfb4c"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.854
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_0cyfr"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 2
-interval = 0.854
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_krssq"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 2
-interval = 0.854
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_rkfr4"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.854
-start_delay = 0.85
-
-[sub_resource type="Resource" id="Resource_88m56"]
-script = ExtResource("2_rgxf5")
-index = 39
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_lfl0y"), SubResource("Resource_ecd4d"), SubResource("Resource_gxvek"), SubResource("Resource_mexdm"), SubResource("Resource_dfb4c"), SubResource("Resource_0cyfr"), SubResource("Resource_krssq"), SubResource("Resource_rkfr4")])
-hp_multiplier = 36.617009388130754
-speed_multiplier = 1.38
-cash_multiplier = 74.1796639360363
-
-[sub_resource type="Resource" id="Resource_btlkh"]
-script = ExtResource("3_atyet")
-enemy_id = &"boss_troll"
-count = 1
-interval = 1.0
-hp_multiplier = 1.2
-
-[sub_resource type="Resource" id="Resource_ocph0"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.6
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_8ngqr"]
-script = ExtResource("3_atyet")
-lane = &"south"
-count = 4
-interval = 0.6
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_ciyri"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 11
-interval = 0.48
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_k4c1p"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 9
-interval = 0.48
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_r2dbr"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 3
-interval = 0.84
-start_delay = 0.6
-
-[sub_resource type="Resource" id="Resource_5lf70"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 1
-interval = 0.84
-start_delay = 0.75
-
-[sub_resource type="Resource" id="Resource_o0pba"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 1
-interval = 0.84
-start_delay = 0.8
-
-[sub_resource type="Resource" id="Resource_b2n30"]
-script = ExtResource("2_rgxf5")
-index = 40
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_btlkh"), SubResource("Resource_ocph0"), SubResource("Resource_8ngqr"), SubResource("Resource_ciyri"), SubResource("Resource_k4c1p"), SubResource("Resource_r2dbr"), SubResource("Resource_5lf70"), SubResource("Resource_o0pba")])
-hp_multiplier = 38.814029951418604
-speed_multiplier = 1.3900000000000001
-cash_multiplier = 83.08122360836066
-is_boss = true
-reward_bonus = 50
-
-[sub_resource type="Resource" id="Resource_yabfc"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.59
-
-[sub_resource type="Resource" id="Resource_04h7b"]
-script = ExtResource("3_atyet")
-lane = &"south"
-count = 4
-interval = 0.59
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_i2kxh"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 9
-interval = 0.472
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_euxnc"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.472
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_rgr3c"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.826
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_3erm6"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.826
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_rjlaf"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 2
-interval = 0.826
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_8vgjh"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.826
-start_delay = 0.85
-
-[sub_resource type="Resource" id="Resource_r8wrj"]
-script = ExtResource("2_rgxf5")
-index = 41
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_yabfc"), SubResource("Resource_04h7b"), SubResource("Resource_i2kxh"), SubResource("Resource_euxnc"), SubResource("Resource_rgr3c"), SubResource("Resource_3erm6"), SubResource("Resource_rjlaf"), SubResource("Resource_8vgjh")])
-hp_multiplier = 49.37144609820446
-speed_multiplier = 1.4
-cash_multiplier = 93.05097044136396
-
-[sub_resource type="Resource" id="Resource_by7h8"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.5800000000000001
-
-[sub_resource type="Resource" id="Resource_i3xf2"]
-script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.5800000000000001
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_ibt1m"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 9
-interval = 0.4640000000000001
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_g8o44"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.4640000000000001
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_n8vvc"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.812
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_jy5ar"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.812
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_4euj8"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 2
-interval = 0.812
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_bdhpu"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.812
-start_delay = 0.85
-
-[sub_resource type="Resource" id="Resource_ic4st"]
-script = ExtResource("2_rgxf5")
-index = 42
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_by7h8"), SubResource("Resource_i3xf2"), SubResource("Resource_ibt1m"), SubResource("Resource_g8o44"), SubResource("Resource_n8vvc"), SubResource("Resource_jy5ar"), SubResource("Resource_4euj8"), SubResource("Resource_bdhpu")])
-hp_multiplier = 62.80047943691606
-speed_multiplier = 1.4
-cash_multiplier = 104.21708689432762
-
-[sub_resource type="Resource" id="Resource_f0nib"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.5700000000000001
-
-[sub_resource type="Resource" id="Resource_egokx"]
-script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.5700000000000001
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_rfel7"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 9
-interval = 0.45600000000000007
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_hl6hi"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.45600000000000007
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_x4xst"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.798
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_nyd67"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.798
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_ka4vb"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 3
-interval = 0.798
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_idv42"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.798
-start_delay = 0.85
-
-[sub_resource type="Resource" id="Resource_nfewi"]
-script = ExtResource("2_rgxf5")
-index = 43
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_f0nib"), SubResource("Resource_egokx"), SubResource("Resource_rfel7"), SubResource("Resource_hl6hi"), SubResource("Resource_x4xst"), SubResource("Resource_nyd67"), SubResource("Resource_ka4vb"), SubResource("Resource_idv42")])
-hp_multiplier = 79.88220984375725
-speed_multiplier = 1.4
-cash_multiplier = 116.72313732164696
-
-[sub_resource type="Resource" id="Resource_qwvyp"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.56
-
-[sub_resource type="Resource" id="Resource_233q0"]
-script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.56
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_aq10g"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 10
-interval = 0.44800000000000006
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_ylt3p"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.44800000000000006
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_jltdh"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.784
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_vh3rv"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.784
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_ken84"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 3
-interval = 0.784
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_abm88"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.784
-start_delay = 0.85
-
-[sub_resource type="Resource" id="Resource_c51k2"]
-script = ExtResource("2_rgxf5")
-index = 44
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_qwvyp"), SubResource("Resource_233q0"), SubResource("Resource_aq10g"), SubResource("Resource_ylt3p"), SubResource("Resource_jltdh"), SubResource("Resource_vh3rv"), SubResource("Resource_ken84"), SubResource("Resource_abm88")])
-hp_multiplier = 101.61017092125923
-speed_multiplier = 1.4
-cash_multiplier = 130.72991380024462
-
-[sub_resource type="Resource" id="Resource_lsgmb"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 18
-interval = 0.42
-
-[sub_resource type="Resource" id="Resource_u5j68"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 13
-interval = 0.42
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_iinxd"]
-script = ExtResource("3_atyet")
-interval = 0.5
-start_delay = 0.25
-
-[sub_resource type="Resource" id="Resource_tnlm2"]
-script = ExtResource("3_atyet")
-lane = &"south"
-count = 4
-interval = 0.5
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_adl4c"]
-script = ExtResource("2_rgxf5")
-index = 45
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_lsgmb"), SubResource("Resource_u5j68"), SubResource("Resource_iinxd"), SubResource("Resource_tnlm2")])
-hp_multiplier = 129.24813741184175
-speed_multiplier = 1.4
-cash_multiplier = 146.41750345627395
-
-[sub_resource type="Resource" id="Resource_rj372"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.54
-
-[sub_resource type="Resource" id="Resource_yv160"]
-script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.54
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_83qqg"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 10
-interval = 0.43200000000000005
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_kvwe3"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.43200000000000005
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_x2fuw"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.756
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_o33cl"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.756
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_05ire"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 3
-interval = 0.756
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_cxkd3"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.756
-start_delay = 0.85
-
-[sub_resource type="Resource" id="Resource_irf27"]
-script = ExtResource("2_rgxf5")
-index = 46
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_rj372"), SubResource("Resource_yv160"), SubResource("Resource_83qqg"), SubResource("Resource_kvwe3"), SubResource("Resource_x2fuw"), SubResource("Resource_o33cl"), SubResource("Resource_05ire"), SubResource("Resource_cxkd3")])
-hp_multiplier = 164.4036307878627
-speed_multiplier = 1.4
-cash_multiplier = 163.98760387102686
-
-[sub_resource type="Resource" id="Resource_2dece"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.53
-
-[sub_resource type="Resource" id="Resource_nf73q"]
-script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.53
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_drxd5"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 10
-interval = 0.42400000000000004
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_m1ctb"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.42400000000000004
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_hnhcy"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.742
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_0pgh6"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.742
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_t7v33"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 3
-interval = 0.742
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_wjlnf"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.742
-start_delay = 0.85
-
-[sub_resource type="Resource" id="Resource_oowp8"]
-script = ExtResource("2_rgxf5")
-index = 47
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_2dece"), SubResource("Resource_nf73q"), SubResource("Resource_drxd5"), SubResource("Resource_m1ctb"), SubResource("Resource_hnhcy"), SubResource("Resource_0pgh6"), SubResource("Resource_t7v33"), SubResource("Resource_wjlnf")])
-hp_multiplier = 209.12141836216136
-speed_multiplier = 1.4
-cash_multiplier = 183.6661163355501
-
-[sub_resource type="Resource" id="Resource_ua6l2"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.52
-
-[sub_resource type="Resource" id="Resource_kj0b5"]
-script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.52
-start_delay = 0.15
 
 [sub_resource type="Resource" id="Resource_1vo3j"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
-count = 10
-interval = 0.41600000000000004
-start_delay = 0.2
+lane = &"south"
+count = 6
+interval = 0.504
+start_delay = 0.35
 
 [sub_resource type="Resource" id="Resource_cjqgv"]
 script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.41600000000000004
-start_delay = 0.35
+enemy_id = &"tank"
+count = 3
+interval = 0.8819999999999999
+start_delay = 0.4
 
 [sub_resource type="Resource" id="Resource_vj6vc"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
-count = 4
-interval = 0.728
-start_delay = 0.4
+lane = &"south"
+count = 2
+interval = 0.8819999999999999
+start_delay = 0.55
 
 [sub_resource type="Resource" id="Resource_i6ymg"]
 script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.728
-start_delay = 0.55
+enemy_id = &"shaman"
+count = 2
+interval = 0.8819999999999999
+start_delay = 0.7
 
 [sub_resource type="Resource" id="Resource_i2dx4"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
-count = 3
-interval = 0.728
-start_delay = 0.7
+lane = &"south"
+count = 1
+interval = 0.8819999999999999
+start_delay = 0.85
 
 [sub_resource type="Resource" id="Resource_67od8"]
 script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
+enemy_id = &"raider"
 count = 1
-interval = 0.728
-start_delay = 0.85
+interval = 0.6930000000000001
+start_delay = 0.9
 
 [sub_resource type="Resource" id="Resource_v0sxd"]
-script = ExtResource("2_rgxf5")
-index = 48
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_ua6l2"), SubResource("Resource_kj0b5"), SubResource("Resource_1vo3j"), SubResource("Resource_cjqgv"), SubResource("Resource_vj6vc"), SubResource("Resource_i6ymg"), SubResource("Resource_i2dx4"), SubResource("Resource_67od8")])
-hp_multiplier = 266.0024441566693
-speed_multiplier = 1.4
-cash_multiplier = 205.70605029581608
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.5670000000000001
+start_delay = 1.0
 
 [sub_resource type="Resource" id="Resource_ko2ev"]
 script = ExtResource("3_atyet")
-count = 7
-interval = 0.51
+enemy_id = &"thrower"
+count = 1
+interval = 0.756
+start_delay = 1.1
 
 [sub_resource type="Resource" id="Resource_rlcp5"]
 script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.51
-start_delay = 0.15
+enemy_id = &"mage"
+count = 1
+interval = 1.008
+start_delay = 1.3
 
 [sub_resource type="Resource" id="Resource_lhrao"]
 script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 10
-interval = 0.40800000000000003
-start_delay = 0.2
+enemy_id = &"ram"
+count = 1
+interval = 1.1340000000000001
+start_delay = 1.2
 
 [sub_resource type="Resource" id="Resource_13ccg"]
 script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.40800000000000003
-start_delay = 0.35
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.26
+start_delay = 1.5
 
 [sub_resource type="Resource" id="Resource_acpmf"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.714
-start_delay = 0.4
+script = ExtResource("2_rgxf5")
+index = 37
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_oowp8"), SubResource("Resource_ua6l2"), SubResource("Resource_kj0b5"), SubResource("Resource_1vo3j"), SubResource("Resource_cjqgv"), SubResource("Resource_vj6vc"), SubResource("Resource_i6ymg"), SubResource("Resource_i2dx4"), SubResource("Resource_67od8"), SubResource("Resource_v0sxd"), SubResource("Resource_ko2ev"), SubResource("Resource_rlcp5"), SubResource("Resource_lhrao"), SubResource("Resource_13ccg")])
+hp_multiplier = 32.589007999404366
+speed_multiplier = 1.3599999999999999
+cash_multiplier = 59.13557392860036
 
 [sub_resource type="Resource" id="Resource_23nf2"]
 script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.714
-start_delay = 0.55
+count = 4
+interval = 0.62
 
 [sub_resource type="Resource" id="Resource_wibi3"]
 script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 3
-interval = 0.714
-start_delay = 0.7
+lane = &"south"
+count = 2
+interval = 0.62
+start_delay = 0.15
 
 [sub_resource type="Resource" id="Resource_orbq1"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 9
+interval = 0.496
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_ddmm5"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 6
+interval = 0.496
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_v8iud"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 3
+interval = 0.868
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_qyklt"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.868
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_1iuv7"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 2
+interval = 0.868
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_5wd6c"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 lane = &"south"
 count = 1
-interval = 0.714
+interval = 0.868
 start_delay = 0.85
 
-[sub_resource type="Resource" id="Resource_ddmm5"]
-script = ExtResource("2_rgxf5")
-index = 49
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_ko2ev"), SubResource("Resource_rlcp5"), SubResource("Resource_lhrao"), SubResource("Resource_13ccg"), SubResource("Resource_acpmf"), SubResource("Resource_23nf2"), SubResource("Resource_wibi3"), SubResource("Resource_orbq1")])
-hp_multiplier = 338.3551089672833
-speed_multiplier = 1.4
-cash_multiplier = 230.39077633131407
+[sub_resource type="Resource" id="Resource_5hpyr"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.682
+start_delay = 0.9
 
-[sub_resource type="Resource" id="Resource_v8iud"]
+[sub_resource type="Resource" id="Resource_xvcvl"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.558
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_g6lhv"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.744
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_3qgw5"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 0.992
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_g1tln"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.116
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_ajv3c"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.24
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_py3d6"]
+script = ExtResource("2_rgxf5")
+index = 38
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_23nf2"), SubResource("Resource_wibi3"), SubResource("Resource_orbq1"), SubResource("Resource_ddmm5"), SubResource("Resource_v8iud"), SubResource("Resource_qyklt"), SubResource("Resource_1iuv7"), SubResource("Resource_5wd6c"), SubResource("Resource_5hpyr"), SubResource("Resource_xvcvl"), SubResource("Resource_g6lhv"), SubResource("Resource_3qgw5"), SubResource("Resource_g1tln"), SubResource("Resource_ajv3c")])
+hp_multiplier = 34.54434847936863
+speed_multiplier = 1.37
+cash_multiplier = 66.23184280003241
+
+[sub_resource type="Resource" id="Resource_1n6iy"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.61
+
+[sub_resource type="Resource" id="Resource_4ltet"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.61
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_uqhyx"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 9
+interval = 0.488
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_5kjfq"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 6
+interval = 0.488
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_48cyc"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 3
+interval = 0.854
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_b8dg2"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.854
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_hgwc0"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 2
+interval = 0.854
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_n7efs"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.854
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_0iwpc"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.671
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_8supc"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.549
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_ese81"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.732
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_g6c1u"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 0.976
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_hyypv"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.098
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_hq61p"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.22
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_pnem7"]
+script = ExtResource("2_rgxf5")
+index = 39
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_1n6iy"), SubResource("Resource_4ltet"), SubResource("Resource_uqhyx"), SubResource("Resource_5kjfq"), SubResource("Resource_48cyc"), SubResource("Resource_b8dg2"), SubResource("Resource_hgwc0"), SubResource("Resource_n7efs"), SubResource("Resource_0iwpc"), SubResource("Resource_8supc"), SubResource("Resource_ese81"), SubResource("Resource_g6c1u"), SubResource("Resource_hyypv"), SubResource("Resource_hq61p")])
+hp_multiplier = 36.617009388130754
+speed_multiplier = 1.38
+cash_multiplier = 74.1796639360363
+
+[sub_resource type="Resource" id="Resource_1yg5d"]
 script = ExtResource("3_atyet")
 enemy_id = &"boss_troll"
 count = 1
 interval = 1.0
 hp_multiplier = 1.2
 
-[sub_resource type="Resource" id="Resource_qyklt"]
-script = ExtResource("3_atyet")
-count = 8
-interval = 0.5
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_1iuv7"]
-script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.5
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_5wd6c"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 12
-interval = 0.4
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_5hpyr"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 9
-interval = 0.4
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_xvcvl"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 3
-interval = 0.7
-start_delay = 0.6
-
-[sub_resource type="Resource" id="Resource_g6lhv"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 1
-interval = 0.7
-start_delay = 0.75
-
-[sub_resource type="Resource" id="Resource_3qgw5"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 1
-interval = 0.7
-start_delay = 0.8
-
-[sub_resource type="Resource" id="Resource_g1tln"]
-script = ExtResource("2_rgxf5")
-index = 50
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_v8iud"), SubResource("Resource_qyklt"), SubResource("Resource_1iuv7"), SubResource("Resource_5wd6c"), SubResource("Resource_5hpyr"), SubResource("Resource_xvcvl"), SubResource("Resource_g6lhv"), SubResource("Resource_3qgw5")])
-hp_multiplier = 430.3876986063844
-speed_multiplier = 1.4
-cash_multiplier = 258.03766949107177
-is_boss = true
-reward_bonus = 50
-
-[sub_resource type="Resource" id="Resource_ajv3c"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.5
-
-[sub_resource type="Resource" id="Resource_py3d6"]
-script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.5
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_1n6iy"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 10
-interval = 0.4
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_4ltet"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.4
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_uqhyx"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.7
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_5kjfq"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.7
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_48cyc"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 3
-interval = 0.7
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_b8dg2"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.7
-start_delay = 0.85
-
-[sub_resource type="Resource" id="Resource_hgwc0"]
-script = ExtResource("2_rgxf5")
-index = 51
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_ajv3c"), SubResource("Resource_py3d6"), SubResource("Resource_1n6iy"), SubResource("Resource_4ltet"), SubResource("Resource_uqhyx"), SubResource("Resource_5kjfq"), SubResource("Resource_48cyc"), SubResource("Resource_b8dg2")])
-hp_multiplier = 547.4531526273208
-speed_multiplier = 1.4
-cash_multiplier = 289.0021898300004
-
-[sub_resource type="Resource" id="Resource_n7efs"]
-script = ExtResource("3_atyet")
-count = 7
-interval = 0.5
-
-[sub_resource type="Resource" id="Resource_0iwpc"]
-script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.5
-start_delay = 0.15
-
-[sub_resource type="Resource" id="Resource_8supc"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 10
-interval = 0.4
-start_delay = 0.2
-
-[sub_resource type="Resource" id="Resource_ese81"]
-script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.4
-start_delay = 0.35
-
-[sub_resource type="Resource" id="Resource_g6c1u"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.7
-start_delay = 0.4
-
-[sub_resource type="Resource" id="Resource_hyypv"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.7
-start_delay = 0.55
-
-[sub_resource type="Resource" id="Resource_hq61p"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 3
-interval = 0.7
-start_delay = 0.7
-
-[sub_resource type="Resource" id="Resource_pnem7"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.7
-start_delay = 0.85
-
-[sub_resource type="Resource" id="Resource_1yg5d"]
-script = ExtResource("2_rgxf5")
-index = 52
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_n7efs"), SubResource("Resource_0iwpc"), SubResource("Resource_8supc"), SubResource("Resource_ese81"), SubResource("Resource_g6c1u"), SubResource("Resource_hyypv"), SubResource("Resource_hq61p"), SubResource("Resource_pnem7")])
-hp_multiplier = 696.3604101419522
-speed_multiplier = 1.4
-cash_multiplier = 323.6824526096005
-
 [sub_resource type="Resource" id="Resource_nb6e5"]
 script = ExtResource("3_atyet")
 count = 7
-interval = 0.5
+interval = 0.6
+start_delay = 0.4
 
 [sub_resource type="Resource" id="Resource_8v63l"]
 script = ExtResource("3_atyet")
 lane = &"south"
-interval = 0.5
-start_delay = 0.15
+count = 4
+interval = 0.6
+start_delay = 0.55
 
 [sub_resource type="Resource" id="Resource_8p1b3"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
-count = 10
-interval = 0.4
+count = 11
+interval = 0.48
 start_delay = 0.2
 
 [sub_resource type="Resource" id="Resource_vbnys"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
-count = 7
-interval = 0.4
+count = 9
+interval = 0.48
 start_delay = 0.35
 
 [sub_resource type="Resource" id="Resource_vujgd"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
-count = 4
-interval = 0.7
-start_delay = 0.4
+count = 3
+interval = 0.84
+start_delay = 0.6
 
 [sub_resource type="Resource" id="Resource_yug3f"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
-count = 3
-interval = 0.7
-start_delay = 0.55
+count = 1
+interval = 0.84
+start_delay = 0.75
 
 [sub_resource type="Resource" id="Resource_g3317"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
-count = 3
-interval = 0.7
-start_delay = 0.7
+count = 1
+interval = 0.84
+start_delay = 0.8
 
 [sub_resource type="Resource" id="Resource_8xty3"]
-script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
-count = 1
-interval = 0.7
-start_delay = 0.85
+script = ExtResource("2_rgxf5")
+index = 40
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_1yg5d"), SubResource("Resource_nb6e5"), SubResource("Resource_8v63l"), SubResource("Resource_8p1b3"), SubResource("Resource_vbnys"), SubResource("Resource_vujgd"), SubResource("Resource_yug3f"), SubResource("Resource_g3317")])
+hp_multiplier = 38.814029951418604
+speed_multiplier = 1.3900000000000001
+cash_multiplier = 83.08122360836066
+is_boss = true
+reward_bonus = 50
 
 [sub_resource type="Resource" id="Resource_p5ce2"]
-script = ExtResource("2_rgxf5")
-index = 53
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_nb6e5"), SubResource("Resource_8v63l"), SubResource("Resource_8p1b3"), SubResource("Resource_vbnys"), SubResource("Resource_vujgd"), SubResource("Resource_yug3f"), SubResource("Resource_g3317"), SubResource("Resource_8xty3")])
-hp_multiplier = 885.7704417005633
-speed_multiplier = 1.4
-cash_multiplier = 362.52434692275256
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.59
 
 [sub_resource type="Resource" id="Resource_qnle4"]
 script = ExtResource("3_atyet")
-count = 7
-interval = 0.5
+lane = &"south"
+count = 2
+interval = 0.59
+start_delay = 0.15
 
 [sub_resource type="Resource" id="Resource_mmmuo"]
 script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.5
-start_delay = 0.15
+enemy_id = &"runner"
+count = 9
+interval = 0.472
+start_delay = 0.2
 
 [sub_resource type="Resource" id="Resource_er455"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
-count = 10
-interval = 0.4
-start_delay = 0.2
+lane = &"south"
+count = 7
+interval = 0.472
+start_delay = 0.35
 
 [sub_resource type="Resource" id="Resource_f4ytx"]
 script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.4
-start_delay = 0.35
+enemy_id = &"tank"
+count = 4
+interval = 0.826
+start_delay = 0.4
 
 [sub_resource type="Resource" id="Resource_utsh4"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
-count = 4
-interval = 0.7
-start_delay = 0.4
+lane = &"south"
+count = 2
+interval = 0.826
+start_delay = 0.55
 
 [sub_resource type="Resource" id="Resource_mpogq"]
 script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.7
-start_delay = 0.55
+enemy_id = &"shaman"
+count = 2
+interval = 0.826
+start_delay = 0.7
 
 [sub_resource type="Resource" id="Resource_k624j"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
-count = 3
-interval = 0.7
-start_delay = 0.7
+lane = &"south"
+count = 1
+interval = 0.826
+start_delay = 0.85
 
 [sub_resource type="Resource" id="Resource_6jxl0"]
 script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
+enemy_id = &"raider"
 count = 1
-interval = 0.7
-start_delay = 0.85
+interval = 0.649
+start_delay = 0.9
 
 [sub_resource type="Resource" id="Resource_gcxjf"]
-script = ExtResource("2_rgxf5")
-index = 54
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_qnle4"), SubResource("Resource_mmmuo"), SubResource("Resource_er455"), SubResource("Resource_f4ytx"), SubResource("Resource_utsh4"), SubResource("Resource_mpogq"), SubResource("Resource_k624j"), SubResource("Resource_6jxl0")])
-hp_multiplier = 1126.7000018431165
-speed_multiplier = 1.4
-cash_multiplier = 406.0272685534829
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.531
+start_delay = 1.0
 
 [sub_resource type="Resource" id="Resource_ewnl8"]
 script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 18
-interval = 0.42
+enemy_id = &"thrower"
+count = 1
+interval = 0.708
+start_delay = 1.1
 
 [sub_resource type="Resource" id="Resource_pai2q"]
 script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 13
-interval = 0.42
-start_delay = 0.15
+enemy_id = &"mage"
+count = 1
+interval = 0.944
+start_delay = 1.3
 
 [sub_resource type="Resource" id="Resource_2ons6"]
 script = ExtResource("3_atyet")
-interval = 0.5
-start_delay = 0.25
+enemy_id = &"ram"
+count = 1
+interval = 1.062
+start_delay = 1.2
 
 [sub_resource type="Resource" id="Resource_0etal"]
 script = ExtResource("3_atyet")
-lane = &"south"
-count = 4
-interval = 0.5
-start_delay = 0.4
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.18
+start_delay = 1.5
 
 [sub_resource type="Resource" id="Resource_m8a42"]
 script = ExtResource("2_rgxf5")
-index = 55
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_ewnl8"), SubResource("Resource_pai2q"), SubResource("Resource_2ons6"), SubResource("Resource_0etal")])
-hp_multiplier = 1433.1624023444444
+index = 41
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_p5ce2"), SubResource("Resource_qnle4"), SubResource("Resource_mmmuo"), SubResource("Resource_er455"), SubResource("Resource_f4ytx"), SubResource("Resource_utsh4"), SubResource("Resource_mpogq"), SubResource("Resource_k624j"), SubResource("Resource_6jxl0"), SubResource("Resource_gcxjf"), SubResource("Resource_ewnl8"), SubResource("Resource_pai2q"), SubResource("Resource_2ons6"), SubResource("Resource_0etal")])
+hp_multiplier = 49.37144609820446
 speed_multiplier = 1.4
-cash_multiplier = 454.75054077990086
+cash_multiplier = 93.05097044136396
 
 [sub_resource type="Resource" id="Resource_d8qgq"]
 script = ExtResource("3_atyet")
-count = 7
-interval = 0.5
+count = 4
+interval = 0.5800000000000001
 
 [sub_resource type="Resource" id="Resource_r4qnx"]
 script = ExtResource("3_atyet")
 lane = &"south"
-interval = 0.5
+count = 3
+interval = 0.5800000000000001
 start_delay = 0.15
 
 [sub_resource type="Resource" id="Resource_2a1a8"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
-count = 10
-interval = 0.4
+count = 9
+interval = 0.4640000000000001
 start_delay = 0.2
 
 [sub_resource type="Resource" id="Resource_6panl"]
@@ -3043,29 +3041,29 @@ script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
 count = 7
-interval = 0.4
+interval = 0.4640000000000001
 start_delay = 0.35
 
 [sub_resource type="Resource" id="Resource_667kk"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 4
-interval = 0.7
+interval = 0.812
 start_delay = 0.4
 
 [sub_resource type="Resource" id="Resource_j7dnm"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
-count = 3
-interval = 0.7
+count = 2
+interval = 0.812
 start_delay = 0.55
 
 [sub_resource type="Resource" id="Resource_nrr1f"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
-count = 3
-interval = 0.7
+count = 2
+interval = 0.812
 start_delay = 0.7
 
 [sub_resource type="Resource" id="Resource_inqe2"]
@@ -3073,236 +3071,762 @@ script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 lane = &"south"
 count = 1
-interval = 0.7
+interval = 0.812
 start_delay = 0.85
 
 [sub_resource type="Resource" id="Resource_dxe51"]
-script = ExtResource("2_rgxf5")
-index = 56
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_d8qgq"), SubResource("Resource_r4qnx"), SubResource("Resource_2a1a8"), SubResource("Resource_6panl"), SubResource("Resource_667kk"), SubResource("Resource_j7dnm"), SubResource("Resource_nrr1f"), SubResource("Resource_inqe2")])
-hp_multiplier = 1822.9825757821334
-speed_multiplier = 1.4
-cash_multiplier = 509.32060567348896
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.6380000000000001
+start_delay = 0.9
 
 [sub_resource type="Resource" id="Resource_u1j5v"]
 script = ExtResource("3_atyet")
-count = 7
-interval = 0.5
+enemy_id = &"wyvern"
+count = 1
+interval = 0.5220000000000001
+start_delay = 1.0
 
 [sub_resource type="Resource" id="Resource_qjrhy"]
 script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.5
-start_delay = 0.15
+enemy_id = &"thrower"
+count = 1
+interval = 0.6960000000000001
+start_delay = 1.1
 
 [sub_resource type="Resource" id="Resource_url2b"]
 script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 10
-interval = 0.4
-start_delay = 0.2
+enemy_id = &"mage"
+count = 1
+interval = 0.9280000000000002
+start_delay = 1.3
 
 [sub_resource type="Resource" id="Resource_oldba"]
 script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.4
-start_delay = 0.35
+enemy_id = &"ram"
+count = 1
+interval = 1.0440000000000003
+start_delay = 1.2
 
 [sub_resource type="Resource" id="Resource_1ucgc"]
 script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.7
-start_delay = 0.4
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.1600000000000001
+start_delay = 1.5
 
 [sub_resource type="Resource" id="Resource_qpdi3"]
-script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.7
-start_delay = 0.55
+script = ExtResource("2_rgxf5")
+index = 42
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_d8qgq"), SubResource("Resource_r4qnx"), SubResource("Resource_2a1a8"), SubResource("Resource_6panl"), SubResource("Resource_667kk"), SubResource("Resource_j7dnm"), SubResource("Resource_nrr1f"), SubResource("Resource_inqe2"), SubResource("Resource_dxe51"), SubResource("Resource_u1j5v"), SubResource("Resource_qjrhy"), SubResource("Resource_url2b"), SubResource("Resource_oldba"), SubResource("Resource_1ucgc")])
+hp_multiplier = 62.80047943691606
+speed_multiplier = 1.4
+cash_multiplier = 104.21708689432762
 
 [sub_resource type="Resource" id="Resource_w8xfd"]
 script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 3
-interval = 0.7
-start_delay = 0.7
+count = 4
+interval = 0.5700000000000001
 
 [sub_resource type="Resource" id="Resource_ijqle"]
 script = ExtResource("3_atyet")
-enemy_id = &"shaman"
 lane = &"south"
-count = 1
-interval = 0.7
-start_delay = 0.85
+count = 3
+interval = 0.5700000000000001
+start_delay = 0.15
 
 [sub_resource type="Resource" id="Resource_sndkq"]
-script = ExtResource("2_rgxf5")
-index = 57
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_u1j5v"), SubResource("Resource_qjrhy"), SubResource("Resource_url2b"), SubResource("Resource_oldba"), SubResource("Resource_1ucgc"), SubResource("Resource_qpdi3"), SubResource("Resource_w8xfd"), SubResource("Resource_ijqle")])
-hp_multiplier = 2318.8338363948733
-speed_multiplier = 1.4
-cash_multiplier = 570.4390783543076
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 9
+interval = 0.45600000000000007
+start_delay = 0.2
 
 [sub_resource type="Resource" id="Resource_x1lft"]
 script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
 count = 7
-interval = 0.5
+interval = 0.45600000000000007
+start_delay = 0.35
 
 [sub_resource type="Resource" id="Resource_jljb4"]
 script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.5
-start_delay = 0.15
+enemy_id = &"tank"
+count = 4
+interval = 0.798
+start_delay = 0.4
 
 [sub_resource type="Resource" id="Resource_78jst"]
 script = ExtResource("3_atyet")
-enemy_id = &"runner"
-count = 10
-interval = 0.4
-start_delay = 0.2
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.798
+start_delay = 0.55
 
 [sub_resource type="Resource" id="Resource_2j2ud"]
 script = ExtResource("3_atyet")
-enemy_id = &"runner"
-lane = &"south"
-count = 7
-interval = 0.4
-start_delay = 0.35
+enemy_id = &"shaman"
+count = 3
+interval = 0.798
+start_delay = 0.7
 
 [sub_resource type="Resource" id="Resource_ayqt8"]
 script = ExtResource("3_atyet")
-enemy_id = &"tank"
-count = 4
-interval = 0.7
-start_delay = 0.4
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.798
+start_delay = 0.85
 
 [sub_resource type="Resource" id="Resource_ai2pb"]
 script = ExtResource("3_atyet")
-enemy_id = &"tank"
-lane = &"south"
-count = 3
-interval = 0.7
-start_delay = 0.55
+enemy_id = &"raider"
+count = 1
+interval = 0.6270000000000001
+start_delay = 0.9
 
 [sub_resource type="Resource" id="Resource_qmacp"]
 script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-count = 3
-interval = 0.7
-start_delay = 0.7
+enemy_id = &"wyvern"
+count = 1
+interval = 0.5130000000000001
+start_delay = 1.0
 
 [sub_resource type="Resource" id="Resource_yel0k"]
 script = ExtResource("3_atyet")
-enemy_id = &"shaman"
-lane = &"south"
+enemy_id = &"thrower"
 count = 1
-interval = 0.7
-start_delay = 0.85
+interval = 0.684
+start_delay = 1.1
 
 [sub_resource type="Resource" id="Resource_u82qq"]
-script = ExtResource("2_rgxf5")
-index = 58
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_x1lft"), SubResource("Resource_jljb4"), SubResource("Resource_78jst"), SubResource("Resource_2j2ud"), SubResource("Resource_ayqt8"), SubResource("Resource_ai2pb"), SubResource("Resource_qmacp"), SubResource("Resource_yel0k")])
-hp_multiplier = 2949.5566398942788
-speed_multiplier = 1.4
-cash_multiplier = 638.8917677568247
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 0.9120000000000001
+start_delay = 1.3
 
 [sub_resource type="Resource" id="Resource_0dwn8"]
 script = ExtResource("3_atyet")
-count = 7
-interval = 0.5
+enemy_id = &"ram"
+count = 1
+interval = 1.0260000000000002
+start_delay = 1.2
 
 [sub_resource type="Resource" id="Resource_4xb63"]
 script = ExtResource("3_atyet")
-lane = &"south"
-interval = 0.5
-start_delay = 0.15
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.1400000000000001
+start_delay = 1.5
 
 [sub_resource type="Resource" id="Resource_yyk1e"]
+script = ExtResource("2_rgxf5")
+index = 43
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_w8xfd"), SubResource("Resource_ijqle"), SubResource("Resource_sndkq"), SubResource("Resource_x1lft"), SubResource("Resource_jljb4"), SubResource("Resource_78jst"), SubResource("Resource_2j2ud"), SubResource("Resource_ayqt8"), SubResource("Resource_ai2pb"), SubResource("Resource_qmacp"), SubResource("Resource_yel0k"), SubResource("Resource_u82qq"), SubResource("Resource_0dwn8"), SubResource("Resource_4xb63")])
+hp_multiplier = 79.88220984375725
+speed_multiplier = 1.4
+cash_multiplier = 116.72313732164696
+
+[sub_resource type="Resource" id="Resource_684x4"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.56
+
+[sub_resource type="Resource" id="Resource_3m1en"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.56
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_1jumy"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 10
-interval = 0.4
+interval = 0.44800000000000006
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_684x4"]
+[sub_resource type="Resource" id="Resource_rcwtk"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
 count = 7
-interval = 0.4
+interval = 0.44800000000000006
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_3m1en"]
+[sub_resource type="Resource" id="Resource_hbk4y"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 4
-interval = 0.7
+interval = 0.784
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_1jumy"]
+[sub_resource type="Resource" id="Resource_hwjdp"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
-count = 3
-interval = 0.7
+count = 2
+interval = 0.784
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_rcwtk"]
+[sub_resource type="Resource" id="Resource_t5ecc"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 3
-interval = 0.7
+interval = 0.784
 start_delay = 0.7
 
-[sub_resource type="Resource" id="Resource_hbk4y"]
+[sub_resource type="Resource" id="Resource_33f42"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 lane = &"south"
 count = 1
-interval = 0.7
+interval = 0.784
 start_delay = 0.85
 
-[sub_resource type="Resource" id="Resource_hwjdp"]
-script = ExtResource("2_rgxf5")
-index = 59
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_0dwn8"), SubResource("Resource_4xb63"), SubResource("Resource_yyk1e"), SubResource("Resource_684x4"), SubResource("Resource_3m1en"), SubResource("Resource_1jumy"), SubResource("Resource_rcwtk"), SubResource("Resource_hbk4y")])
-hp_multiplier = 3751.8360459455225
-speed_multiplier = 1.4
-cash_multiplier = 715.5587798876436
+[sub_resource type="Resource" id="Resource_5en13"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.6160000000000001
+start_delay = 0.9
 
-[sub_resource type="Resource" id="Resource_t5ecc"]
+[sub_resource type="Resource" id="Resource_2ml53"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.5040000000000001
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_l26ic"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.672
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_244w1"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 0.8960000000000001
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_8qbjt"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 1.0080000000000002
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_52ucd"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.12
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_fg2g6"]
+script = ExtResource("2_rgxf5")
+index = 44
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_684x4"), SubResource("Resource_3m1en"), SubResource("Resource_1jumy"), SubResource("Resource_rcwtk"), SubResource("Resource_hbk4y"), SubResource("Resource_hwjdp"), SubResource("Resource_t5ecc"), SubResource("Resource_33f42"), SubResource("Resource_5en13"), SubResource("Resource_2ml53"), SubResource("Resource_l26ic"), SubResource("Resource_244w1"), SubResource("Resource_8qbjt"), SubResource("Resource_52ucd")])
+hp_multiplier = 101.61017092125923
+speed_multiplier = 1.4
+cash_multiplier = 130.72991380024462
+
+[sub_resource type="Resource" id="Resource_cnwpt"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 18
+interval = 0.42
+
+[sub_resource type="Resource" id="Resource_63p5f"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 13
+interval = 0.42
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_6j4gv"]
+script = ExtResource("3_atyet")
+interval = 0.5
+start_delay = 0.25
+
+[sub_resource type="Resource" id="Resource_vg3nj"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 4
+interval = 0.5
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_l7lfo"]
+script = ExtResource("2_rgxf5")
+index = 45
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_cnwpt"), SubResource("Resource_63p5f"), SubResource("Resource_6j4gv"), SubResource("Resource_vg3nj")])
+hp_multiplier = 129.24813741184175
+speed_multiplier = 1.4
+cash_multiplier = 146.41750345627395
+
+[sub_resource type="Resource" id="Resource_kneg4"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.54
+
+[sub_resource type="Resource" id="Resource_3m7a0"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.54
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_kwaoy"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.43200000000000005
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_dhvmm"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.43200000000000005
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_0t2vy"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.756
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_r6u8h"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.756
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_yio26"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.756
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_2xgaw"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.756
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_r1ovw"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.5940000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_igh0g"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.48600000000000004
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_bwvlx"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.648
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_awang"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 0.8640000000000001
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_1r21i"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.9720000000000001
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_yhlfn"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.08
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_8w2m7"]
+script = ExtResource("2_rgxf5")
+index = 46
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_kneg4"), SubResource("Resource_3m7a0"), SubResource("Resource_kwaoy"), SubResource("Resource_dhvmm"), SubResource("Resource_0t2vy"), SubResource("Resource_r6u8h"), SubResource("Resource_yio26"), SubResource("Resource_2xgaw"), SubResource("Resource_r1ovw"), SubResource("Resource_igh0g"), SubResource("Resource_bwvlx"), SubResource("Resource_awang"), SubResource("Resource_1r21i"), SubResource("Resource_yhlfn")])
+hp_multiplier = 164.4036307878627
+speed_multiplier = 1.4
+cash_multiplier = 163.98760387102686
+
+[sub_resource type="Resource" id="Resource_d4yad"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.53
+
+[sub_resource type="Resource" id="Resource_14182"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.53
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_a03wh"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.42400000000000004
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_0kytl"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.42400000000000004
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_ufhau"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.742
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_jc2a5"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.742
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_7dt88"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.742
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_5vl1u"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.742
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_a0mmp"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.5830000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_hxfyk"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.47700000000000004
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_1nj0f"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.636
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_piay3"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 0.8480000000000001
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_i1fam"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.9540000000000001
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_fgitx"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.06
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_2fu8o"]
+script = ExtResource("2_rgxf5")
+index = 47
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_d4yad"), SubResource("Resource_14182"), SubResource("Resource_a03wh"), SubResource("Resource_0kytl"), SubResource("Resource_ufhau"), SubResource("Resource_jc2a5"), SubResource("Resource_7dt88"), SubResource("Resource_5vl1u"), SubResource("Resource_a0mmp"), SubResource("Resource_hxfyk"), SubResource("Resource_1nj0f"), SubResource("Resource_piay3"), SubResource("Resource_i1fam"), SubResource("Resource_fgitx")])
+hp_multiplier = 209.12141836216136
+speed_multiplier = 1.4
+cash_multiplier = 183.6661163355501
+
+[sub_resource type="Resource" id="Resource_2nu6k"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.52
+
+[sub_resource type="Resource" id="Resource_vc1wa"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.52
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_lxp6f"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.41600000000000004
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_artvj"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.41600000000000004
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_y2ckb"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.728
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_2av8c"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.728
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_6cd5l"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.728
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_o8ilg"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.728
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_y12mt"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.5720000000000001
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_47c1v"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.468
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_ciosp"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.624
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_ar46g"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 0.8320000000000001
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_7udga"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.936
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_oqv5g"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.04
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_03y1o"]
+script = ExtResource("2_rgxf5")
+index = 48
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_2nu6k"), SubResource("Resource_vc1wa"), SubResource("Resource_lxp6f"), SubResource("Resource_artvj"), SubResource("Resource_y2ckb"), SubResource("Resource_2av8c"), SubResource("Resource_6cd5l"), SubResource("Resource_o8ilg"), SubResource("Resource_y12mt"), SubResource("Resource_47c1v"), SubResource("Resource_ciosp"), SubResource("Resource_ar46g"), SubResource("Resource_7udga"), SubResource("Resource_oqv5g")])
+hp_multiplier = 266.0024441566693
+speed_multiplier = 1.4
+cash_multiplier = 205.70605029581608
+
+[sub_resource type="Resource" id="Resource_5r672"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.51
+
+[sub_resource type="Resource" id="Resource_l8dwo"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.51
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_uxhqh"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.40800000000000003
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_fvwvl"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.40800000000000003
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_cy6kw"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.714
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_f7mum"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.714
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_sgax3"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.714
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_dkywp"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.714
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_d0t7q"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.561
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_4hopc"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.459
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_68rgi"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.612
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_j03o4"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+interval = 0.8160000000000001
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_4vbkm"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.918
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_b1l40"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.02
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_re18q"]
+script = ExtResource("2_rgxf5")
+index = 49
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_5r672"), SubResource("Resource_l8dwo"), SubResource("Resource_uxhqh"), SubResource("Resource_fvwvl"), SubResource("Resource_cy6kw"), SubResource("Resource_f7mum"), SubResource("Resource_sgax3"), SubResource("Resource_dkywp"), SubResource("Resource_d0t7q"), SubResource("Resource_4hopc"), SubResource("Resource_68rgi"), SubResource("Resource_j03o4"), SubResource("Resource_4vbkm"), SubResource("Resource_b1l40")])
+hp_multiplier = 338.3551089672833
+speed_multiplier = 1.4
+cash_multiplier = 230.39077633131407
+
+[sub_resource type="Resource" id="Resource_6fq60"]
 script = ExtResource("3_atyet")
 enemy_id = &"boss_troll"
 count = 1
 interval = 1.0
 hp_multiplier = 1.2
 
-[sub_resource type="Resource" id="Resource_33f42"]
+[sub_resource type="Resource" id="Resource_c4gp6"]
 script = ExtResource("3_atyet")
 count = 8
 interval = 0.5
 start_delay = 0.4
 
-[sub_resource type="Resource" id="Resource_5en13"]
+[sub_resource type="Resource" id="Resource_yy0wq"]
 script = ExtResource("3_atyet")
 lane = &"south"
 interval = 0.5
 start_delay = 0.55
 
-[sub_resource type="Resource" id="Resource_2ml53"]
+[sub_resource type="Resource" id="Resource_ks5f3"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 count = 12
 interval = 0.4
 start_delay = 0.2
 
-[sub_resource type="Resource" id="Resource_l26ic"]
+[sub_resource type="Resource" id="Resource_alltf"]
 script = ExtResource("3_atyet")
 enemy_id = &"runner"
 lane = &"south"
@@ -3310,14 +3834,14 @@ count = 9
 interval = 0.4
 start_delay = 0.35
 
-[sub_resource type="Resource" id="Resource_244w1"]
+[sub_resource type="Resource" id="Resource_figwx"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 count = 3
 interval = 0.7
 start_delay = 0.6
 
-[sub_resource type="Resource" id="Resource_8qbjt"]
+[sub_resource type="Resource" id="Resource_pexcv"]
 script = ExtResource("3_atyet")
 enemy_id = &"tank"
 lane = &"south"
@@ -3325,17 +3849,965 @@ count = 1
 interval = 0.7
 start_delay = 0.75
 
-[sub_resource type="Resource" id="Resource_52ucd"]
+[sub_resource type="Resource" id="Resource_kjxcu"]
 script = ExtResource("3_atyet")
 enemy_id = &"shaman"
 count = 1
 interval = 0.7
 start_delay = 0.8
 
-[sub_resource type="Resource" id="Resource_fg2g6"]
+[sub_resource type="Resource" id="Resource_4evbl"]
+script = ExtResource("2_rgxf5")
+index = 50
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_6fq60"), SubResource("Resource_c4gp6"), SubResource("Resource_yy0wq"), SubResource("Resource_ks5f3"), SubResource("Resource_alltf"), SubResource("Resource_figwx"), SubResource("Resource_pexcv"), SubResource("Resource_kjxcu")])
+hp_multiplier = 430.3876986063844
+speed_multiplier = 1.4
+cash_multiplier = 258.03766949107177
+is_boss = true
+reward_bonus = 50
+
+[sub_resource type="Resource" id="Resource_38ujt"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.5
+
+[sub_resource type="Resource" id="Resource_hiecl"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.5
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_ee2p5"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.4
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_ppuu3"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.4
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_pspjf"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.7
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_yulry"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.7
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_bu1k6"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.7
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_cm3rr"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.7
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_jk50v"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.55
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_gih3h"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.45
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_i02d5"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.6
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_b5pgq"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_40rtg"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.9
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_3w3ex"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.0
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_31j3v"]
+script = ExtResource("2_rgxf5")
+index = 51
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_38ujt"), SubResource("Resource_hiecl"), SubResource("Resource_ee2p5"), SubResource("Resource_ppuu3"), SubResource("Resource_pspjf"), SubResource("Resource_yulry"), SubResource("Resource_bu1k6"), SubResource("Resource_cm3rr"), SubResource("Resource_jk50v"), SubResource("Resource_gih3h"), SubResource("Resource_i02d5"), SubResource("Resource_b5pgq"), SubResource("Resource_40rtg"), SubResource("Resource_3w3ex")])
+hp_multiplier = 547.4531526273208
+speed_multiplier = 1.4
+cash_multiplier = 289.0021898300004
+
+[sub_resource type="Resource" id="Resource_e7xt8"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.5
+
+[sub_resource type="Resource" id="Resource_eik48"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.5
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_6n1cq"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.4
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_cfsqe"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.4
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_6lf2d"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.7
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_e10v5"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.7
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_kj037"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.7
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_vqy20"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.7
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_pv5xd"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.55
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_kmymf"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.45
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_xg3a4"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.6
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_7slqn"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_be3dm"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.9
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_to7pw"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.0
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_dmpdl"]
+script = ExtResource("2_rgxf5")
+index = 52
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_e7xt8"), SubResource("Resource_eik48"), SubResource("Resource_6n1cq"), SubResource("Resource_cfsqe"), SubResource("Resource_6lf2d"), SubResource("Resource_e10v5"), SubResource("Resource_kj037"), SubResource("Resource_vqy20"), SubResource("Resource_pv5xd"), SubResource("Resource_kmymf"), SubResource("Resource_xg3a4"), SubResource("Resource_7slqn"), SubResource("Resource_be3dm"), SubResource("Resource_to7pw")])
+hp_multiplier = 696.3604101419522
+speed_multiplier = 1.4
+cash_multiplier = 323.6824526096005
+
+[sub_resource type="Resource" id="Resource_u34mh"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.5
+
+[sub_resource type="Resource" id="Resource_0ohj1"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.5
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_e6ide"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.4
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_ku70l"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.4
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_nk8br"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.7
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_e7urx"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.7
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_iyh2i"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.7
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_sspd0"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.7
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_nhioi"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.55
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_nglgs"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.45
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_oo7ss"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.6
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_3lvie"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_wrqqc"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.9
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_t6pbl"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.0
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_wxybr"]
+script = ExtResource("2_rgxf5")
+index = 53
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_u34mh"), SubResource("Resource_0ohj1"), SubResource("Resource_e6ide"), SubResource("Resource_ku70l"), SubResource("Resource_nk8br"), SubResource("Resource_e7urx"), SubResource("Resource_iyh2i"), SubResource("Resource_sspd0"), SubResource("Resource_nhioi"), SubResource("Resource_nglgs"), SubResource("Resource_oo7ss"), SubResource("Resource_3lvie"), SubResource("Resource_wrqqc"), SubResource("Resource_t6pbl")])
+hp_multiplier = 885.7704417005633
+speed_multiplier = 1.4
+cash_multiplier = 362.52434692275256
+
+[sub_resource type="Resource" id="Resource_vg8cm"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.5
+
+[sub_resource type="Resource" id="Resource_v0fg4"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.5
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_adpfb"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.4
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_fw3bs"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.4
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_drqnq"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.7
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_g6avv"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.7
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_s4w1a"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.7
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_2md3j"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.7
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_p7jvq"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.55
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_fu1xo"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.45
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_3tigb"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.6
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_ad6lt"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_hyxi5"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.9
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_ktm1y"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.0
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_he3ne"]
+script = ExtResource("2_rgxf5")
+index = 54
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_vg8cm"), SubResource("Resource_v0fg4"), SubResource("Resource_adpfb"), SubResource("Resource_fw3bs"), SubResource("Resource_drqnq"), SubResource("Resource_g6avv"), SubResource("Resource_s4w1a"), SubResource("Resource_2md3j"), SubResource("Resource_p7jvq"), SubResource("Resource_fu1xo"), SubResource("Resource_3tigb"), SubResource("Resource_ad6lt"), SubResource("Resource_hyxi5"), SubResource("Resource_ktm1y")])
+hp_multiplier = 1126.7000018431165
+speed_multiplier = 1.4
+cash_multiplier = 406.0272685534829
+
+[sub_resource type="Resource" id="Resource_nv6py"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 18
+interval = 0.42
+
+[sub_resource type="Resource" id="Resource_lk3ah"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 13
+interval = 0.42
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_d23uw"]
+script = ExtResource("3_atyet")
+interval = 0.5
+start_delay = 0.25
+
+[sub_resource type="Resource" id="Resource_affbl"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 4
+interval = 0.5
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_4lv0i"]
+script = ExtResource("2_rgxf5")
+index = 55
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_nv6py"), SubResource("Resource_lk3ah"), SubResource("Resource_d23uw"), SubResource("Resource_affbl")])
+hp_multiplier = 1433.1624023444444
+speed_multiplier = 1.4
+cash_multiplier = 454.75054077990086
+
+[sub_resource type="Resource" id="Resource_ih3if"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.5
+
+[sub_resource type="Resource" id="Resource_3ni46"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.5
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_w6bei"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.4
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_74mpa"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.4
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_5owdq"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.7
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_pphig"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.7
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_h3d7p"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.7
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_vdw7o"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.7
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_uomrq"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.55
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_j2sbu"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.45
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_cwrpd"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.6
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_ky4co"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_8aqhx"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.9
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_utdvr"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.0
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_8i3jx"]
+script = ExtResource("2_rgxf5")
+index = 56
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_ih3if"), SubResource("Resource_3ni46"), SubResource("Resource_w6bei"), SubResource("Resource_74mpa"), SubResource("Resource_5owdq"), SubResource("Resource_pphig"), SubResource("Resource_h3d7p"), SubResource("Resource_vdw7o"), SubResource("Resource_uomrq"), SubResource("Resource_j2sbu"), SubResource("Resource_cwrpd"), SubResource("Resource_ky4co"), SubResource("Resource_8aqhx"), SubResource("Resource_utdvr")])
+hp_multiplier = 1822.9825757821334
+speed_multiplier = 1.4
+cash_multiplier = 509.32060567348896
+
+[sub_resource type="Resource" id="Resource_2fniy"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.5
+
+[sub_resource type="Resource" id="Resource_sn8my"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.5
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_sr3mi"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.4
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_nqc4s"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.4
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_ld775"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.7
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_afbty"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.7
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_8jxk6"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.7
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_j24xr"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.7
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_eksnh"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.55
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_bhimk"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.45
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_1e8gh"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.6
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_1vd6h"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_5tl1k"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.9
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_r6gnw"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.0
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_khp2q"]
+script = ExtResource("2_rgxf5")
+index = 57
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_2fniy"), SubResource("Resource_sn8my"), SubResource("Resource_sr3mi"), SubResource("Resource_nqc4s"), SubResource("Resource_ld775"), SubResource("Resource_afbty"), SubResource("Resource_8jxk6"), SubResource("Resource_j24xr"), SubResource("Resource_eksnh"), SubResource("Resource_bhimk"), SubResource("Resource_1e8gh"), SubResource("Resource_1vd6h"), SubResource("Resource_5tl1k"), SubResource("Resource_r6gnw")])
+hp_multiplier = 2318.8338363948733
+speed_multiplier = 1.4
+cash_multiplier = 570.4390783543076
+
+[sub_resource type="Resource" id="Resource_sfhwg"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.5
+
+[sub_resource type="Resource" id="Resource_t73yd"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.5
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_jlp8c"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.4
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_mpwqo"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.4
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_lp400"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.7
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_cjll7"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.7
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_ewvav"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.7
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_ldthn"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.7
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_k2uuf"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.55
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_40jti"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.45
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_cvxni"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.6
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_vdtsl"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_knik5"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.9
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_35hwt"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.0
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_ovgc8"]
+script = ExtResource("2_rgxf5")
+index = 58
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_sfhwg"), SubResource("Resource_t73yd"), SubResource("Resource_jlp8c"), SubResource("Resource_mpwqo"), SubResource("Resource_lp400"), SubResource("Resource_cjll7"), SubResource("Resource_ewvav"), SubResource("Resource_ldthn"), SubResource("Resource_k2uuf"), SubResource("Resource_40jti"), SubResource("Resource_cvxni"), SubResource("Resource_vdtsl"), SubResource("Resource_knik5"), SubResource("Resource_35hwt")])
+hp_multiplier = 2949.5566398942788
+speed_multiplier = 1.4
+cash_multiplier = 638.8917677568247
+
+[sub_resource type="Resource" id="Resource_8dcjk"]
+script = ExtResource("3_atyet")
+count = 4
+interval = 0.5
+
+[sub_resource type="Resource" id="Resource_2lwbu"]
+script = ExtResource("3_atyet")
+lane = &"south"
+count = 3
+interval = 0.5
+start_delay = 0.15
+
+[sub_resource type="Resource" id="Resource_fuvlf"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 10
+interval = 0.4
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_fwdr2"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 7
+interval = 0.4
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_ktbxw"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 4
+interval = 0.7
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_46c7m"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 2
+interval = 0.7
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_b22sd"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 3
+interval = 0.7
+start_delay = 0.7
+
+[sub_resource type="Resource" id="Resource_pg0tm"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+lane = &"south"
+count = 1
+interval = 0.7
+start_delay = 0.85
+
+[sub_resource type="Resource" id="Resource_tyu3p"]
+script = ExtResource("3_atyet")
+enemy_id = &"raider"
+count = 1
+interval = 0.55
+start_delay = 0.9
+
+[sub_resource type="Resource" id="Resource_nfgdp"]
+script = ExtResource("3_atyet")
+enemy_id = &"wyvern"
+count = 1
+interval = 0.45
+start_delay = 1.0
+
+[sub_resource type="Resource" id="Resource_8idtb"]
+script = ExtResource("3_atyet")
+enemy_id = &"thrower"
+count = 1
+interval = 0.6
+start_delay = 1.1
+
+[sub_resource type="Resource" id="Resource_6cdu7"]
+script = ExtResource("3_atyet")
+enemy_id = &"mage"
+count = 1
+start_delay = 1.3
+
+[sub_resource type="Resource" id="Resource_5ohlm"]
+script = ExtResource("3_atyet")
+enemy_id = &"ram"
+count = 1
+interval = 0.9
+start_delay = 1.2
+
+[sub_resource type="Resource" id="Resource_icsrm"]
+script = ExtResource("3_atyet")
+enemy_id = &"trebuchet"
+count = 1
+interval = 1.0
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_0qplu"]
+script = ExtResource("2_rgxf5")
+index = 59
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_8dcjk"), SubResource("Resource_2lwbu"), SubResource("Resource_fuvlf"), SubResource("Resource_fwdr2"), SubResource("Resource_ktbxw"), SubResource("Resource_46c7m"), SubResource("Resource_b22sd"), SubResource("Resource_pg0tm"), SubResource("Resource_tyu3p"), SubResource("Resource_nfgdp"), SubResource("Resource_8idtb"), SubResource("Resource_6cdu7"), SubResource("Resource_5ohlm"), SubResource("Resource_icsrm")])
+hp_multiplier = 3751.8360459455225
+speed_multiplier = 1.4
+cash_multiplier = 715.5587798876436
+
+[sub_resource type="Resource" id="Resource_od2yl"]
+script = ExtResource("3_atyet")
+enemy_id = &"boss_troll"
+count = 1
+interval = 1.0
+hp_multiplier = 1.2
+
+[sub_resource type="Resource" id="Resource_io3sv"]
+script = ExtResource("3_atyet")
+count = 8
+interval = 0.5
+start_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_pllcp"]
+script = ExtResource("3_atyet")
+lane = &"south"
+interval = 0.5
+start_delay = 0.55
+
+[sub_resource type="Resource" id="Resource_vq74s"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+count = 12
+interval = 0.4
+start_delay = 0.2
+
+[sub_resource type="Resource" id="Resource_n4pap"]
+script = ExtResource("3_atyet")
+enemy_id = &"runner"
+lane = &"south"
+count = 9
+interval = 0.4
+start_delay = 0.35
+
+[sub_resource type="Resource" id="Resource_3872j"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+count = 3
+interval = 0.7
+start_delay = 0.6
+
+[sub_resource type="Resource" id="Resource_28ctp"]
+script = ExtResource("3_atyet")
+enemy_id = &"tank"
+lane = &"south"
+count = 1
+interval = 0.7
+start_delay = 0.75
+
+[sub_resource type="Resource" id="Resource_knjl4"]
+script = ExtResource("3_atyet")
+enemy_id = &"shaman"
+count = 1
+interval = 0.7
+start_delay = 0.8
+
+[sub_resource type="Resource" id="Resource_ggvi5"]
 script = ExtResource("2_rgxf5")
 index = 60
-groups = Array[ExtResource("3_atyet")]([SubResource("Resource_t5ecc"), SubResource("Resource_33f42"), SubResource("Resource_5en13"), SubResource("Resource_2ml53"), SubResource("Resource_l26ic"), SubResource("Resource_244w1"), SubResource("Resource_8qbjt"), SubResource("Resource_52ucd")])
+groups = Array[ExtResource("3_atyet")]([SubResource("Resource_od2yl"), SubResource("Resource_io3sv"), SubResource("Resource_pllcp"), SubResource("Resource_vq74s"), SubResource("Resource_n4pap"), SubResource("Resource_3872j"), SubResource("Resource_28ctp"), SubResource("Resource_knjl4")])
 hp_multiplier = 4772.335450442706
 speed_multiplier = 1.4
 cash_multiplier = 801.4258334741611
@@ -3344,6 +4816,6 @@ reward_bonus = 50
 
 [resource]
 script = ExtResource("1_hrkio")
-waves = Array[ExtResource("2_rgxf5")]([SubResource("Resource_huy03"), SubResource("Resource_dshyb"), SubResource("Resource_uqvsd"), SubResource("Resource_cifks"), SubResource("Resource_v6cco"), SubResource("Resource_bytn4"), SubResource("Resource_0nr61"), SubResource("Resource_xqoax"), SubResource("Resource_271hq"), SubResource("Resource_fe7lh"), SubResource("Resource_y701j"), SubResource("Resource_uixls"), SubResource("Resource_0erno"), SubResource("Resource_qw45d"), SubResource("Resource_on715"), SubResource("Resource_8mu3o"), SubResource("Resource_075w2"), SubResource("Resource_wjuq0"), SubResource("Resource_7odj7"), SubResource("Resource_erqht"), SubResource("Resource_up5ca"), SubResource("Resource_rm2dn"), SubResource("Resource_5bvol"), SubResource("Resource_gpxcj"), SubResource("Resource_a6fvi"), SubResource("Resource_6durx"), SubResource("Resource_wjrpw"), SubResource("Resource_vwroo"), SubResource("Resource_ffqyf"), SubResource("Resource_er8xx"), SubResource("Resource_8voci"), SubResource("Resource_1rc64"), SubResource("Resource_1lwtg"), SubResource("Resource_tovc1"), SubResource("Resource_4y8ct"), SubResource("Resource_3pjrr"), SubResource("Resource_g8db1"), SubResource("Resource_7w32y"), SubResource("Resource_88m56"), SubResource("Resource_b2n30"), SubResource("Resource_r8wrj"), SubResource("Resource_ic4st"), SubResource("Resource_nfewi"), SubResource("Resource_c51k2"), SubResource("Resource_adl4c"), SubResource("Resource_irf27"), SubResource("Resource_oowp8"), SubResource("Resource_v0sxd"), SubResource("Resource_ddmm5"), SubResource("Resource_g1tln"), SubResource("Resource_hgwc0"), SubResource("Resource_1yg5d"), SubResource("Resource_p5ce2"), SubResource("Resource_gcxjf"), SubResource("Resource_m8a42"), SubResource("Resource_dxe51"), SubResource("Resource_sndkq"), SubResource("Resource_u82qq"), SubResource("Resource_hwjdp"), SubResource("Resource_fg2g6")])
+waves = Array[ExtResource("2_rgxf5")]([SubResource("Resource_huy03"), SubResource("Resource_dshyb"), SubResource("Resource_uqvsd"), SubResource("Resource_cifks"), SubResource("Resource_v6cco"), SubResource("Resource_bytn4"), SubResource("Resource_0nr61"), SubResource("Resource_xqoax"), SubResource("Resource_g00gk"), SubResource("Resource_4xv1u"), SubResource("Resource_iybjq"), SubResource("Resource_uvbxp"), SubResource("Resource_higt7"), SubResource("Resource_0jvw4"), SubResource("Resource_g2hhv"), SubResource("Resource_i30xs"), SubResource("Resource_r5cmr"), SubResource("Resource_026ph"), SubResource("Resource_1a0q0"), SubResource("Resource_dq6al"), SubResource("Resource_g4nmp"), SubResource("Resource_2804v"), SubResource("Resource_teboc"), SubResource("Resource_d4pwn"), SubResource("Resource_wuko6"), SubResource("Resource_vayqu"), SubResource("Resource_ey5wn"), SubResource("Resource_kagu1"), SubResource("Resource_4sbq7"), SubResource("Resource_ikupf"), SubResource("Resource_ocph0"), SubResource("Resource_8vgjh"), SubResource("Resource_x4xst"), SubResource("Resource_u5j68"), SubResource("Resource_yv160"), SubResource("Resource_wjlnf"), SubResource("Resource_acpmf"), SubResource("Resource_py3d6"), SubResource("Resource_pnem7"), SubResource("Resource_8xty3"), SubResource("Resource_m8a42"), SubResource("Resource_qpdi3"), SubResource("Resource_yyk1e"), SubResource("Resource_fg2g6"), SubResource("Resource_l7lfo"), SubResource("Resource_8w2m7"), SubResource("Resource_2fu8o"), SubResource("Resource_03y1o"), SubResource("Resource_re18q"), SubResource("Resource_4evbl"), SubResource("Resource_31j3v"), SubResource("Resource_dmpdl"), SubResource("Resource_wxybr"), SubResource("Resource_he3ne"), SubResource("Resource_4lv0i"), SubResource("Resource_8i3jx"), SubResource("Resource_khp2q"), SubResource("Resource_ovgc8"), SubResource("Resource_0qplu"), SubResource("Resource_ggvi5")])
 clear_bonus_base = 60
 clear_bonus_per_wave = 14

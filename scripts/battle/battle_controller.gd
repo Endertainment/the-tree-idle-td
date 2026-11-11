@@ -23,6 +23,10 @@ signal boss_removed
 
 const COLLAPSE_SECONDS := 1.2
 const AURA_INTERVAL := 0.1
+## Ranged enemies (ported roster) fire along the lane; these sprites are the
+## readable in-flight part of that attack. Fixed pool, never freed mid-run.
+const ENEMY_SHOT_POOL := 8
+const ENEMY_SHOT_MIN_DURATION := 0.12
 const FX_DEATH_TEXTURE := preload("res://assets/art/battle/fx/fx_death.png")
 const RUN_UPGRADE_SOURCE := &"run_tree_upgrades"
 const DESIGN_SIZE := Vector2(1080.0, 1920.0)
@@ -126,6 +130,11 @@ var _app_paused: bool = false
 var _shake_left: float = 0.0
 var _shake_strength: float = 0.0
 var _last_tree_hp: float = -1.0
+## In-flight ranged-enemy projectiles: {sprite, active, from, to, duration,
+## elapsed, damage_pct}. One dict per pooled sprite, reused forever.
+var _enemy_shots: Array[Dictionary] = []
+var _ranged_shots_fired: int = 0
+var _ranged_hits_landed: int = 0
 
 
 func _ready() -> void:
@@ -182,6 +191,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_target_index.rebuild(_enemy_manager.get_active())
 	_elapsed += dt
+	_tick_enemy_shots(dt)
 	_wave_manager.tick(dt)
 	_aura_timer += dt
 	if _aura_timer >= AURA_INTERVAL:
@@ -1023,6 +1033,8 @@ func _build_systems() -> void:
 	_enemy_manager.enemy_hit.connect(_on_enemy_hit_taken)
 	_enemy_manager.enemy_hp_changed.connect(_on_enemy_hp_changed)
 	_enemy_manager.boss_spawned.connect(_on_boss_spawned)
+	_enemy_manager.enemy_shot.connect(_on_enemy_shot)
+	_build_enemy_shot_pool()
 
 	_combat = CombatSystem.new()
 	_combat.name = "CombatSystem"
@@ -1090,6 +1102,111 @@ func _on_enemy_leaked(enemy: Enemy) -> void:
 		boss_removed.emit()
 	EventBus.enemy_leaked.emit(enemy.data.id if enemy.data != null else &"")
 	_wave_manager.on_enemy_removed()
+
+
+## ------------------------------------------------------------------ ranged
+## Ported ranged archetypes stop short of the Tree and fire. Enemy owns the
+## stop-and-shoot state; the controller owns the flight, the impact and the Tree
+## damage, so Enemy stays a walker and all HP math stays in one place.
+
+func _build_enemy_shot_pool() -> void:
+	if _projectiles_root == null:
+		return
+	for index in ENEMY_SHOT_POOL:
+		var sprite := Sprite2D.new()
+		sprite.name = "EnemyShot%d" % index
+		sprite.visible = false
+		sprite.z_index = 3
+		_projectiles_root.add_child(sprite)
+		_enemy_shots.append({
+			"sprite": sprite,
+			"active": false,
+			"from": Vector2.ZERO,
+			"to": Vector2.ZERO,
+			"duration": 0.0,
+			"elapsed": 0.0,
+			"damage_pct": 0.0,
+		})
+
+
+## Ranged attacks launched this run (battle_smoke and the tests read it).
+func ranged_shots_fired() -> int:
+	return _ranged_shots_fired
+
+
+## Ranged attacks that actually landed on the Tree.
+func ranged_hits_landed() -> int:
+	return _ranged_hits_landed
+
+
+func _on_enemy_shot(enemy: Enemy) -> void:
+	if _finished or _tree == null or enemy == null or not is_instance_valid(enemy):
+		return
+	var data := enemy.data
+	if data == null or not data.has_ranged_attack():
+		return
+	_ranged_shots_fired += 1
+	if not data.attack_sfx.is_empty():
+		AudioBus.play_sfx_id(data.attack_sfx, 0.06)
+	_launch_enemy_shot(enemy.global_position, data)
+
+
+func _launch_enemy_shot(origin: Vector2, data: EnemyData) -> void:
+	var target := _tree.global_position
+	var slot := _free_enemy_shot()
+	if slot.is_empty():
+		# Pool exhausted: resolve instantly so the attack still counts instead of
+		# disappearing, which would silently weaken a swarm of archers.
+		_apply_enemy_shot_damage(data.attack_damage_pct, target)
+		return
+	var sprite: Sprite2D = slot["sprite"]
+	sprite.texture = data.attack_projectile
+	sprite.visible = data.attack_projectile != null
+	sprite.global_position = origin
+	slot["active"] = true
+	slot["from"] = origin
+	slot["to"] = target
+	slot["elapsed"] = 0.0
+	slot["duration"] = maxf(
+		origin.distance_to(target) / maxf(data.attack_projectile_speed, 1.0),
+		ENEMY_SHOT_MIN_DURATION
+	)
+	slot["damage_pct"] = data.attack_damage_pct
+
+
+func _tick_enemy_shots(dt: float) -> void:
+	for slot in _enemy_shots:
+		if not bool(slot["active"]):
+			continue
+		slot["elapsed"] = float(slot["elapsed"]) + dt
+		var duration := maxf(float(slot["duration"]), ENEMY_SHOT_MIN_DURATION)
+		var ratio := clampf(float(slot["elapsed"]) / duration, 0.0, 1.0)
+		var sprite: Sprite2D = slot["sprite"]
+		if is_instance_valid(sprite):
+			sprite.global_position = (slot["from"] as Vector2).lerp(slot["to"] as Vector2, ratio)
+		if ratio < 1.0:
+			continue
+		slot["active"] = false
+		if is_instance_valid(sprite):
+			sprite.visible = false
+		_apply_enemy_shot_damage(float(slot["damage_pct"]), slot["to"] as Vector2)
+
+
+func _apply_enemy_shot_damage(damage_pct: float, impact: Vector2) -> void:
+	if _finished or _tree == null:
+		return
+	# `receive_leak` already applies the meta damage reduction, the FX and the
+	# tree_hurt SFX hook, so a ranged hit costs exactly what a leak costs.
+	_ranged_hits_landed += 1
+	_tree.receive_leak(damage_pct)
+	_fx.play(impact, CombatSystem.FX_HIT_TEXTURE, 1.0, 0.3)
+
+
+func _free_enemy_shot() -> Dictionary:
+	for slot in _enemy_shots:
+		if not bool(slot["active"]):
+			return slot
+	return {}
 
 
 func _on_enemy_hit_taken(enemy: Enemy, amount: float, is_crit: bool, source_id: StringName) -> void:

@@ -3,6 +3,39 @@
 All notable changes are recorded per milestone. The project follows semantic
 versioning for tags; unreleased work stays under `[Unreleased]`.
 
+## [Unreleased]
+
+### Added
+
+- **Enemy ranged attack.** `EnemyData` gained `attack_range`, `attack_interval`,
+  `attack_damage_pct`, `attack_projectile`, `attack_projectile_speed` and
+  `attack_sfx`. An enemy inside its range stops, fires every interval and never
+  leaks — it wins by chipping the Tree. `BattleController` owns an 8-sprite
+  projectile pool, the flight (battle-clock scaled, so pause and 2× behave), the
+  impact FX and the damage, which goes through `TreeEntity.receive_leak()` so the
+  meta damage-reduction modifiers and the `tree_hurt` SFX apply once, as for a
+  leak. `ranged_shots_fired()` / `ranged_hits_landed()` counters feed the tools.
+- `thrower` (320 px, 1.5 %/2.4 s), `mage` (340 px, 2.0 %/3.0 s) and `trebuchet`
+  (520 px, 3.0 %/4.5 s) now spawn — waves 9, 16 and 24. The wave generator takes
+  each specialist from a grunt, then a runner, keeping ≥2 mass units per wave and
+  the tuned `5 + floor(0.8 × wave)` count.
+- `tools/ranged_probe.gd`: boots the real battle at wave 9 and proves the shot is
+  fired, lands and costs the Tree HP. `test_ranged_attack_window` covers the
+  geometry; `test_ported_enemy_roster` now asserts all six ports spawn.
+- **Ported enemy roster from the 20.10.2026 build** (`docs/ENEMY_ROSTER.md`):
+  `raider`, `wyvern` and `ram` now spawn from waves 8 / 12 / 20 — one specialist
+  per wave, carved out of the existing grunt/tank pool, so the tuned
+  `5 + floor(0.8 × wave)` count is unchanged and waves 1–8 stay byte-identical.
+  `thrower`, `mage` and `trebuchet` are data- and art-complete but deliberately
+  stay out of the table until the enemy ranged attack exists (the new combat
+  model only walks and leaks).
+- 36 placeholder walk frames (`enemy_*_walk_00..05.png`), `enemy.<id>` en/uk
+  strings, and `test_ported_enemy_roster` — it fails if a ranged port ever
+  spawns early or if a ported stat drifts from the port table.
+- HP/speed/armor are ported unchanged; the old flat `damage` became
+  `leak_damage_pct`, `coins` became `cash_reward` and `radius` became `scale`,
+  re-expressed for the 1200 HP Tree and the new cash economy.
+
 ## [1.0.0] — 2026-10-31 — M8 balance, polish, release readiness
 
 ### Added

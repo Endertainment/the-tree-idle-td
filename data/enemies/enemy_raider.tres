@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_raider_walk_00.png" id="2_walk0"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_raider_walk_01.png" id="3_walk1"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_raider_walk_02.png" id="4_walk2"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_raider_walk_03.png" id="5_walk3"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_raider_walk_04.png" id="6_walk4"]
+[ext_resource type="Texture2D" path="res://assets/art/battle/enemies/enemy_raider_walk_05.png" id="7_walk5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_raider"]
+animations = [{
+"frames": [{"duration": 1.0, "texture": ExtResource("2_walk0")}, {"duration": 1.0, "texture": ExtResource("3_walk1")}, {"duration": 1.0, "texture": ExtResource("4_walk2")}, {"duration": 1.0, "texture": ExtResource("5_walk3")}, {"duration": 1.0, "texture": ExtResource("6_walk4")}, {"duration": 1.0, "texture": ExtResource("7_walk5")}],
+"loop": true,
+"name": &"walk",
+"speed": 12.0
+}]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"raider"
+display_name_key = "enemy.raider"
+max_hp = 120.0
+speed = 80.0
+armor = 1.0
+leak_damage_pct = 6.0
+cash_reward = 6
+frames = SubResource("SpriteFrames_raider")
+scale = 1.18
+is_boss = false

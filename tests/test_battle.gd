@@ -365,6 +365,113 @@ func test_tower_and_unit_data() -> bool:
 	return true
 
 
+## Enemies ported from the 20.10.2026 build (docs/ENEMY_ROSTER.md).
+##
+## The port keeps the old HP/speed/armor but re-expresses "damage to the Tree" as
+## `leak_damage_pct` (the new model has no flat damage) and scales the sprite by
+## the old radius. Three of the six are wired into the wave table; the ranged
+## trio stays out until the enemy attack behaviour exists, and this test fails if
+## someone spawns them early.
+func test_ported_enemy_roster() -> bool:
+	var expected := {
+		&"raider": [120.0, 80.0, 1.0, 6.0, 6, 1.18],
+		&"thrower": [70.0, 45.0, 0.0, 5.0, 4, 1.00],
+		&"mage": [55.0, 40.0, 0.0, 6.0, 5, 0.91],
+		&"wyvern": [90.0, 70.0, 0.0, 5.0, 7, 1.09],
+		&"ram": [400.0, 28.0, 5.0, 12.0, 11, 1.55],
+		&"trebuchet": [260.0, 20.0, 2.0, 12.0, 13, 1.45],
+	}
+	for enemy_id: StringName in expected:
+		var path := "res://data/enemies/enemy_%s.tres" % enemy_id
+		var data := load(path) as EnemyData
+		if data == null:
+			print("  %s failed to load" % path)
+			return false
+		var want: Array = expected[enemy_id]
+		if data.id != enemy_id:
+			print("  %s has id '%s'" % [path, data.id])
+			return false
+		if data.display_name_key != "enemy.%s" % enemy_id:
+			print("  %s display key '%s' does not follow enemy.<id>" % [path, data.display_name_key])
+			return false
+		if absf(data.max_hp - float(want[0])) > 0.001 \
+				or absf(data.speed - float(want[1])) > 0.001 \
+				or absf(data.armor - float(want[2])) > 0.001 \
+				or absf(data.leak_damage_pct - float(want[3])) > 0.001 \
+				or data.cash_reward != int(want[4]) \
+				or absf(data.scale - float(want[5])) > 0.001:
+			print("  %s stats drifted from the port table" % path)
+			return false
+		if data.frames == null or not data.frames.has_animation(&"walk"):
+			print("  %s has no walk animation" % path)
+			return false
+		if data.frames.get_frame_count(&"walk") != 6:
+			print("  %s walk should have 6 frames" % path)
+			return false
+		if data.is_boss:
+			print("  %s should not be a boss" % path)
+			return false
+
+	# The three ranged ports must carry a complete attack profile; the melee
+	# ports must not, or they would stop short of the Tree and never leak.
+	var ranged := [&"thrower", &"mage", &"trebuchet"]
+	for enemy_id in ranged:
+		var data := load("res://data/enemies/enemy_%s.tres" % enemy_id) as EnemyData
+		if not data.has_ranged_attack():
+			print("  %s has no ranged attack profile" % enemy_id)
+			return false
+		if data.attack_projectile == null or data.attack_sfx.is_empty():
+			print("  %s needs a projectile texture and a launch SFX" % enemy_id)
+			return false
+	for enemy_id in [&"raider", &"wyvern", &"ram"]:
+		var data := load("res://data/enemies/enemy_%s.tres" % enemy_id) as EnemyData
+		if data.has_ranged_attack():
+			print("  %s is a walker and must not have an attack range" % enemy_id)
+			return false
+
+	# Every port must actually appear in the wave table.
+	var table := load(WAVE_TABLE_PATH) as WaveTable
+	if table == null:
+		print("  could not load ", WAVE_TABLE_PATH)
+		return false
+	var seen := {}
+	for wave in table.waves:
+		for group in wave.groups:
+			seen[group.enemy_id] = int(seen.get(group.enemy_id, 0)) + group.count
+	for enemy_id: StringName in expected:
+		if int(seen.get(enemy_id, 0)) <= 0:
+			print("  %s is ported but never spawns" % enemy_id)
+			return false
+	print("  6 ported enemies, 3 of them ranged, all spawning")
+	return true
+
+
+## The ranged rule is pure geometry, so it is checked without building a scene.
+func test_ranged_attack_window() -> bool:
+	if Enemy.in_attack_window(400.0, 320.0):
+		print("  a 400 px gap is outside a 320 px attack range")
+		return false
+	if not Enemy.in_attack_window(320.0, 320.0):
+		print("  the exact range boundary must open fire")
+		return false
+	if not Enemy.in_attack_window(10.0, 320.0):
+		print("  an enemy inside the range must attack")
+		return false
+	if Enemy.in_attack_window(0.0, 0.0):
+		print("  a zero range is a walker, never an attacker")
+		return false
+	var thrower := load("res://data/enemies/enemy_thrower.tres") as EnemyData
+	if thrower == null or absf(thrower.attack_damage_pct - 1.5) > 0.001:
+		print("  thrower should hit for 1.5 %% of max HP per shot")
+		return false
+	var trebuchet := load("res://data/enemies/enemy_trebuchet.tres") as EnemyData
+	if trebuchet == null or trebuchet.attack_range <= thrower.attack_range:
+		print("  the trebuchet should outrange the thrower")
+		return false
+	print("  attack window geometry and ranged profiles verified")
+	return true
+
+
 func test_wave_table_integrity() -> bool:
 	var table := load(WAVE_TABLE_PATH) as WaveTable
 	if table == null:

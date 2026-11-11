@@ -112,6 +112,132 @@
     "mode": "plain"
   },
   {
+    "path": "battle/enemies/enemy_mage_walk_00.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_mage_walk_01.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_mage_walk_02.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_mage_walk_03.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_mage_walk_04.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_mage_walk_05.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_raider_walk_00.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_raider_walk_01.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_raider_walk_02.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_raider_walk_03.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_raider_walk_04.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_raider_walk_05.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_ram_walk_00.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_ram_walk_01.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_ram_walk_02.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_ram_walk_03.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_ram_walk_04.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_ram_walk_05.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
     "path": "battle/enemies/enemy_runner_walk_00.png",
     "w": 128,
     "h": 128,
@@ -241,6 +367,132 @@
     "path": "battle/enemies/enemy_tank_walk_05.png",
     "w": 160,
     "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_thrower_walk_00.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_thrower_walk_01.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_thrower_walk_02.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_thrower_walk_03.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_thrower_walk_04.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_thrower_walk_05.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_trebuchet_walk_00.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_trebuchet_walk_01.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_trebuchet_walk_02.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_trebuchet_walk_03.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_trebuchet_walk_04.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_trebuchet_walk_05.png",
+    "w": 160,
+    "h": 160,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_wyvern_walk_00.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_wyvern_walk_01.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_wyvern_walk_02.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_wyvern_walk_03.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_wyvern_walk_04.png",
+    "w": 128,
+    "h": 128,
+    "color": "#8A4A3A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_wyvern_walk_05.png",
+    "w": 128,
+    "h": 128,
     "color": "#8A4A3A",
     "mode": "plain"
   },

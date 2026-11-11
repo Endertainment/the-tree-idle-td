@@ -42,6 +42,8 @@ func _initialize() -> void:
 		{"name": "tower behavior registry", "callable": Callable(battle, "test_tower_behavior_registry")},
 		{"name": "unit slot unlocking", "callable": Callable(battle, "test_unit_slot_unlocking")},
 		{"name": "tower and unit data match spec", "callable": Callable(battle, "test_tower_and_unit_data")},
+		{"name": "ported enemy roster from the old build", "callable": Callable(battle, "test_ported_enemy_roster")},
+		{"name": "ranged attack window", "callable": Callable(battle, "test_ranged_attack_window")},
 		{"name": "wave table integrity and boss cadence", "callable": Callable(battle, "test_wave_table_integrity")},
 		{"name": "map lanes and pedestal clearance", "callable": Callable(battle, "test_map_layout")},
 		{"name": "run summary cash math", "callable": Callable(battle, "test_summary_cash_math")},

@@ -158,9 +158,15 @@ debug.speed,Sim speed,Швидкість
 debug.title,Debug,Налагодження
 enemy.boss_troll,Troll Warden,Троль-охоронець
 enemy.grunt,Grunt,Гоблін
+enemy.mage,Warlock,Чаклун
+enemy.raider,Raider,Наїзник
+enemy.ram,Ram,Таран
 enemy.runner,Runner,Бігун
 enemy.shaman,Shaman,Шаман
 enemy.tank,Tank,Танк
+enemy.thrower,Spear Thrower,Списометальник
+enemy.trebuchet,Trebuchet,Требушет
+enemy.wyvern,Wyvern Rider,Вершник на віверні
 magica.active,Researching,Досліджується
 magica.active_hint,Research continues while the app is closed.,"Дослідження триває, навіть коли гру закрито."
 magica.ads_soon,Rewarded speed-ups arrive with M6,Прискорення за рекламу з’явиться в M6

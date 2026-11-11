@@ -11,6 +11,8 @@ signal died(enemy: Enemy)
 signal leaked(enemy: Enemy)
 signal hit_taken(enemy: Enemy, amount: float, is_crit: bool, source_id: StringName)
 signal hp_changed(current_hp: float, max_hp: float)
+## Emitted once per ranged attack; BattleController turns it into a projectile.
+signal ranged_shot(enemy: Enemy)
 
 const LEAK_RATIO := 0.995
 const HP_BAR_LINGER := 2.0
@@ -39,6 +41,8 @@ var _hp_bar_time: float = 0.0
 var _aura_speed_multiplier: float = 1.0
 var _flash_time: float = 0.0
 var _flash_material: ShaderMaterial
+var _attack_cooldown: float = 0.0
+var _attacking: bool = false
 
 @onready var _sprite: AnimatedSprite2D = $Sprite
 @onready var _shadow: Sprite2D = $Shadow
@@ -86,6 +90,10 @@ func setup(
 	_finished = false
 	_aura_speed_multiplier = 1.0
 	_flash_time = 0.0
+	_attacking = false
+	## Half an interval of wind-up keeps a stopped enemy from firing the instant
+	## it enters range, which read as a free hit in the preview capture.
+	_attack_cooldown = data.attack_interval * 0.5 if data.has_ranged_attack() else 0.0
 	_status.reset()
 	if data.frames != null:
 		_sprite.sprite_frames = data.frames
@@ -171,6 +179,8 @@ func release() -> void:
 	visible = false
 	_aura_speed_multiplier = 1.0
 	_status.reset()
+	_attack_cooldown = 0.0
+	_attacking = false
 	_hp_bar.visible = false
 	_hp_bar.modulate.a = 0.0
 
@@ -182,13 +192,42 @@ func _physics_process(delta: float) -> void:
 	if dt <= 0.0:
 		return
 	_status.tick(dt)
-	_progress = minf(_progress + speed * _aura_speed_multiplier * _status.speed_multiplier() * dt, _lane_length)
+	_attacking = wants_to_attack()
+	if _attacking:
+		_tick_attack(dt)
+	else:
+		_progress = minf(_progress + speed * _aura_speed_multiplier * _status.speed_multiplier() * dt, _lane_length)
 	progress_ratio = _progress / _lane_length
 	_update_position()
 	_tick_hp_bar(dt)
 	_tick_flash(dt)
-	if progress_ratio >= LEAK_RATIO:
+	# A ranged enemy never leaks: it wins by chipping the Tree down from range.
+	if not _attacking and progress_ratio >= LEAK_RATIO:
 		_leak()
+
+
+## True while this enemy stands in its attack window and must not advance.
+func wants_to_attack() -> bool:
+	if data == null or not data.has_ranged_attack():
+		return false
+	return in_attack_window(_lane_length - _progress, data.attack_range)
+
+
+func is_attacking() -> bool:
+	return _attacking
+
+
+## Pure geometry rule, static so the headless tests can check it without a scene.
+static func in_attack_window(remaining_distance: float, attack_range: float) -> bool:
+	return attack_range > 0.0 and remaining_distance <= attack_range
+
+
+func _tick_attack(dt: float) -> void:
+	_attack_cooldown = maxf(_attack_cooldown - dt, 0.0)
+	if _attack_cooldown > 0.0:
+		return
+	_attack_cooldown = maxf(data.attack_interval, 0.05)
+	ranged_shot.emit(self)
 
 
 func _update_position() -> void:

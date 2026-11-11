@@ -14,6 +14,22 @@ const ENEMY_RUNNER := &"runner"
 const ENEMY_TANK := &"tank"
 const ENEMY_SHAMAN := &"shaman"
 const ENEMY_BOSS := &"boss_troll"
+## Ported from the 20.10.2026 build (docs/ENEMY_ROSTER.md). Each specialist
+## replaces one grunt/tank so the tuned `5 + 0.8 x wave` count is unchanged; the
+## HP budget grows only by the specialist's own base HP (raider +60, wyvern +30,
+## ram +180), which is what the balance probe measures.
+const ENEMY_RAIDER := &"raider"
+const ENEMY_WYVERN := &"wyvern"
+const ENEMY_RAM := &"ram"
+const ENEMY_THROWER := &"thrower"
+const ENEMY_MAGE := &"mage"
+const ENEMY_TREBUCHET := &"trebuchet"
+const RAIDER_FROM_WAVE := 8
+const WYVERN_FROM_WAVE := 12
+const THROWER_FROM_WAVE := 9
+const MAGE_FROM_WAVE := 16
+const RAM_FROM_WAVE := 20
+const TREBUCHET_FROM_WAVE := 24
 
 const MAX_WAVES := 60
 const BOSS_BONUS_HP := 1.20
@@ -123,11 +139,42 @@ func _build_wave(wave_number: int) -> WaveDefinition:
 		if grunts < 0:
 			runners = maxi(runners + grunts, 0)
 			grunts = total - runners - tanks - shamans
+		# Specialists are carved out of the existing grunt/runner pool, never
+		# added on top, so the wave count stays exactly `5 + floor(0.8 x wave)`.
+		# The pool floor (2 left of each) keeps the mass units present: a wave of
+		# nothing but specialists would read as a puzzle, not a wave.
+		var specialists: Array[StringName] = []
+		for entry in [
+			[RAIDER_FROM_WAVE, ENEMY_RAIDER],
+			[WYVERN_FROM_WAVE, ENEMY_WYVERN],
+			[THROWER_FROM_WAVE, ENEMY_THROWER],
+			[MAGE_FROM_WAVE, ENEMY_MAGE],
+			[TREBUCHET_FROM_WAVE, ENEMY_TREBUCHET],
+		]:
+			if wave_number >= int(entry[0]):
+				specialists.append(entry[1])
+		var specialist_counts := {}
+		for enemy_id: StringName in specialists:
+			if grunts > 2:
+				grunts -= 1
+			elif runners > 2:
+				runners -= 1
+			else:
+				break
+			specialist_counts[enemy_id] = 1
+		var rams := 1 if wave_number >= RAM_FROM_WAVE and tanks > 1 else 0
+		tanks -= rams
 		# Interleave types so a wave is not a single enemy file.
 		_add_type(groups, ENEMY_GRUNT, grunts, interval, 0.0)
 		_add_type(groups, ENEMY_RUNNER, runners, interval * 0.8, 0.2)
 		_add_type(groups, ENEMY_TANK, tanks, interval * 1.4, 0.4)
 		_add_type(groups, ENEMY_SHAMAN, shamans, interval * 1.4, 0.7)
+		_add_type(groups, ENEMY_RAIDER, int(specialist_counts.get(ENEMY_RAIDER, 0)), interval * 1.1, 0.9)
+		_add_type(groups, ENEMY_WYVERN, int(specialist_counts.get(ENEMY_WYVERN, 0)), interval * 0.9, 1.0)
+		_add_type(groups, ENEMY_THROWER, int(specialist_counts.get(ENEMY_THROWER, 0)), interval * 1.2, 1.1)
+		_add_type(groups, ENEMY_MAGE, int(specialist_counts.get(ENEMY_MAGE, 0)), interval * 1.6, 1.3)
+		_add_type(groups, ENEMY_RAM, rams, interval * 1.8, 1.2)
+		_add_type(groups, ENEMY_TREBUCHET, int(specialist_counts.get(ENEMY_TREBUCHET, 0)), interval * 2.0, 1.5)
 
 	wave.groups = groups
 	return wave
