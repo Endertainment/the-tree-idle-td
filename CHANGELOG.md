@@ -15,13 +15,36 @@ versioning for tags; unreleased work stays under `[Unreleased]`.
   impact FX and the damage, which goes through `TreeEntity.receive_leak()` so the
   meta damage-reduction modifiers and the `tree_hurt` SFX apply once, as for a
   leak. `ranged_shots_fired()` / `ranged_hits_landed()` counters feed the tools.
-- `thrower` (320 px, 1.5 %/2.4 s), `mage` (340 px, 2.0 %/3.0 s) and `trebuchet`
-  (520 px, 3.0 %/4.5 s) now spawn — waves 9, 16 and 24. The wave generator takes
+- `thrower` (360 px, 1.0 %/2.8 s), `mage` (480 px, 1.6 %/3.4 s) and `trebuchet`
+  (440 px, 2.4 %/5.0 s) now spawn — waves 9, 16 and 24. The wave generator takes
   each specialist from a grunt, then a runner, keeping ≥2 mass units per wave and
   the tuned `5 + floor(0.8 × wave)` count.
 - `tools/ranged_probe.gd`: boots the real battle at wave 9 and proves the shot is
   fired, lands and costs the Tree HP. `test_ranged_attack_window` covers the
   geometry; `test_ported_enemy_roster` now asserts all six ports spawn.
+- **Second boss: Orc Airship** (`boss_airship`, 2400 HP, speed 18, armor 4,
+  90 coins). Boss waves alternate — `boss_troll` on 10/30/50, the airship on
+  20/40/60 — and `EnemyData` gained `summon_enemy_id`, `summon_initial`,
+  `summon_interval` and `summon_max_alive`: 2 wyverns on spawn, then one every
+  9 s while fewer than 4 live, ticked through the battle clock. `test_boss_roster`
+  and `tools/boss_probe.gd` (real run at waves 10 and 20) cover it.
+
+### Changed
+
+- **Ranged balance pass.** After the first numbers, the Tree (640 range) killed
+  every ranged enemy before it fired; the mage needed 75 HP (ported 55) and the
+  ranges moved to 360/480/440 px with 1.0/1.6/2.4 % per 2.8/3.4/5.0 s. The Tree
+  now **prioritises enemies that are attacking it**, so a parked trebuchet
+  cannot chip for free while walkers hold the `first` target. Measured lifetime
+  cost with no towers: thrower 1.0 %, mage 3.2 %, trebuchet 12.0 %.
+- **`attack_range` now means distance to the Tree, not lane progress.** The lane
+  bends and ends ~60 px past the Tree, so the first version parked the trebuchet
+  672 px away — outside the Tree's 640 reach and outside every tower. `Enemy`
+  receives the Tree node on spawn and `wants_to_attack()` measures real distance;
+  the probe fails if a ranged enemy never dies.
+- `test_ranged_attack_window` also enforces the pressure band (0.25–0.55 % of
+  Tree HP per second) so a future retune cannot silently make a lone archer
+  stronger than a boss leak.
 - **Ported enemy roster from the 20.10.2026 build** (`docs/ENEMY_ROSTER.md`):
   `raider`, `wyvern` and `ram` now spawn from waves 8 / 12 / 20 — one specialist
   per wave, carved out of the existing grunt/tank pool, so the tuned

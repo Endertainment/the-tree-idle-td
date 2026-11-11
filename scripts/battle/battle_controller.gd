@@ -135,6 +135,9 @@ var _last_tree_hp: float = -1.0
 var _enemy_shots: Array[Dictionary] = []
 var _ranged_shots_fired: int = 0
 var _ranged_hits_landed: int = 0
+## Boss summon state (the airship drops wyvern riders while it lives).
+var _boss_summon_timer: float = 0.0
+var _boss_summons_spawned: int = 0
 
 
 func _ready() -> void:
@@ -191,6 +194,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_target_index.rebuild(_enemy_manager.get_active())
 	_elapsed += dt
+	_tick_boss_summon(dt)
 	_tick_enemy_shots(dt)
 	_wave_manager.tick(dt)
 	_aura_timer += dt
@@ -962,6 +966,13 @@ func debug_spawn_enemy(enemy_id: StringName, lane_id: StringName = &"north") -> 
 	_enemy_manager.spawn(data, lane_id, 1.0, 1.0, 1.0)
 
 
+## Tooling: freezes the wave schedule so a probe can measure one enemy in
+## isolation without wave leaks polluting the Tree HP numbers.
+func debug_disable_waves() -> void:
+	_wave_manager.stop()
+	_spawner.stop()
+
+
 ## Builds the preview board for the screenshot tool (see BattlePreview).
 func stage_preview() -> void:
 	BattlePreview.stage(self)
@@ -1026,7 +1037,8 @@ func _build_systems() -> void:
 		_target_index,
 		_run_rng,
 		_arena.lane_north,
-		_arena.lane_south
+		_arena.lane_south,
+		_tree
 	)
 	_enemy_manager.enemy_died.connect(_on_enemy_died)
 	_enemy_manager.enemy_leaked.connect(_on_enemy_leaked)
@@ -1230,6 +1242,71 @@ func _on_boss_spawned(enemy: Enemy) -> void:
 	boss_spawned.emit(enemy)
 	_shake_screen(14.0)
 	AudioService.haptic(70)
+	_start_boss_summon(enemy)
+
+
+## Summoning bosses (the airship) drop their escort on spawn; the periodic part
+## is ticked from `_physics_process` so pause and 2x behave like everything else.
+func _start_boss_summon(boss: Enemy) -> void:
+	_boss_summons_spawned = 0
+	_boss_summon_timer = 0.0
+	if boss == null or boss.data == null or not boss.data.has_summon():
+		return
+	for _index in boss.data.summon_initial:
+		_spawn_boss_summon(boss.data)
+
+
+func _tick_boss_summon(dt: float) -> void:
+	var boss := _active_boss
+	if boss == null or not is_instance_valid(boss) or not boss.is_alive():
+		return
+	var data := boss.data
+	if data == null or not data.has_summon() or data.summon_interval <= 0.0:
+		return
+	_boss_summon_timer -= dt
+	if _boss_summon_timer > 0.0:
+		return
+	_boss_summon_timer = data.summon_interval
+	if _count_active(data.summon_enemy_id) >= data.summon_max_alive:
+		return
+	_spawn_boss_summon(data)
+
+
+func _spawn_boss_summon(boss_data: EnemyData) -> void:
+	var summon := _enemy_lookup.get(boss_data.summon_enemy_id, null) as EnemyData
+	if summon == null:
+		push_error("BattleController: boss summons unknown enemy '%s'" % boss_data.summon_enemy_id)
+		return
+	var lane: StringName = &"north" if _boss_summons_spawned % 2 == 0 else &"south"
+	_boss_summons_spawned += 1
+	_enemy_manager.spawn(summon, lane, 1.0, 1.0, 1.0)
+	_wave_manager.on_enemy_spawned()
+
+
+func _count_active(enemy_id: StringName) -> int:
+	var total := 0
+	for enemy in _enemy_manager.get_active():
+		if is_instance_valid(enemy) and enemy.data != null and enemy.data.id == enemy_id:
+			total += 1
+	return total
+
+
+## Summons this run spawned (tests and probes read it).
+func boss_summons_spawned() -> int:
+	return _boss_summons_spawned
+
+
+## Tooling: live enemies of one archetype (boss/balance probes).
+func debug_alive_count(enemy_id: StringName) -> int:
+	return _count_active(enemy_id)
+
+
+## Tooling: first live enemy of an archetype, for probe measurements.
+func debug_first_enemy(enemy_id: StringName) -> Enemy:
+	for enemy in _enemy_manager.get_active():
+		if is_instance_valid(enemy) and enemy.data != null and enemy.data.id == enemy_id:
+			return enemy
+	return null
 
 
 func _on_card_dropped(card_id: StringName) -> void:

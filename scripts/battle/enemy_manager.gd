@@ -23,6 +23,7 @@ var _target_index: SpatialHash
 var _rng: RandomNumberGenerator
 var _lane_north: Path2D
 var _lane_south: Path2D
+var _tree_target: Node2D
 var _pool: Array[Enemy] = []
 var _active: Array[Enemy] = []
 var _next_uid: int = 1
@@ -36,7 +37,8 @@ func setup(
 	target_index: SpatialHash,
 	rng: RandomNumberGenerator,
 	lane_north: Path2D,
-	lane_south: Path2D
+	lane_south: Path2D,
+	tree_target: Node2D = null
 ) -> void:
 	_root = root
 	_scene = scene
@@ -45,6 +47,7 @@ func setup(
 	_rng = rng
 	_lane_north = lane_north
 	_lane_south = lane_south
+	_tree_target = tree_target
 
 
 ## Spawns `data` on `lane_id` with already-combined HP scaling.
@@ -68,7 +71,8 @@ func spawn(
 		cash_multiplier,
 		lateral,
 		_clock,
-		_next_uid
+		_next_uid,
+		_tree_target
 	)
 	_next_uid += 1
 	_active.append(enemy)

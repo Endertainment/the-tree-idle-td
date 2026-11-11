@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3]
+[gd_scene load_steps=41 format=3]
 
 [ext_resource type="Script" path="res://scripts/battle/battle_controller.gd" id="1_controller"]
 [ext_resource type="Resource" path="res://data/maps/forest_clearing.tres" id="2_map"]
@@ -39,13 +39,14 @@
 [ext_resource type="Resource" path="res://data/enemies/enemy_wyvern.tres" id="37_wyvern"]
 [ext_resource type="Resource" path="res://data/enemies/enemy_ram.tres" id="38_ram"]
 [ext_resource type="Resource" path="res://data/enemies/enemy_trebuchet.tres" id="39_trebuchet"]
+[ext_resource type="Resource" path="res://data/enemies/enemy_boss_airship.tres" id="40_boss_airship"]
 
 [node name="Battle" type="Node2D"]
 script = ExtResource("1_controller")
 map_data = ExtResource("2_map")
 wave_table = ExtResource("3_waves")
 tree_data = ExtResource("4_tree_data")
-enemy_resources = Array[ExtResource("5_enemy_type")]([ExtResource("8_grunt"), ExtResource("9_runner"), ExtResource("10_tank"), ExtResource("11_shaman"), ExtResource("12_boss"), ExtResource("34_raider"), ExtResource("35_thrower"), ExtResource("36_mage"), ExtResource("37_wyvern"), ExtResource("38_ram"), ExtResource("39_trebuchet")])
+enemy_resources = Array[ExtResource("5_enemy_type")]([ExtResource("8_grunt"), ExtResource("9_runner"), ExtResource("10_tank"), ExtResource("11_shaman"), ExtResource("12_boss"), ExtResource("34_raider"), ExtResource("35_thrower"), ExtResource("36_mage"), ExtResource("37_wyvern"), ExtResource("38_ram"), ExtResource("39_trebuchet"), ExtResource("40_boss_airship")])
 tower_resources = Array[ExtResource("6_tower_type")]([ExtResource("13_archer"), ExtResource("14_cannon"), ExtResource("15_frost"), ExtResource("16_totem")])
 unit_resources = Array[ExtResource("7_unit_type")]([ExtResource("17_unit_archer"), ExtResource("18_unit_mage"), ExtResource("19_unit_druid")])
 enemy_scene = ExtResource("20_enemy_scene")

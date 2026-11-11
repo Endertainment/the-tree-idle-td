@@ -32,6 +32,7 @@ var progress_ratio: float = 0.0
 var _lane: Path2D
 var _curve: Curve2D
 var _lane_length: float = 0.0
+var _tree_target: Node2D
 var _progress: float = 0.0
 var _lateral: float = 0.0
 var _cash_multiplier: float = 1.0
@@ -70,10 +71,12 @@ func setup(
 	cash_multiplier: float,
 	lateral: float,
 	clock: BattleClock,
-	run_uid: int
+	run_uid: int,
+	tree_target: Node2D = null
 ) -> void:
 	data = p_data
 	enemy_uid = run_uid
+	_tree_target = tree_target
 	max_hp = data.max_hp * hp_multiplier
 	hp = max_hp
 	armor = data.armor
@@ -207,10 +210,22 @@ func _physics_process(delta: float) -> void:
 
 
 ## True while this enemy stands in its attack window and must not advance.
+##
+## `attack_range` is a real distance to the Tree, not progress along the lane:
+## the lane bends, so "440 px before the end" could still be 670 px from the Tree
+## and outside every tower's reach (that bug shipped once — see the ranged probe).
 func wants_to_attack() -> bool:
 	if data == null or not data.has_ranged_attack():
 		return false
-	return in_attack_window(_lane_length - _progress, data.attack_range)
+	var distance := _distance_to_tree()
+	return in_attack_window(distance, data.attack_range)
+
+
+## Distance to the Tree when known, lane remainder as a fallback for bare scenes.
+func _distance_to_tree() -> float:
+	if _tree_target != null and is_instance_valid(_tree_target):
+		return global_position.distance_to(_tree_target.global_position)
+	return _lane_length - _progress
 
 
 func is_attacking() -> bool:

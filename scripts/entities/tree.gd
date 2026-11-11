@@ -196,6 +196,16 @@ func _find_target() -> Enemy:
 	if _target_index == null:
 		return null
 	var candidates := _target_index.query_radius(global_position, effective_range())
+	if candidates.is_empty():
+		return null
+	# Ranged attackers take priority: they park outside most tower coverage and
+	# would otherwise chip the Tree for free (docs/ENEMY_ROSTER.md, balance pass).
+	var attackers: Array[Enemy] = []
+	for enemy in candidates:
+		if enemy != null and enemy.is_alive() and enemy.is_attacking():
+			attackers.append(enemy)
+	if not attackers.is_empty():
+		return TargetingStrategy.select(&"first", global_position, attackers)
 	return TargetingStrategy.select(&"first", global_position, candidates)
 
 

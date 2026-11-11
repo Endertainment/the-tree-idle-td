@@ -14,6 +14,62 @@
     "mode": "plain"
   },
   {
+    "path": "battle/enemies/enemy_boss_airship_walk_00.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_airship_walk_01.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_airship_walk_02.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_airship_walk_03.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_airship_walk_04.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_airship_walk_05.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_airship_walk_06.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
+    "path": "battle/enemies/enemy_boss_airship_walk_07.png",
+    "w": 280,
+    "h": 280,
+    "color": "#5B2A2A",
+    "mode": "plain"
+  },
+  {
     "path": "battle/enemies/enemy_boss_troll_walk_00.png",
     "w": 280,
     "h": 280,

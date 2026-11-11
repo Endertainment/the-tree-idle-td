@@ -27,6 +27,24 @@ scenes, zero ERROR/WARNING** · battle_smoke **PASS** · balance_probe median **
 | M7 | Backend (FastAPI + Neon), live features | done (Neon/Docker runtime unverified) | `v0.8.0-m7` |
 | M8 | Balance, polish, release readiness | done (tagged; launch gaps listed below) | `v1.0.0-m8` |
 
+## Second boss + ranged balance (2026-11-11, no tag)
+
+- **`boss_airship`** (Орочий дирижабль): 2400 HP, speed 18, armor 4, 90 coins,
+  summons wyverns (2 on spawn, then 1 / 9 s, cap 4). Boss waves alternate with
+  the troll — 10/30/50 troll, 20/40/60 airship — via `_boss_for_wave()` in the
+  wave generator. Summoning is `EnemyData.summon_*` + `_tick_boss_summon`.
+- **Ranged balance**: the Tree now prioritises enemies attacking it; ranges set
+  to 360/480/440 px and damage 1.0/1.6/2.4 % per 2.8/3.4/5.0 s; the mage gained
+  20 HP (75) so it survives long enough to fire. `attack_range` was redefined as
+  real distance to the Tree (the lane-progress version parked the trebuchet
+  672 px away, outside the Tree's own 640 range).
+- Measured by `tools/ranged_probe.gd` with no towers (Tree alone): thrower 1.0 %
+  cost / dies in ~15 s, mage 3.2 % / ~17 s, trebuchet 12.0 % / ~48 s.
+- Verification: tests **77/77** · smoke **OK** · battle_smoke **PASS** ·
+  boss_probe **PASS** (wave 10 troll, wave 20 airship + escort) · ranged_probe
+  **PASS** · `simulate_run --profile=mid --runs=3` median **8** (HEAD baseline 8,
+  so the balance pass is neutral in this environment) · locale 0 missing/unused.
+
 ## Enemy roster port (2026-11-11, no tag)
 
 - 6 enemies from the 20.10.2026 build are now in the project — the full table,

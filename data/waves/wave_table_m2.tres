@@ -1030,7 +1030,7 @@ cash_multiplier = 7.6899657950214815
 
 [sub_resource type="Resource" id="Resource_l8b6v"]
 script = ExtResource("3_atyet")
-enemy_id = &"boss_troll"
+enemy_id = &"boss_airship"
 count = 1
 interval = 1.0
 hp_multiplier = 1.2
@@ -2845,7 +2845,7 @@ cash_multiplier = 74.1796639360363
 
 [sub_resource type="Resource" id="Resource_1yg5d"]
 script = ExtResource("3_atyet")
-enemy_id = &"boss_troll"
+enemy_id = &"boss_airship"
 count = 1
 interval = 1.0
 hp_multiplier = 1.2
@@ -4750,7 +4750,7 @@ cash_multiplier = 715.5587798876436
 
 [sub_resource type="Resource" id="Resource_od2yl"]
 script = ExtResource("3_atyet")
-enemy_id = &"boss_troll"
+enemy_id = &"boss_airship"
 count = 1
 interval = 1.0
 hp_multiplier = 1.2

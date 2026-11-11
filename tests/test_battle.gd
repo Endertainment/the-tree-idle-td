@@ -376,7 +376,7 @@ func test_ported_enemy_roster() -> bool:
 	var expected := {
 		&"raider": [120.0, 80.0, 1.0, 6.0, 6, 1.18],
 		&"thrower": [70.0, 45.0, 0.0, 5.0, 4, 1.00],
-		&"mage": [55.0, 40.0, 0.0, 6.0, 5, 0.91],
+		&"mage": [75.0, 40.0, 0.0, 6.0, 5, 0.91],
 		&"wyvern": [90.0, 70.0, 0.0, 5.0, 7, 1.09],
 		&"ram": [400.0, 28.0, 5.0, 12.0, 11, 1.55],
 		&"trebuchet": [260.0, 20.0, 2.0, 12.0, 13, 1.45],
@@ -461,14 +461,60 @@ func test_ranged_attack_window() -> bool:
 		print("  a zero range is a walker, never an attacker")
 		return false
 	var thrower := load("res://data/enemies/enemy_thrower.tres") as EnemyData
-	if thrower == null or absf(thrower.attack_damage_pct - 1.5) > 0.001:
-		print("  thrower should hit for 1.5 %% of max HP per shot")
+	if thrower == null or absf(thrower.attack_damage_pct - 1.0) > 0.001:
+		print("  thrower should hit for 1.0 %% of max HP per shot")
 		return false
 	var trebuchet := load("res://data/enemies/enemy_trebuchet.tres") as EnemyData
 	if trebuchet == null or trebuchet.attack_range <= thrower.attack_range:
 		print("  the trebuchet should outrange the thrower")
 		return false
+	# Balance band: a lone ranged enemy must not out-damage a leak-heavy tank.
+	# Pressure = damage_pct / interval in % of Tree HP per second.
+	var pressure := func(data: EnemyData) -> float:
+		return data.attack_damage_pct / maxf(data.attack_interval, 0.01)
+	for enemy_id in [&"thrower", &"mage", &"trebuchet"]:
+		var data := load("res://data/enemies/enemy_%s.tres" % enemy_id) as EnemyData
+		var dps_pct: float = pressure.call(data)
+		if dps_pct < 0.25 or dps_pct > 0.55:
+			print("  %s pressure %.2f %%/s is outside the 0.25-0.55 band" % [enemy_id, dps_pct])
+			return false
 	print("  attack window geometry and ranged profiles verified")
+	return true
+
+
+## Second boss: the airship alternates with the troll and summons its escort.
+func test_boss_roster() -> bool:
+	var airship := load("res://data/enemies/enemy_boss_airship.tres") as EnemyData
+	if airship == null:
+		print("  boss_airship resource failed to load")
+		return false
+	if not airship.is_boss or absf(airship.max_hp - 2400.0) > 0.001:
+		print("  airship should be a 2400 HP boss")
+		return false
+	if not airship.has_summon():
+		print("  airship should summon allies")
+		return false
+	if airship.summon_enemy_id != &"wyvern" or airship.summon_max_alive < 1:
+		print("  airship should summon wyverns with a live cap")
+		return false
+	if airship.frames == null or not airship.frames.has_animation(&"walk"):
+		print("  airship has no walk animation")
+		return false
+	if airship.frames.get_frame_count(&"walk") != 8:
+		print("  airship walk should have 8 frames")
+		return false
+
+	var troll := load("res://data/enemies/enemy_boss_troll.tres") as EnemyData
+	if troll == null or troll.has_summon():
+		print("  the troll warden should not summon")
+		return false
+
+	# Summon target must be a real enemy the battle scene can spawn.
+	var summon := load("res://data/enemies/enemy_%s.tres" % airship.summon_enemy_id) as EnemyData
+	if summon == null or summon.is_boss:
+		print("  airship summon target '%s' is not a valid minion" % airship.summon_enemy_id)
+		return false
+	print("  airship boss (2400 HP, summons %s) verified" % airship.summon_enemy_id)
 	return true
 
 
@@ -528,13 +574,17 @@ func test_wave_table_integrity() -> bool:
 			if group.count <= 0 or group.interval <= 0.0:
 				print("  wave %d has an empty spawn group" % number)
 				return false
-			if group.enemy_id == &"boss_troll":
+			if group.enemy_id == &"boss_troll" or group.enemy_id == &"boss_airship":
 				boss_groups += 1
 				if group.count != 1:
 					print("  wave %d spawns %d bosses" % [number, group.count])
 					return false
 				if absf(group.hp_multiplier - 1.20) > 0.001:
 					print("  wave %d boss hp multiplier %f != 1.20" % [number, group.hp_multiplier])
+					return false
+				var wanted := &"boss_airship" if (number / 10) % 2 == 0 else &"boss_troll"
+				if group.enemy_id != wanted:
+					print("  wave %d should field %s, got %s" % [number, wanted, group.enemy_id])
 					return false
 
 		if BOSS_WAVES.has(number):
@@ -546,7 +596,7 @@ func test_wave_table_integrity() -> bool:
 				print("  wave %d should have exactly one boss group" % number)
 				return false
 		elif boss_groups != 0:
-			print("  wave %d should not contain boss_troll" % number)
+			print("  wave %d should not contain a boss" % number)
 			return false
 		if SWARM_WAVES.has(number) and wave.is_boss:
 			print("  wave %d cannot be both swarm and boss" % number)

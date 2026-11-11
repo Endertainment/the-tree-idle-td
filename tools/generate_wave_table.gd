@@ -14,6 +14,9 @@ const ENEMY_RUNNER := &"runner"
 const ENEMY_TANK := &"tank"
 const ENEMY_SHAMAN := &"shaman"
 const ENEMY_BOSS := &"boss_troll"
+## Odd decades (10, 30, 50) field the Troll Warden, even ones (20, 40, 60) the
+## Orc Airship, which summons wyvern riders (docs/ENEMY_ROSTER.md).
+const ENEMY_BOSS_AIRSHIP := &"boss_airship"
 ## Ported from the 20.10.2026 build (docs/ENEMY_ROSTER.md). Each specialist
 ## replaces one grunt/tank so the tuned `5 + 0.8 x wave` count is unchanged; the
 ## HP budget grows only by the specialist's own base HP (raider +60, wyvern +30,
@@ -108,7 +111,7 @@ func _build_wave(wave_number: int) -> WaveDefinition:
 	var groups: Array[SpawnGroup] = []
 
 	if wave.is_boss:
-		groups.append(_group(ENEMY_BOSS, &"north", 1, 1.0, 0.0, BOSS_BONUS_HP))
+		groups.append(_group(_boss_for_wave(wave_number), &"north", 1, 1.0, 0.0, BOSS_BONUS_HP))
 		var support := total - 1
 		var tanks := mini(4 if wave_number >= 20 else 2, support / 3)
 		var shamans := 1 if wave_number >= 20 and support > 6 else 0
@@ -193,6 +196,13 @@ func _late_ramp(wave_number: int) -> float:
 	if wave_number <= LATE_HP_START:
 		return 1.0
 	return pow(LATE_HP_GROWTH, float(wave_number - LATE_HP_START))
+
+
+## Odd decades field the Troll Warden, even ones the Orc Airship.
+func _boss_for_wave(wave_number: int) -> StringName:
+	if (wave_number / 10) % 2 == 0:
+		return ENEMY_BOSS_AIRSHIP
+	return ENEMY_BOSS
 
 
 ## Splits one enemy type across both lanes so each group spawns on a single lane.

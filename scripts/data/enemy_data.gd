@@ -41,3 +41,15 @@ extends Resource
 ## True when this archetype fights from range instead of leaking on arrival.
 func has_ranged_attack() -> bool:
 	return attack_range > 0.0 and attack_interval > 0.0 and attack_damage_pct > 0.0
+
+
+## Boss summon profile (the airship): drop `summon_initial` allies on spawn, then
+## one every `summon_interval` seconds while fewer than `summon_max_alive` live.
+@export var summon_enemy_id: StringName = &""
+@export var summon_initial: int = 0
+@export var summon_interval: float = 0.0
+@export var summon_max_alive: int = 4
+
+
+func has_summon() -> bool:
+	return not summon_enemy_id.is_empty() and (summon_initial > 0 or summon_interval > 0.0)

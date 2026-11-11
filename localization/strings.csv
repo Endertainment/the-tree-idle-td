@@ -156,6 +156,7 @@ debug.paused,paused,пауза
 debug.projectiles,Projectiles,Снаряди
 debug.speed,Sim speed,Швидкість
 debug.title,Debug,Налагодження
+enemy.boss_airship,Orc Airship,Орочий дирижабль
 enemy.boss_troll,Troll Warden,Троль-охоронець
 enemy.grunt,Grunt,Гоблін
 enemy.mage,Warlock,Чаклун
